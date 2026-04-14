@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fiveo-red: rgb(225, 6, 0);
+  --color-fiveo-blue: rgb(0, 174, 239);
+  --color-fiveo-dark: rgb(15, 15, 15);
+  --color-fiveo-grey: rgb(30, 30, 30);
+}
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom UI Elements matching the FiveO Style */
+
+.fiveo-button-red {
+  background-color: var(--color-fiveo-red);
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.fiveo-button-red:hover {
+  background-color: #b30500;
+  transform: translateY(-1px);
+}
+
+.fiveo-glass {
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.fiveo-banner-blue {
+  background-color: var(--color-fiveo-blue);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
