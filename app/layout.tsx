@@ -101,33 +101,47 @@ export default function RootLayout({
 
             {/* Right Actions */}
             <div className="flex items-center gap-3">
-              {/* Search Button (tablet+) */}
+              {/* Search Button — Squared off like screenshot */}
               <button
-                className="bg-[#E10600] text-white text-xs font-black uppercase px-10 py-3 min-w-[140px] rounded-sm hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-wider flex-shrink-0"
+                className="bg-[#E10600] text-white text-[12px] font-black uppercase px-6 py-2 rounded-none hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-tighter"
                 aria-label="Search products"
               >
-                Search
+                SEARCH
               </button>
 
-              {/* User Icon */}
-              <button className="p-2 hover:text-[#00AEEF] transition-colors" aria-label="User account">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              {/* Driver/Account Icon (Helmet SVG) */}
+              <button className="p-1 hover:text-[#00AEEF] transition-colors flex items-center" aria-label="User account">
+                <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 32 32">
+                  <path d="M16,2C8.28,2,2,8.28,2,16s6.28,14,14,14s14-6.28,14-14S23.72,2,16,2z M16,28c-6.62,0-12-5.38-12-12S9.38,4,16,4s12,5.38,12,12 S22.62,28,16,28z M16,7c-3.31,0-6,2.69-6,6c0,2.16,1.15,4.05,2.87,5.12L11,24h10l-1.87-5.88C20.85,17.05,22,15.16,22,13 C22,9.69,19.31,7,16,7z M14.12,22l0.63-2H17.25l0.63,2H14.12z M16,16c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S17.65,16,16,16z"/>
                 </svg>
               </button>
 
-              {/* Cart Icon */}
-              <button className="p-2 relative hover:text-[#00AEEF] transition-colors" aria-label="Shopping cart, 0 items">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span className="absolute top-0.5 right-0.5 bg-[#E10600] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  0
-                </span>
+              {/* Cart Icon with Label */}
+              <button className="flex items-center gap-2 hover:text-[#00AEEF] transition-colors group" aria-label="Shopping cart, 0 items">
+                <div className="relative p-1">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <span className="absolute -top-1 -right-1 bg-[#E10600] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-black">
+                    0
+                  </span>
+                </div>
+                <span className="text-[11px] font-black uppercase tracking-tighter hidden md:inline group-hover:text-white">0 ITEMS</span>
               </button>
 
               {/* Mobile Hamburger (< lg) */}
               <MobileNav items={[...NAV_ITEMS]} />
+            </div>
+          </div>
+
+          {/* ═══ Grey Ribbon (Breadcrumb Bar) ═══ */}
+          <div className="bg-[#B3B3B3] border-t border-black/10">
+            <div className="fiveo-container h-8 flex items-center">
+               <nav className="flex items-center gap-2 text-[10px] font-bold uppercase text-black/70">
+                 <a href="/" className="hover:text-black transition-colors">Home</a>
+                 <span className="text-black/30 transform scale-75">›</span>
+                 <span className="text-black/90">Fuel Injector Oracle</span>
+               </nav>
             </div>
           </div>
         </header>
