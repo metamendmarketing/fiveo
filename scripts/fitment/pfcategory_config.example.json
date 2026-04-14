@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy to pfcategory_config.local.json. Values below match a capture of the first vehicle dropdown.",
+  "base_url": "https://www.fiveomotorsport.com",
+  "options_endpoint": "/pfcategory/index/options/",
+  "root_path": "1/2/3",
+  "root_level": 3,
+  "max_depth": 6,
+  "max_children_per_node": 500,
+  "rate_limit_seconds": 0.4,
+  "cookie_file": "private/cookies.txt",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "X-Requested-With": "XMLHttpRequest",
+    "Referer": "https://www.fiveomotorsport.com/"
+  }
+}

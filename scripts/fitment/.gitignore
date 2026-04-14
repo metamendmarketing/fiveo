@@ -1,0 +1,6 @@
+private/
+*.har
+cookies.txt
+headers.json
+site_config.local.json
+.env

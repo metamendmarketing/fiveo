@@ -1,0 +1,4566 @@
+[
+  {
+    "manufacturer": "ford",
+    "part_number": "DATA-BA",
+    "product_ids": [
+      6144,
+      6145,
+      2050,
+      6147,
+      6146,
+      6149,
+      6148,
+      6151,
+      6150,
+      6152,
+      6155,
+      6156,
+      6157,
+      6158,
+      2063,
+      6159,
+      6161,
+      6162,
+      6160,
+      6163,
+      6165,
+      6166,
+      6167,
+      6168,
+      6169,
+      6170,
+      6171,
+      6172,
+      6173,
+      2078,
+      6174,
+      6175,
+      6177,
+      6178,
+      6176,
+      6180,
+      6179,
+      6181,
+      6182,
+      6184,
+      6183,
+      6185,
+      6186,
+      6187,
+      6188,
+      6190,
+      6191,
+      48,
+      47,
+      50,
+      51,
+      6196,
+      52,
+      53,
+      54,
+      6200,
+      55,
+      56,
+      59,
+      60,
+      61,
+      6206,
+      63,
+      62,
+      6209,
+      6210,
+      64,
+      67,
+      68,
+      6214,
+      6207,
+      6208,
+      6211,
+      6218,
+      6212,
+      6213,
+      77,
+      6221,
+      6222,
+      6224,
+      79,
+      80,
+      6227,
+      81,
+      82,
+      6230,
+      6231,
+      87,
+      88,
+      6234,
+      89,
+      6236,
+      91,
+      92,
+      6232,
+      6240,
+      6233,
+      6235,
+      6237,
+      6244,
+      100,
+      6238,
+      6239,
+      104,
+      105,
+      106,
+      6242,
+      108,
+      6252,
+      6254,
+      6246,
+      6248,
+      2164,
+      6263,
+      6265,
+      6266,
+      2171,
+      6267,
+      2173,
+      6270,
+      6269,
+      2176,
+      129,
+      6274,
+      6279,
+      6280,
+      6282,
+      6283,
+      140,
+      2187,
+      141,
+      143,
+      144,
+      6287,
+      145,
+      2188,
+      6292,
+      149,
+      6294,
+      148,
+      152,
+      150,
+      153,
+      6135,
+      156,
+      6136,
+      158,
+      159,
+      6304,
+      6138,
+      6307,
+      6308,
+      6320,
+      6321,
+      6323,
+      6324,
+      6325,
+      184,
+      6329,
+      6339,
+      6343,
+      6348,
+      6351,
+      6354,
+      6355,
+      2260,
+      6357,
+      2265,
+      6368,
+      2277,
+      6385,
+      6387,
+      6388,
+      6390,
+      6391,
+      6393,
+      6403,
+      2308,
+      6408,
+      6409,
+      6410,
+      6415,
+      6419,
+      6424,
+      6425,
+      6432,
+      289,
+      290,
+      2339,
+      2341,
+      6440,
+      6441,
+      6442,
+      300,
+      6444,
+      2350,
+      6450,
+      308,
+      6457,
+      314,
+      6459,
+      6461,
+      319,
+      325,
+      6469,
+      330,
+      331,
+      6474,
+      6475,
+      2382,
+      6479,
+      6478,
+      2385,
+      6484,
+      6491,
+      2397,
+      350,
+      2399,
+      2398,
+      361,
+      362,
+      2410,
+      6521,
+      2427,
+      6524,
+      6525,
+      6996,
+      6530,
+      6531,
+      6537,
+      6538,
+      6539,
+      6542,
+      6544,
+      6547,
+      6549,
+      6551,
+      6552,
+      7001,
+      414,
+      415,
+      2465,
+      2466,
+      6189,
+      6564,
+      6561,
+      6567,
+      6568,
+      6569,
+      7005,
+      2478,
+      6576,
+      7006,
+      2482,
+      6192,
+      6578,
+      6579,
+      6580,
+      6583,
+      6193,
+      6584,
+      7007,
+      6194,
+      6595,
+      6599,
+      6600,
+      6601,
+      6602,
+      2507,
+      6197,
+      2510,
+      6607,
+      6608,
+      6198,
+      6606,
+      6610,
+      6199,
+      7013,
+      6615,
+      6616,
+      6617,
+      6620,
+      6201,
+      483,
+      484,
+      485,
+      6202,
+      6629,
+      6627,
+      6203,
+      6634,
+      6639,
+      2544,
+      6205,
+      6643,
+      6645,
+      2553,
+      508,
+      6656,
+      6658,
+      6660,
+      2569,
+      6665,
+      523,
+      529,
+      6673,
+      6682,
+      6685,
+      542,
+      2591,
+      544,
+      6694,
+      6215,
+      6697,
+      6698,
+      6699,
+      6216,
+      6701,
+      6702,
+      6217,
+      6706,
+      6710,
+      570,
+      6219,
+      6715,
+      6717,
+      6716,
+      6220,
+      6714,
+      6718,
+      6719,
+      6722,
+      6723,
+      6725,
+      6726,
+      6727,
+      6728,
+      6729,
+      6734,
+      6736,
+      6225,
+      6745,
+      6746,
+      6747,
+      2651,
+      6226,
+      2655,
+      611,
+      613,
+      2662,
+      2663,
+      6228,
+      6759,
+      2666,
+      6229,
+      6768,
+      6772,
+      632,
+      6777,
+      635,
+      6780,
+      6781,
+      637,
+      6782,
+      6785,
+      6786,
+      6787,
+      6788,
+      6789,
+      646,
+      6790,
+      6792,
+      6791,
+      6793,
+      6794,
+      6796,
+      6799,
+      6801,
+      6802,
+      6803,
+      6804,
+      6805,
+      6806,
+      6807,
+      6809,
+      6810,
+      6811,
+      6812,
+      6820,
+      676,
+      6822,
+      6824,
+      6241,
+      6826,
+      6828,
+      6830,
+      6831,
+      6243,
+      693,
+      6840,
+      6245,
+      6848,
+      709,
+      6855,
+      712,
+      6858,
+      6859,
+      6860,
+      719,
+      6865,
+      6866,
+      6871,
+      6872,
+      6873,
+      6874,
+      6875,
+      6879,
+      6880,
+      6881,
+      738,
+      740,
+      6886,
+      743,
+      6887,
+      6888,
+      6890,
+      6891,
+      748,
+      6889,
+      6892,
+      6893,
+      6896,
+      753,
+      6901,
+      6906,
+      763,
+      6907,
+      6908,
+      2814,
+      768,
+      6917,
+      6918,
+      6921,
+      778,
+      6931,
+      6932,
+      6934,
+      6935,
+      6936,
+      6939,
+      2844,
+      6940,
+      6942,
+      6943,
+      6941,
+      6944,
+      802,
+      6946,
+      6949,
+      6950,
+      6951,
+      6952,
+      6954,
+      6955,
+      6956,
+      813,
+      6958,
+      6960,
+      6961,
+      6963,
+      6964,
+      6965,
+      6967,
+      6968,
+      6969,
+      6970,
+      6971,
+      6972,
+      6973,
+      830,
+      6975,
+      6976,
+      833,
+      6974,
+      6977,
+      6978,
+      6980,
+      6981,
+      6982,
+      2888,
+      6984,
+      6986,
+      6983,
+      844,
+      6985,
+      6987,
+      6991,
+      6988,
+      849,
+      6989,
+      6995,
+      6990,
+      6997,
+      6992,
+      855,
+      6999,
+      6993,
+      858,
+      6994,
+      860,
+      861,
+      6998,
+      7000,
+      7008,
+      7009,
+      7010,
+      867,
+      7011,
+      7004,
+      870,
+      7015,
+      872,
+      7016,
+      7017,
+      7014,
+      7012,
+      7021,
+      7022,
+      7019,
+      7020,
+      7023,
+      7025,
+      2932,
+      885,
+      2934,
+      2936,
+      2937,
+      2942,
+      918,
+      932,
+      953,
+      955,
+      991,
+      995,
+      1429,
+      1438,
+      1450,
+      1454,
+      1474,
+      1477,
+      1483,
+      1496,
+      1517,
+      1518,
+      5613,
+      5614,
+      1528,
+      1532,
+      1539,
+      1541,
+      1547,
+      1554,
+      1557,
+      5654,
+      1560,
+      1562,
+      1563,
+      5665,
+      5667,
+      1572,
+      1575,
+      1577,
+      1604,
+      1605,
+      1611,
+      5712,
+      5713,
+      5717,
+      5718,
+      5723,
+      5729,
+      5730,
+      5736,
+      5742,
+      5744,
+      5748,
+      5751,
+      1659,
+      5757,
+      5759,
+      5761,
+      5764,
+      5766,
+      5769,
+      1676,
+      5772,
+      5781,
+      5782,
+      5783,
+      5786,
+      5787,
+      1696,
+      1697,
+      1700,
+      1706,
+      5805,
+      1716,
+      5819,
+      1726,
+      1727,
+      1732,
+      1737,
+      1755,
+      1760,
+      5863,
+      5864,
+      5865,
+      5866,
+      5867,
+      5868,
+      5870,
+      5871,
+      5873,
+      5874,
+      5876,
+      5877,
+      5878,
+      5882,
+      5883,
+      5885,
+      5886,
+      5887,
+      5888,
+      5890,
+      5891,
+      5892,
+      5894,
+      5896,
+      5897,
+      5898,
+      5899,
+      5900,
+      5901,
+      5902,
+      5903,
+      5905,
+      5906,
+      5907,
+      5910,
+      5911,
+      5912,
+      5913,
+      1818,
+      5914,
+      5916,
+      1820,
+      5918,
+      5919,
+      5920,
+      5917,
+      5923,
+      5924,
+      5926,
+      1831,
+      5927,
+      1833,
+      5930,
+      5928,
+      5932,
+      5933,
+      5934,
+      5935,
+      5936,
+      5937,
+      1842,
+      5938,
+      5940,
+      5941,
+      5942,
+      5944,
+      5945,
+      5946,
+      5947,
+      5948,
+      5949,
+      1855,
+      5951,
+      5953,
+      5954,
+      1859,
+      5956,
+      5955,
+      5958,
+      5959,
+      5960,
+      5961,
+      1866,
+      5964,
+      5969,
+      5970,
+      5973,
+      5975,
+      1880,
+      5976,
+      5977,
+      5979,
+      5980,
+      5981,
+      5982,
+      5983,
+      5984,
+      5986,
+      5988,
+      5989,
+      5990,
+      5993,
+      5995,
+      1901,
+      5997,
+      5999,
+      5998,
+      6001,
+      6000,
+      6002,
+      6003,
+      6006,
+      6007,
+      6017,
+      6020,
+      6025,
+      6027,
+      6029,
+      6030,
+      6031,
+      6032,
+      6033,
+      6034,
+      6035,
+      6036,
+      6037,
+      6038,
+      6040,
+      6041,
+      6042,
+      6044,
+      6046,
+      6047,
+      6048,
+      6049,
+      6050,
+      6051,
+      6052,
+      6053,
+      6054,
+      6055,
+      6056,
+      6057,
+      6059,
+      6061,
+      6064,
+      6066,
+      6067,
+      6068,
+      6069,
+      6070,
+      6071,
+      6074,
+      6075,
+      6077,
+      6080,
+      6081,
+      6082,
+      6083,
+      6084,
+      1989,
+      6086,
+      6085,
+      6087,
+      6089,
+      1994,
+      6091,
+      6088,
+      6092,
+      6094,
+      6095,
+      6096,
+      6097,
+      2002,
+      2003,
+      2000,
+      6101,
+      6102,
+      6098,
+      6104,
+      6099,
+      2010,
+      6106,
+      2012,
+      6100,
+      2014,
+      6111,
+      2016,
+      6113,
+      2018,
+      6107,
+      6116,
+      6110,
+      6109,
+      6114,
+      6120,
+      6115,
+      6117,
+      6118,
+      6119,
+      6122,
+      6126,
+      6121,
+      6123,
+      6129,
+      6103,
+      2035,
+      6131,
+      6127,
+      6134,
+      6133,
+      6130,
+      6137,
+      6132,
+      6139,
+      6141,
+      6143
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150154",
+    "product_ids": [
+      61
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158138",
+    "product_ids": [
+      76,
+      149
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155868",
+    "product_ids": [
+      6146,
+      1635,
+      1672,
+      969,
+      108,
+      6142,
+      6268,
+      62
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113739",
+    "product_ids": [
+      137,
+      138,
+      2007,
+      2004,
+      6359
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25348180",
+    "product_ids": [
+      6663,
+      136,
+      137,
+      138,
+      5876
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25343789",
+    "product_ids": [
+      6144,
+      967,
+      5884,
+      183
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12574927",
+    "product_ids": [
+      6144
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155857",
+    "product_ids": [
+      5925,
+      294,
+      295
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155771",
+    "product_ids": [
+      155,
+      6877,
+      6846
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155885",
+    "product_ids": [
+      65,
+      804,
+      805,
+      135,
+      146,
+      5875,
+      155,
+      6108,
+      6846,
+      6847
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150415",
+    "product_ids": [
+      6656,
+      5875,
+      155,
+      6846,
+      6847
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112412",
+    "product_ids": [
+      107,
+      156
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112262",
+    "product_ids": [
+      156
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150804",
+    "product_ids": [
+      160,
+      6009
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150357",
+    "product_ids": [
+      160,
+      6009,
+      490,
+      6781
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17114927",
+    "product_ids": [
+      5884,
+      183
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17114503",
+    "product_ids": [
+      5884,
+      183
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25323974",
+    "product_ids": [
+      6840,
+      6153,
+      234,
+      5890
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320920020",
+    "product_ids": [
+      5949,
+      325,
+      5950
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325062030",
+    "product_ids": [
+      5948,
+      6735,
+      335
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955002010",
+    "product_ids": [
+      5988,
+      404
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955002020",
+    "product_ids": [
+      6193,
+      5988,
+      405
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955001350",
+    "product_ids": [
+      625,
+      5989,
+      407
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156028",
+    "product_ids": [
+      270,
+      414,
+      542
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150711",
+    "product_ids": [
+      488,
+      6008
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155909",
+    "product_ids": [
+      501,
+      5678,
+      567
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "107962",
+    "product_ids": [
+      2667,
+      523,
+      2668,
+      2669,
+      6577,
+      6647
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155890",
+    "product_ids": [
+      6289,
+      531,
+      1721
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155734",
+    "product_ids": [
+      269,
+      542
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320942010",
+    "product_ids": [
+      322,
+      323,
+      554,
+      6189,
+      5939,
+      1462,
+      1463,
+      6046
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155725",
+    "product_ids": [
+      6626,
+      611
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155863",
+    "product_ids": [
+      745,
+      5930,
+      6122,
+      271,
+      304,
+      305,
+      306,
+      859
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156211",
+    "product_ids": [
+      704,
+      705,
+      795,
+      800,
+      801,
+      5984,
+      6107,
+      398,
+      528,
+      273,
+      84,
+      982,
+      6104,
+      5689,
+      58,
+      5915,
+      57
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150947",
+    "product_ids": [
+      704,
+      481,
+      705,
+      801,
+      6980,
+      6760,
+      2921,
+      6605,
+      5652,
+      6549,
+      6004
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156131",
+    "product_ids": [
+      6094,
+      272,
+      6163,
+      1016,
+      5914,
+      735
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155721",
+    "product_ids": [
+      738,
+      1676
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150402",
+    "product_ids": [
+      777
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155986",
+    "product_ids": [
+      777,
+      2001
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155710",
+    "product_ids": [
+      5866,
+      139,
+      793,
+      6105,
+      286
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150934",
+    "product_ids": [
+      802,
+      965,
+      2022,
+      2023,
+      6761,
+      6762,
+      6260,
+      6038,
+      538,
+      1660,
+      6366,
+      6143
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158036",
+    "product_ids": [
+      813
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158034",
+    "product_ids": [
+      5688,
+      6660,
+      813
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156034",
+    "product_ids": [
+      813
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158115",
+    "product_ids": [
+      6123,
+      813,
+      862
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "OTPO-BA",
+    "product_ids": [
+      813
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155796",
+    "product_ids": [
+      830
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158028",
+    "product_ids": [
+      6908,
+      837
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158001",
+    "product_ids": [
+      849
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156250",
+    "product_ids": [
+      861
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11451",
+    "product_ids": [
+      1848,
+      6323
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156013",
+    "product_ids": [
+      893
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150221",
+    "product_ids": [
+      2944,
+      7025,
+      925
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17111297",
+    "product_ids": [
+      2944,
+      925
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158049",
+    "product_ids": [
+      995,
+      6935
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12594512",
+    "product_ids": [
+      1002,
+      6779,
+      6158
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320935030",
+    "product_ids": [
+      6169,
+      1435
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974140",
+    "product_ids": [
+      1450
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155735",
+    "product_ids": [
+      6026,
+      1490,
+      511
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320903010",
+    "product_ids": [
+      1524,
+      6214
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113399",
+    "product_ids": [
+      1541
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "FLOW-BA",
+    "product_ids": [
+      2176,
+      5892,
+      6661,
+      6406,
+      6663,
+      6919,
+      5896,
+      1547,
+      6539,
+      6029,
+      6414,
+      6031,
+      6413,
+      6420,
+      6933,
+      6932,
+      6940,
+      6044,
+      6941,
+      6943,
+      6560,
+      6303,
+      6050,
+      676,
+      6693,
+      6266,
+      6055,
+      6441,
+      6954,
+      6317,
+      6958,
+      6064,
+      6578,
+      6451,
+      6329,
+      6335,
+      6592,
+      6593,
+      6602,
+      2507,
+      6476,
+      6475,
+      6989,
+      6991,
+      2003,
+      6613,
+      6870,
+      6615,
+      6234,
+      5979,
+      6619,
+      2399,
+      6368,
+      7007,
+      6372,
+      6629,
+      6503,
+      7015,
+      7016,
+      7017,
+      6637,
+      6898,
+      6899,
+      2164,
+      6389,
+      6006,
+      6903,
+      6390,
+      5882,
+      5885
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158130",
+    "product_ids": [
+      6671,
+      1557,
+      1558,
+      5719,
+      6231
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320928080",
+    "product_ids": [
+      1562,
+      2475,
+      6532
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320939015",
+    "product_ids": [
+      6233,
+      1563
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155744",
+    "product_ids": [
+      1676,
+      6965
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150455",
+    "product_ids": [
+      1705,
+      6284,
+      6996
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031B",
+    "product_ids": [
+      1726
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031C",
+    "product_ids": [
+      1726
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150153",
+    "product_ids": [
+      1754
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113674",
+    "product_ids": [
+      6149,
+      974
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25320687",
+    "product_ids": [
+      6149,
+      974
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "LEUM-BA",
+    "product_ids": [
+      6528,
+      6405,
+      5638,
+      6536,
+      6539,
+      6540,
+      6030,
+      6417,
+      6423,
+      1818,
+      1820,
+      6557,
+      5665,
+      6946,
+      5667,
+      6309,
+      6441,
+      6443,
+      2350,
+      184,
+      6467,
+      6342,
+      6343,
+      6344,
+      6482,
+      6867,
+      1880,
+      2521,
+      6490,
+      6875,
+      6621,
+      6494,
+      6367,
+      6369,
+      6627,
+      6372,
+      6373,
+      6628,
+      6503,
+      6382,
+      6511,
+      5873,
+      2165,
+      6390,
+      6393,
+      2171
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150400",
+    "product_ids": [
+      2001
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113744",
+    "product_ids": [
+      2017,
+      6483,
+      6054,
+      566
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158827",
+    "product_ids": [
+      2000,
+      2018,
+      2016,
+      6568
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325000150",
+    "product_ids": [
+      5837,
+      5838,
+      6767,
+      5839,
+      6392,
+      2077
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113512",
+    "product_ids": [
+      2107,
+      6397
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158821",
+    "product_ids": [
+      2049,
+      2126,
+      6879,
+      3037,
+      6623
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155968",
+    "product_ids": [
+      544,
+      613,
+      6408,
+      2164,
+      6487,
+      6042,
+      2427,
+      2334,
+      2335
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12613412",
+    "product_ids": [
+      6793,
+      2173
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955004450",
+    "product_ids": [
+      2377,
+      5979,
+      388
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113698",
+    "product_ids": [
+      6840,
+      6153,
+      5886
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17114502",
+    "product_ids": [
+      6840,
+      6153
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113369",
+    "product_ids": [
+      6840,
+      6153
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12592648",
+    "product_ids": [
+      6156,
+      998
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955001650",
+    "product_ids": [
+      2942
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156029",
+    "product_ids": [
+      6626,
+      3045
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158233",
+    "product_ids": [
+      5744,
+      6674,
+      5728
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158227",
+    "product_ids": [
+      5766,
+      168,
+      525,
+      6031,
+      5881
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325075100",
+    "product_ids": [
+      6682,
+      5779
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150105",
+    "product_ids": [
+      6003,
+      5868
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150136",
+    "product_ids": [
+      5868
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150201",
+    "product_ids": [
+      7009,
+      7010,
+      6341,
+      6160,
+      5874
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150360",
+    "product_ids": [
+      7009,
+      7010,
+      6254,
+      6160,
+      5874,
+      6262,
+      6491
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17116903",
+    "product_ids": [
+      5889
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12580426",
+    "product_ids": [
+      5889,
+      233,
+      6154,
+      2510,
+      6640,
+      6769,
+      6770,
+      981
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113582",
+    "product_ids": [
+      5890
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17111468",
+    "product_ids": [
+      251,
+      5901
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112521",
+    "product_ids": [
+      5901
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155972",
+    "product_ids": [
+      6086,
+      267,
+      6351,
+      5911,
+      1917
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150556",
+    "product_ids": [
+      418,
+      482,
+      6828,
+      5999,
+      5906,
+      6131,
+      6005,
+      6203,
+      286
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150640",
+    "product_ids": [
+      5920,
+      282,
+      283,
+      6077
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155869",
+    "product_ids": [
+      5926
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325065020",
+    "product_ids": [
+      5932
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320965020",
+    "product_ids": [
+      5932
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325016150",
+    "product_ids": [
+      5933
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320916150",
+    "product_ids": [
+      5933,
+      311
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320916160",
+    "product_ids": [
+      5933
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320935040",
+    "product_ids": [
+      328,
+      5942
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320962020",
+    "product_ids": [
+      5944,
+      330
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325074060",
+    "product_ids": [
+      6376,
+      333,
+      334,
+      5947,
+      2045
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974060",
+    "product_ids": [
+      5947,
+      333,
+      334
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325020020",
+    "product_ids": [
+      337,
+      338,
+      5949,
+      5950
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955001370",
+    "product_ids": [
+      5993
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150706",
+    "product_ids": [
+      6425,
+      6004,
+      6981,
+      6980
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150007",
+    "product_ids": [
+      5998,
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150014",
+    "product_ids": [
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150035",
+    "product_ids": [
+      122,
+      5869,
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150045",
+    "product_ids": [
+      5869,
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150019",
+    "product_ids": [
+      5869,
+      1745,
+      6006,
+      6296,
+      122
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150020",
+    "product_ids": [
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150038",
+    "product_ids": [
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150016",
+    "product_ids": [
+      6006
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155746",
+    "product_ids": [
+      6032,
+      139,
+      526
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150731",
+    "product_ids": [
+      6032,
+      6274,
+      526
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150558",
+    "product_ids": [
+      6042
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113738",
+    "product_ids": [
+      6048,
+      557
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11354",
+    "product_ids": [
+      608,
+      610,
+      6059,
+      602,
+      603,
+      604,
+      605,
+      606,
+      607
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11351",
+    "product_ids": [
+      6059
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155784",
+    "product_ids": [
+      6096
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031BA",
+    "product_ids": [
+      6281,
+      1692,
+      6111
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155861",
+    "product_ids": [
+      848,
+      6116,
+      6119
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112493",
+    "product_ids": [
+      6134
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17111774",
+    "product_ids": [
+      6134
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113080",
+    "product_ids": [
+      6137
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113081",
+    "product_ids": [
+      6137
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12582704",
+    "product_ids": [
+      6162,
+      1015
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974080",
+    "product_ids": [
+      1440,
+      6459,
+      6173,
+      1439
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320973010",
+    "product_ids": [
+      6177,
+      1445
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974020",
+    "product_ids": [
+      6178,
+      1446
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974040",
+    "product_ids": [
+      1448,
+      6180
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320916100",
+    "product_ids": [
+      6184,
+      1456
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325070080",
+    "product_ids": [
+      5946,
+      6191
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320970080",
+    "product_ids": [
+      1465,
+      6191
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320935010",
+    "product_ids": [
+      6952,
+      6169,
+      6195,
+      1475
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320911100",
+    "product_ids": [
+      1476,
+      6196
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320928050",
+    "product_ids": [
+      6218
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158005",
+    "product_ids": [
+      6231
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155767",
+    "product_ids": [
+      1635,
+      6916,
+      6255,
+      277,
+      6040,
+      5918
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150431",
+    "product_ids": [
+      6255
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150791",
+    "product_ids": [
+      6283
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156236",
+    "product_ids": [
+      1715,
+      6708,
+      6287
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150449",
+    "product_ids": [
+      6289,
+      6475,
+      526
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150063",
+    "product_ids": [
+      658,
+      6075,
+      6077
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150151",
+    "product_ids": [
+      110,
+      111,
+      6000,
+      5878,
+      6299,
+      158
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150152",
+    "product_ids": [
+      6299,
+      5878
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "107961",
+    "product_ids": [
+      5952,
+      614,
+      615,
+      2055,
+      2056,
+      522,
+      6029,
+      1879,
+      6061,
+      6382,
+      340,
+      341,
+      342,
+      1876,
+      1877,
+      1878,
+      6334
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150126",
+    "product_ids": [
+      6728,
+      6380
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150130",
+    "product_ids": [
+      6380
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150160",
+    "product_ids": [
+      6380
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150803",
+    "product_ids": [
+      6385
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325005010",
+    "product_ids": [
+      6392
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155997",
+    "product_ids": [
+      6488,
+      2336
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031AD",
+    "product_ids": [
+      6488,
+      2336
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955004430",
+    "product_ids": [
+      2376,
+      6514,
+      6607
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320909140",
+    "product_ids": [
+      6530
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320939145",
+    "product_ids": [
+      6530
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320939146",
+    "product_ids": [
+      6530
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158060",
+    "product_ids": [
+      6538,
+      2484
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150913",
+    "product_ids": [
+      6605
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325075040",
+    "product_ids": [
+      6608
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325079085",
+    "product_ids": [
+      6608
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "1L2E-BA",
+    "product_ids": [
+      6626
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25326903",
+    "product_ids": [
+      2112,
+      2113,
+      2114,
+      6400,
+      553,
+      6154,
+      2510,
+      6640,
+      6769,
+      6770,
+      981,
+      2111
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158123",
+    "product_ids": [
+      5676,
+      6653
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150715",
+    "product_ids": [
+      6656,
+      5976
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150716",
+    "product_ids": [
+      6656
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280159130",
+    "product_ids": [
+      6670
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150824",
+    "product_ids": [
+      6728
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150355",
+    "product_ids": [
+      6781,
+      6254
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150802",
+    "product_ids": [
+      6781,
+      6254
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150811",
+    "product_ids": [
+      6781
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12613411",
+    "product_ids": [
+      6792,
+      2845
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155755",
+    "product_ids": [
+      6812
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155010",
+    "product_ids": [
+      6812
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150034",
+    "product_ids": [
+      6823,
+      6569,
+      5998,
+      1745,
+      6296
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150943",
+    "product_ids": [
+      6203,
+      6828,
+      286,
+      5999
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113750",
+    "product_ids": [
+      6891
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150419",
+    "product_ids": [
+      6896
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155213",
+    "product_ids": [
+      6896
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158026",
+    "product_ids": [
+      6934,
+      6935
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031BS",
+    "product_ids": [
+      6934,
+      6935
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031CC",
+    "product_ids": [
+      6934,
+      6935
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12668390",
+    "product_ids": [
+      6960,
+      6880
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155757",
+    "product_ids": [
+      6971
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156072",
+    "product_ids": [
+      6587,
+      2692,
+      6973
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12576414",
+    "product_ids": [
+      6999
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150157",
+    "product_ids": [
+      6160,
+      7009,
+      7010,
+      126
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150158",
+    "product_ids": [
+      7009,
+      7010,
+      6341,
+      6160,
+      6262,
+      6491
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12555894",
+    "product_ids": [
+      57,
+      58
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155884",
+    "product_ids": [
+      6666,
+      6293,
+      797,
+      798,
+      807,
+      808,
+      5673,
+      5674,
+      6711,
+      5697,
+      6082,
+      1733,
+      979,
+      6105,
+      94,
+      5860,
+      5861,
+      113,
+      250
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155759",
+    "product_ids": [
+      130,
+      300,
+      109,
+      6039,
+      6266,
+      540,
+      157
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150945",
+    "product_ids": [
+      1660,
+      130,
+      2022,
+      2023,
+      6761,
+      6762,
+      300,
+      6707,
+      6260,
+      6039,
+      6072,
+      539,
+      636,
+      5853,
+      6366
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150911",
+    "product_ids": [
+      130,
+      300,
+      6039
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158044",
+    "product_ids": [
+      1664,
+      6112,
+      2533,
+      263,
+      6771,
+      5909,
+      310,
+      6263,
+      826
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150223",
+    "product_ids": [
+      6716,
+      310
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150710",
+    "product_ids": [
+      6018,
+      132,
+      6257,
+      6714,
+      502,
+      5976,
+      378,
+      1659
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150845",
+    "product_ids": [
+      6049,
+      2213,
+      2214,
+      6439,
+      559,
+      6772,
+      2649,
+      2650
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150440",
+    "product_ids": [
+      6263
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150702",
+    "product_ids": [
+      6263
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150962",
+    "product_ids": [
+      6263
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155705",
+    "product_ids": [
+      2020,
+      6410,
+      1677,
+      816,
+      6110,
+      2134,
+      6364,
+      6270
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155921",
+    "product_ids": [
+      6410
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150159",
+    "product_ids": [
+      6341,
+      1899,
+      1900,
+      6262,
+      6491
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320961010",
+    "product_ids": [
+      6176,
+      1443,
+      1444
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320950020",
+    "product_ids": [
+      1442,
+      6175
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "LTER-BA",
+    "product_ids": [
+      312,
+      313,
+      5795
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155811",
+    "product_ids": [
+      62
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150231",
+    "product_ids": [
+      154,
+      102
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325050030",
+    "product_ids": [
+      129
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320950030",
+    "product_ids": [
+      129
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320950050",
+    "product_ids": [
+      129
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156024",
+    "product_ids": [
+      6657,
+      6642,
+      139
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150778",
+    "product_ids": [
+      139,
+      286
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150965",
+    "product_ids": [
+      145
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155737",
+    "product_ids": [
+      157
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113553",
+    "product_ids": [
+      229,
+      5886
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25317628",
+    "product_ids": [
+      6840,
+      229,
+      5886
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150813",
+    "product_ids": [
+      5904,
+      254,
+      255
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113124",
+    "product_ids": [
+      241,
+      5893
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150812",
+    "product_ids": [
+      253,
+      5903
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150829",
+    "product_ids": [
+      253,
+      5903
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112400",
+    "product_ids": [
+      248,
+      5899
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155934",
+    "product_ids": [
+      260,
+      261,
+      262,
+      5908,
+      6357
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155101",
+    "product_ids": [
+      5912,
+      269
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150939",
+    "product_ids": [
+      286
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155911",
+    "product_ids": [
+      833,
+      710,
+      6024,
+      297,
+      509
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "XL2E-BA",
+    "product_ids": [
+      297
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955001960",
+    "product_ids": [
+      5931,
+      307
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156127",
+    "product_ids": [
+      308
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974100",
+    "product_ids": [
+      316
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325042010",
+    "product_ids": [
+      322,
+      323,
+      5939,
+      629,
+      630
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325022040",
+    "product_ids": [
+      5941,
+      326
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325046050",
+    "product_ids": [
+      329,
+      5943
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150232",
+    "product_ids": [
+      5994,
+      411
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150712",
+    "product_ids": [
+      1640,
+      6007,
+      6256,
+      487
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155002",
+    "product_ids": [
+      6011,
+      493
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155917",
+    "product_ids": [
+      6024,
+      833,
+      509
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11419",
+    "product_ids": [
+      6033,
+      527
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155715",
+    "product_ids": [
+      536
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113798",
+    "product_ids": [
+      6041,
+      6923,
+      549
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113814",
+    "product_ids": [
+      558
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113742",
+    "product_ids": [
+      563,
+      564,
+      565,
+      6053
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325075080",
+    "product_ids": [
+      616,
+      6062
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974050",
+    "product_ids": [
+      1449,
+      6181
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155976",
+    "product_ids": [
+      6098,
+      747
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150403",
+    "product_ids": [
+      778
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "4L3Z-9F593-CA",
+    "product_ids": [
+      826
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155860",
+    "product_ids": [
+      843
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17111456",
+    "product_ids": [
+      914,
+      5973,
+      6135
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112503",
+    "product_ids": [
+      914,
+      6135
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112560",
+    "product_ids": [
+      6136,
+      915
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113611",
+    "product_ids": [
+      968,
+      6145
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25323972",
+    "product_ids": [
+      968,
+      6145
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12586373",
+    "product_ids": [
+      6155,
+      997
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12580681",
+    "product_ids": [
+      1001,
+      6157
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25358575",
+    "product_ids": [
+      1003,
+      6159
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320916120",
+    "product_ids": [
+      1455
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325016100",
+    "product_ids": [
+      1456
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320934010",
+    "product_ids": [
+      6185,
+      1458
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320913010",
+    "product_ids": [
+      6186,
+      1459
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320970040",
+    "product_ids": [
+      1464,
+      6190
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325087102",
+    "product_ids": [
+      6194,
+      1470
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955003310",
+    "product_ids": [
+      1489,
+      6202
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155847",
+    "product_ids": [
+      1493
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155969",
+    "product_ids": [
+      1493
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320911110",
+    "product_ids": [
+      1510,
+      6207
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320946090",
+    "product_ids": [
+      6220,
+      1535
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325031060",
+    "product_ids": [
+      6233,
+      1564
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156193",
+    "product_ids": [
+      1581,
+      6238
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156156",
+    "product_ids": [
+      1581,
+      6238
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325031050",
+    "product_ids": [
+      1582,
+      6239
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320931050",
+    "product_ids": [
+      1582,
+      6239
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320979015",
+    "product_ids": [
+      6248,
+      1606
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320979055",
+    "product_ids": [
+      1609
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150973",
+    "product_ids": [
+      6264,
+      1666,
+      2355,
+      6501
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155831",
+    "product_ids": [
+      5872,
+      1673,
+      6269
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156014",
+    "product_ids": [
+      6280,
+      1691,
+      6288
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150991",
+    "product_ids": [
+      1697
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955004280",
+    "product_ids": [
+      1698,
+      1699,
+      6282
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158191",
+    "product_ids": [
+      1716
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156048",
+    "product_ids": [
+      1722,
+      6290
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "107805",
+    "product_ids": [
+      1728,
+      6291
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150206",
+    "product_ids": [
+      1755
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11480",
+    "product_ids": [
+      1901
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155787",
+    "product_ids": [
+      6364,
+      2020
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158117",
+    "product_ids": [
+      2188,
+      6700
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320920010",
+    "product_ids": [
+      6489,
+      2337
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11421",
+    "product_ids": [
+      2354,
+      6500,
+      6582
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11405",
+    "product_ids": [
+      2417,
+      6523
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113743",
+    "product_ids": [
+      2656,
+      2657,
+      2658,
+      2659,
+      2660,
+      2661,
+      6574
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11496",
+    "product_ids": [
+      5952,
+      2667,
+      2669,
+      6382,
+      6061,
+      6577
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11242",
+    "product_ids": [
+      2681,
+      2682
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158040",
+    "product_ids": [
+      2689,
+      2690,
+      6585,
+      6644
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113623",
+    "product_ids": [
+      5864
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150714",
+    "product_ids": [
+      5866
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158187",
+    "product_ids": [
+      5867,
+      6780
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150785",
+    "product_ids": [
+      5871
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17116061",
+    "product_ids": [
+      5876
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "TYPE-BA",
+    "product_ids": [
+      5878
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113673",
+    "product_ids": [
+      5887
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325074100",
+    "product_ids": [
+      5935
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325074140",
+    "product_ids": [
+      5935
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325045011",
+    "product_ids": [
+      5936
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320945011",
+    "product_ids": [
+      5936
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325062040",
+    "product_ids": [
+      5945
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325075050",
+    "product_ids": [
+      5946
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325079095",
+    "product_ids": [
+      5946
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150734",
+    "product_ids": [
+      6010,
+      5981
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150036",
+    "product_ids": [
+      5995
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150001",
+    "product_ids": [
+      5998
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150008",
+    "product_ids": [
+      5998
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150010",
+    "product_ids": [
+      5998
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150044",
+    "product_ids": [
+      5998
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150114",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150121",
+    "product_ids": [
+      6298,
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150123",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150127",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150128",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150161",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150163",
+    "product_ids": [
+      6003
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150725",
+    "product_ids": [
+      6010
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150749",
+    "product_ids": [
+      6010
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150762",
+    "product_ids": [
+      6010
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150525",
+    "product_ids": [
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150563",
+    "product_ids": [
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150837",
+    "product_ids": [
+      6060,
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150838",
+    "product_ids": [
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150839",
+    "product_ids": [
+      6060,
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150842",
+    "product_ids": [
+      6060,
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150843",
+    "product_ids": [
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150846",
+    "product_ids": [
+      6060,
+      6047
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "OHOL-BA",
+    "product_ids": [
+      6047
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150841",
+    "product_ids": [
+      6049
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150637",
+    "product_ids": [
+      6075
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150642",
+    "product_ids": [
+      6077
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156052",
+    "product_ids": [
+      6080
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "RPLE-BA",
+    "product_ids": [
+      6087
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "ANGE-BA",
+    "product_ids": [
+      6087
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155700",
+    "product_ids": [
+      6105
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155900",
+    "product_ids": [
+      6110
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155991",
+    "product_ids": [
+      6118
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "1955002180",
+    "product_ids": [
+      6130
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17111784",
+    "product_ids": [
+      6136
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17112249",
+    "product_ids": [
+      6136
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325065010",
+    "product_ids": [
+      6171
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320965010",
+    "product_ids": [
+      6171
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "17113680",
+    "product_ids": [
+      6150
+    ]
+  },
+  {
+    "manufacturer": "delphi",
+    "part_number": "25321267",
+    "product_ids": [
+      6150
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320946050",
+    "product_ids": [
+      6174
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974030",
+    "product_ids": [
+      6179
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325016120",
+    "product_ids": [
+      6183
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325016061",
+    "product_ids": [
+      6187
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320916061",
+    "product_ids": [
+      6187
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320928020",
+    "product_ids": [
+      6212
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320920030",
+    "product_ids": [
+      6213
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325022030",
+    "product_ids": [
+      6217
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325046090",
+    "product_ids": [
+      6220
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150200",
+    "product_ids": [
+      6254
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150810",
+    "product_ids": [
+      6254
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031AB",
+    "product_ids": [
+      6275
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320979135",
+    "product_ids": [
+      6235
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325074090",
+    "product_ids": [
+      6248
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320974090",
+    "product_ids": [
+      6248
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320979045",
+    "product_ids": [
+      6249
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150165",
+    "product_ids": [
+      6262
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150352",
+    "product_ids": [
+      6262
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155830",
+    "product_ids": [
+      6268
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031J",
+    "product_ids": [
+      6281
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155604",
+    "product_ids": [
+      6300
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11499",
+    "product_ids": [
+      6321
+    ]
+  },
+  {
+    "manufacturer": "keihin",
+    "part_number": "16450-MFJ-D01",
+    "product_ids": [
+      7008,
+      6388
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150701",
+    "product_ids": [
+      6425,
+      6980,
+      6981
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280150786",
+    "product_ids": [
+      6425,
+      6475,
+      6980,
+      6981
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156079",
+    "product_ids": [
+      6475
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "TORY-BA",
+    "product_ids": [
+      6475
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325020010",
+    "product_ids": [
+      6489
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155995",
+    "product_ids": [
+      6510
+    ]
+  },
+  {
+    "manufacturer": "vw_audi",
+    "part_number": "06A906031AC",
+    "product_ids": [
+      6510
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320921020",
+    "product_ids": [
+      6518
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "MALL-BA",
+    "product_ids": [
+      6953,
+      6930,
+      6567
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11424",
+    "product_ids": [
+      6582
+    ]
+  },
+  {
+    "manufacturer": "siemens_deka",
+    "part_number": "FI11420",
+    "product_ids": [
+      6636
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "LACK-BA",
+    "product_ids": [
+      6689
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156081",
+    "product_ids": [
+      6698,
+      6830
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12567905",
+    "product_ids": [
+      6698,
+      6830
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158038",
+    "product_ids": [
+      6731,
+      6732,
+      6733
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158051",
+    "product_ids": [
+      6768
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12576341",
+    "product_ids": [
+      6768
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12598646",
+    "product_ids": [
+      6780
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12586557",
+    "product_ids": [
+      6791
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12603371",
+    "product_ids": [
+      6804
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2325031070",
+    "product_ids": [
+      6811
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320931070",
+    "product_ids": [
+      6811
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158298",
+    "product_ids": [
+      6825
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158209",
+    "product_ids": [
+      6848
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12661212",
+    "product_ids": [
+      6880
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12656005",
+    "product_ids": [
+      6880
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12677810",
+    "product_ids": [
+      6880
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12679775",
+    "product_ids": [
+      6880
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158843",
+    "product_ids": [
+      6955
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12668393",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12628422",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12656008",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12677809",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12684126",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12687703",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12687709",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12644386",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12656010",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12668395",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12679777",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12684128",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12687711",
+    "product_ids": [
+      6961
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156016",
+    "product_ids": [
+      6965
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156074",
+    "product_ids": [
+      6972
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155839",
+    "product_ids": [
+      6972
+    ]
+  },
+  {
+    "manufacturer": "ford",
+    "part_number": "XL5E-BA",
+    "product_ids": [
+      6977
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155742",
+    "product_ids": [
+      6978
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280156053",
+    "product_ids": [
+      6983
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280155104",
+    "product_ids": [
+      6987
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158854",
+    "product_ids": [
+      6992
+    ]
+  },
+  {
+    "manufacturer": "bosch",
+    "part_number": "0280158660",
+    "product_ids": [
+      6998
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12661216",
+    "product_ids": [
+      7005
+    ]
+  },
+  {
+    "manufacturer": "gm_short",
+    "part_number": "12681216",
+    "product_ids": [
+      7005
+    ]
+  },
+  {
+    "manufacturer": "denso",
+    "part_number": "2320909175",
+    "product_ids": [
+      7006
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+
+# Next.js & Build Artifacts
+.next/
+out/
+dist/
+.vercel/
+*.log
+
+# Environment / secrets
+.env
+.env.*
+.env.local
+
+# OS
+.DS_Store
+
+# Private data (cookies, etc.)
+scripts/fitment/private/
+
+# Large data files
+data/raw/*.csv
+data/normalized/*.json
+data/raw/*.json

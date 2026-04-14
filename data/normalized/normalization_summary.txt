@@ -1,0 +1,39 @@
+Normalization summary
+=======================
+Source: export_catalog_product_20260403_112734.csv
+Products: 4053
+Generated: 2026-04-03T18:37:30Z
+
+Fields extracted (non-null / useful)
+--------------------------------------
+  sku: 4053 (100.0%)
+  name: 4053 (100.0%)
+  price: 2695 (66.5%)
+  url_key: 4050 (99.9%)
+  categories (non-empty): 3991 (98.5%)
+  fitment.make: 2024 (49.9%)
+  fitment.model: 884 (21.8%)
+  fitment.year (vehicle; catalog meta year excluded): 344 (8.5%)
+  fitment.engine (single variant only): 61 (1.5%)
+  specs.flow_rate_cc (numeric, from cc/min or bare number): 1913 (47.2%)
+  specs.fuel_types (inferred from keywords/categories text only): 2527 (62.3%)
+  specs.injector_type (from category + oem_or_aftermarket): 1444 (35.6%)
+  specs.connector_type: 1248 (30.8%)
+  specs.impedance: 2840 (70.1%)
+  description (non-empty): 1459 (36.0%)
+
+Missing or inconsistent (high level)
+------------------------------------
+  fitment.year null (no explicit vehicle year attr or catalog-only year): 3709
+  fitment.model null (multi-model or only make-level categories): 3169
+  products with multiple category models hint note: 1582
+  products with Magento 'please select' flow_rate placeholder: 1276
+  distinct connector_type values: 7
+
+Conservative rules applied
+--------------------------
+  - Magento additional_attributes 'year' equal to 2016 is ignored for fitment.
+  - Fitment uses explicit make/model attributes when present, else single make+model from categories.
+  - Multiple models under one make yields model null.
+  - Engine with pipe-separated variants yields engine null + note.
+  - flow_rate_cc null when value is non-numeric or dropdown placeholder.

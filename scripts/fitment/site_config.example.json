@@ -1,0 +1,59 @@
+{
+  "_comment": "Copy to site_config.local.json and fill ONLY with values copied from Chrome DevTools. Do not invent URLs.",
+  "base_url": "https://www.fiveomotorsport.com",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/javascript, */*; q=0.01"
+  },
+  "cookie_file": "private/cookies.txt",
+  "endpoints": {
+    "makes": {
+      "method": "GET",
+      "url": "PASTE_FULL_URL_FROM_DEVTOOLS",
+      "notes": "Response should list makes. Adjust extract_makes() in fetch_fitment.rb once you see the JSON shape."
+    },
+    "years_for_make": {
+      "method": "GET",
+      "url_template": "PASTE_URL_WITH_{make_id}_OR_{make}_PLACE",
+      "notes": "Replace url_template and the substitution keys in fetch_fitment.rb to match your capture."
+    },
+    "models_for_year_make": {
+      "method": "GET",
+      "url": "",
+      "notes": "Optional — only if your finder uses this step."
+    },
+    "engines_for_vehicle": {
+      "method": "GET",
+      "url": "",
+      "notes": "Optional."
+    },
+    "products_for_selection": {
+      "method": "GET",
+      "url": "",
+      "notes": "If the finder returns SKU / product id for the final selection, map it in extract_products_from_response()."
+    }
+  },
+  "html_fallback": {
+    "_comment": "If the finder returns HTML option lists instead of JSON, set finder_page_url and use --html-sample path/to/saved.html to develop selectors.",
+    "finder_page_url": "",
+    "option_selector": "select.some-class option"
+  },
+
+  "record_keys": ["make", "year", "model", "engine"],
+
+  "_discovery_flow_instructions": "Paste a non-empty discovery_flow array copied from your captures. See DISCOVERY_FLOW_SHAPE.md.",
+
+  "discovery_flow": [],
+
+  "product_map_step": {
+    "_comment": "Optional final XHR that returns SKU / links after a full vehicle is selected. Leave empty {} until captured.",
+    "method": "GET",
+    "url_template": "",
+    "extract": {
+      "items_path": "",
+      "sku_key": "sku",
+      "id": "entity_id",
+      "url_key": "url_key"
+    }
+  }
+}
