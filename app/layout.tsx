@@ -74,14 +74,14 @@ export default function RootLayout({
           aria-label="Main navigation"
         >
           <div className="fiveo-container flex items-center justify-between h-16 sm:h-20 lg:h-24">
-            {/* Logo — Responsive sizing */}
-            <a href="/" className="flex-shrink-0 min-h-0" aria-label="FiveO Motorsport Home">
+            {/* Logo — Responsive sizing with padding */}
+            <a href="/" className="flex-shrink-0 flex items-center py-2 sm:py-4" aria-label="FiveO Motorsport Home">
               <Image
                 src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                 alt="FiveO Motorsport Logo"
                 width={200}
                 height={60}
-                className="w-auto h-10 sm:h-12 lg:h-16"
+                className="w-auto h-8 sm:h-12 lg:h-14"
                 priority
               />
             </a>
@@ -103,7 +103,7 @@ export default function RootLayout({
             <div className="flex items-center gap-3">
               {/* Search Button (tablet+) */}
               <button
-                className="bg-[#E10600] text-white text-xs font-black uppercase px-8 py-2.5 rounded-sm hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-wider"
+                className="bg-[#E10600] text-white text-xs font-black uppercase px-10 py-3 min-w-[140px] rounded-sm hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-wider flex-shrink-0"
                 aria-label="Search products"
               >
                 Search
@@ -132,9 +132,11 @@ export default function RootLayout({
           </div>
         </header>
 
-        {/* ═══ 3. Main Content ═══ */}
-        <main className="flex-grow" id="main-content" role="main">
-          {children}
+        {/* ═══ 3. Main Content Wrapper ═══ */}
+        <main className="flex-grow flex flex-col items-center w-full" id="main-content" role="main">
+          <div className="w-full flex flex-col items-center">
+            {children}
+          </div>
         </main>
 
         {/* ═══ 4. Footer ═══ */}

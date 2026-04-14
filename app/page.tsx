@@ -6,7 +6,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
       </div>
 
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-10 sm:py-16 lg:py-24 text-center">
+      <div className="relative z-10 w-full fiveo-container py-10 sm:py-16 lg:py-24 text-center">
         {/* 2. Hero Title — Fluid Typography */}
         <h1
           className="font-black uppercase tracking-tighter mb-3 sm:mb-4 italic"
