@@ -49,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-black text-white font-sans">
+      <body className="min-h-full flex flex-col bg-white text-[#333333] font-sans">
         {/* ═══ 1. Promotional Banner ═══ */}
         <div
           className="fiveo-banner-blue"
@@ -129,42 +129,88 @@ export default function RootLayout({
                 <span className="text-[11px] font-black uppercase tracking-tighter hidden md:inline group-hover:text-white">0 ITEMS</span>
               </button>
 
-              {/* Mobile Hamburger (< lg) */}
-              <MobileNav items={[...NAV_ITEMS]} />
-            </div>
-          </div>
-
           {/* ═══ Grey Ribbon (Breadcrumb Bar) ═══ */}
-          <div className="bg-[#B3B3B3] border-t border-black/10">
-            <div className="fiveo-container h-8 flex items-center">
-               <nav className="flex items-center gap-2 text-[10px] font-bold uppercase text-black/70">
-                 <a href="/" className="hover:text-black transition-colors">Home</a>
-                 <span className="text-black/30 transform scale-75">›</span>
-                 <span className="text-black/90">Fuel Injector Oracle</span>
+          <div className="bg-[#f2f2f2] border-b border-black/5">
+            <div className="fiveo-container h-10 flex items-center">
+               <nav className="flex items-center gap-2 text-[11px] font-medium uppercase">
+                 <a href="/" className="text-[#666666] hover:text-black transition-colors">Home</a>
+                 <span className="text-[#999999] transform scale-90">›</span>
+                 <a href="#" className="text-[#666666] hover:text-black transition-colors">Fuel Injectors</a>
+                 <span className="text-[#999999] transform scale-90">›</span>
+                 <span className="text-[#E10600]">Oracle</span>
                </nav>
             </div>
           </div>
         </header>
 
         {/* ═══ 3. Main Content Wrapper ═══ */}
-        <main className="flex-grow flex flex-col items-center w-full" id="main-content" role="main">
-          <div className="w-full flex flex-col items-center">
+        <main className="flex-grow flex flex-col items-center w-full bg-white" id="main-content" role="main">
+          <div className="w-full flex flex-col items-center py-10">
             {children}
           </div>
         </main>
 
-        {/* ═══ 4. Footer ═══ */}
+        {/* ═══ 4. Expanded Layout Footer ═══ */}
         <footer
-          className="bg-black border-t border-white/10 py-8 sm:py-12"
+          className="bg-black text-white pt-12 pb-8"
           role="contentinfo"
-          style={{ paddingBottom: `max(2rem, var(--safe-bottom))` }}
         >
-          <div className="fiveo-container flex flex-col sm:flex-row justify-between items-center gap-4 opacity-60 text-[10px] uppercase tracking-widest">
-            <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <a href="#" className="hover:text-white transition-colors py-1">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors py-1">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors py-1">Contact</a>
+          <div className="fiveo-container">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+              {/* Col 1: Customer Service */}
+              <div>
+                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">Customer Service</h4>
+                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">About Us</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Contact Us</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Shipping & Returns</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Privacy Policy</a></li>
+                </ul>
+              </div>
+
+              {/* Col 2: Technical Info */}
+              <div>
+                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">Technical Info</h4>
+                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Flow Rate Tables</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">FAQ & Tech Support</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Tuning Data</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Warranty</a></li>
+                </ul>
+              </div>
+
+              {/* Col 3: My Account */}
+              <div>
+                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">My Account</h4>
+                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Login / Register</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Order History</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Wish List</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Track My Order</a></li>
+                </ul>
+              </div>
+
+              {/* Col 4: Newsletter/Branding */}
+              <div>
+                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">FiveO Racing</h4>
+                <p className="text-[12px] text-gray-500 mb-6 font-bold uppercase tracking-wider leading-relaxed">
+                  The ultimate in high-performance fuel injection. Real-time physics, expert calibration.
+                </p>
+                <div className="flex gap-4">
+                  {/* Social Placeholders */}
+                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
+                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] uppercase font-bold tracking-widest text-gray-600">
+              <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
+              <div className="flex gap-6">
+                <a href="#" className="hover:text-white">Payments We Accept</a>
+                <a href="#" className="hover:text-white">Secure Shopping</a>
+              </div>
             </div>
           </div>
         </footer>
