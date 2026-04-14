@@ -59,14 +59,8 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Improve text rendering */
   text-rendering: optimizeLegibility;
-  /* Prevent rubber-band bounce on iOS while keeping scroll */
   overscroll-behavior-y: none;
-  /* Safe area padding for notched devices */
-  padding-left: var(--safe-left);
-  padding-right: var(--safe-right);
-  /* Minimum readable line height */
   line-height: 1.6;
 }
 
@@ -218,21 +212,29 @@ img, video, svg {
   max-width: 80rem; /* 1280px */
   margin-left: auto;
   margin-right: auto;
-  padding-left: max(1rem, var(--safe-left));
-  padding-right: max(1rem, var(--safe-right));
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @media (min-width: 640px) {
   .fiveo-container {
-    padding-left: max(1.5rem, var(--safe-left));
-    padding-right: max(1.5rem, var(--safe-right));
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .fiveo-container {
-    padding-left: max(2rem, var(--safe-left));
-    padding-right: max(2rem, var(--safe-right));
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Safe-area only for edge-touching elements on notched devices */
+@supports (padding: env(safe-area-inset-left)) {
+  .fiveo-container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
   }
 }
 

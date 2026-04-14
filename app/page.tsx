@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="relative min-h-[calc(100svh-theme(spacing.16))] sm:min-h-[calc(100svh-theme(spacing.20))] lg:min-h-[80vh] flex flex-col items-center">
+    <div className="relative min-h-[calc(100svh-theme(spacing.16))] sm:min-h-[calc(100svh-theme(spacing.20))] lg:min-h-[80vh] flex flex-col items-center justify-center">
       {/* 1. Technical Background */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
