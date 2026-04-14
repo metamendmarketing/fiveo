@@ -1,27 +1,54 @@
+
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 # Dependencies
-node_modules/
-__pycache__/
-*.pyc
-
-# Next.js & Build Artifacts
-.next/
-out/
-dist/
-.vercel/
-*.log
-
 # Environment / secrets
+# Large data files
+# Next.js & Build Artifacts
+# OS
+# Private data (cookies, etc.)
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# debug
+# dependencies
+# env files (can opt-in for committing if needed)
+# misc
+# next.js
+# production
+# testing
+# typescript
+# vercel
+*.log
+*.pem
+*.pyc
+*.tsbuildinfo
+.DS_Store
 .env
+.env*
 .env.*
 .env.local
-
-# OS
-.DS_Store
-
-# Private data (cookies, etc.)
-scripts/fitment/private/
-
-# Large data files
-data/raw/*.csv
+.next/
+.pnp.*
+.pnpm-debug.log*
+.vercel
+.vercel/
+.yarn/*
+/.next/
+/.pnp
+/build
+/coverage
+/node_modules
+/out/
+__pycache__/
 data/normalized/*.json
+data/raw/*.csv
 data/raw/*.json
+dist/
+next-env.d.ts
+node_modules/
+npm-debug.log*
+out/
+scripts/fitment/private/
+yarn-debug.log*
+yarn-error.log*
