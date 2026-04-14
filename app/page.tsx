@@ -6,7 +6,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
       </div>
 
-      <div className="relative z-10 w-full fiveo-container py-10 sm:py-16 lg:py-24 text-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 py-10 sm:py-16 lg:py-24 text-center">
         {/* 2. Hero Title — Fluid Typography */}
         <h1
           className="font-black uppercase tracking-tighter mb-3 sm:mb-4 italic"
@@ -23,7 +23,7 @@ export default function Home() {
         </p>
 
         {/* 3. Wizard Shell (Placeholder) */}
-        <div className="fiveo-glass p-6 sm:p-8 lg:p-12 border border-white/5 shadow-2xl relative overflow-hidden mx-auto max-w-2xl">
+        <div className="fiveo-glass p-6 sm:p-8 lg:p-12 border border-white/5 shadow-2xl relative overflow-hidden w-full max-w-2xl mx-auto">
           {/* Ambient Glows */}
           <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#E10600]/10 blur-[100px] rounded-full" />
           <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-[#00AEEF]/10 blur-[100px] rounded-full" />

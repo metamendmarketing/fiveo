@@ -103,7 +103,7 @@ export default function RootLayout({
             <div className="flex items-center gap-3">
               {/* Search Button (tablet+) */}
               <button
-                className="bg-[#E10600] text-white text-[10px] sm:text-xs font-black uppercase px-4 sm:px-6 py-2 rounded-sm hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors"
+                className="bg-[#E10600] text-white text-xs font-black uppercase px-8 py-2.5 rounded-sm hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-wider"
                 aria-label="Search products"
               >
                 Search
