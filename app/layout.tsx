@@ -92,7 +92,7 @@ export default function RootLayout({
                 <a
                   key={item}
                   href="#"
-                  className="text-[11px] xl:text-xs font-bold uppercase tracking-wider hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2"
+                  className="text-[11px] xl:text-[12px] font-black uppercase tracking-tighter hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2"
                 >
                   {item}
                 </a>
@@ -134,11 +134,11 @@ export default function RootLayout({
           {/* ═══ Grey Ribbon (Breadcrumb Bar) ═══ */}
           <div className="bg-[#f2f2f2] border-b border-black/5">
             <div className="fiveo-container h-10 flex items-center">
-               <nav className="flex items-center gap-2 text-[11px] font-medium uppercase">
-                 <a href="/" className="text-[#666666] hover:text-black transition-colors">Home</a>
-                 <span className="text-[#999999] transform scale-90">›</span>
-                 <a href="#" className="text-[#666666] hover:text-black transition-colors">Fuel Injectors</a>
-                 <span className="text-[#999999] transform scale-90">›</span>
+               <nav className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-tight">
+                 <a href="/" className="text-[#a8a8a8] hover:text-black transition-colors">Home</a>
+                 <span className="text-[#cccccc] font-normal mx-0.5">›</span>
+                 <a href="#" className="text-[#a8a8a8] hover:text-black transition-colors">Fuel Injectors</a>
+                 <span className="text-[#cccccc] font-normal mx-0.5">›</span>
                  <span className="text-[#E10600]">Oracle</span>
                </nav>
             </div>

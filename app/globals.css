@@ -209,7 +209,7 @@ img, video, svg {
 
 .fiveo-container {
   width: 100%;
-  max-width: 80rem; /* 1280px */
+  max-width: 1240px; /* Verbatim Porto/Bootstrap width */
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
