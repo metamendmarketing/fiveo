@@ -141,17 +141,15 @@ export default function RootLayout({
             </div>
           </div>
 
-          {/* ═══ Grey Ribbon (Breadcrumb Bar) ═══ */}
-          <div className="bg-[#f2f2f2] border-b border-black/5">
-            <div className="fiveo-container h-10 flex items-center">
-               <nav className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-tight">
-                 <a href="/" className="text-[#a8a8a8] hover:text-black transition-colors">Home</a>
-                 <span className="text-[#999999] font-normal mx-1">›</span>
-                 <a href="#" className="text-[#a8a8a8] hover:text-black transition-colors">Fuel Injectors</a>
-                 <span className="text-[#999999] font-normal mx-1">›</span>
-                 <span className="text-[#E10600]">Oracle</span>
-               </nav>
-            </div>
+          {/* ═══ Clean Breadcrumbs (No Background) ═══ */}
+          <div className="fiveo-container pt-6 pb-2">
+             <nav className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-tight">
+               <a href="/" className="text-[#a8a8a8] hover:text-black transition-colors">Home</a>
+               <span className="text-[#999999] font-normal mx-1">›</span>
+               <a href="#" className="text-[#a8a8a8] hover:text-black transition-colors">Fuel Injectors</a>
+               <span className="text-[#999999] font-normal mx-1">›</span>
+               <span className="text-[#E10600]">Oracle</span>
+             </nav>
           </div>
         </header>
 
