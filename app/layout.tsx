@@ -128,6 +128,8 @@ export default function RootLayout({
                 </div>
                 <span className="text-[11px] font-black uppercase tracking-tighter hidden md:inline group-hover:text-white">0 ITEMS</span>
               </button>
+            </div>
+          </div>
 
           {/* ═══ Grey Ribbon (Breadcrumb Bar) ═══ */}
           <div className="bg-[#f2f2f2] border-b border-black/5">
