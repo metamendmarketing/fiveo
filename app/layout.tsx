@@ -218,3 +218,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+/* Vercel Force-Sync Build Trigger: April 16, 2026 */
