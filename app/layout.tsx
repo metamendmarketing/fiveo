@@ -218,7 +218,10 @@ export default function RootLayout({
             </div>
 
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
-              <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
+              <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
+                <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
+                <span className="text-[9px] text-[#00AEEF]">Build: 16:55 (Alignment Fixes)</span>
+              </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
                 <a href="#" className="hover:text-white transition-colors">Secure Shopping</a>
@@ -231,4 +234,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 16:55 (Cache Buster) */
