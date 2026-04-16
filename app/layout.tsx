@@ -4,7 +4,7 @@ import "./globals.css";
 import Image from "next/image";
 import { MobileNav } from "./components/MobileNav";
 
-import { Open_Sans, Open_Sans_Condensed } from "next/font/google";
+import { Open_Sans, Roboto_Condensed } from "next/font/google";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -12,9 +12,9 @@ const openSans = Open_Sans({
   display: "swap",
 });
 
-const openSansCondensed = Open_Sans_Condensed({
+const openSansCondensed = Roboto_Condensed({
   subsets: ["latin"],
-  weight: ["300", "700"],
+  weight: ["400", "700"],
   variable: "--font-open-sans-condensed",
   display: "swap",
 });
