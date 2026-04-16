@@ -1,0 +1,1 @@
+define(['jquery','js-cookie/cookie-wrapper'],function(){});

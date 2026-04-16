@@ -7,7 +7,14 @@ import { MobileNav } from "./components/MobileNav";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap", /* Prevent FOIT (Flash of Invisible Text) */
+  display: "swap",
+});
+
+/* Note: Open Sans Condensed is the key to the 'Verbatim' FiveO nav look */
+const openSansCondensed = Inter({ /* Using Inter as a high-quality proxy since I can't add external font files, but I will simulate the condensed look with tracking and weight */
+  subsets: ["latin"],
+  variable: "--font-condensed",
+  display: "swap",
 });
 
 /* ─── SEO & Meta ─── */
@@ -92,7 +99,8 @@ export default function RootLayout({
                 <a
                   key={item}
                   href="#"
-                  className="text-[11px] xl:text-[12px] font-black uppercase tracking-tighter hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2"
+                  className="text-[12px] font-black uppercase tracking-tighter hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2 font-sans"
+                  style={{ fontStretch: 'condensed' }}
                 >
                   {item}
                 </a>
@@ -136,9 +144,9 @@ export default function RootLayout({
             <div className="fiveo-container h-10 flex items-center">
                <nav className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-tight">
                  <a href="/" className="text-[#a8a8a8] hover:text-black transition-colors">Home</a>
-                 <span className="text-[#cccccc] font-normal mx-0.5">›</span>
+                 <span className="text-[#999999] font-normal mx-1">›</span>
                  <a href="#" className="text-[#a8a8a8] hover:text-black transition-colors">Fuel Injectors</a>
-                 <span className="text-[#cccccc] font-normal mx-0.5">›</span>
+                 <span className="text-[#999999] font-normal mx-1">›</span>
                  <span className="text-[#E10600]">Oracle</span>
                </nav>
             </div>
