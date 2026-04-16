@@ -58,168 +58,162 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${openSans.variable} ${openSansCondensed.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-[#333333] font-sans">
-        {/* ═══ 1. Promotional Banner ═══ */}
-        <div
-          className="fiveo-banner-blue"
-          role="banner"
-          aria-label="Promotional banner"
-        >
-          <span className="hidden sm:inline">
-            Subscribe to our newsletter for exclusive access to discounts and promotions
-          </span>
-          <span className="sm:hidden">
-            Exclusive discounts & promotions
-          </span>
-          <span className="ml-2 bg-white text-[#00AEEF] px-3 py-1 rounded-sm cursor-pointer hover:bg-gray-100 transition-colors inline-block text-[10px] sm:text-xs font-black">
-            Subscribe Now
-          </span>
-        </div>
-
-        {/* ═══ 2. Main Header ═══ */}
+      <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
+        {/* ═══ 1. Modern Glassmorphic Header ═══ */}
         <header
-          className="bg-black/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-50"
+          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 shadow-2xl shadow-black/10"
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between h-16 sm:h-20 lg:h-24">
-            {/* Logo — Responsive sizing with padding */}
-            <a href="/" className="flex-shrink-0 flex items-center py-2 sm:py-4" aria-label="FiveO Motorsport Home">
-              <Image
-                src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
-                alt="FiveO Motorsport Logo"
-                width={200}
-                height={60}
-                className="w-auto h-8 sm:h-12 lg:h-14"
-                priority
-              />
-            </a>
+          <div className="fiveo-container flex items-center justify-between h-20 sm:h-24">
+            
+            {/* Left Block: Logo + Navigation */}
+            <div className="flex items-center gap-10 xl:gap-14">
+              {/* Logo */}
+              <a href="/" className="flex-shrink-0 flex items-center" aria-label="FiveO Motorsport Home">
+                <Image
+                  src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
+                  alt="FiveO Motorsport Logo"
+                  width={220}
+                  height={66}
+                  className="w-auto h-10 sm:h-12 lg:h-14 transition-transform hover:scale-105 duration-300"
+                  priority
+                />
+              </a>
 
-             {/* Desktop Nav */}
-             <nav className="hidden lg:flex items-center gap-5 xl:gap-7" aria-label="Desktop navigation">
-               {NAV_ITEMS.map((item) => (
-                 <a
-                   key={item}
-                   href="#"
-                   className="text-[14px] font-bold uppercase tracking-tight hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2"
-                   style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
-                 >
-                   {item}
-                 </a>
-               ))}
-             </nav>
+              {/* Desktop Nav - Left Aligned next to Logo */}
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Desktop navigation">
+                {NAV_ITEMS.map((item) => (
+                  <a
+                    key={item}
+                    href="#"
+                    className="relative text-[13px] font-bold uppercase tracking-[0.1em] text-white/80 hover:text-white transition-colors group py-2"
+                    style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
+                  >
+                    {item}
+                    {/* Electric Blue Animated Underline */}
+                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#00AEEF] transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                ))}
+              </nav>
+            </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-3">
-              {/* Search Button — Squared off like screenshot */}
-              <button
-                className="bg-[#E10600] text-white text-[12px] font-black uppercase px-6 py-2 rounded-none hidden sm:flex items-center justify-center hover:bg-white hover:text-[#E10600] transition-colors tracking-tighter"
-                aria-label="Search products"
-              >
-                SEARCH
-              </button>
-
-              {/* Driver/Account Icon (Helmet SVG) */}
-              <button className="p-1 hover:text-[#00AEEF] transition-colors flex items-center" aria-label="User account">
-                <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M16,2C8.28,2,2,8.28,2,16s6.28,14,14,14s14-6.28,14-14S23.72,2,16,2z M16,28c-6.62,0-12-5.38-12-12S9.38,4,16,4s12,5.38,12,12 S22.62,28,16,28z M16,7c-3.31,0-6,2.69-6,6c0,2.16,1.15,4.05,2.87,5.12L11,24h10l-1.87-5.88C20.85,17.05,22,15.16,22,13 C22,9.69,19.31,7,16,7z M14.12,22l0.63-2H17.25l0.63,2H14.12z M16,16c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S17.65,16,16,16z"/>
+            {/* Right Block: Utilities */}
+            <div className="flex items-center gap-6 xl:gap-8">
+              {/* Minimal Search Icon */}
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors" aria-label="Search">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
-              {/* Cart Icon with Label */}
-              <button className="flex items-center gap-2 hover:text-[#00AEEF] transition-colors group" aria-label="Shopping cart, 0 items">
-                <div className="relative p-1">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  <span className="absolute -top-1 -right-1 bg-[#E10600] text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-black">
-                    0
-                  </span>
-                </div>
-                <span className="text-[11px] font-black uppercase tracking-tighter hidden md:inline group-hover:text-white">0 ITEMS</span>
+              {/* Account Icon */}
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors" aria-label="User account">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </button>
+
+              {/* Cart Icon with notification pip */}
+              <button className="flex items-center gap-2 text-white/80 hover:text-[#00AEEF] transition-colors group relative" aria-label="Shopping cart, 0 items">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                {/* Red pip indicator */}
+                <span className="absolute -top-1 -right-2 bg-[#E10600] text-white text-[9px] font-black w-[18px] h-[18px] rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+                  0
+                </span>
               </button>
             </div>
           </div>
+        </header>
 
-          {/* ═══ Clean Breadcrumbs (No Background) ═══ */}
-          <div className="fiveo-container pt-6 pb-2">
-             <nav className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-tight">
-               <a href="/" className="text-[#a8a8a8] hover:text-black transition-colors">Home</a>
-               <span className="text-[#999999] font-normal mx-1">›</span>
-               <a href="#" className="text-[#a8a8a8] hover:text-black transition-colors">Fuel Injectors</a>
-               <span className="text-[#999999] font-normal mx-1">›</span>
+        {/* ═══ 2. High-Tech Context Rail (Breadcrumbs) ═══ */}
+        <div className="w-full bg-[#f8f9fa]">
+          <div className="fiveo-container pt-8 pb-4">
+             <nav className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
+               <a href="/" className="hover:text-black transition-colors">Home</a>
+               <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+               </svg>
+               <a href="#" className="hover:text-black transition-colors">Fuel Injectors</a>
+               <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+               </svg>
                <span className="text-[#E10600]">Oracle</span>
              </nav>
           </div>
-        </header>
+        </div>
 
         {/* ═══ 3. Main Content Wrapper ═══ */}
-        <main className="flex-grow flex flex-col items-center w-full bg-white" id="main-content" role="main">
-          <div className="w-full flex flex-col items-center py-10">
-            {children}
-          </div>
+        {/* Soft off-white background elevates the white app card */}
+        <main className="flex-grow w-full" id="main-content" role="main">
+          {children}
         </main>
 
-        {/* ═══ 4. Expanded Layout Footer ═══ */}
+        {/* ═══ 4. Premium Modern Footer ═══ */}
         <footer
-          className="bg-black text-white pt-12 pb-8"
+          className="bg-[#09090b] text-white pt-16 pb-8 border-t border-white/5"
           role="contentinfo"
         >
           <div className="fiveo-container">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
               {/* Col 1: Customer Service */}
               <div>
-                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">Customer Service</h4>
-                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">About Us</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Contact Us</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Shipping & Returns</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Privacy Policy</a></li>
+                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">Customer Service</h4>
+                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>About Us</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Contact Us</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Shipping & Returns</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Privacy Policy</a></li>
                 </ul>
               </div>
 
               {/* Col 2: Technical Info */}
               <div>
-                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">Technical Info</h4>
-                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Flow Rate Tables</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">FAQ & Tech Support</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Tuning Data</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Warranty</a></li>
+                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">Technical Info</h4>
+                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Flow Rate Tables</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>FAQ & Tech Support</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Tuning Data</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Warranty</a></li>
                 </ul>
               </div>
 
               {/* Col 3: My Account */}
               <div>
-                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">My Account</h4>
-                <ul className="space-y-3 text-[12px] uppercase tracking-wider text-gray-400 font-bold">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Login / Register</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Order History</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Wish List</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors">Track My Order</a></li>
+                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">My Account</h4>
+                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Login / Register</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Order History</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Wish List</a></li>
+                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Track My Order</a></li>
                 </ul>
               </div>
 
               {/* Col 4: Newsletter/Branding */}
               <div>
-                <h4 className="text-[14px] font-black uppercase tracking-widest mb-6 text-white">FiveO Racing</h4>
-                <p className="text-[12px] text-gray-500 mb-6 font-bold uppercase tracking-wider leading-relaxed">
+                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">FiveO Racing</h4>
+                <p className="text-[14px] text-gray-500 mb-8 font-normal leading-relaxed">
                   The ultimate in high-performance fuel injection. Real-time physics, expert calibration.
                 </p>
                 <div className="flex gap-4">
-                  {/* Social Placeholders */}
-                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
-                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
-                  <div className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#00AEEF] transition-colors cursor-pointer" />
+                  {/* Clean SVG Social Icons */}
+                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00AEEF] hover:border-[#00AEEF] hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
+                    <span className="text-sm font-bold">f</span>
+                  </div>
+                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#E10600] hover:border-[#E10600] hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] uppercase font-bold tracking-widest text-gray-600">
+            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
               <div className="flex gap-6">
-                <a href="#" className="hover:text-white">Payments We Accept</a>
-                <a href="#" className="hover:text-white">Secure Shopping</a>
+                <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
+                <a href="#" className="hover:text-white transition-colors">Secure Shopping</a>
               </div>
             </div>
           </div>
