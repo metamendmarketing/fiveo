@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div className="relative min-h-[70vh] flex flex-col items-center">
-      <div className="relative z-10 w-full fiveo-container py-6 sm:py-10 text-center">
+      <div className="relative z-10 w-full py-6 sm:py-10 text-center">
         {/* 1. Header — Electric Blue as requested */}
         <h1
           className="font-black uppercase tracking-tighter mb-2 italic text-black"
@@ -17,14 +17,14 @@ export default function Home() {
           Powered by real-time physics and expert calibration data.
         </p>
 
-        {/* 2. Wizard Shell (White Ecommerce Style) */}
-        <div className="bg-white border border-[#e5e5e5] shadow-xl rounded-sm p-6 sm:p-8 lg:p-12 relative overflow-hidden w-full max-w-2xl mx-auto">
+        {/* 2. Wizard Shell (Contrasting Light Grey) */}
+        <div className="bg-[#f0f2f5] border border-gray-200 shadow-2xl shadow-black/5 rounded-md p-6 sm:p-8 lg:p-12 relative overflow-hidden w-full max-w-2xl mx-auto">
           {/* Subtle Brand Accents */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-[#00AEEF]" />
           
           <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
             {/* Oracle Icon */}
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-50 rounded-full flex items-center justify-center border border-gray-100 shadow-inner">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center border border-gray-100 shadow-sm">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#00AEEF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -45,15 +45,15 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Placeholder Wizard Fields — Light Mode */}
+            {/* Placeholder Wizard Fields — Contrasting Mode */}
             <div className="w-full max-w-md grid grid-cols-1 gap-3 sm:gap-4 opacity-60">
-              <div className="h-14 bg-gray-50 border border-gray-200 rounded-sm flex items-center px-5 justify-between">
+              <div className="h-14 bg-white border border-gray-200 rounded-sm flex items-center px-5 justify-between shadow-sm">
                 <span className="text-[11px] uppercase font-black text-[#333333]">Target Horsepower</span>
                 <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div className="w-1/2 h-full bg-[#00AEEF]" />
                 </div>
               </div>
-              <div className="h-14 bg-gray-50 border border-gray-200 rounded-sm flex items-center px-5 justify-between">
+              <div className="h-14 bg-white border border-gray-200 rounded-sm flex items-center px-5 justify-between shadow-sm">
                 <span className="text-[11px] uppercase font-black text-[#333333]">Fuel Type / Aspiration</span>
                 <div className="flex gap-2">
                    <div className="w-10 h-5 bg-gray-200 rounded-sm" />
