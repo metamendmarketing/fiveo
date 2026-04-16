@@ -65,7 +65,7 @@ export default function RootLayout({
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between py-5 sm:py-6">
+          <div className="fiveo-container flex items-center justify-between py-5 sm:py-6 pb-6">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
@@ -76,7 +76,7 @@ export default function RootLayout({
                   alt="FiveO Motorsport Logo"
                   width={220}
                   height={66}
-                  className="w-auto h-10 sm:h-12 lg:h-14 mb-2 lg:mb-3 transition-transform hover:scale-105 duration-300"
+                  className="w-auto h-10 sm:h-12 lg:h-14 transform -translate-y-1.5 transition-transform hover:scale-105 duration-300"
                   priority
                 />
               </a>
@@ -136,7 +136,7 @@ export default function RootLayout({
               {/* Breadcrumbs precisely aligned to the Centered App Grid */}
               <div className="pt-8 pb-4 border-b border-gray-100">
                 <div className="w-full max-w-2xl mx-auto">
-                  <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
+                  <nav className="flex justify-center items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
                     <a href="/" className="hover:text-black transition-colors">Home</a>
                     <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -220,7 +220,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 16:55 (Alignment Fixes)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 17:00 (Center Align & Logo Shift)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -234,4 +234,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 16:55 (Cache Buster) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:00 (Cache Buster) */
