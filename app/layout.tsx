@@ -4,16 +4,18 @@ import "./globals.css";
 import Image from "next/image";
 import { MobileNav } from "./components/MobileNav";
 
-const inter = Inter({
+import { Open_Sans, Open_Sans_Condensed } from "next/font/google";
+
+const openSans = Open_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-open-sans",
   display: "swap",
 });
 
-/* Note: Open Sans Condensed is the key to the 'Verbatim' FiveO nav look */
-const openSansCondensed = Inter({ /* Using Inter as a high-quality proxy since I can't add external font files, but I will simulate the condensed look with tracking and weight */
+const openSansCondensed = Open_Sans_Condensed({
   subsets: ["latin"],
-  variable: "--font-condensed",
+  weight: ["300", "700"],
+  variable: "--font-open-sans-condensed",
   display: "swap",
 });
 
@@ -55,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${openSans.variable} ${openSansCondensed.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white text-[#333333] font-sans">
         {/* ═══ 1. Promotional Banner ═══ */}
         <div
@@ -93,19 +95,19 @@ export default function RootLayout({
               />
             </a>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-5 xl:gap-7" aria-label="Desktop navigation">
-              {NAV_ITEMS.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="text-[12px] font-black uppercase tracking-tighter hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2 font-sans"
-                  style={{ fontStretch: 'condensed' }}
-                >
-                  {item}
-                </a>
-              ))}
-            </nav>
+             {/* Desktop Nav */}
+             <nav className="hidden lg:flex items-center gap-5 xl:gap-7" aria-label="Desktop navigation">
+               {NAV_ITEMS.map((item) => (
+                 <a
+                   key={item}
+                   href="#"
+                   className="text-[14px] font-bold uppercase tracking-tight hover:text-[#00AEEF] transition-colors whitespace-nowrap py-2"
+                   style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
+                 >
+                   {item}
+                 </a>
+               ))}
+             </nav>
 
             {/* Right Actions */}
             <div className="flex items-center gap-3">
