@@ -65,7 +65,7 @@ export default function RootLayout({
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between h-20 sm:h-24">
+          <div className="fiveo-container flex items-center justify-between py-5 sm:py-6">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
@@ -76,7 +76,7 @@ export default function RootLayout({
                   alt="FiveO Motorsport Logo"
                   width={220}
                   height={66}
-                  className="w-auto h-10 sm:h-12 lg:h-14 transition-transform hover:scale-105 duration-300"
+                  className="w-auto h-10 sm:h-12 lg:h-14 mb-2 lg:mb-3 transition-transform hover:scale-105 duration-300"
                   priority
                 />
               </a>
@@ -133,19 +133,21 @@ export default function RootLayout({
           <div className="fiveo-container !px-0 sm:!px-4 lg:!px-8 w-full flex-grow">
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full h-full flex flex-col overflow-hidden">
               
-              {/* Breadcrumbs inside the white block */}
-              <div className="pt-8 px-6 sm:px-10 pb-4 border-b border-gray-100">
-                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
-                  <a href="/" className="hover:text-black transition-colors">Home</a>
-                  <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  <a href="#" className="hover:text-black transition-colors">Fuel Injectors</a>
-                  <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  <span className="text-[#E10600]">Oracle</span>
-                </nav>
+              {/* Breadcrumbs precisely aligned to the Centered App Grid */}
+              <div className="pt-8 pb-4 border-b border-gray-100">
+                <div className="w-full max-w-2xl mx-auto">
+                  <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
+                    <a href="/" className="hover:text-black transition-colors">Home</a>
+                    <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                    <a href="#" className="hover:text-black transition-colors">Fuel Injectors</a>
+                    <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                    <span className="text-[#E10600]">Oracle</span>
+                  </nav>
+                </div>
               </div>
 
               {/* Main Content Wrapper */}
