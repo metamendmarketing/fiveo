@@ -61,17 +61,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full text-center py-2 px-4 flex-shrink-0 z-[60] relative">
-          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+        <div className="bg-[#00AEEF] w-full text-center py-3 sm:py-3.5 px-4 flex-shrink-0 z-[60] relative">
+          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-5">
             <span 
               className="text-white text-[16px] font-semibold tracking-wide"
-              style={{ fontFamily: 'var(--font-open-sans), sans-serif' }}
+              style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0px 1px 2px rgba(0,0,0,0.1)' }}
             >
               Subscribe to our newsletter for exclusive access to discounts and promotions
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#008CC6] text-[16px] font-bold not-italic uppercase text-white px-10 py-1.5 rounded-[3px] transition-all hover:underline shadow-md border border-black/10"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-[16px] font-bold not-italic uppercase text-white px-5 sm:px-6 py-2 rounded-[2px] transition-all hover:underline"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:58 (UI Subscribe Button Underline Sync)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:01 (Promo Bar Y-Axis Padding)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:58 (UI Subscribe Button Underline Sync) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:01 (Promo Bar Y-Axis Padding) */
