@@ -293,6 +293,10 @@ body { --cache-bust: '1758'; }
   margin-top: 10px;
 }
 
+.oracle-footer-heading-offset {
+  padding-top: 20px;
+}
+
 .oracle-breadcrumb-indent {
   padding-left: 5px;
 }

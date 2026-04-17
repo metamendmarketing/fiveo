@@ -173,17 +173,11 @@ export default function RootLayout({
                   height={48}
                   className="w-auto h-12"
                 />
-                {/* SEMA Logo Placeholder (approximated for accurate bounding) */}
-                <div className="w-[70px] h-[90px] border border-gray-600 rounded-sm flex items-center justify-center overflow-hidden">
-                   <div className="w-12 h-12 rounded-full bg-[#E10600] flex items-center justify-center border-2 border-white">
-                      <span className="text-[10px] font-bold text-white">SEMA</span>
-                   </div>
-                </div>
               </div>
 
               {/* Col 2: Shop */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6">Shop</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Shop</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">Fuel Injectors</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Fuel Pumps</a></li>
@@ -193,7 +187,7 @@ export default function RootLayout({
 
               {/* Col 3: Menu */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6">Menu</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Menu</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Links</a></li>
@@ -203,7 +197,7 @@ export default function RootLayout({
 
               {/* Col 4: Contact Us */}
               <div className="lg:col-span-1">
-                <h4 className="text-[16px] font-bold text-white mb-6">Contact us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Contact us</h4>
                 <div className="space-y-4 text-[11px] text-[#cccccc]">
                   <div>
                     <strong className="text-white uppercase font-bold text-[12px] block mb-1">Phone:</strong>
@@ -219,7 +213,7 @@ export default function RootLayout({
 
               {/* Col 5: Follow Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6">Follow us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Follow us</h4>
                 <ul className="space-y-6 text-[12px] text-[#cccccc] uppercase font-bold">
                   <li>
                     <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
@@ -240,7 +234,7 @@ export default function RootLayout({
 
               {/* Col 6: Join Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6">Join us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Join us</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">Join Our Newsletter</a></li>
                 </ul>
@@ -251,7 +245,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-[#666666]">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 18:35 (Canonical Live Footer)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 18:40 (Footer Corrections)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -265,4 +259,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:30 (Precision Architecture) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:40 (Precision Architecture) */
