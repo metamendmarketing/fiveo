@@ -61,17 +61,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[rgb(50,198,244)] w-full py-[5px] relative z-10 text-center block">
-          <div className="fiveo-container px-[15px] box-border block w-full">
+        <div className="bg-[#00AEEF] w-full py-3 px-4 relative z-50">
+          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <span 
-              className="text-white text-[16px] inline-block align-middle font-normal leading-[1.4] normal-case tracking-normal"
-              style={{ fontFamily: 'var(--font-open-sans), sans-serif' }}
+              className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
+              style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}
             >
               Subscribe to our newsletter for exclusive access to discounts and promotions
             </span>
             <a 
               href="#" 
-              className="inline-block text-center bg-[rgb(9,153,233)] text-[16px] font-normal text-white px-[10px] py-[5px] mx-[5px] my-[2px] rounded-[3px] no-underline align-middle"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:15 (DOM Computed Button Layout Override)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:20 (Clean Standard Tailwind Upgrade)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:15 (DOM Computed Button Layout Override) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:20 (Clean Standard Tailwind Upgrade) */
