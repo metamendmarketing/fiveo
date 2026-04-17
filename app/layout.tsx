@@ -71,8 +71,12 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide py-0 h-auto sm:h-[18px] lg:h-[22px] leading-none min-h-0 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6"
-              style={{ paddingLeft: '10px', paddingRight: '10px', fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide py-0 leading-none rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6 btn-ultra-compact"
+              style={{ 
+                paddingLeft: '10px', 
+                paddingRight: '10px', 
+                fontFamily: 'var(--font-open-sans-condensed), sans-serif' 
+              }}
             >
               Subscribe Now
             </a>
@@ -297,7 +301,7 @@ export default function RootLayout({
 
             <div className="!pt-10 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:04 (Ultra-Compact Button Logic)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:08 (Final Height CSS Override)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +310,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:04 (Ultra-Compact Button Logic) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:08 (Final Height CSS Override) */
