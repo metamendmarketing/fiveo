@@ -4,14 +4,14 @@ export default function Home() {
       <div className="w-full max-w-3xl flex flex-col items-center py-6 sm:py-10 text-center">
         {/* 1. Header — Electric Blue as requested */}
         <h1
-          className="font-black uppercase tracking-tighter italic text-black mt-10 mb-2"
-          style={{ fontSize: "var(--text-hero)" }}
+          className="font-black uppercase tracking-tighter italic text-black"
+          style={{ fontSize: "var(--text-hero)", marginTop: "2.5rem", marginBottom: "0.5rem" }}
         >
           Fuel Injector <span className="text-[#00AEEF]">Oracle</span>
         </h1>
         <p
-          className="text-[#666666] max-w-2xl mx-auto mb-10 uppercase tracking-[0.15em] sm:tracking-widest font-bold px-2"
-          style={{ fontSize: "var(--text-xs)" }}
+          className="text-[#666666] max-w-2xl mx-auto uppercase tracking-[0.15em] sm:tracking-widest font-bold px-2"
+          style={{ fontSize: "var(--text-xs)", marginBottom: "2.5rem" }}
         >
           The ultimate technical sizing assistant for high-performance builds.
           Powered by real-time physics and expert calibration data.
@@ -68,7 +68,10 @@ export default function Home() {
         </div>
 
         {/* 3. Authority Grid — Subdued for White Background */}
-        <div className="mt-16 mb-8 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30 w-full max-w-2xl mx-auto">
+        <div 
+          className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30 w-full max-w-2xl mx-auto"
+          style={{ marginTop: "4rem", marginBottom: "2rem" }}
+        >
           {["ASNU CALIBRATED", "BOSCH CORE", "E85 READY", "EXPERT TUNED"].map(
             (tag) => (
               <div key={tag} className="flex flex-col items-center py-2">
