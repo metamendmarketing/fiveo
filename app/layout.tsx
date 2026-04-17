@@ -76,7 +76,7 @@ export default function RootLayout({
                   alt="FiveO Motorsport Logo"
                   width={220}
                   height={66}
-                  className="w-auto h-12 sm:h-14 lg:h-16 transition-transform hover:scale-105 duration-300"
+                  className="w-auto h-12 sm:h-14 lg:h-16 mb-[10px] transition-transform hover:scale-105 duration-300"
                   priority
                 />
               </a>
@@ -136,7 +136,7 @@ export default function RootLayout({
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
-                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
+                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors ml-[5px]">Home</a>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -218,7 +218,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 17:50 (Pure Tailwind Shell)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 17:55 (Pixel Tweaks)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -232,4 +232,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:50 (Pure Tailwind) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:55 (Cache Buster) */
