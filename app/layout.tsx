@@ -71,7 +71,7 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-[16px] font-bold not-italic uppercase text-white px-5 py-1.5 rounded-[2px] transition-all hover:underline align-middle ml-0 mt-3 sm:ml-4 sm:mt-0"
+              className="inline-block text-center bg-[rgb(9,153,233)] text-[16px] font-normal text-white px-[10px] py-[5px] mx-[5px] my-[2px] rounded-[3px] no-underline align-middle"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:13 (DOM Computed Line-Height Override)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:15 (DOM Computed Button Layout Override)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:13 (DOM Computed Line-Height Override) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:15 (DOM Computed Button Layout Override) */
