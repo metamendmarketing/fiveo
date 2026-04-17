@@ -298,7 +298,7 @@ body { --cache-bust: '1758'; }
 }
 
 .oracle-breadcrumb-indent {
-  padding-left: 5px;
+  padding-left: 15px;
 }
 
 .oracle-footer-top {
