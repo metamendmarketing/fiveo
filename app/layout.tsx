@@ -71,7 +71,7 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-[10px] py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:20 (Clean Standard Tailwind Upgrade)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:20 (10px Pad Squeeze)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:20 (Clean Standard Tailwind Upgrade) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:20 (10px Pad Squeeze) */
