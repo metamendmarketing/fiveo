@@ -10,7 +10,7 @@ export default function Home() {
           Fuel Injector <span className="text-[#00AEEF]">Oracle</span>
         </h1>
         <p
-          className="text-[#666666] max-w-2xl mx-auto mb-10 uppercase tracking-[0.15em] sm:tracking-widest font-bold px-2"
+          className="text-[#666666] max-w-2xl mx-auto mb-16 pb-12 lg:pb-16 uppercase tracking-[0.15em] sm:tracking-widest font-bold px-2"
           style={{ fontSize: "var(--text-xs)" }}
         >
           The ultimate technical sizing assistant for high-performance builds.
@@ -68,7 +68,7 @@ export default function Home() {
         </div>
 
         {/* 3. Authority Grid — Subdued for White Background */}
-        <div className="mt-12 sm:mt-20 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30">
+        <div className="mt-20 pt-16 lg:pt-24 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30">
           {["ASNU CALIBRATED", "BOSCH CORE", "E85 READY", "EXPERT TUNED"].map(
             (tag) => (
               <div key={tag} className="flex flex-col items-center py-2">
