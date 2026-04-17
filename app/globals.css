@@ -278,3 +278,21 @@ img, video, svg {
 
 /* Cache Buster: 17:58 */
 body { --cache-bust: '1758'; }
+
+/* ═══════════════════════════════════════════════════════
+   10. ORACLE HIGH-PRECISION LAYOUT METRICS
+   Structural overrides enforcing exact client pixel requests,
+   managed centrally bypassing generic Tailwind utilities.
+   ═══════════════════════════════════════════════════════ */
+
+.oracle-logo-offset {
+  padding-bottom: 10px;
+}
+
+.oracle-breadcrumb-indent {
+  padding-left: 5px;
+}
+
+.oracle-footer-top {
+  padding-top: 10px;
+}
