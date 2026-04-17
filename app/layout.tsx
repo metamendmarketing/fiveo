@@ -61,7 +61,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full py-[5px] px-4 relative z-50">
+        <div className="bg-[#00AEEF] w-full h-auto sm:h-[40px] flex items-center justify-center py-2 sm:py-0 px-4 relative z-50">
           <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <span 
               className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
@@ -71,7 +71,7 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-[10px] py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-[10px] h-[30px] rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:21 (10px Vector Math Clearance)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:24 (Hardcoded 10px Explicit Height Vector)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:21 (10px Vector Math Clearance) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:24 (Hardcoded 10px Explicit Height Vector) */
