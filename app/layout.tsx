@@ -61,8 +61,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full h-auto sm:h-auto lg:h-[48px] min-h-0 hidden sm:flex items-center justify-center py-3 lg:py-0 px-4 relative z-50">
-          <div className="fiveo-container flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6">
+        <div className="bg-[#00AEEF] w-full py-3 px-4 relative z-50">
+          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <span 
               className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
               style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}
@@ -71,12 +71,8 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide py-0 leading-none rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6 btn-ultra-compact"
-              style={{ 
-                paddingLeft: '10px', 
-                paddingRight: '10px', 
-                fontFamily: 'var(--font-open-sans-condensed), sans-serif' 
-              }}
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
+              style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
             </a>
@@ -191,7 +187,7 @@ export default function RootLayout({
               
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="pt-6 pb-4 pr-6 sm:pr-10 border-b border-gray-100 oracle-breadcrumb-indent">
-                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8] pl-[10px]">
+                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
                   <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -261,7 +257,7 @@ export default function RootLayout({
                     <p className="mb-1 leading-relaxed">CALIFORNIA OFFICE: (562) 867-4999</p>
                     <p>OREGON OFFICE: (503) 508-5392</p>
                   </div>
-                  <div className="pt-2 !pb-5">
+                  <div className="pt-2">
                     <strong className="text-white uppercase font-bold text-[12px] block mb-1">Email:</strong>
                     <p className="uppercase">CONTACT@FIVEOMOTORSPORT.COM</p>
                   </div>
@@ -299,9 +295,9 @@ export default function RootLayout({
 
             </div>
 
-            <div className="!pt-10 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
+            <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:08 (Final Height CSS Override)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:12 (Complete Restoration to Standard Base)</span>
             </div>
           </div>
         </footer>
@@ -310,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:08 (Final Height CSS Override) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:12 (Complete Restoration to Standard Base) */
