@@ -106,7 +106,7 @@ export default function RootLayout({
                   <a
                     key={item}
                     href="#"
-                    className="relative text-[15px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group flex items-center h-full translate-y-[2px]"
+                    className="relative text-[16px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group flex items-center h-full translate-y-[2px]"
                     style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
                   >
                     {item}
@@ -299,7 +299,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:30 (Promotional Top Bar Injection)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:28 (16px Header Text Update)</span>
             </div>
           </div>
         </footer>
@@ -308,4 +308,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:30 (Promotional Top Bar Injection) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:28 (16px Header Text Update) */
