@@ -68,7 +68,7 @@ export default function Home() {
         </div>
 
         {/* 3. Authority Grid — Subdued for White Background */}
-        <div className="mt-16 mb-8 pb-10 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30 w-full max-w-2xl mx-auto">
+        <div className="mt-16 mb-8 pb-16 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 opacity-30 w-full max-w-2xl mx-auto">
           {["ASNU CALIBRATED", "BOSCH CORE", "E85 READY", "EXPERT TUNED"].map(
             (tag) => (
               <div key={tag} className="flex flex-col items-center py-2">
