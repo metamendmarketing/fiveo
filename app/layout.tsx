@@ -244,7 +244,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 18:45 (Footer Center & Logo Space)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 18:49 (Forced Vercel Rebuild)</span>
             </div>
           </div>
         </footer>
@@ -253,4 +253,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:45 (Footer Text Centering) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:49 (Forced Rebuild) */
