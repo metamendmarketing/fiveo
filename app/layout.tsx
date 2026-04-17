@@ -64,7 +64,7 @@ export default function RootLayout({
         <div className="bg-[rgb(50,198,244)] w-full py-[5px] relative z-10 text-center block">
           <div className="fiveo-container px-[15px] box-border block w-full">
             <span 
-              className="text-white text-[16px] inline-block align-middle font-normal"
+              className="text-white text-[16px] inline-block align-middle font-normal leading-[1.4] normal-case tracking-normal"
               style={{ fontFamily: 'var(--font-open-sans), sans-serif' }}
             >
               Subscribe to our newsletter for exclusive access to discounts and promotions
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:10 (DOM Computed CSS Direct Port)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:13 (DOM Computed Line-Height Override)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:10 (DOM Computed CSS Direct Port) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:13 (DOM Computed Line-Height Override) */
