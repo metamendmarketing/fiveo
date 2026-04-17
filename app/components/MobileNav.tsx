@@ -78,7 +78,7 @@ export function MobileNav({ items }: MobileNavProps) {
 
       {/* Slide-out Panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-[#0F0F0F] border-l border-white/10 z-[58] transform transition-transform duration-300 ease-out lg:hidden ${
+        className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-black border-l border-white/10 z-[58] transform transition-transform duration-300 ease-out lg:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         role="dialog"
@@ -93,7 +93,7 @@ export function MobileNav({ items }: MobileNavProps) {
                 key={item}
                 href="#"
                 onClick={() => setIsOpen(false)}
-                className="text-sm font-bold uppercase tracking-wider py-4 px-2 border-b border-white/5 hover:text-[#00AEEF] hover:border-[#00AEEF]/20 transition-all"
+                className="text-white text-sm font-bold uppercase tracking-wider py-4 px-2 border-b border-white/5 hover:text-[#00AEEF] hover:border-[#00AEEF]/20 transition-all"
               >
                 {item}
               </a>
@@ -101,11 +101,11 @@ export function MobileNav({ items }: MobileNavProps) {
           </nav>
 
           {/* Mobile Search */}
-          <button className="fiveo-button-red w-full mt-8 text-sm tracking-[0.3em]">
+          <button className="fiveo-button-red w-full mt-8 text-sm tracking-[0.3em] text-white">
             Search
           </button>
 
-          <div className="mt-auto pb-8 opacity-40 text-[9px] uppercase tracking-widest text-center">
+          <div className="mt-auto pb-8 opacity-40 text-[9px] uppercase tracking-widest text-center text-white">
             © {new Date().getFullYear()} FiveO Motorsport
           </div>
         </div>
