@@ -59,6 +59,26 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${openSans.variable} ${openSansCondensed.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
+        
+        {/* ═══ 0. Promotional Top Bar ═══ */}
+        <div className="bg-[#00AEEF] w-full text-center py-1.5 px-4 flex-shrink-0 z-[60] relative">
+          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 md:gap-6">
+            <span 
+              className="text-white text-[12px] font-bold tracking-wide"
+              style={{ fontFamily: 'var(--font-open-sans), sans-serif' }}
+            >
+              Subscribe to our newsletter for exclusive access to discounts and promotions
+            </span>
+            <a 
+              href="#" 
+              className="inline-flex items-center justify-center bg-[#09090b] text-white text-[11px] font-extrabold uppercase tracking-[0.15em] px-4 py-1.5 rounded-[2px] transition-all hover:bg-white hover:text-[#09090b] shadow-sm"
+              style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
+            >
+              Subscribe Now
+            </a>
+          </div>
+        </div>
+
         {/* ═══ 1. Modern Glassmorphic Header ═══ */}
         <header
           className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 shadow-2xl shadow-black/10"
@@ -279,7 +299,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 20:28 (MobileNav React Portal Refactor)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:30 (Promotional Top Bar Injection)</span>
             </div>
           </div>
         </footer>
@@ -288,4 +308,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 20:28 (MobileNav React Portal Refactor) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:30 (Promotional Top Bar Injection) */
