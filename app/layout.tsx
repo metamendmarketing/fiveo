@@ -165,7 +165,7 @@ export default function RootLayout({
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-6 mb-16">
               
               {/* Col 1: Logos */}
-              <div className="flex flex-col gap-6 items-start lg:col-span-1">
+              <div className="flex flex-col gap-6 items-start lg:col-span-1 oracle-footer-heading-offset">
                 <Image
                   src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                   alt="FiveO Motorsport"
@@ -242,15 +242,9 @@ export default function RootLayout({
 
             </div>
 
-            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-[#666666]">
-              <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
-                <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 18:40 (Footer Corrections)</span>
-              </div>
-              <div className="flex gap-6">
-                <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
-                <a href="#" className="hover:text-white transition-colors">Secure Shopping</a>
-              </div>
+            <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
+              <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 18:45 (Footer Center & Logo Space)</span>
             </div>
           </div>
         </footer>
@@ -259,4 +253,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:40 (Precision Architecture) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:45 (Footer Text Centering) */
