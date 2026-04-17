@@ -61,17 +61,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full text-center py-3.5 sm:py-4 px-4 flex-shrink-0 z-[60] relative">
-          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6">
+        <div className="bg-[rgb(50,198,244)] w-full py-[5px] relative z-10 text-center block">
+          <div className="fiveo-container px-[15px] box-border block w-full">
             <span 
-              className="text-white text-[15px] font-medium antialiased text-shadow-sm"
-              style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0 1px 1px rgba(0,0,0,0.05)' }}
+              className="text-white text-[16px] inline-block align-middle font-normal"
+              style={{ fontFamily: 'var(--font-open-sans), sans-serif' }}
             >
               Subscribe to our newsletter for exclusive access to discounts and promotions
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-[15px] font-bold antialiased not-italic uppercase text-white px-8 py-2 rounded-[2px] transition-all hover:underline"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-[16px] font-bold not-italic uppercase text-white px-5 py-1.5 rounded-[2px] transition-all hover:underline align-middle ml-0 mt-3 sm:ml-4 sm:mt-0"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:07 (Promo Bar Exact Pad/Anti-Alias Balance)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:10 (DOM Computed CSS Direct Port)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:07 (Promo Bar Exact Pad/Anti-Alias Balance) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:10 (DOM Computed CSS Direct Port) */
