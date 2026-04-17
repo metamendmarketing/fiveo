@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <div className="relative min-h-[70vh] flex flex-col items-center">
-      <div className="relative z-10 w-full py-6 sm:py-10 text-center">
+    <div className="flex justify-center items-start w-full min-h-[70vh]">
+      <div className="w-full max-w-3xl flex flex-col items-center py-6 sm:py-10 text-center">
         {/* 1. Header — Electric Blue as requested */}
         <h1
           className="font-black uppercase tracking-tighter mb-2 italic text-black"
@@ -18,11 +18,11 @@ export default function Home() {
         </p>
 
         {/* 2. Wizard Shell (Contrasting Light Grey) */}
-        <div className="bg-[#f0f2f5] border border-gray-200 shadow-2xl shadow-black/5 rounded-md p-6 sm:p-8 lg:p-12 relative overflow-hidden w-full max-w-2xl mx-auto">
+        <div className="bg-[#f0f2f5] border border-gray-200 shadow-2xl shadow-black/5 rounded-md p-6 sm:p-8 lg:p-12 relative overflow-hidden w-full max-w-2xl mx-auto flex flex-col items-center text-center">
           {/* Subtle Brand Accents */}
           <div className="absolute top-0 left-0 w-full h-[3px] bg-[#00AEEF]" />
           
-          <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
+          <div className="relative z-10 flex flex-col items-center justify-center w-full gap-6 sm:gap-8">
             {/* Oracle Icon */}
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center border border-gray-100 shadow-sm">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-[#00AEEF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
