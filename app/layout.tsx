@@ -106,12 +106,10 @@ export default function RootLayout({
                   <a
                     key={item}
                     href="#"
-                    className="relative text-[16px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group flex items-center h-full translate-y-[2px]"
+                    className="text-[16px] font-bold uppercase tracking-[0.05em] text-white hover:text-[#00AEEF] transition-colors flex items-center h-full translate-y-[2px]"
                     style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
                   >
                     {item}
-                    {/* Electric Blue Animated Underline */}
-                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#00AEEF] transition-all duration-300 group-hover:w-full"></span>
                   </a>
                 ))}
               </nav>
@@ -299,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:28 (16px Header Text Update)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:40 (Desktop Nav Color Update)</span>
             </div>
           </div>
         </footer>
@@ -308,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:28 (16px Header Text Update) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:40 (Desktop Nav Color Update) */
