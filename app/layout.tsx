@@ -81,12 +81,12 @@ export default function RootLayout({
               </a>
 
               {/* Desktop Nav - Left Aligned next to Logo */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Desktop navigation">
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 h-10" aria-label="Desktop navigation">
                 {NAV_ITEMS.map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="relative text-[15px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group py-2"
+                    className="relative text-[15px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group flex items-center h-full translate-y-[2px]"
                     style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
                   >
                     {item}
@@ -98,16 +98,16 @@ export default function RootLayout({
             </div>
 
             {/* Right Block: Utilities */}
-            <div className="flex items-center gap-6 xl:gap-8">
+            <div className="flex items-center gap-6 xl:gap-8 h-10">
               {/* Minimal Search Icon */}
-              <button className="text-white/80 hover:text-[#00AEEF] transition-colors" aria-label="Search">
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors flex items-center h-full" aria-label="Search">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               {/* Account Icon (FiveO Native Geometry) */}
-              <button className="text-white/80 hover:text-[#00AEEF] transition-colors flex items-center justify-center p-1" aria-label="User account">
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors flex items-center justify-center p-1 h-full" aria-label="User account">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" stroke="none" viewBox="0 0 76.3 79.4">
                   <path d="M76.1,70.3l-3.6-10.8c-0.2-0.5-0.5-1-0.7-1.5c-2.9,2.1-5.2,7.1-6.9,12.5h-1.8c0.3-8.4,2.5-12.1,4.9-16.2
                       c-0.2-0.1-0.3-0.2-0.5-0.3l-9.8-3.9h-0.3c-0.4,0.5-0.9,1-1.3,1.4c-4.8,4.7-11.2,7.3-18,7.3c-6.8,0-13.2-2.7-18-7.3
@@ -120,7 +120,7 @@ export default function RootLayout({
               </button>
 
               {/* Cart Icon (FiveO Native Geometry) with notification pip */}
-              <button className="flex items-center gap-2 text-white/80 hover:text-[#00AEEF] transition-colors group relative p-1" aria-label="Shopping cart, 0 items">
+              <button className="flex items-center gap-2 text-white/80 hover:text-[#00AEEF] transition-colors group relative p-1 h-full" aria-label="Shopping cart, 0 items">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd" viewBox="0 0 512 512">
                   <path d="M245.626,416.026h-0.007c-2.962-1.693-6.107-3.034-9.389-4.103
                       c-1.367-0.455-2.741-0.872-4.154-1.211c-1.067-0.247-2.129-0.494-3.223-0.664c-2.702-0.469-5.443-0.794-8.263-0.794
@@ -151,7 +151,7 @@ export default function RootLayout({
                       C461.001,244.452,458.371,257.968,455.597,271.453z" />
                 </svg>
                 {/* Red pip indicator */}
-                <span className="absolute -top-1 -right-2 bg-[#E10600] text-white text-[9px] font-black w-[18px] h-[18px] rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+                <span className="absolute top-[2px] -right-2 bg-[#E10600] text-white text-[9px] font-black w-[18px] h-[18px] rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
                   0
                 </span>
               </button>
@@ -276,7 +276,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 18:57 (Menu Font Size Adjust)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 19:01 (Strict Optical Header Alignment)</span>
             </div>
           </div>
         </footer>
@@ -285,4 +285,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:57 (Menu Font Size Adjust) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 19:01 (Strict Optical Header Alignment) */
