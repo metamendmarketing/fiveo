@@ -133,21 +133,19 @@ export default function RootLayout({
           <div className="fiveo-container !px-0 sm:!px-4 lg:!px-8 w-full flex-grow">
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full h-full flex flex-col overflow-hidden">
               
-              {/* Breadcrumbs precisely aligned to the Centered App Grid */}
-              <div className="pt-8 pb-4 border-b border-gray-100">
-                <div className="w-full max-w-2xl mx-auto">
-                  <nav className="flex justify-center items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
-                    <a href="/" className="hover:text-black transition-colors">Home</a>
-                    <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    <a href="#" className="hover:text-black transition-colors">Fuel Injectors</a>
-                    <svg className="w-3 h-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    <span className="text-[#E10600]">Oracle</span>
-                  </nav>
-                </div>
+              {/* Breadcrumbs precisely aligned left under the logo */}
+              <div className="pt-8 px-6 sm:px-10 pb-4 border-b border-gray-100">
+                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
+                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
+                  <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <a href="#" className="inline-flex items-center leading-none hover:text-black transition-colors">Fuel Injectors</a>
+                  <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <span className="inline-flex items-center leading-none text-[#E10600]">Oracle</span>
+                </nav>
               </div>
 
               {/* Main Content Wrapper */}
@@ -220,7 +218,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 17:00 (Center Align & Logo Shift)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 17:05 (Micro-Typography Fix)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -234,4 +232,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:00 (Cache Buster) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:05 (Cache Buster) */
