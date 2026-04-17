@@ -65,7 +65,7 @@ export default function RootLayout({
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between py-5 sm:py-6">
+          <div className="fiveo-container flex items-center justify-between pt-5 pb-[30px] sm:pt-6 sm:pb-[34px]">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
@@ -77,7 +77,6 @@ export default function RootLayout({
                   width={220}
                   height={66}
                   className="w-auto h-12 sm:h-14 lg:h-16 transition-transform hover:scale-105 duration-300"
-                  style={{ marginBottom: "10px" }}
                   priority
                 />
               </a>
@@ -135,9 +134,9 @@ export default function RootLayout({
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full h-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
-              <div className="pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100">
+              <div className="pt-6 pb-4 pr-6 pl-[29px] sm:pr-10 sm:pl-[45px] border-b border-gray-100">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
-                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors" style={{ marginLeft: "5px" }}>Home</a>
+                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -219,7 +218,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 18:00 (Explicit Pixel Binds)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 18:05 (Flexbox Maths)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -233,4 +232,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:00 (Cache Buster) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:05 (Physics Fix) */
