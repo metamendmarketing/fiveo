@@ -71,8 +71,8 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-[10px] sm:py-0 h-auto sm:h-[28px] lg:h-[32px] no-min-h rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6"
-              style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide py-0 h-auto sm:h-[18px] lg:h-[22px] leading-none min-h-0 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6"
+              style={{ paddingLeft: '10px', paddingRight: '10px', fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
             </a>
@@ -187,7 +187,7 @@ export default function RootLayout({
               
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="pt-6 pb-4 pr-6 sm:pr-10 border-b border-gray-100 oracle-breadcrumb-indent">
-                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
+                <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8] pl-[10px]">
                   <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -257,7 +257,7 @@ export default function RootLayout({
                     <p className="mb-1 leading-relaxed">CALIFORNIA OFFICE: (562) 867-4999</p>
                     <p>OREGON OFFICE: (503) 508-5392</p>
                   </div>
-                  <div className="pt-2 pb-5">
+                  <div className="pt-2 !pb-5">
                     <strong className="text-white uppercase font-bold text-[12px] block mb-1">Email:</strong>
                     <p className="uppercase">CONTACT@FIVEOMOTORSPORT.COM</p>
                   </div>
@@ -295,9 +295,9 @@ export default function RootLayout({
 
             </div>
 
-            <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
-              <p className="mt-5">© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:14 (Best-Practice Partial Revert)</span>
+            <div className="!pt-10 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
+              <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:17 (Manual Restoration to b84685d)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:14 (Best-Practice Partial Revert) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:17 (Manual Restoration to b84685d) */

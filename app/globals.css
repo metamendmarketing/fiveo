@@ -70,9 +70,7 @@ body {
    tap target size recommended by Apple HIG & Material Design.
    ═══════════════════════════════════════════════════════ */
 
-button:not(.no-min-h), 
-a:not(.no-min-h), 
-input, select, textarea, [role="button"] {
+button, a, input, select, textarea, [role="button"] {
   /* Minimum touch target */
   min-height: var(--touch-min);
   /* Remove tap highlight on mobile WebKit */
@@ -300,7 +298,7 @@ body { --cache-bust: '1758'; }
 }
 
 .oracle-breadcrumb-indent {
-  padding-left: 5px;
+  padding-left: 15px;
 }
 
 .oracle-footer-top {
