@@ -79,58 +79,55 @@ export default function RootLayout({
           </div>
         </div>
 
-        {/* ═══ 1. Canonical Magento Parity Header ═══ */}
+        {/* ═══ 1. Modern Glassmorphic Header ═══ */}
         <header
-          className="sticky top-0 z-50 shadow-md border-b border-gray-200"
-          style={{ 
-            backgroundColor: '#FFFFFF',
-            backgroundImage: 'url(//www.fiveomotorsport.com/pub/media/porto/header_bg/default/bcakground-top.png)',
-            backgroundRepeat: 'repeat'
-          }}
+          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 shadow-2xl shadow-black/10"
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between pt-4 sm:pt-5 pb-2">
+          <div className="fiveo-container flex items-center justify-between pt-5 sm:pt-6 oracle-logo-offset">
             
             {/* Left Block: Logo + Navigation */}
-            <div className="flex flex-col lg:flex-row lg:items-end gap-4 xl:gap-8">
-              <a href="/" className="flex-shrink-0 flex items-center" aria-label="FiveO Motorsport Home">
+            <div className="flex items-center gap-10 xl:gap-14">
+              <a href="/" className="flex-shrink-0 flex items-center oracle-logo-top-margin" aria-label="FiveO Motorsport Home">
                 <Image
                   src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                   alt="FiveO Motorsport Logo"
                   width={220}
                   height={66}
-                  className="w-auto h-12 sm:h-14 lg:h-16"
+                  className="w-auto h-12 sm:h-14 lg:h-16 transition-transform hover:scale-105 duration-300"
                   priority
                 />
               </a>
 
               {/* Desktop Nav - Left Aligned next to Logo */}
-              <nav className="hidden lg:flex items-center" aria-label="Desktop navigation">
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 h-10" aria-label="Desktop navigation">
                 {NAV_ITEMS.map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[16px] font-bold uppercase tracking-[0.05em] text-[#000000] hover:bg-[#000000] hover:text-[#F4F4F4] transition-colors flex items-center h-10 px-4"
+                    className="relative text-[16px] font-bold uppercase tracking-[0.05em] text-white/80 hover:text-white transition-colors group flex items-center h-full translate-y-[2px]"
                     style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
                   >
                     {item}
+                    {/* Electric Blue Animated Underline */}
+                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#00AEEF] transition-all duration-300 group-hover:w-full"></span>
                   </a>
                 ))}
               </nav>
             </div>
 
             {/* Right Block: Utilities */}
-            <div className="flex items-center gap-4 xl:gap-6 h-10">
+            <div className="flex items-center gap-6 xl:gap-8 h-10">
               {/* Minimal Search Icon */}
-              <button className="text-[#000000] hover:text-[#00AEEF] transition-colors flex items-center h-full" aria-label="Search">
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors flex items-center h-full" aria-label="Search">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               {/* Account Icon (FiveO Native Geometry) */}
-              <button className="text-[#000000] hover:text-[#00AEEF] transition-colors flex items-center justify-center p-1 h-full" aria-label="User account">
+              <button className="text-white/80 hover:text-[#00AEEF] transition-colors flex items-center justify-center p-1 h-full" aria-label="User account">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" stroke="none" viewBox="0 0 76.3 79.4">
                   <path d="M76.1,70.3l-3.6-10.8c-0.2-0.5-0.5-1-0.7-1.5c-2.9,2.1-5.2,7.1-6.9,12.5h-1.8c0.3-8.4,2.5-12.1,4.9-16.2
                       c-0.2-0.1-0.3-0.2-0.5-0.3l-9.8-3.9h-0.3c-0.4,0.5-0.9,1-1.3,1.4c-4.8,4.7-11.2,7.3-18,7.3c-6.8,0-13.2-2.7-18-7.3
@@ -143,7 +140,7 @@ export default function RootLayout({
               </button>
 
               {/* Cart Icon (FiveO Native Geometry) with notification pip */}
-              <button className="flex items-center gap-2 text-[#000000] hover:text-[#00AEEF] transition-colors group relative p-1 h-full" aria-label="Shopping cart, 0 items">
+              <button className="flex items-center gap-2 text-white/80 hover:text-[#00AEEF] transition-colors group relative p-1 h-full" aria-label="Shopping cart, 0 items">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" stroke="none" fillRule="evenodd" clipRule="evenodd" viewBox="0 0 512 512">
                   <path d="M245.626,416.026h-0.007c-2.962-1.693-6.107-3.034-9.389-4.103
                       c-1.367-0.455-2.741-0.872-4.154-1.211c-1.067-0.247-2.129-0.494-3.223-0.664c-2.702-0.469-5.443-0.794-8.263-0.794
@@ -235,55 +232,55 @@ export default function RootLayout({
 
               {/* Col 2: Shop */}
               <div>
-                <h4 className="text-[16px] font-bold text-[#FFFFFF] mb-6 oracle-footer-heading-offset">Shop</h4>
-                <ul className="space-y-4 text-[12px] text-[#A3A3A3] uppercase">
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">Fuel Injectors</a></li>
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">Fuel Pumps</a></li>
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">More Products</a></li>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Shop</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">Fuel Injectors</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Fuel Pumps</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">More Products</a></li>
                 </ul>
               </div>
 
               {/* Col 3: Menu */}
               <div>
-                <h4 className="text-[16px] font-bold text-[#FFFFFF] mb-6 oracle-footer-heading-offset">Menu</h4>
-                <ul className="space-y-4 text-[12px] text-[#A3A3A3] uppercase">
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">FAQ</a></li>
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">Links</a></li>
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">Our Warranty</a></li>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Menu</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Links</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Our Warranty</a></li>
                 </ul>
               </div>
 
               {/* Col 4: Contact Us */}
               <div className="lg:col-span-1">
-                <h4 className="text-[16px] font-bold text-[#FFFFFF] mb-6 oracle-footer-heading-offset">Contact us</h4>
-                <div className="space-y-4 text-[11px] text-[#A3A3A3]">
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Contact us</h4>
+                <div className="space-y-4 text-[11px] text-[#cccccc]">
                   <div>
-                    <strong className="text-[#FFFFFF] uppercase font-bold text-[12px] block mb-1">Phone:</strong>
-                    <p className="mb-1 leading-relaxed text-[#A3A3A3]">CALIFORNIA OFFICE: (562) 867-4999</p>
-                    <p className="text-[#A3A3A3]">OREGON OFFICE: (503) 508-5392</p>
+                    <strong className="text-white uppercase font-bold text-[12px] block mb-1">Phone:</strong>
+                    <p className="mb-1 leading-relaxed">CALIFORNIA OFFICE: (562) 867-4999</p>
+                    <p>OREGON OFFICE: (503) 508-5392</p>
                   </div>
                   <div className="pt-2">
-                    <strong className="text-[#FFFFFF] uppercase font-bold text-[12px] block mb-1">Email:</strong>
-                    <p className="uppercase text-[#A3A3A3]">CONTACT@FIVEOMOTORSPORT.COM</p>
+                    <strong className="text-white uppercase font-bold text-[12px] block mb-1">Email:</strong>
+                    <p className="uppercase">CONTACT@FIVEOMOTORSPORT.COM</p>
                   </div>
                 </div>
               </div>
 
               {/* Col 5: Follow Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-[#FFFFFF] mb-6 oracle-footer-heading-offset">Follow us</h4>
-                <ul className="space-y-6 text-[12px] text-[#A3A3A3] uppercase font-bold">
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Follow us</h4>
+                <ul className="space-y-6 text-[12px] text-[#cccccc] uppercase font-bold">
                   <li>
-                    <a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors flex items-center gap-4">
+                    <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
                       {/* F icon standard */}
-                      <span className="text-[#FFFFFF] text-lg font-serif italic w-4 text-center">f</span>
+                      <span className="text-white text-lg font-serif italic w-4 text-center">f</span>
                       Facebook
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors flex items-center gap-4">
+                    <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
                       {/* Twitter bird icon placeholder */}
-                      <svg className="w-4 h-4 text-[#FFFFFF]" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
                       Twitter
                     </a>
                   </li>
@@ -292,17 +289,17 @@ export default function RootLayout({
 
               {/* Col 6: Join Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-[#FFFFFF] mb-6 oracle-footer-heading-offset">Join us</h4>
-                <ul className="space-y-4 text-[12px] text-[#A3A3A3] uppercase">
-                  <li><a href="#" className="text-[#A3A3A3] hover:text-[#A3A3A3] transition-colors">Join Our Newsletter</a></li>
+                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Join us</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">Join Our Newsletter</a></li>
                 </ul>
               </div>
 
             </div>
 
-            <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#FFFFFF] text-center w-full bg-[#000000]">
+            <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:38 (1:1 UI CSS Parity)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:28 (16px Header Text Update)</span>
             </div>
           </div>
         </footer>
@@ -311,4 +308,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:38 (1:1 UI CSS Parity) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:28 (16px Header Text Update) */
