@@ -65,7 +65,7 @@ export default function RootLayout({
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between" style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem" }}>
+          <div className="fiveo-container flex items-center justify-between py-4 sm:py-5">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
@@ -133,8 +133,8 @@ export default function RootLayout({
           <div className="fiveo-container !px-0 sm:!px-4 lg:!px-8 w-full flex-grow">
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full h-full flex flex-col overflow-hidden">
               
-              {/* Breadcrumbs with hardcoded padding to bypass CSS cache */}
-              <div className="border-b border-gray-100" style={{ paddingTop: "2rem", paddingBottom: "1.5rem", paddingLeft: "3rem", paddingRight: "3rem" }}>
+              {/* Standard Breadcrumb Spacing */}
+              <div className="pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8]">
                   <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,9 +159,8 @@ export default function RootLayout({
 
         {/* ═══ 4. Premium Modern Footer ═══ */}
         <footer
-          className="bg-[#09090b] text-white border-t border-white/5"
+          className="bg-[#09090b] text-white pt-16 pb-8 mt-12 sm:mt-16 border-t border-white/5"
           role="contentinfo"
-          style={{ paddingTop: "5rem", paddingBottom: "3rem", marginTop: "3rem" }}
         >
           <div className="fiveo-container">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -219,7 +218,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 17:30 (Fooled Cache Inline Styles)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 17:35 (Standard Shell Spacing)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -233,4 +232,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:30 (Cache Buster) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 17:35 (Cache Buster) */
