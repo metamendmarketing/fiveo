@@ -279,7 +279,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 19:15 (MobileNav Inline Opacity Fix)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 20:28 (MobileNav React Portal Refactor)</span>
             </div>
           </div>
         </footer>
@@ -288,4 +288,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 19:15 (MobileNav Inline Opacity Fix) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 20:28 (MobileNav React Portal Refactor) */

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface MobileNavProps {
   items: string[];
@@ -8,6 +9,11 @@ interface MobileNavProps {
 
 export function MobileNav({ items }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -67,53 +73,59 @@ export function MobileNav({ items }: MobileNavProps) {
         </div>
       </button>
 
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] lg:hidden"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      {/* Portaled Slide-Out Menu */}
+      {mounted && createPortal(
+        <div className="lg:hidden">
+          {/* Backdrop */}
+          {isOpen && (
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9990]"
+              onClick={() => setIsOpen(false)}
+              aria-hidden="true"
+            />
+          )}
 
-      {/* Slide-out Panel */}
-      <div
-        className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-black border-l border-white/10 z-[58] transform transition-transform duration-300 ease-out lg:hidden ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation"
-        style={{ 
-          paddingTop: "var(--safe-top)", 
-          paddingBottom: "var(--safe-bottom)",
-          backgroundColor: "#0F0F0F" 
-        }}
-      >
-        <div className="flex flex-col h-full pt-20 px-6">
-          <nav className="flex flex-col gap-1" aria-label="Mobile navigation links">
-            {items.map((item) => (
-              <a
-                key={item}
-                href="#"
-                onClick={() => setIsOpen(false)}
-                className="text-white text-sm font-bold uppercase tracking-wider py-4 px-2 border-b border-white/5 hover:text-[#00AEEF] hover:border-[#00AEEF]/20 transition-all"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
+          {/* Slide-out Panel */}
+          <div
+            className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-black border-l border-white/10 z-[9999] transform transition-transform duration-300 ease-out ${
+              isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            style={{ 
+              paddingTop: "var(--safe-top)", 
+              paddingBottom: "var(--safe-bottom)",
+              backgroundColor: "#0F0F0F" 
+            }}
+          >
+            <div className="flex flex-col h-full pt-20 px-6">
+              <nav className="flex flex-col gap-1" aria-label="Mobile navigation links">
+                {items.map((item) => (
+                  <a
+                    key={item}
+                    href="#"
+                    onClick={() => setIsOpen(false)}
+                    className="text-white text-sm font-bold uppercase tracking-wider py-4 px-2 border-b border-white/5 hover:text-[#00AEEF] hover:border-[#00AEEF]/20 transition-all"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </nav>
 
-          {/* Mobile Search */}
-          <button className="fiveo-button-red w-full mt-8 text-sm tracking-[0.3em] text-white">
-            Search
-          </button>
+              {/* Mobile Search */}
+              <button className="fiveo-button-red w-full mt-8 text-sm tracking-[0.3em] text-white">
+                Search
+              </button>
 
-          <div className="mt-auto pb-8 opacity-40 text-[9px] uppercase tracking-widest text-center text-white">
-            © {new Date().getFullYear()} FiveO Motorsport
+              <div className="mt-auto pb-8 opacity-40 text-[9px] uppercase tracking-widest text-center text-white">
+                © {new Date().getFullYear()} FiveO Motorsport
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }
