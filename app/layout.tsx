@@ -69,8 +69,7 @@ export default function RootLayout({
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
-              {/* Logo */}
-              <a href="/" className="flex-shrink-0 flex items-center" aria-label="FiveO Motorsport Home">
+              <a href="/" className="flex-shrink-0 flex items-center oracle-logo-top-margin" aria-label="FiveO Motorsport Home">
                 <Image
                   src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                   alt="FiveO Motorsport Logo"
@@ -218,7 +217,7 @@ export default function RootLayout({
             <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 18:10 (Strict CSS Architecture)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 18:30 (Logo Micro-margin)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
@@ -232,4 +231,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:10 (Precision Architecture) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 18:30 (Precision Architecture) */
