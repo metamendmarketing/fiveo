@@ -61,8 +61,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full py-3 px-4 relative z-50">
-          <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+        <div className="bg-[#00AEEF] w-full h-auto sm:h-auto lg:h-[48px] min-h-0 hidden sm:flex items-center justify-center py-3 lg:py-0 px-4 relative z-50">
+          <div className="fiveo-container flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6">
             <span 
               className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
               style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}
@@ -71,7 +71,7 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-2 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-[10px] sm:py-0 h-auto sm:h-[28px] lg:h-[32px] no-min-h rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 lg:ml-6"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -257,7 +257,7 @@ export default function RootLayout({
                     <p className="mb-1 leading-relaxed">CALIFORNIA OFFICE: (562) 867-4999</p>
                     <p>OREGON OFFICE: (503) 508-5392</p>
                   </div>
-                  <div className="pt-2">
+                  <div className="pt-2 pb-5">
                     <strong className="text-white uppercase font-bold text-[12px] block mb-1">Email:</strong>
                     <p className="uppercase">CONTACT@FIVEOMOTORSPORT.COM</p>
                   </div>
@@ -296,8 +296,8 @@ export default function RootLayout({
             </div>
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
-              <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:12 (Complete Restoration to Standard Base)</span>
+              <p className="mt-5">© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:14 (Best-Practice Partial Revert)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:12 (Complete Restoration to Standard Base) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:14 (Best-Practice Partial Revert) */
