@@ -101,12 +101,12 @@ export default function RootLayout({
               </a>
 
               {/* Desktop Nav - Left Aligned next to Logo */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 h-10" aria-label="Desktop navigation">
+              <nav className="hidden lg:flex items-center gap-4 xl:gap-6 h-10" aria-label="Desktop navigation">
                 {NAV_ITEMS.map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[18px] font-bold not-italic uppercase tracking-[0.05em] text-white hover:text-[#00AEEF] transition-colors flex items-center h-full translate-y-[2px]"
+                    className="text-[14px] font-bold not-italic uppercase text-white hover:text-[#00AEEF] transition-colors flex items-center h-full translate-y-[2px]"
                     style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
                   >
                     {item}
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:44 (18px Nav Font Bump)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 21:50 (Nav Typography Compressions)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:44 (18px Nav Font Bump) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 21:50 (Nav Typography Compressions) */
