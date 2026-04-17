@@ -84,7 +84,11 @@ export function MobileNav({ items }: MobileNavProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
-        style={{ paddingTop: "var(--safe-top)", paddingBottom: "var(--safe-bottom)" }}
+        style={{ 
+          paddingTop: "var(--safe-top)", 
+          paddingBottom: "var(--safe-bottom)",
+          backgroundColor: "#0F0F0F" 
+        }}
       >
         <div className="flex flex-col h-full pt-20 px-6">
           <nav className="flex flex-col gap-1" aria-label="Mobile navigation links">
