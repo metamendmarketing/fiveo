@@ -156,68 +156,102 @@ export default function RootLayout({
           </div>
         </div>
 
-        {/* ═══ 4. Premium Modern Footer ═══ */}
+        {/* ═══ 4. Canonical FiveO Website Footer ═══ */}
         <footer
-          className="bg-[#09090b] text-white pb-8 border-t border-white/5 oracle-footer-top"
+          className="bg-black text-white border-t-[3px] border-[#00AEEF] pt-16 pb-8"
           role="contentinfo"
         >
           <div className="fiveo-container">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-              {/* Col 1: Customer Service */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-6 mb-16">
+              
+              {/* Col 1: Logos */}
+              <div className="flex flex-col gap-6 items-start lg:col-span-1">
+                <Image
+                  src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
+                  alt="FiveO Motorsport"
+                  width={160}
+                  height={48}
+                  className="w-auto h-12"
+                />
+                {/* SEMA Logo Placeholder (approximated for accurate bounding) */}
+                <div className="w-[70px] h-[90px] border border-gray-600 rounded-sm flex items-center justify-center overflow-hidden">
+                   <div className="w-12 h-12 rounded-full bg-[#E10600] flex items-center justify-center border-2 border-white">
+                      <span className="text-[10px] font-bold text-white">SEMA</span>
+                   </div>
+                </div>
+              </div>
+
+              {/* Col 2: Shop */}
               <div>
-                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">Customer Service</h4>
-                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>About Us</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Contact Us</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Shipping & Returns</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Privacy Policy</a></li>
+                <h4 className="text-[16px] font-bold text-white mb-6">Shop</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">Fuel Injectors</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Fuel Pumps</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">More Products</a></li>
                 </ul>
               </div>
 
-              {/* Col 2: Technical Info */}
+              {/* Col 3: Menu */}
               <div>
-                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">Technical Info</h4>
-                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Flow Rate Tables</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>FAQ & Tech Support</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Tuning Data</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Warranty</a></li>
+                <h4 className="text-[16px] font-bold text-white mb-6">Menu</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Links</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Our Warranty</a></li>
                 </ul>
               </div>
 
-              {/* Col 3: My Account */}
-              <div>
-                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">My Account</h4>
-                <ul className="space-y-4 text-[13px] tracking-wider text-gray-400 font-medium">
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Login / Register</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Order History</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Wish List</a></li>
-                  <li><a href="#" className="hover:text-[#00AEEF] transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-[#00AEEF] transition-all group-hover:w-3"></span>Track My Order</a></li>
-                </ul>
-              </div>
-
-              {/* Col 4: Newsletter/Branding */}
-              <div>
-                <h4 className="text-[13px] font-black uppercase tracking-[0.2em] mb-6 text-white/90">FiveO Racing</h4>
-                <p className="text-[14px] text-gray-500 mb-8 font-normal leading-relaxed">
-                  The ultimate in high-performance fuel injection. Real-time physics, expert calibration.
-                </p>
-                <div className="flex gap-4">
-                  {/* Clean SVG Social Icons */}
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#00AEEF] hover:border-[#00AEEF] hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
-                    <span className="text-sm font-bold">f</span>
+              {/* Col 4: Contact Us */}
+              <div className="lg:col-span-1">
+                <h4 className="text-[16px] font-bold text-white mb-6">Contact us</h4>
+                <div className="space-y-4 text-[11px] text-[#cccccc]">
+                  <div>
+                    <strong className="text-white uppercase font-bold text-[12px] block mb-1">Phone:</strong>
+                    <p className="mb-1 leading-relaxed">CALIFORNIA OFFICE: (562) 867-4999</p>
+                    <p>OREGON OFFICE: (503) 508-5392</p>
                   </div>
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#E10600] hover:border-[#E10600] hover:text-white transition-all duration-300 cursor-pointer text-gray-400">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                  <div className="pt-2">
+                    <strong className="text-white uppercase font-bold text-[12px] block mb-1">Email:</strong>
+                    <p className="uppercase">CONTACT@FIVEOMOTORSPORT.COM</p>
                   </div>
                 </div>
               </div>
+
+              {/* Col 5: Follow Us */}
+              <div>
+                <h4 className="text-[16px] font-bold text-white mb-6">Follow us</h4>
+                <ul className="space-y-6 text-[12px] text-[#cccccc] uppercase font-bold">
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
+                      {/* F icon standard */}
+                      <span className="text-white text-lg font-serif italic w-4 text-center">f</span>
+                      Facebook
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
+                      {/* Twitter bird icon placeholder */}
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                      Twitter
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Col 6: Join Us */}
+              <div>
+                <h4 className="text-[16px] font-bold text-white mb-6">Join us</h4>
+                <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
+                  <li><a href="#" className="hover:text-white transition-colors">Join Our Newsletter</a></li>
+                </ul>
+              </div>
+
             </div>
 
-            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-gray-600">
+            <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] uppercase font-bold tracking-[0.1em] text-[#666666]">
               <div className="flex flex-col gap-1 items-start sm:items-center sm:flex-row sm:gap-4">
                 <p>© {new Date().getFullYear()} FiveO Motorsport, Inc. All Rights Reserved.</p>
-                <span className="text-[9px] text-[#00AEEF]">Build: 18:30 (Logo Micro-margin)</span>
+                <span className="text-[9px] text-[#00AEEF]">Build: 18:35 (Canonical Live Footer)</span>
               </div>
               <div className="flex gap-6">
                 <a href="#" className="hover:text-white transition-colors">Payments We Accept</a>
