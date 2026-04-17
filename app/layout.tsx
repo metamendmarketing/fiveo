@@ -61,7 +61,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
-        <div className="bg-[#00AEEF] w-full h-auto sm:min-h-[48px] flex items-center justify-center py-3 sm:py-0 px-4 relative z-50">
+        <div className="bg-[#00AEEF] w-full h-auto sm:h-[40px] lg:h-[48px] min-h-0 flex items-center justify-center py-3 sm:py-0 px-4 relative z-50">
           <div className="fiveo-container flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <span 
               className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
@@ -71,7 +71,7 @@ export default function RootLayout({
             </span>
             <a 
               href="#" 
-              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-1.5 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 sm:ml-6"
+              className="inline-flex items-center justify-center bg-[#1390CE] text-white text-[14px] sm:text-[15px] font-bold uppercase tracking-wide px-6 py-1.5 sm:py-0 h-auto sm:h-[28px] lg:h-[32px] min-h-0 rounded-[3px] transition-colors hover:bg-[#0E7AAB] shadow-sm ml-2 sm:ml-6"
               style={{ fontFamily: 'var(--font-open-sans-condensed), sans-serif' }}
             >
               Subscribe Now
@@ -297,7 +297,7 @@ export default function RootLayout({
 
             <div className="pt-8 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:37 (Standard Proportional Layout)</span>
+              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 22:42 (Pro Stepped Breakpoint Logic)</span>
             </div>
           </div>
         </footer>
@@ -306,4 +306,4 @@ export default function RootLayout({
   );
 }
 
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:37 (Standard Proportional Layout) */
+/* Vercel Force-Sync Build Trigger: April 16, 2026 - 22:42 (Pro Stepped Breakpoint Logic) */
