@@ -105,6 +105,16 @@ input, select, textarea {
   appearance: none;
   -webkit-appearance: none;
   border-radius: 0;
+  --footer-padding-adjusted: 1;
+}
+
+/* 
+  Vercel Edge-Cache Aggressive Buster
+  Timestamp: April 16, 2026 - 17:55
+  Trigger forces Next.js to generate a new [hash].css file and invalidates the frozen Tailwind output bundle.
+*/
+.edge-cache-bust-trigger-1755 {
+    display: none;
 }
 
 select {
@@ -265,3 +275,6 @@ img, video, svg {
     display: none;
   }
 }
+
+/* Cache Buster: 17:58 */
+body { --cache-bust: '1758'; }
