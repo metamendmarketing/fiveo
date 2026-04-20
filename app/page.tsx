@@ -1,3 +1,14 @@
+/**
+ * Fuel Injector Oracle | Home Page
+ * 
+ * This page serves as the primary entry point for the technical sizing assistant.
+ * 
+ * Current State: UI Shell with placeholder Wizard components.
+ * To Do:
+ * - Implement state machine for the step-based wizard.
+ * - Integrate with Supabase 'products' and 'engines' tables.
+ * - Add real-time flow rate calculations based on target HP.
+ */
 export default function Home() {
   return (
     <div className="flex justify-center items-start w-full min-h-[70vh]">

@@ -12,6 +12,26 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # debug
 # dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# data artifacts (raw exports should stay local)
+/data/raw/*.html
+/data/archive/
+/data/Console.txt
+
+# testing
+/coverage
 # env files (can opt-in for committing if needed)
 # misc
 # next.js

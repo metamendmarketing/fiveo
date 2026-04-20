@@ -3,8 +3,18 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import { MobileNav } from "./components/MobileNav";
-
 import { Open_Sans, Roboto_Condensed } from "next/font/google";
+
+/**
+ * FiveO Motorsport | Root Layout
+ * 
+ * This is the primary shell for the Fuel Injector Oracle application.
+ * It manages:
+ * - SEO Metadata and Viewport settings
+ * - Global design system (Next.js Fonts + Tailwind 4)
+ * - Navigation (Desktop and Mobile)
+ * - The canonical FiveO Footer
+ */
 
 const openSans = Open_Sans({
   subsets: ["latin"],

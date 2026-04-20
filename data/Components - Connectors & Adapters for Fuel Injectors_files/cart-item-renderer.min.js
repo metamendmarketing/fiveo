@@ -1,1 +1,0 @@
-define(['uiComponent'],function(Component){'use strict';return Component.extend({getProductNameUnsanitizedHtml:function(productName){return productName;},getOptionValueUnsanitizedHtml:function(optionValue){return optionValue;}});});
