@@ -1,0 +1,87 @@
+/**
+ * BuildProfilePanel — Glassmorphic sidebar showing current selections
+ */
+"use client";
+
+import type { BuildProfile } from "@/app/lib/constants";
+
+export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
+  const items: { label: string; value: string | null }[] = [
+    {
+      label: "Vehicle",
+      value: profile.year && profile.make && profile.model
+        ? `${profile.year} ${profile.make} ${profile.model}`
+        : null,
+    },
+    { label: "Engine", value: profile.engineLabel || profile.engineCode },
+    {
+      label: "Build Level",
+      value: profile.engineStatus
+        ? { stock: "Stock", "light-mods": "Light Mods", "heavily-modified": "Heavily Modified" }[profile.engineStatus]
+        : null,
+    },
+    {
+      label: "Goal",
+      value: profile.goal
+        ? { replace: "Replace Worn", improve: "Improve Performance", "max-power": "Max Power", "fix-issues": "Fix Issues" }[profile.goal]
+        : null,
+    },
+    {
+      label: "Usage",
+      value: profile.usage
+        ? { daily: "Daily Driver", street: "Street Performance", track: "Track / Racing", mixed: "Mixed Use" }[profile.usage]
+        : null,
+    },
+    {
+      label: "Target HP",
+      value: profile.targetHP ? `+${profile.targetHP} HP` : (profile.hpMode !== "unsure" ? profile.hpMode : null),
+    },
+    {
+      label: "Fuel",
+      value: profile.fuelType
+        ? { pump: "Pump Gas", e85: "E85 / Flex", race: "Race Fuel", unsure: "Not Sure" }[profile.fuelType]
+        : null,
+    },
+    {
+      label: "Mods",
+      value: profile.mods.length > 0 ? profile.mods.join(", ") : null,
+    },
+    {
+      label: "Priorities",
+      value: profile.priorities.length > 0 ? profile.priorities.join(" > ") : null,
+    },
+    {
+      label: "Budget",
+      value: profile.budget
+        ? { budget: "Budget", mid: "Mid-Range", premium: "Premium" }[profile.budget]
+        : null,
+    },
+  ];
+
+  const activeItems = items.filter((i) => i.value);
+
+  if (activeItems.length === 0) {
+    return (
+      <div className="oracle-build-profile p-5">
+        <div className="oracle-build-profile-label mb-3">Your Build</div>
+        <p className="text-xs text-white/40">Answer questions to build your profile...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="oracle-build-profile p-5 sticky top-24">
+      <div className="oracle-build-profile-label mb-4">Your Build</div>
+      <div className="space-y-3">
+        {activeItems.map((item) => (
+          <div key={item.label}>
+            <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/30 mb-0.5">
+              {item.label}
+            </div>
+            <div className="oracle-build-profile-value">{item.value}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

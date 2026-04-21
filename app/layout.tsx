@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Link from "next/link";
 import { MobileNav } from "./components/MobileNav";
 import { Open_Sans, Roboto_Condensed } from "next/font/google";
 
@@ -99,7 +100,7 @@ export default function RootLayout({
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
-              <a href="/" className="flex-shrink-0 flex items-center oracle-logo-top-margin" aria-label="FiveO Motorsport Home">
+              <Link href="/" className="flex-shrink-0 flex items-center oracle-logo-top-margin" aria-label="FiveO Motorsport Home">
                 <Image
                   src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                   alt="FiveO Motorsport Logo"
@@ -108,7 +109,7 @@ export default function RootLayout({
                   className="w-auto h-12 sm:h-14 lg:h-16 transition-transform hover:scale-105 duration-300"
                   priority
                 />
-              </a>
+              </Link>
 
               {/* Desktop Nav - Left Aligned next to Logo */}
               <nav className="hidden lg:flex items-center gap-4 xl:gap-6 h-10" aria-label="Desktop navigation">
@@ -198,7 +199,7 @@ export default function RootLayout({
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="pt-6 pb-4 pr-6 sm:pr-10 border-b border-gray-100 oracle-breadcrumb-indent">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8] pl-[10px]">
-                  <a href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</a>
+                  <Link href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</Link>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -229,13 +230,15 @@ export default function RootLayout({
               
               {/* Col 1: Logos */}
               <div className="flex flex-col gap-6 items-start lg:col-span-1 oracle-footer-heading-offset">
-                <Image
-                  src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
-                  alt="FiveO Motorsport"
-                  width={160}
-                  height={48}
-                  className="w-auto h-12"
-                />
+                <Link href="/">
+                  <Image
+                    src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
+                    alt="FiveO Motorsport"
+                    width={160}
+                    height={48}
+                    className="w-auto h-12"
+                  />
+                </Link>
               </div>
 
               {/* Col 2: Shop */}

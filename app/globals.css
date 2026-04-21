@@ -304,3 +304,594 @@ body { --cache-bust: '1758'; }
 .oracle-footer-top {
   padding-top: 10px;
 }
+
+/* ═══════════════════════════════════════════════════════
+   11. ORACLE WIZARD — COMPLETE DESIGN SYSTEM
+   Covers all step transitions, card styles, progress bar,
+   processing animation, and results presentation.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── 11a. CSS Custom Properties for the Wizard ─── */
+:root {
+  --oracle-blue: #00AEEF;
+  --oracle-red: #E10600;
+  --oracle-dark: #09090b;
+  --oracle-glass-bg: rgba(15, 15, 15, 0.75);
+  --oracle-glass-border: rgba(255, 255, 255, 0.08);
+  --oracle-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --oracle-card-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.2);
+  --oracle-transition-speed: 300ms;
+  --oracle-accent-glow: 0 0 20px rgba(0, 174, 239, 0.15);
+}
+
+/* ─── 11b. Step Transitions (Framer Motion fallback) ─── */
+.oracle-step-enter {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+.oracle-step-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity var(--oracle-transition-speed) ease-out,
+              transform var(--oracle-transition-speed) ease-out;
+}
+
+.oracle-step-exit {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 200ms ease-in,
+              transform 200ms ease-in;
+}
+
+/* ─── 11c. Selection Cards ─── */
+.oracle-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform var(--oracle-transition-speed) ease,
+              box-shadow var(--oracle-transition-speed) ease,
+              border-color var(--oracle-transition-speed) ease;
+}
+
+.oracle-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  z-index: 1;
+  transition: opacity var(--oracle-transition-speed) ease;
+}
+
+.oracle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--oracle-card-shadow-hover);
+  border-color: rgba(0, 174, 239, 0.2);
+}
+
+.oracle-card:hover::before {
+  opacity: 0.85;
+}
+
+.oracle-card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.oracle-card-selected {
+  border-color: var(--oracle-blue) !important;
+  box-shadow: var(--oracle-accent-glow), var(--oracle-card-shadow);
+}
+
+.oracle-card-selected::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--oracle-blue);
+  z-index: 3;
+}
+
+.oracle-card-dimmed {
+  opacity: 0.35;
+  pointer-events: none;
+  transform: scale(0.97);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+
+/* ─── 11d. Fuel Gauge Progress Indicator ─── */
+.oracle-fuel-gauge {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.oracle-fuel-gauge-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--oracle-blue), #00d4ff);
+  border-radius: 2px;
+  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(0, 174, 239, 0.4);
+}
+
+.oracle-fuel-gauge-marker {
+  position: absolute;
+  top: -4px;
+  width: 12px;
+  height: 12px;
+  background: var(--oracle-blue);
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  transition: left 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 6px rgba(0, 174, 239, 0.5);
+}
+
+/* ─── 11e. Build Profile (Glassmorphic Sidebar) ─── */
+.oracle-build-profile {
+  background: var(--oracle-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--oracle-glass-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+.oracle-build-profile-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--oracle-blue);
+}
+
+.oracle-build-profile-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+/* ─── 11f. HP Tachometer Slider ─── */
+.oracle-hp-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  transition: background 200ms ease;
+}
+
+.oracle-hp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--oracle-blue);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.oracle-hp-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 12px rgba(0, 174, 239, 0.4);
+}
+
+.oracle-hp-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--oracle-blue);
+  cursor: pointer;
+}
+
+/* ─── 11g. Processing Sequence Animation ─── */
+.oracle-processing-bg {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 174, 239, 0.03) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+/* Pulsing radar ring */
+@keyframes oracle-radar-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.6;
+    border-color: rgba(0, 174, 239, 0.4);
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+    border-color: rgba(0, 174, 239, 0.8);
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.6;
+    border-color: rgba(0, 174, 239, 0.4);
+  }
+}
+
+.oracle-radar-ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid var(--oracle-blue);
+  animation: oracle-radar-pulse 2s ease-in-out infinite;
+}
+
+.oracle-radar-ring-outer {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 174, 239, 0.2);
+  animation: oracle-radar-pulse 2s ease-in-out infinite 0.3s;
+}
+
+/* Sequential text reveal */
+@keyframes oracle-text-reveal {
+  0% { opacity: 0; transform: translateY(8px); }
+  15% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+.oracle-status-text {
+  animation: oracle-text-reveal 1.8s ease-in-out forwards;
+}
+
+/* Progress bar for processing */
+.oracle-progress-bar {
+  width: 100%;
+  max-width: 320px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.oracle-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--oracle-blue), #00d4ff);
+  border-radius: 2px;
+  transition: width 300ms linear;
+  box-shadow: 0 0 6px rgba(0, 174, 239, 0.5);
+}
+
+.oracle-progress-percent {
+  font-size: 32px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--oracle-blue);
+  font-family: var(--font-open-sans-condensed), sans-serif;
+}
+
+/* ─── 11h. Result Cards ─── */
+.oracle-result-card {
+  background: white;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform var(--oracle-transition-speed) ease,
+              box-shadow var(--oracle-transition-speed) ease;
+}
+
+.oracle-result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Expert Pick badge */
+.oracle-expert-pick {
+  background: linear-gradient(135deg, var(--oracle-blue), #0088cc);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 4px 12px;
+  border-radius: 2px;
+}
+
+/* Product type tags (matching FiveO site) */
+.oracle-tag-performance {
+  background: var(--oracle-red);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+
+.oracle-tag-oem {
+  background: var(--oracle-blue);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+
+/* Selection Strategy glassmorphic card */
+.oracle-strategy-card {
+  background: var(--oracle-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--oracle-glass-border);
+  border-radius: 8px;
+  border-top: 3px solid var(--oracle-blue);
+}
+
+/* ─── 11i. Education Beat (Contextual Tips) ─── */
+.oracle-education-beat {
+  background: rgba(0, 174, 239, 0.04);
+  border-left: 3px solid var(--oracle-blue);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.oracle-education-beat strong {
+  color: #333;
+}
+
+/* ─── 11j. Step-Specific Background Themes ─── */
+
+/* Q0: Entry — Dark cinematic */
+.oracle-bg-entry {
+  background-color: #050505;
+  background-image: url("/fiveo/demo/oracle/engine-bay-hero.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.oracle-bg-entry::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+/* Phase 1: Vehicle — Technical workspace */
+.oracle-bg-vehicle {
+  background: linear-gradient(
+    to bottom right,
+    #f8f9fa 0%,
+    #eef0f4 100%
+  );
+}
+
+/* Phase 2: Intent — Dark with warm accents */
+.oracle-bg-intent {
+  background-color: #0a0a0a;
+}
+
+/* Phase 3: Performance — HUD instrumentation */
+.oracle-bg-performance {
+  background: linear-gradient(
+    160deg,
+    #0d1117 0%,
+    #0a0e14 50%,
+    #0d1117 100%
+  );
+}
+
+/* Phase 4: Preferences — Carbon fiber subtle */
+.oracle-bg-preferences {
+  background-color: #f8f9fa;
+  background-image: url("/fiveo/demo/oracle/carbon-fiber.png");
+  background-size: 300px;
+  background-repeat: repeat;
+  background-blend-mode: overlay;
+}
+
+.oracle-bg-preferences::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(248, 249, 250, 0.96);
+}
+
+/* Processing — Pure dark with radial glow */
+.oracle-bg-processing {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 174, 239, 0.05) 0%,
+    #050505 60%
+  );
+}
+
+/* Results — Clean white with subtle gradient */
+.oracle-bg-results {
+  background: linear-gradient(
+    to bottom,
+    #f2f4f7 0%,
+    #ffffff 5%,
+    #ffffff 95%,
+    #f2f4f7 100%
+  );
+}
+
+/* ─── 11k. Responsive Adjustments ─── */
+@media (max-width: 640px) {
+  .oracle-radar-ring {
+    width: 80px;
+    height: 80px;
+  }
+  .oracle-radar-ring-outer {
+    width: 110px;
+    height: 110px;
+  }
+  .oracle-progress-percent {
+    font-size: 24px;
+  }
+}
+
+/* ─── 11l. Priority Chips (Drag/Rank) ─── */
+.oracle-priority-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #e2e4e8;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #333;
+  cursor: grab;
+  user-select: none;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.oracle-priority-chip:hover {
+  border-color: var(--oracle-blue);
+}
+
+.oracle-priority-chip-active {
+  border-color: var(--oracle-blue);
+  background: rgba(0, 174, 239, 0.04);
+  box-shadow: var(--oracle-accent-glow);
+}
+
+.oracle-priority-chip-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--oracle-blue);
+  color: white;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* ─── 11m. Mod Checkbox Icons ─── */
+.oracle-mod-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.oracle-mod-check:hover {
+  border-color: rgba(0, 174, 239, 0.3);
+  color: white;
+}
+
+.oracle-mod-check-active {
+  border-color: var(--oracle-blue);
+  background: rgba(0, 174, 239, 0.08);
+  color: white;
+}
+
+/* ─── 11n. CTA Button Styles ─── */
+.oracle-cta-primary {
+  background: var(--oracle-red);
+  color: white;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border: none;
+  border-radius: 3px;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  box-shadow: 0 4px 16px rgba(225, 6, 0, 0.25);
+}
+
+.oracle-cta-primary:hover {
+  background: #c70500;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(225, 6, 0, 0.35);
+}
+
+.oracle-cta-primary:active {
+  transform: translateY(0);
+}
+
+.oracle-cta-secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.oracle-cta-secondary:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* View on FiveO button (results page) */
+.oracle-cta-view {
+  background: var(--oracle-blue);
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 13px;
+  border: none;
+  border-radius: 3px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oracle-cta-view:hover {
+  background: #0098d4;
+  transform: translateY(-1px);
+}
