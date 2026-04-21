@@ -10,7 +10,7 @@ RAW_GLOB = File.expand_path("../data/raw/*.csv", __dir__)
 OUT_JSON = File.expand_path("../data/normalized/products.normalized.json", __dir__)
 OUT_SUMMARY = File.expand_path("../data/normalized/normalization_summary.txt", __dir__)
 CATALOG_YEAR_ATTR = "2016" # Magento export uses this as meta year; do not treat as vehicle year
-MEDIA_BASE_URL = "https://www.fiveomotorsport.com/pub/media/catalog/product"
+MEDIA_BASE_URL = "https://www.fiveomotorsport.com/media/catalog/product"
 
 # Map raw additional_attributes keys to standardized names in other_relevant_specs / specs
 ATTR_KEY_ALIASES = {
