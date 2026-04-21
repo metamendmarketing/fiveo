@@ -212,7 +212,7 @@ export default function RootLayout({
               </div>
 
               {/* Main Content Wrapper */}
-              <main className="flex-grow w-full px-6 sm:px-10" id="main-content" role="main">
+              <main className="flex-grow w-full px-6 sm:px-10 pb-10" id="main-content" role="main">
                 {children}
               </main>
               
