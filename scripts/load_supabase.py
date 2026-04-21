@@ -296,6 +296,7 @@ def load_products(supabase):
             "price": p.get("price"),
             "url_key": p.get("url_key"),
             "product_url": p.get("product_page_url"),
+            "hero_image_url": p.get("hero_image_url"),
             "description": p.get("description") or None,
             "flow_rate_cc": specs.get("flow_rate_cc"),
             "impedance": specs.get("impedance"),

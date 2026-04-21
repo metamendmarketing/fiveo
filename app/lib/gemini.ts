@@ -33,7 +33,8 @@ export function getVertexModel(modelName: string = "gemini-2.5-flash") {
     }
   }
 
-  const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID || "gen-lang-client-0736948026";
+  const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
+  if (!projectId) return null;
 
   const vertex = new VertexAI({
     project: projectId,

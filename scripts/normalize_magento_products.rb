@@ -10,6 +10,7 @@ RAW_GLOB = File.expand_path("../data/raw/*.csv", __dir__)
 OUT_JSON = File.expand_path("../data/normalized/products.normalized.json", __dir__)
 OUT_SUMMARY = File.expand_path("../data/normalized/normalization_summary.txt", __dir__)
 CATALOG_YEAR_ATTR = "2016" # Magento export uses this as meta year; do not treat as vehicle year
+MEDIA_BASE_URL = "https://www.fiveomotorsport.com/pub/media/catalog/product"
 
 # Map raw additional_attributes keys to standardized names in other_relevant_specs / specs
 ATTR_KEY_ALIASES = {
@@ -242,18 +243,29 @@ rescue StandardError
   nil
 end
 
+def image_url_from_row(row)
+  img = row["base_image"]
+  return nil if img.nil? || img.strip.empty? || img == "no_selection"
+
+  path = img.strip
+  path = "/#{path}" unless path.start_with?("/")
+  "#{MEDIA_BASE_URL}#{path}"
+end
+
 def main
   raw_files = Dir[RAW_GLOB].select { |f| File.file?(f) }
   abort "No CSV found in data/raw" if raw_files.empty?
 
   path = raw_files.max_by { |f| File.mtime(f) }
+  latest_parent_image = nil
+  latest_parent_sku = nil
   products = []
   per_field_present = Hash.new(0)
   sku_count = 0
 
   CSV.foreach(path, headers: true, liberal_parsing: true, encoding: "UTF-8").each do |row|
-    sku = row["sku"]
-    next if sku.nil? || sku.strip.empty?
+    sku = row["sku"]&.strip
+    next if sku.nil? || sku.empty?
 
     sku_count += 1
     raw_add_attrs = scrub_multi_segment_engine_fields(row["additional_attributes"])
@@ -261,6 +273,16 @@ def main
     categories = row["categories"].to_s
     name = row["name"].to_s
     description = row["description"].to_s
+    image_url = image_url_from_row(row)
+
+    # Sequential Image Inheritance Logic:
+    # Magento child products (simple) often omit the base_image.
+    # We propagate the latest valid image seen to any subsequent product missing one.
+    if image_url
+      latest_parent_image = image_url
+    elsif latest_parent_image && row["product_type"] == "simple"
+      image_url = latest_parent_image
+    end
 
     paths = category_paths(categories)
     mm_rows = extract_fitment_from_categories(paths)
@@ -318,6 +340,7 @@ def main
       categories: paths,
       fitment: fitment,
       specs: specs,
+      hero_image_url: image_url,
       description: description,
       notes: notes.uniq,
       raw_source_fields: raw_source

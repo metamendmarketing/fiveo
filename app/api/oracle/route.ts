@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Boost turbo-compatible products
-    if (profile.mods.includes("turbo")) {
+    if (profile.mods?.includes("turbo")) {
       candidates = candidates.map((c) => {
         const tags = (c.product.tags || c.product.usage_tags || "").toLowerCase();
         if (tags.includes("turbo") || tags.includes("forced-induction")) {
@@ -191,7 +191,10 @@ export async function POST(req: NextRequest) {
     let selectionStrategy = "";
 
     try {
+      // Optimization: Instant heuristic fallback if auth file is known to be missing locally
+      // This prevents the 4s authentication timeout on dev environments
       const model = getVertexModel("gemini-2.5-flash");
+      if (!model) throw new Error("AI services unavailable");
 
       // Fetch knowledge base context
       const { data: kbData } = await supabase
@@ -220,6 +223,7 @@ ${JSON.stringify(
     connector: c.product.connector_type,
     brand: c.product.brand || c.product.manufacturer,
     price: c.product.price,
+    image: c.product.hero_image_url,
     reasons: c.reasons,
   })),
   null,
@@ -280,10 +284,22 @@ Return valid JSON:
 
     anchored.sort((a, b) => (b.score || 0) - (a.score || 0));
 
-    console.log(`[Oracle] Final: ${anchored.length} results`);
+    // Map internal snake_case hero_image_url to camelCase heroImageUrl for frontend consistency
+    const finalWithImages = anchored.slice(0, 10).map(r => {
+      const img = r.product?.hero_image_url;
+      return {
+        ...r,
+        product: {
+          ...r.product,
+          heroImageUrl: img
+        }
+      };
+    });
+
+    console.log(`[Oracle] Final: ${finalWithImages.length} results. First result image: ${finalWithImages[0]?.product?.heroImageUrl}`);
 
     return Response.json({
-      results: anchored.slice(0, 10),
+      results: finalWithImages,
       selectionStrategy,
       calculatedCC: requiredCC,
       fitmentMatches: fitmentProductIds.length,

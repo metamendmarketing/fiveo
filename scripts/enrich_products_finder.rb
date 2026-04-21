@@ -127,6 +127,7 @@ def main
       "categories" => cats,
       "fitment" => f,
       "specs" => p["specs"],
+      "hero_image_url" => p["hero_image_url"],
       "description" => p["description"],
       "notes" => p["notes"],
       "raw_source_fields" => p["raw_source_fields"],

@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS products (
     price           NUMERIC(10,2),
     url_key         TEXT,
     product_url     TEXT,
+    hero_image_url  TEXT,
     description     TEXT,
     flow_rate_cc    NUMERIC(8,2),
     impedance       TEXT,

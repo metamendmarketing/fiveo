@@ -72,3 +72,4 @@ out/
 scripts/fitment/private/
 yarn-debug.log*
 yarn-error.log*
+vertex-key.json

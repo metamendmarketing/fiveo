@@ -83,9 +83,9 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                 <div className={`bg-gray-100 rounded flex items-center justify-center mb-4 ${
                   i === 0 ? "md:w-64 md:h-48 md:mb-0 md:shrink-0" : "h-40"
                 }`}>
-                  {result.product?.heroImageUrl ? (
+                  {result.product?.heroImageUrl || result.product?.hero_image_url ? (
                     <img
-                      src={result.product.heroImageUrl}
+                      src={result.product.heroImageUrl || result.product.hero_image_url}
                       alt={result.product?.name || "Product"}
                       className="w-full h-full object-contain p-4"
                     />
