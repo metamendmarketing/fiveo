@@ -45,7 +45,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
         {/* Header */}
         <div className="text-center mb-20">
           <h2 className="text-3xl font-black uppercase italic text-black mb-2">
-            Oracle <span data-deploy-sig="SIG-1776813350" className="text-[#E10600]">Selection v3.5</span>
+            Oracle <span data-deploy-sig="SIG-1776814350" className="text-[#E10600]">Selection v3.7</span>
           </h2>
           <div className="h-0.5 w-16 bg-[#E10600] mx-auto mb-8"></div>
           <p className="text-[10px] text-gray-400 uppercase tracking-[0.4em] font-black">
