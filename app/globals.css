@@ -922,3 +922,69 @@ body { --cache-bust: '1758'; }
   background: #0098d4;
   transform: translateY(-1px);
 }
+
+/* ─── 11p. Oracle Interactive Modals & Polish ─── */
+
+.oracle-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.oracle-modal-content {
+  background: white;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 12px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.oracle-grid-centered {
+  display: grid;
+  gap: 1.5rem;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Ensure cards are consistent */
+.oracle-result-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.oracle-card-clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.oracle-card-clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 174, 239, 0.1);
+}
+
+.oracle-narrative-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.oracle-pro-tip {
+  background: rgba(0, 174, 239, 0.05);
+  border-left: 4px solid var(--oracle-blue);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+}

@@ -235,15 +235,18 @@ ${JSON.stringify((kbData || []).slice(0, 10), null, 2)}
 
 INSTRUCTIONS:
 1. Select up to 10 products from candidates, ranked by build fit.
-2. For each, write a "matchStrategy" (2-4 word technical badge) and "preferenceSummary" (one sentence explaining WHY this injector fits their build).
-3. Write a "selectionStrategy" paragraph explaining overall selection reasoning.
+2. For each, provide:
+   - "matchStrategy": (2-4 word technical badge).
+   - "preferenceSummary": (one sentence elevator pitch).
+   - "technicalNarrative": (150-250 words). Provide a deep-dive technical justification. Explain the physics of why this injector is optimal for their target HP and fuel type. Include "Pro-Tips" for tuning (e.g., dead times, scaling, or compatibility). Use a tone that is expert, authoritative, and instills absolute confidence. Mention specific brand qualities or technical features (like atomization patterns or stainless internals) where relevant.
+3. Write a "selectionStrategy" paragraph explaining the overall logic.
 4. You MUST provide results. If no perfect match exists, recommend the closest options with honest reasoning.
 
 Return valid JSON:
 {
   "selectionStrategy": "...",
   "refinement": [
-    { "id": "...", "matchStrategy": "...", "preferenceSummary": "...", "rank": 1 }
+    { "id": "...", "matchStrategy": "...", "preferenceSummary": "...", "technicalNarrative": "...", "rank": 1 }
   ]
 }`;
 
@@ -267,6 +270,7 @@ Return valid JSON:
               ...original,
               matchStrategy: r.matchStrategy,
               preferenceSummary: r.preferenceSummary,
+              technicalNarrative: r.technicalNarrative,
             };
           })
           .filter(Boolean);
