@@ -110,10 +110,10 @@ input, select, textarea {
 
 /* 
   Vercel Edge-Cache Aggressive Buster
-  Timestamp: April 16, 2026 - 17:55
+  Timestamp: April 21, 2026 - 14:22
   Trigger forces Next.js to generate a new [hash].css file and invalidates the frozen Tailwind output bundle.
 */
-.edge-cache-bust-trigger-1755 {
+.edge-cache-bust-trigger-1422 {
     display: none;
 }
 
