@@ -283,7 +283,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ engineStatus: opt.value })}
-                  className={`flex items-center gap-4 px-6 py-10 rounded border-2 text-left transition-all backdrop-blur-sm ${
+                  className={`flex items-center gap-4 oracle-status-card rounded border-2 text-left transition-all backdrop-blur-sm ${
                     profile.engineStatus === opt.value
                       ? "border-[#00AEEF] bg-[#00AEEF]/5 shadow-sm"
                       : "border-gray-100 bg-white hover:border-gray-200"

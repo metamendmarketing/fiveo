@@ -56,7 +56,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ injectorPref: opt.value })}
-                  className={`px-6 py-10 rounded-md border-2 text-center transition-all ${
+                  className={`oracle-status-card rounded-md border-2 text-center transition-all ${
                     profile.injectorPref === opt.value
                       ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
                       : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
@@ -80,7 +80,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ budget: opt.value })}
-                  className={`px-6 py-10 rounded-md border-2 text-center transition-all ${
+                  className={`oracle-status-card rounded-md border-2 text-center transition-all ${
                     profile.budget === opt.value
                       ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
                       : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
@@ -103,7 +103,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ brandPref: opt.value })}
-                  className={`px-6 py-10 rounded-md border-2 text-center transition-all ${
+                  className={`oracle-status-card rounded-md border-2 text-center transition-all ${
                     profile.brandPref === opt.value
                       ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
                       : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
