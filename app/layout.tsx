@@ -192,9 +192,9 @@ export default function RootLayout({
         </header>
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
-        <div className="flex-grow w-full bg-[#f8f9fa] pt-8 pb-16 sm:pb-24 lg:pb-32 flex flex-col items-center">
-          <div className="fiveo-container !px-0 sm:!px-4 lg:!px-8 w-full flex-grow">
-            <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full h-full flex flex-col overflow-hidden">
+        <div className="flex-grow w-full bg-[#f8f9fa] py-12 flex flex-col items-center">
+          <div className="fiveo-container !px-0 sm:!px-4 lg:!px-8 w-full">
+            <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="pt-6 pb-4 pr-6 sm:pr-10 border-b border-gray-100 oracle-breadcrumb-indent">
