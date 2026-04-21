@@ -127,7 +127,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={type}
                   onClick={() => onUpdate({ vehicleType: type })}
-                  className={`p-4 rounded-md border-2 text-center transition-all ${
+                  className={`px-4 py-8 rounded-md border-2 text-center transition-all ${
                     profile.vehicleType === type
                       ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-sm"
                       : "border-gray-100 bg-white text-gray-400 hover:border-gray-200"
@@ -283,7 +283,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ engineStatus: opt.value })}
-                  className={`flex items-center gap-4 p-4 rounded border-2 text-left transition-all backdrop-blur-sm ${
+                  className={`flex items-center gap-4 px-6 py-10 rounded border-2 text-left transition-all backdrop-blur-sm ${
                     profile.engineStatus === opt.value
                       ? "border-[#00AEEF] bg-[#00AEEF]/5 shadow-sm"
                       : "border-gray-100 bg-white hover:border-gray-200"

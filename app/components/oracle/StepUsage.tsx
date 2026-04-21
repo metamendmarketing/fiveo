@@ -48,7 +48,7 @@ export function StepUsage({ profile, onUpdate, onNext }: Props) {
               }`}
               style={{ backgroundImage: `url(${u.image})` }}
             >
-              <div className="oracle-card-content absolute bottom-0 left-0 right-0 p-6">
+              <div className="oracle-card-content absolute bottom-0 left-0 right-0 px-8 py-10">
                 <h3 className="text-white font-black uppercase text-lg leading-tight mb-1">
                   {u.label}
                 </h3>
