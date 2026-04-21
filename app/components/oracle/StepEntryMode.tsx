@@ -81,7 +81,7 @@ export function StepEntryMode({
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="oracle-card group p-8 text-left"
+              className="oracle-card group px-8 py-[52px] text-left"
               style={{ animationDelay: `${i * 150}ms` }}
             >
               <div className="oracle-card-content flex flex-col items-center text-center gap-4">
