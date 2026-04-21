@@ -28,7 +28,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     // 1. Fire API call in background
     const fetchTask = (async () => {
       try {
-        const res = await fetch("/fiveo/demo/api/oracle", {
+        const res = await fetch("api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),

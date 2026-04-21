@@ -74,7 +74,13 @@ export default function OracleWizard() {
 
   const update = useCallback(
     (partial: Partial<BuildProfile>) => {
-      dispatch({ type: "UPDATE", payload: partial });
+      // Cast known numeric IDs to ensure integrity
+      const sanitized = { ...partial };
+      if ("makeId" in sanitized && sanitized.makeId !== undefined) sanitized.makeId = Number(sanitized.makeId);
+      if ("modelId" in sanitized && sanitized.modelId !== undefined) sanitized.modelId = Number(sanitized.modelId);
+      if ("year" in sanitized && sanitized.year !== undefined) sanitized.year = Number(sanitized.year);
+      
+      dispatch({ type: "UPDATE", payload: sanitized });
     },
     []
   );

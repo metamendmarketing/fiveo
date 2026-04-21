@@ -42,9 +42,9 @@ export async function POST(req: NextRequest) {
       const { data: fitment } = await supabase
         .from("fitment")
         .select("product_id")
-        .eq("model_id", profile.modelId)
-        .lte("year_start", profile.year)
-        .gte("year_end", profile.year);
+        .eq("model_id", Number(profile.modelId))
+        .lte("year_start", Number(profile.year))
+        .gte("year_end", Number(profile.year));
 
       fitmentProductIds = (fitment || []).map((f: any) => f.product_id);
     }
