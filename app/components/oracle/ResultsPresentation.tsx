@@ -40,40 +40,43 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
   const others = results.slice(1);
 
   return (
-    <div className="oracle-bg-results min-h-[60vh] px-8 py-24">
-      <div className="max-w-6xl mx-auto">
+    <div className="oracle-bg-results min-h-[60vh] px-6 md:px-10 py-16 md:py-20">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-3xl font-black uppercase italic text-black mb-2">
-            Oracle <span data-deploy-sig="SIG-1776814350" className="text-[#E10600]">Selection v3.7</span>
+        <div className="text-center mb-14">
+          <h2 className="text-2xl md:text-3xl font-black uppercase italic text-black mb-2">
+            Your <span className="text-[#00AEEF]">Oracle Selection</span>
           </h2>
-          <div className="h-0.5 w-16 bg-[#E10600] mx-auto mb-8"></div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.4em] font-black">
+          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-4"></div>
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
             {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
           </p>
+          {apiData?.fitmentMatches > 0 && (
+            <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest mt-2">✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found</p>
+          )}
         </div>
 
         {/* AI Selection Strategy */}
         {apiData?.selectionStrategy && (
-          <div className="oracle-strategy-card p-10 mb-16 text-white shadow-2xl">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-6">
-              Expert Advisor Strategy & Methodology
+          <div className="oracle-strategy-card p-8 md:p-10 mb-14 text-white shadow-xl bg-black/90 rounded-xl">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-4">
+              Oracle Strategy & Methodology
             </h3>
-            <p className="text-base text-white/80 leading-relaxed italic border-l-2 border-[#00AEEF]/30 pl-6">
+            <p className="text-sm md:text-base text-white/80 leading-relaxed italic border-l-2 border-[#00AEEF]/30 pl-6">
               "{apiData.selectionStrategy}"
             </p>
           </div>
         )}
 
         {/* Results Container */}
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-10">
           
           {/* 1. TOP PICK (Featured) */}
           {topPick && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="oracle-result-card ring-1 ring-gray-200 rounded-xl overflow-hidden bg-white shadow-2xl relative"
+              className="oracle-result-card ring-1 ring-gray-200 rounded-2xl overflow-hidden bg-white shadow-xl relative"
             >
               <div className="absolute top-0 right-0 p-6">
                 <div className="oracle-expert-pick inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
@@ -81,33 +84,41 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                 </div>
               </div>
 
-              <div className="md:flex items-stretch min-h-[380px]">
+              <div className="md:flex items-stretch min-h-[340px]">
                 {/* Image Section */}
-                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-16 border-r border-gray-100">
+                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-10 md:p-14 border-r border-gray-100">
                   <img 
                     src={topPick.product?.heroImageUrl || topPick.product?.hero_image_url} 
                     alt={topPick.product?.name}
-                    className="w-full h-full object-contain max-h-72"
+                    className="w-full h-full object-contain max-h-64"
                   />
                 </div>
                 
                 {/* Content Section */}
-                <div className="md:w-3/5 p-16 flex flex-col justify-center">
-                   <div className="mb-6">
-                      <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest">
+                <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
+                   <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest rounded-sm">
                         {topPick.matchStrategy || "Top Recommendation"}
                       </span>
+                      {topPick.hasFitment && (
+                        <span className="text-[9px] px-3 py-1 font-black bg-green-600 text-white uppercase tracking-widest rounded-sm">✓ Fitment Confirmed</span>
+                      )}
                    </div>
-                   <h3 className="text-2xl font-black uppercase italic text-black leading-tight mb-3">
+                   <h3 className="text-xl md:text-2xl font-black uppercase italic text-black leading-tight mb-2 line-clamp-2">
                      {topPick.product?.name}
                    </h3>
-                   <p className="text-[#00AEEF] text-xs font-bold uppercase tracking-[0.2em] mb-8">
-                     {topPick.product?.manufacturer || topPick.product?.brand || "FiveO"} Precision Core | {topPick.product?.size_cc || topPick.product?.flow_rate_cc || "—"} cc/min
+                   <p className="text-[#00AEEF] text-xs font-bold uppercase tracking-[0.15em] mb-6">
+                     {topPick.product?.manufacturer || topPick.product?.brand || "FiveO"} | {topPick.product?.flow_rate_cc || topPick.product?.size_cc || "—"} cc/min
                    </p>
 
                    {/* Score */}
-                   <div className="flex items-center gap-6 mb-10">
-                      <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                   {topPick.preferenceSummary && (
+                     <p className="text-sm text-gray-600 italic mb-6 leading-relaxed">"{topPick.preferenceSummary}"</p>
+                   )}
+
+                   {/* Score */}
+                   <div className="flex items-center gap-4 mb-8">
+                      <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${topPick.score || 0}%` }}
@@ -115,7 +126,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                           className="h-full bg-[#00AEEF]"
                         />
                       </div>
-                      <span className="text-2xl font-black text-[#00AEEF] tracking-tighter">{Number(topPick.score).toFixed(1)}% Match</span>
+                      <span className="text-xl font-black text-[#00AEEF] tracking-tighter whitespace-nowrap">{topPick.score || 0}%</span>
                    </div>
 
                    <div className="flex flex-wrap gap-6 items-center">
@@ -142,7 +153,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
 
           {/* 2. REMAINING RECOMMENDATIONS (Centered Grid) */}
           {others.length > 0 && (
-            <div className="oracle-grid-centered w-full mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-4">
               {others.map((result: any, i: number) => (
                 <motion.div
                   key={result.product?.id || i}
@@ -150,10 +161,10 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * (i + 1) }}
                   onClick={() => setSelectedResult(result)}
-                  className="oracle-result-card oracle-card-clickable bg-white rounded-lg border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-xl"
+                  className="oracle-result-card oracle-card-clickable bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
                 >
                   {/* Image Container - Fixed height, centered */}
-                  <div className="h-64 bg-gray-50 flex items-center justify-center p-8 border-b border-gray-50 group-hover:bg-white transition-colors">
+                  <div className="h-52 bg-gray-50 flex items-center justify-center p-6 border-b border-gray-100 group-hover:bg-white transition-colors">
                     <img 
                       src={result.product?.heroImageUrl || result.product?.hero_image_url} 
                       alt={result.product?.name}
@@ -162,28 +173,35 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                   </div>
 
                   {/* Content */}
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="mb-4">
+                  <div className="p-5 flex-1 flex flex-col">
+                    <div className="flex flex-wrap gap-1.5 mb-3">
                       <span className="text-[8px] font-black uppercase tracking-widest text-[#00AEEF] border border-[#00AEEF]/30 px-2 py-0.5 rounded-sm">
                         {result.matchStrategy || "Expert Alternative"}
                       </span>
+                      {result.hasFitment && (
+                        <span className="text-[8px] font-black uppercase tracking-widest text-green-600 border border-green-200 px-2 py-0.5 rounded-sm">✓ Fitment</span>
+                      )}
                     </div>
 
-                    <h4 className="text-base font-black uppercase italic text-black leading-tight mb-4 min-h-[2.5rem] line-clamp-2">
+                    <h4 className="text-sm font-black uppercase italic text-black leading-tight mb-3 min-h-[2rem] line-clamp-2">
                        {result.product?.name}
                     </h4>
 
+                    <p className="text-[11px] text-gray-500 mb-3">
+                      {result.product?.flow_rate_cc || result.product?.size_cc || "—"} cc/min · {result.product?.manufacturer || result.product?.brand || "FiveO"}
+                    </p>
+
                     {/* Compact Score */}
-                    <div className="mt-auto pt-6 border-t border-gray-50">
-                      <div className="flex justify-between items-center mb-6">
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Match Score</span>
-                        <span className="text-xl font-black text-[#00AEEF]">{Number(result.score).toFixed(1)}%</span>
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Match</span>
+                        <span className="text-lg font-black text-[#00AEEF]">{result.score}%</span>
                       </div>
                       
                       <button 
-                        className="w-full bg-black text-white text-[10px] font-black uppercase py-4 tracking-[0.2em] hover:bg-[#00AEEF] transition-colors rounded-sm"
+                        className="w-full bg-black text-white text-[9px] font-black uppercase py-3 tracking-[0.15em] hover:bg-[#00AEEF] transition-colors rounded"
                       >
-                        Review Analysis
+                        Explore Analysis
                       </button>
                     </div>
                   </div>

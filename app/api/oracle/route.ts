@@ -1,9 +1,12 @@
 /**
- * POST /api/oracle — Main Oracle Engine (3-Layer Recommendation)
+ * POST /api/oracle — FiveO Fuel Injector Oracle Engine
  *
- * Layer 1: Deterministic scoring (fitment + flow rate math)
- * Layer 2: Strategic overrides (intent-based injection)
- * Layer 3: AI refinement via Gemini 2.5 Flash
+ * Architecture mirrors the Marquis Buying Assistant:
+ * 1. Heuristic Scoring: Multi-vector engine ranks ALL products
+ * 2. Inclusive Pool Expansion: Force-inject edge cases, cap at 20
+ * 3. AI Final Decision: Gemini acts as "Senior Fuel Systems Engineer"
+ *    and selects the Top 10 with match strategies + technical narratives
+ * 4. Deterministic Fallback: If AI fails, return heuristic top 10
  */
 import { NextRequest } from "next/server";
 import { getServerSupabase } from "@/app/lib/supabase";
@@ -11,10 +14,10 @@ import { getVertexModel } from "@/app/lib/gemini";
 import {
   type BuildProfile,
   calculateRequiredCC,
-  SCORING_WEIGHTS,
-  OVERRIDE_TRIGGERS,
   FUEL_BSFC,
 } from "@/app/lib/constants";
+import { scoreProducts, deduplicateResults } from "@/app/lib/scoring";
+import rules from "@/app/lib/scoring-rules.json";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,238 +33,197 @@ export async function POST(req: NextRequest) {
     const supabase = getServerSupabase();
 
     // ═══════════════════════════════════════
-    // LAYER 1: DETERMINISTIC SCORING
+    // STAGE 1: FETCH DATA & HEURISTIC SCORING
     // ═══════════════════════════════════════
 
-    // 1a. Fetch candidate products
-    let query = supabase.from("products").select("*");
-
-    // If we have a vehicle, get fitment-matched products first
+    // 1a. Fetch fitment-matched product IDs (FIXED: correct table name)
     let fitmentProductIds: number[] = [];
-    if (profile.modelId && profile.year) {
-      const { data: fitment } = await supabase
-        .from("fitment")
-        .select("product_id")
-        .eq("model_id", Number(profile.modelId))
-        .lte("year_start", Number(profile.year))
-        .gte("year_end", Number(profile.year));
+    let makeFitmentProductIds: number[] = [];
 
+    if (profile.modelId) {
+      const { data: fitment, error: fitErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("model_id", Number(profile.modelId));
+
+      if (fitErr) console.error("[Oracle] Fitment query error:", fitErr.message);
       fitmentProductIds = (fitment || []).map((f: any) => f.product_id);
+      console.log(`[Oracle] Model fitment: ${fitmentProductIds.length} products for model ${profile.modelId}`);
     }
 
-    const { data: allProducts, error: prodErr } = await query;
+    if (profile.makeId) {
+      const { data: makeFitment, error: makeErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("make_id", Number(profile.makeId));
+
+      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
+      makeFitmentProductIds = (makeFitment || []).map((f: any) => f.product_id);
+      console.log(`[Oracle] Make fitment: ${makeFitmentProductIds.length} products for make ${profile.makeId}`);
+    }
+
+    // 1b. Fetch ALL products
+    const { data: allProducts, error: prodErr } = await supabase
+      .from("products")
+      .select("*");
     if (prodErr) throw prodErr;
 
-    console.log(`[Oracle] ${allProducts?.length || 0} products in catalog, ${fitmentProductIds.length} fitment matches`);
+    console.log(`[Oracle] Catalog: ${allProducts?.length || 0} total products`);
 
-    // 1b. Calculate required flow rate
+    // 1c. Calculate required flow rate
     const requiredCC = profile.targetHP
       ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
-      : null;
+      : profile.desiredSizeCC || null;
 
-    // 1c. Score all products
-    const scored = (allProducts || []).map((product: any) => {
-      let score = 0;
-      const reasons: string[] = [];
-      const productCC = product.size_cc || product.flow_rate_cc || 0;
+    // 1d. Score ALL products using the heuristic engine
+    const heuristicResults = scoreProducts(
+      allProducts || [],
+      profile,
+      fitmentProductIds,
+      makeFitmentProductIds
+    );
 
-      // Fitment confidence (25%)
-      const hasFitment = fitmentProductIds.includes(product.id);
-      if (hasFitment) {
-        score += SCORING_WEIGHTS.fitmentConfidence * 100;
-        reasons.push("Direct vehicle fitment confirmed.");
-      }
+    // 1e. Deduplicate
+    const deduped = deduplicateResults(heuristicResults);
 
-      // Flow rate match (25%)
-      // Flow rate match (25%) — Continuous curve for tie-breaking
-      if (requiredCC && productCC) {
-        const ratio = productCC / requiredCC;
-        const flowDeviance = Math.abs(1.0 - ratio);
-        // Linear falloff: 100% score at 1.0 ratio, 0% at 0.5 deviance (0.5 to 1.5 range)
-        const flowFactor = Math.max(0, 1.0 - (flowDeviance / 0.5));
-        const flowMatchScore = (SCORING_WEIGHTS.flowRateMatch * 100 * flowFactor);
-        score += flowMatchScore;
-        
-        if (flowFactor > 0.8) {
-          reasons.push(`Flow rate ${productCC}cc is an exceptional match for your ${requiredCC}cc requirement.`);
-        } else if (flowFactor > 0.4) {
-          reasons.push(`Flow rate ${productCC}cc falls within an acceptable technical range.`);
-        }
-      }
-
-      // Impedance compatibility (15%)
-      const impedance = product.impedance || product.ohms;
-      if (impedance) {
-        // High impedance is universally compatible
-        if (impedance >= 10) {
-          score += SCORING_WEIGHTS.impedanceCompat * 100;
-          reasons.push("High-impedance design for universal ECU compatibility.");
-        }
-      }
-
-      // Connector match (10%)
-      if (profile.connectorType && product.connector_type) {
-        if (product.connector_type.toLowerCase().includes(profile.connectorType.toLowerCase())) {
-          score += SCORING_WEIGHTS.connectorMatch * 100;
-          reasons.push(`${product.connector_type} connector is a direct match.`);
-        }
-      }
-
-      // Price alignment (10%)
-      if (profile.budget && product.price) {
-        const priceMap: Record<string, [number, number]> = {
-          budget: [0, 200],
-          mid: [150, 400],
-          premium: [350, 1000],
-        };
-        const range = priceMap[profile.budget];
-        if (range && product.price >= range[0] && product.price <= range[1]) {
-          score += SCORING_WEIGHTS.priceAlignment * 100;
-          reasons.push("Price falls within your specified budget range.");
-        }
-      }
-
-      // Brand preference & Prestige Micro-weights (5% + Tie-breakers)
-      const productBrand = (product.brand || product.manufacturer || "").toLowerCase();
-      if (profile.brandPref && profile.brandPref !== "no-preference") {
-        if (productBrand.includes(profile.brandPref.toLowerCase())) {
-          score += SCORING_WEIGHTS.brandPreference * 100;
-        }
-      }
-      // Subtle tie-breaker for recognized brands
-      if (productBrand.includes("bosch")) score += 2.1;
-      if (productBrand.includes("denso")) score += 1.8;
-      if (productBrand.includes("delphi")) score += 0.5;
-
-      // Injector type match (10%)
-      if (profile.injectorPref) {
-        const isPerformance = (product.category || "").toLowerCase().includes("performance");
-        if (profile.injectorPref === "performance" && isPerformance) {
-          score += SCORING_WEIGHTS.injectorTypeMatch * 100;
-        } else if (profile.injectorPref === "oem" && !isPerformance) {
-          score += SCORING_WEIGHTS.injectorTypeMatch * 100;
-        } else if (profile.injectorPref === "best-of-both") {
-          score += SCORING_WEIGHTS.injectorTypeMatch * 50;
-        }
-      }
-
-      return { product, score: score, reasons };
-    });
+    console.log(`[Oracle] Heuristic: ${deduped.length} unique candidates (top: ${deduped[0]?.product?.name || "none"} @ ${deduped[0]?.score}pts)`);
 
     // ═══════════════════════════════════════
-    // LAYER 2: STRATEGIC OVERRIDES
+    // STAGE 2: INCLUSIVE POOL EXPANSION
     // ═══════════════════════════════════════
 
-    let candidates = scored.sort((a, b) => b.score - a.score).slice(0, 16);
+    // Start with top 12
+    let shortList = deduped.slice(0, rules.poolSize.heuristicTop);
 
-    // Force-inject high-flow products for max-power goals
+    // Force-inject fitment-confirmed products that didn't make top 12
+    const fitmentMissing = deduped.filter(
+      (r) => r.hasFitment && !shortList.find((s) => s.product.id === r.product.id)
+    );
+    if (fitmentMissing.length > 0) {
+      shortList = [...shortList, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
+      console.log(`[Oracle] Pool expansion: +${fitmentMissing.length} fitment-confirmed products injected`);
+    }
+
+    // Force-inject high-flow products for max-power builds
     if (profile.goal === "max-power") {
-      const highFlow = scored
-        .filter((s) => {
-          const cc = s.product.size_cc || 0;
-          return cc >= 550 && !candidates.find((c) => c.product.id === s.product.id);
-        })
-        .slice(0, 4);
-      candidates = [...candidates, ...highFlow].slice(0, 16);
+      const highFlow = deduped.filter((r) => {
+        const cc = Number(r.product.flow_rate_cc) || 0;
+        return cc >= (rules.goalBoosts["max-power"]?.minCC || 550) &&
+          !shortList.find((s) => s.product.id === r.product.id);
+      }).slice(0, 4);
+      shortList = [...shortList, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
 
-    // Boost turbo-compatible products
-    if (profile.mods?.includes("turbo")) {
-      candidates = candidates.map((c) => {
-        const tags = (c.product.tags || c.product.usage_tags || "").toLowerCase();
-        if (tags.includes("turbo") || tags.includes("forced-induction")) {
-          return { ...c, score: Math.min(c.score + 15, 100), reasons: [...c.reasons, "Turbo/FI-optimized design."] };
-        }
-        return c;
-      });
-    }
-
-    // Boost E85-compatible products
+    // Force-inject E85-compatible products
     if (profile.fuelType === "e85") {
-      candidates = candidates.map((c) => {
-        const tags = (c.product.tags || c.product.description || "").toLowerCase();
-        if (tags.includes("e85") || tags.includes("flex")) {
-          return { ...c, score: Math.min(c.score + 10, 100), reasons: [...c.reasons, "E85/Flex fuel compatible."] };
-        }
-        return c;
-      });
+      const e85Products = deduped.filter((r) => {
+        const desc = `${r.product.description || ""} ${r.product.name || ""}`.toLowerCase();
+        return (rules.fuelBoosts.e85.keywords.some((kw: string) => desc.includes(kw))) &&
+          !shortList.find((s) => s.product.id === r.product.id);
+      }).slice(0, 4);
+      shortList = [...shortList, ...e85Products].slice(0, rules.poolSize.maxCandidates);
     }
 
-    // Re-sort after overrides
-    candidates.sort((a, b) => b.score - a.score);
-
-    console.log(`[Oracle] Layer 2 complete: ${candidates.length} candidates, top: ${candidates[0]?.product?.name || "none"}`);
+    console.log(`[Oracle] Final pool: ${shortList.length} candidates → ${shortList.map((c) => c.product.name?.slice(0, 30)).join(", ")}`);
 
     // ═══════════════════════════════════════
-    // LAYER 3: AI REFINEMENT (GEMINI)
+    // STAGE 3: AI FINAL DECISION MAKER
     // ═══════════════════════════════════════
 
-    let finalResults = candidates.slice(0, 10);
+    let finalResults = shortList.slice(0, rules.poolSize.aiMaxResults);
     let selectionStrategy = "";
 
     try {
-      // Optimization: Instant heuristic fallback if auth file is known to be missing locally
-      // This prevents the 4s authentication timeout on dev environments
       const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
-      // Fetch knowledge base context
+      // Fetch knowledge base for grounding
       const { data: kbData } = await supabase
         .from("knowledge_base")
         .select("category, title, content");
 
-      const prompt = `You are the FiveO Motorsport Fuel Injector Oracle — a senior technical advisor with 25+ years of fuel system engineering expertise.
+      const candidateData = shortList.map((c) => ({
+        id: c.product.id,
+        name: c.product.name,
+        sku: c.product.sku,
+        cc: Number(c.product.flow_rate_cc) || null,
+        price: c.product.price,
+        impedance: c.product.impedance,
+        connector: c.product.connector_type,
+        brand: c.product.manufacturer || c.product.brand,
+        fuelTypes: c.product.fuel_types,
+        categories: c.product.raw_categories,
+        description: c.product.description?.slice(0, 200),
+        heuristicScore: c.score,
+        heuristicReasons: c.reasons,
+        hasFitment: c.hasFitment,
+        matchType: c.matchType,
+      }));
 
-USER BUILD PROFILE:
+      const prompt = `You are the FiveO Motorsport Fuel Injector Oracle — a Senior Fuel Systems Engineer with 25+ years of experience in fuel injection sizing, fitment engineering, and forced-induction tuning.
+
+You are the FINAL DECISION MAKER. Our engineering pre-filter has narrowed the catalog to ${shortList.length} viable candidates. Your job: evaluate every candidate against this customer's build profile, then select and rank the TOP 10 that best fit their specific application.
+
+═══ CUSTOMER BUILD PROFILE ═══
 ${JSON.stringify(profile, null, 2)}
 
-CALCULATED REQUIREMENTS:
-- Required flow: ${requiredCC || "Unknown"}cc/min
+═══ ENGINEERING CALCULATIONS ═══
+- Required flow rate: ${requiredCC || "Not specified"} cc/min
 - BSFC factor: ${FUEL_BSFC[profile.fuelType || "pump"]} lb/hp/hr
-- Fitment matches: ${fitmentProductIds.length}
+- Vehicle fitment matches found: ${fitmentProductIds.length} (model-level), ${makeFitmentProductIds.length} (make-level)
 
-CANDIDATE PRODUCTS (${candidates.length} from heuristic engine):
-${JSON.stringify(
-  candidates.slice(0, 12).map((c) => ({
-    id: c.product.id,
-    name: c.product.name || c.product.title,
-    cc: c.product.size_cc || c.product.flow_rate_cc,
-    score: c.score,
-    category: c.product.category,
-    impedance: c.product.impedance || c.product.ohms,
-    connector: c.product.connector_type,
-    brand: c.product.brand || c.product.manufacturer,
-    price: c.product.price,
-    image: c.product.hero_image_url,
-    reasons: c.reasons,
-  })),
-  null,
-  2
-)}
+═══ CANDIDATE POOL (${shortList.length} products from heuristic engine) ═══
+${JSON.stringify(candidateData, null, 2)}
 
-KNOWLEDGE BASE:
-${JSON.stringify((kbData || []).slice(0, 10), null, 2)}
+═══ KNOWLEDGE BASE ═══
+${JSON.stringify((kbData || []).slice(0, 8), null, 2)}
 
-INSTRUCTIONS:
-1. Select up to 10 products from candidates, ranked by build fit.
-2. For each, provide:
-   - "matchStrategy": (2-4 word technical badge).
-   - "preferenceSummary": (one sentence elevator pitch).
-   - "technicalNarrative": (150-250 words). Provide a deep-dive technical justification. COMPARE and CONTRAST this injector against the other candidates. Explain why THIS specific SKU was chosen. Focus on technical differentiators (spray patterns, internal materials, response times, or brand-specific engineering). Avoid generic boilerplate or repeating phrasing across different products. Include "Pro-Tips" for tuning specific to this injector model.
-3. Write a "selectionStrategy" paragraph explaining the overall logic.
-4. You MUST provide results. If no perfect match exists, recommend the closest options with honest reasoning.
+═══ YOUR INSTRUCTIONS ═══
 
-Return valid JSON:
+1. THE ORACLE PERSONA: You are the all-knowing fuel injection expert. Warm but authoritative. Grounded in engineering facts, not marketing fluff.
+
+2. EVALUATION CRITERIA — Weigh each factor:
+   - Flow rate fit (is the cc/min right for their HP target and fuel type?)
+   - Vehicle fitment (is this confirmed for their vehicle, or a generic/universal fit?)
+   - Impedance compatibility (high-Z preferred for modern ECUs)
+   - Fuel type compatibility (E85 requires specific materials)
+   - Price-to-performance value
+   - Brand engineering quality
+   - Connector type match
+   - Use case suitability (daily driver vs track vs mixed)
+
+3. SELECTION: Pick the TOP 10 products, ranked by overall build suitability. Products with confirmed vehicle fitment should be strongly preferred, but a better-fitting flow rate can override fitment if the technical case is compelling.
+
+4. FOR EACH SELECTION, provide:
+   - "matchStrategy": A 2-5 word technical badge (e.g., "Precision OEM Replacement", "High-Flow Track Weapon")
+   - "preferenceSummary": ONE sentence starting with "We chose this because..." that directly references their specific build profile. Max 30 words.
+   - "technicalNarrative": 150-250 words of deep technical analysis. COMPARE this injector against other candidates in the pool. Explain WHY this specific SKU was chosen over alternatives. Reference specific specs (flow rate, impedance, spray pattern). Include a "Pro-Tip" for tuning. Each narrative MUST be unique — do not reuse phrasing across products.
+
+5. Write a "selectionStrategy" paragraph (100-150 words) explaining your overall reasoning process — how you weighed fitment vs flow rate vs budget, and why the top pick is #1.
+
+6. SCORING: Assign each product a "score" from 0-100 based on YOUR holistic assessment. The #1 pick should be 95-100. Scores MUST be meaningfully different (minimum 2-point gaps). Do not cluster scores.
+
+7. You MUST return results. If no perfect match exists, recommend the closest options with honest trade-off analysis.
+
+═══ OUTPUT FORMAT ═══
+Return strictly valid JSON:
 {
-  "selectionStrategy": "...",
+  "selectionStrategy": "Your overall reasoning paragraph...",
   "refinement": [
-    { "id": "...", "matchStrategy": "...", "preferenceSummary": "...", "technicalNarrative": "...", "rank": 1 }
+    {
+      "id": 123,
+      "score": 97,
+      "matchStrategy": "...",
+      "preferenceSummary": "...",
+      "technicalNarrative": "..."
+    }
   ]
 }`;
 
       const result = await model.generateContent(prompt);
       const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
+      // Robust JSON extraction
       let cleanJson = text;
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) cleanJson = jsonMatch[0];
@@ -270,13 +232,16 @@ Return valid JSON:
       selectionStrategy = refined.selectionStrategy || "";
       const refinedList = refined.refinement || [];
 
+      console.log(`[Oracle] AI selected ${refinedList.length} products from pool.`);
+
       if (refinedList.length > 0) {
         finalResults = refinedList
           .map((r: any) => {
-            const original = candidates.find((c) => String(c.product.id) === String(r.id));
+            const original = shortList.find((c) => String(c.product.id) === String(r.id));
             if (!original) return null;
             return {
               ...original,
+              score: r.score || original.score,
               matchStrategy: r.matchStrategy,
               preferenceSummary: r.preferenceSummary,
               technicalNarrative: r.technicalNarrative,
@@ -286,45 +251,60 @@ Return valid JSON:
       }
     } catch (aiError: any) {
       console.error("[Oracle] AI refinement failed, using heuristic results:", aiError.message);
+      // Fallback: use heuristic scores directly, rescaled to 100
+      selectionStrategy = "Our engineering analysis has identified these injectors as the strongest technical matches based on flow rate compatibility, vehicle fitment data, and your specified build parameters. While our AI advisor is temporarily unavailable, these recommendations are grounded in verified engineering calculations.";
     }
 
-    // Relative rescaling (top match = 100%)
-    const maxScore = Math.max(...finalResults.map((r) => r.score || 0));
-    const anchored = finalResults.map((r) => {
-      const rawScore = maxScore > 0 ? ((r.score || 0) / maxScore) * 100 : 100;
-      // High-precision decimals to break clumping and prove new code is active
-      return {
+    // ═══════════════════════════════════════
+    // STAGE 4: FINALIZE & RESPOND
+    // ═══════════════════════════════════════
+
+    // If AI provided scores, use them directly. Otherwise rescale heuristic scores.
+    let outputResults = finalResults.slice(0, rules.poolSize.aiMaxResults);
+
+    // Check if AI assigned its own scores (they'll be 0-100 range)
+    const hasAiScores = outputResults.some((r) => r.matchStrategy);
+    if (!hasAiScores && outputResults.length > 0) {
+      // Rescale heuristic scores (Marquis pattern: top = 100%)
+      const maxScore = Math.max(...outputResults.map((r) => r.score || 0));
+      outputResults = outputResults.map((r) => ({
         ...r,
-        score: Number(rawScore.toFixed(1))
-      };
-    });
+        score: maxScore > 0 ? Math.round(((r.score || 0) / maxScore) * 100) : 50,
+        matchStrategy: r.hasFitment ? "Fitment Verified" : "Technical Match",
+        preferenceSummary: r.reasons?.[0] || "Selected based on engineering compatibility.",
+      }));
+    }
 
-    anchored.sort((a, b) => (b.score || 0) - (a.score || 0));
+    // Sort by score descending
+    outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
-    // Map internal snake_case hero_image_url to camelCase heroImageUrl for frontend consistency
-    const finalWithImages = anchored.slice(0, 10).map(r => {
-      const img = r.product?.hero_image_url;
-      return {
-        ...r,
-        product: {
-          ...r.product,
-          heroImageUrl: img
-        }
-      };
-    });
+    // Map hero images for frontend
+    const finalWithImages = outputResults.map((r) => ({
+      ...r,
+      product: {
+        ...r.product,
+        heroImageUrl: r.product?.hero_image_url,
+      },
+    }));
 
-    console.log(`[Oracle] Final: ${finalWithImages.length} results. First result image: ${finalWithImages[0]?.product?.heroImageUrl}`);
+    console.log(`[Oracle] Final: ${finalWithImages.length} results, top: ${finalWithImages[0]?.product?.name} @ ${finalWithImages[0]?.score}%`);
 
     return Response.json({
       results: finalWithImages,
       selectionStrategy,
       calculatedCC: requiredCC,
       fitmentMatches: fitmentProductIds.length,
+      makeFitmentMatches: makeFitmentProductIds.length,
+      candidatePoolSize: shortList.length,
     });
   } catch (error: any) {
     console.error("[Oracle] Fatal error:", error);
     return Response.json(
-      { results: [], error: error.message || "Internal Server Error" },
+      {
+        results: [],
+        error: error.message || "Internal Server Error",
+        reason: "The Oracle encountered an unexpected error processing your build profile. Please try again or adjust your criteria.",
+      },
       { status: 500 }
     );
   }
