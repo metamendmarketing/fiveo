@@ -73,14 +73,19 @@ export async function POST(req: NextRequest) {
       }
 
       // Flow rate match (25%)
+      // Flow rate match (25%) — Continuous curve for tie-breaking
       if (requiredCC && productCC) {
         const ratio = productCC / requiredCC;
-        if (ratio >= 0.9 && ratio <= 1.3) {
-          score += SCORING_WEIGHTS.flowRateMatch * 100;
-          reasons.push(`Flow rate ${productCC}cc optimally matches your ${requiredCC}cc requirement.`);
-        } else if (ratio >= 0.7 && ratio <= 1.6) {
-          score += SCORING_WEIGHTS.flowRateMatch * 60;
-          reasons.push(`Flow rate ${productCC}cc is within acceptable range of your ${requiredCC}cc target.`);
+        const flowDeviance = Math.abs(1.0 - ratio);
+        // Linear falloff: 100% score at 1.0 ratio, 0% at 0.5 deviance (0.5 to 1.5 range)
+        const flowFactor = Math.max(0, 1.0 - (flowDeviance / 0.5));
+        const flowMatchScore = (SCORING_WEIGHTS.flowRateMatch * 100 * flowFactor);
+        score += flowMatchScore;
+        
+        if (flowFactor > 0.8) {
+          reasons.push(`Flow rate ${productCC}cc is an exceptional match for your ${requiredCC}cc requirement.`);
+        } else if (flowFactor > 0.4) {
+          reasons.push(`Flow rate ${productCC}cc falls within an acceptable technical range.`);
         }
       }
 
@@ -116,13 +121,17 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Brand preference (5%)
+      // Brand preference & Prestige Micro-weights (5% + Tie-breakers)
+      const productBrand = (product.brand || product.manufacturer || "").toLowerCase();
       if (profile.brandPref && profile.brandPref !== "no-preference") {
-        const productBrand = (product.brand || product.manufacturer || "").toLowerCase();
         if (productBrand.includes(profile.brandPref.toLowerCase())) {
           score += SCORING_WEIGHTS.brandPreference * 100;
         }
       }
+      // Subtle tie-breaker for recognized brands
+      if (productBrand.includes("bosch")) score += 2.1;
+      if (productBrand.includes("denso")) score += 1.8;
+      if (productBrand.includes("delphi")) score += 0.5;
 
       // Injector type match (10%)
       if (profile.injectorPref) {
@@ -136,7 +145,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      return { product, score: Math.round(score), reasons };
+      return { product, score: score, reasons };
     });
 
     // ═══════════════════════════════════════
@@ -238,7 +247,7 @@ INSTRUCTIONS:
 2. For each, provide:
    - "matchStrategy": (2-4 word technical badge).
    - "preferenceSummary": (one sentence elevator pitch).
-   - "technicalNarrative": (150-250 words). Provide a deep-dive technical justification. Explain the physics of why this injector is optimal for their target HP and fuel type. Include "Pro-Tips" for tuning (e.g., dead times, scaling, or compatibility). Use a tone that is expert, authoritative, and instills absolute confidence. Mention specific brand qualities or technical features (like atomization patterns or stainless internals) where relevant.
+   - "technicalNarrative": (150-250 words). Provide a deep-dive technical justification. COMPARE and CONTRAST this injector against the other candidates. Explain why THIS specific SKU was chosen. Focus on technical differentiators (spray patterns, internal materials, response times, or brand-specific engineering). Avoid generic boilerplate or repeating phrasing across different products. Include "Pro-Tips" for tuning specific to this injector model.
 3. Write a "selectionStrategy" paragraph explaining the overall logic.
 4. You MUST provide results. If no perfect match exists, recommend the closest options with honest reasoning.
 

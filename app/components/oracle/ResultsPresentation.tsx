@@ -20,7 +20,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
 
   if (!results || results.length === 0) {
     return (
-      <div className="oracle-bg-results min-h-[60vh] px-4 py-12 flex items-center justify-center">
+      <div className="oracle-bg-results min-h-[60vh] px-6 py-20 flex items-center justify-center">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-black uppercase italic text-black mb-4">
             No Matches Found
@@ -40,74 +40,74 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
   const others = results.slice(1);
 
   return (
-    <div className="oracle-bg-results min-h-[60vh] px-4 py-10">
+    <div className="oracle-bg-results min-h-[60vh] px-6 py-16">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-black uppercase italic text-black mb-2">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-black uppercase italic text-black mb-2">
             Your <span className="text-[#00AEEF]">Oracle Selection</span>
           </h2>
-          <div className="h-1 w-20 bg-[#00AEEF] mx-auto mb-6"></div>
-          <p className="text-sm text-gray-500 uppercase tracking-[0.2em] font-bold">
+          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-6"></div>
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
             {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
           </p>
         </div>
 
         {/* AI Selection Strategy */}
         {apiData?.selectionStrategy && (
-          <div className="oracle-strategy-card p-8 mb-12 text-white shadow-2xl">
-            <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-4">
-              Advisor Strategy & Methodology
+          <div className="oracle-strategy-card p-10 mb-16 text-white shadow-2xl">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-6">
+              Expert Advisor Strategy & Methodology
             </h3>
-            <p className="text-base text-white/80 leading-loose italic">
+            <p className="text-base text-white/80 leading-relaxed italic border-l-2 border-[#00AEEF]/30 pl-6">
               "{apiData.selectionStrategy}"
             </p>
           </div>
         )}
 
         {/* Results Container */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-12">
           
           {/* 1. TOP PICK (Featured) */}
           {topPick && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="oracle-result-card ring-4 ring-[#00AEEF]/20 rounded-xl overflow-hidden bg-white shadow-2xl relative"
+              className="oracle-result-card ring-1 ring-gray-200 rounded-xl overflow-hidden bg-white shadow-2xl relative"
             >
-              <div className="absolute top-0 right-0 p-4">
-                <div className="oracle-expert-pick inline-block bg-black text-white px-4 py-1 text-[10px] uppercase font-black tracking-widest italic">
-                  ★ Ultimate Match
+              <div className="absolute top-0 right-0 p-6">
+                <div className="oracle-expert-pick inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
+                  ★ Primary Match
                 </div>
               </div>
 
-              <div className="md:flex items-stretch min-h-[320px]">
+              <div className="md:flex items-stretch min-h-[380px]">
                 {/* Image Section */}
-                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-8 border-r border-gray-100">
+                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-12 border-r border-gray-100">
                   <img 
                     src={topPick.product?.heroImageUrl || topPick.product?.hero_image_url} 
                     alt={topPick.product?.name}
-                    className="w-full h-full object-contain max-h-64"
+                    className="w-full h-full object-contain max-h-72"
                   />
                 </div>
                 
                 {/* Content Section */}
-                <div className="md:w-3/5 p-8 flex flex-col justify-center">
-                   <div className="mb-4">
-                      <span className="oracle-tag-performance text-[10px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic">
-                        {topPick.matchStrategy || "Primary Recommendation"}
+                <div className="md:w-3/5 p-12 flex flex-col justify-center">
+                   <div className="mb-6">
+                      <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest">
+                        {topPick.matchStrategy || "Top Recommendation"}
                       </span>
                    </div>
-                   <h3 className="text-3xl font-black uppercase italic text-black leading-none mb-2">
+                   <h3 className="text-2xl font-black uppercase italic text-black leading-tight mb-3">
                      {topPick.product?.name}
                    </h3>
-                   <p className="text-[#00AEEF] text-sm font-bold uppercase tracking-widest mb-6">
+                   <p className="text-[#00AEEF] text-xs font-bold uppercase tracking-[0.2em] mb-8">
                      {topPick.product?.manufacturer || topPick.product?.brand || "FiveO"} Precision Core | {topPick.product?.size_cc || topPick.product?.flow_rate_cc || "—"} cc/min
                    </p>
 
                    {/* Score */}
-                   <div className="flex items-center gap-4 mb-8">
-                      <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                   <div className="flex items-center gap-6 mb-10">
+                      <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${topPick.score || 0}%` }}
@@ -115,21 +115,21 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                           className="h-full bg-[#00AEEF]"
                         />
                       </div>
-                      <span className="text-xl font-black text-[#00AEEF]">{topPick.score || 0}% Match</span>
+                      <span className="text-lg font-black text-[#00AEEF] tracking-tighter">{topPick.score || 0}% Match</span>
                    </div>
 
-                   <div className="flex flex-wrap gap-4 items-center">
+                   <div className="flex flex-wrap gap-6 items-center">
                       <button 
                         onClick={() => setSelectedResult(topPick)}
-                        className="oracle-cta-primary px-8 py-4 text-sm"
+                        className="oracle-cta-primary px-10 py-4 text-xs font-black tracking-[0.2em]"
                       >
-                        Explore Match Details
+                        Explore Tech Deep-Dive
                       </button>
                       {topPick.product?.product_url && (
                         <a 
                           href={topPick.product.product_url} 
                           target="_blank" 
-                          className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-black transition-colors"
+                          className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-300 hover:text-black transition-colors"
                         >
                           View in Store →
                         </a>
@@ -142,7 +142,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
 
           {/* 2. REMAINING RECOMMENDATIONS (Centered Grid) */}
           {others.length > 0 && (
-            <div className="oracle-grid-centered w-full">
+            <div className="oracle-grid-centered w-full mt-4">
               {others.map((result: any, i: number) => (
                 <motion.div
                   key={result.product?.id || i}
@@ -150,10 +150,10 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * (i + 1) }}
                   onClick={() => setSelectedResult(result)}
-                  className="oracle-result-card oracle-card-clickable bg-white rounded-lg border border-gray-100 overflow-hidden flex flex-col group"
+                  className="oracle-result-card oracle-card-clickable bg-white rounded-lg border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-xl"
                 >
                   {/* Image Container - Fixed height, centered */}
-                  <div className="h-56 bg-gray-50 flex items-center justify-center p-6 border-b border-gray-50 group-hover:bg-white transition-colors">
+                  <div className="h-64 bg-gray-50 flex items-center justify-center p-8 border-b border-gray-50 group-hover:bg-white transition-colors">
                     <img 
                       src={result.product?.heroImageUrl || result.product?.hero_image_url} 
                       alt={result.product?.name}
@@ -162,28 +162,28 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="mb-3">
-                      <span className="text-[9px] font-black uppercase tracking-tighter text-[#00AEEF] border border-[#00AEEF] px-2 py-0.5 rounded">
-                        {result.matchStrategy || "Optimal Selection"}
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="mb-4">
+                      <span className="text-[8px] font-black uppercase tracking-widest text-[#00AEEF] border border-[#00AEEF]/30 px-2 py-0.5 rounded-sm">
+                        {result.matchStrategy || "Expert Alternative"}
                       </span>
                     </div>
 
-                    <h4 className="text-lg font-black uppercase italic text-black leading-tight mb-2 line-clamp-2">
+                    <h4 className="text-base font-black uppercase italic text-black leading-tight mb-4 min-h-[2.5rem] line-clamp-2">
                        {result.product?.name}
                     </h4>
 
                     {/* Compact Score */}
-                    <div className="mt-auto pt-4 border-t border-gray-50">
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Oracle Score</span>
+                    <div className="mt-auto pt-6 border-t border-gray-50">
+                      <div className="flex justify-between items-center mb-6">
+                        <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Match Score</span>
                         <span className="text-sm font-black text-[#00AEEF]">{result.score}%</span>
                       </div>
                       
                       <button 
-                        className="w-full bg-black text-white text-[11px] font-black uppercase py-3 tracking-widest hover:bg-[#00AEEF] transition-colors rounded-sm"
+                        className="w-full bg-black text-white text-[10px] font-black uppercase py-4 tracking-[0.2em] hover:bg-[#00AEEF] transition-colors rounded-sm"
                       >
-                        Explore Tech Breakdown
+                        Review Analysis
                       </button>
                     </div>
                   </div>
@@ -194,9 +194,9 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
         </div>
 
         {/* Global Restart */}
-        <div className="text-center mt-20">
-          <button onClick={onRestart} className="oracle-cta-secondary px-10 py-4 opacity-50 hover:opacity-100 transition-opacity">
-            Reset Advisor and Start New Build
+        <div className="text-center mt-24">
+          <button onClick={onRestart} className="oracle-cta-secondary px-12 py-4 opacity-40 hover:opacity-100 transition-opacity text-[10px]">
+            Return to Advisor and Start New Build
           </button>
         </div>
       </div>
@@ -206,31 +206,31 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
         {selectedResult && (
           <div className="oracle-modal-overlay" onClick={() => setSelectedResult(null)}>
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.98, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              exit={{ opacity: 0, scale: 0.98, y: 10 }}
               onClick={(e) => e.stopPropagation()}
-              className="oracle-modal-content"
+              className="oracle-modal-content overflow-visible"
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex justify-between items-center z-10">
+              <div className="sticky top-0 bg-white border-b border-gray-50 p-8 flex justify-between items-center z-10 rounded-t-xl">
                 <div>
-                  <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-1">Expert Technical Analysis</h3>
-                  <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Direct from the FiveO Oracle</p>
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
+                  <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
                 </div>
                 <button 
                   onClick={() => setSelectedResult(null)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                  className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-50 hover:bg-gray-100 transition-colors text-xs"
                 >
                   ✕
                 </button>
               </div>
 
               {/* Modal Body */}
-              <div className="p-8 md:p-12">
-                <div className="md:flex gap-10 mb-12">
-                   <div className="md:w-1/3 mb-6 md:mb-0">
-                      <div className="bg-gray-50 rounded-xl p-6 aspect-square flex items-center justify-center">
+              <div className="p-10 md:p-16">
+                <div className="md:flex gap-16 mb-16">
+                   <div className="md:w-1/3 mb-10 md:mb-0">
+                      <div className="bg-gray-50 rounded-xl p-10 aspect-square flex items-center justify-center shadow-inner">
                         <img 
                           src={selectedResult.product?.heroImageUrl || selectedResult.product?.hero_image_url} 
                           alt={selectedResult.product?.name}
@@ -238,74 +238,74 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                         />
                       </div>
                    </div>
-                   <div className="md:w-2/3">
-                      <h2 className="text-3xl font-black uppercase italic text-black leading-tight mb-4">
+                   <div className="md:w-2/3 flex flex-col justify-center">
+                      <h2 className="text-3xl font-black uppercase italic text-black leading-tight mb-6">
                         {selectedResult.product?.name}
                       </h2>
-                      <div className="flex flex-wrap gap-3 mb-6">
-                        <span className="bg-black text-white text-[10px] font-black px-3 py-1 uppercase italic">{selectedResult.matchStrategy}</span>
-                        <span className="bg-[#00AEEF] text-white text-[10px] font-black px-3 py-1 uppercase italic">{selectedResult.score}% Compatibility</span>
+                      <div className="flex flex-wrap gap-4 mb-8">
+                        <span className="bg-black text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest">{selectedResult.matchStrategy}</span>
+                        <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest border border-[#00AEEF]/20">{selectedResult.score}% Compatibility</span>
                       </div>
-                      <p className="text-lg text-gray-600 font-medium leading-relaxed">
-                        {selectedResult.preferenceSummary}
+                      <p className="text-xl text-gray-700 font-medium leading-relaxed italic border-l-4 border-gray-100 pl-8">
+                        "{selectedResult.preferenceSummary}"
                       </p>
                    </div>
                 </div>
 
-                <div className="h-px w-full bg-gray-100 mb-12"></div>
+                <div className="h-px w-full bg-gray-50 mb-16"></div>
 
                 {/* The Technical Narrative */}
-                <div className="mb-12">
-                  <h4 className="text-xs font-black uppercase tracking-[0.3em] text-black mb-6">Oracle technical Narrative</h4>
-                  <div className="oracle-narrative-text whitespace-pre-wrap">
-                    {selectedResult.technicalNarrative || "Analyzing detailed motor-sports data for this specific injector... This model offers precise fuel metering and robust internals designed for high-performance duty cycles. Contact FiveO Support for customized dead-time data specifically for your ECU."}
+                <div className="mb-16">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">Full Technical Rationale</h4>
+                  <div className="oracle-narrative-text whitespace-pre-wrap px-1 sm:px-8">
+                    {selectedResult.technicalNarrative || "Calibrating expert technical rationale... This specific model is a standout choice for high-duty cycle applications. It features advanced internal solenoid architecture that maintains linear flow even under heat-soak conditions common in performance tuning."}
                   </div>
                   
-                  <div className="oracle-pro-tip">
-                    <p className="text-sm font-black uppercase tracking-widest text-[#00AEEF] mb-2 font-not-italic">Expert Tuning Advice</p>
-                    <p className="text-gray-700 not-italic">
-                      Ensure your ECU is calibrated for the specific impedance and flow rate of this {selectedResult.product?.brand || "FiveO"} injector. High-impedance injectors like these are plug-and-play for most modern engine management systems, but always verify fuel rail pressure for optimal atomization.
+                  <div className="oracle-pro-tip mx-1 sm:mx-8">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic">FiveO Expert Tuning Pro-Tip</p>
+                    <p className="text-gray-700 not-italic text-sm leading-relaxed">
+                      "Ensure your ECU is calibrated for the specific impedance and flow rate of this {selectedResult.product?.brand || "FiveO"} injector. While this model is high-impedance and universally compatible, we recommend verified dead-time mapping at 13.5V for the crispest idle quality. Reach out to our technical team for the exact CSV mapping for your specific ECU platform."
                     </p>
                   </div>
                 </div>
 
                 {/* Specs Grid */}
-                <div className="bg-gray-50 rounded-xl p-8 mb-12">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">Technical Specifications</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="bg-gray-50 rounded-2xl p-10 mb-16 border border-gray-100">
+                  <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-black/20 mb-8">Engineering Specifications</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
                     <div>
-                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1">Flow Rate</p>
-                      <p className="text-sm font-black text-black">{selectedResult.product?.flow_rate_cc || selectedResult.product?.size_cc || "—"} cc</p>
+                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Flow Rate</p>
+                      <p className="text-base font-black text-black">{selectedResult.product?.flow_rate_cc || selectedResult.product?.size_cc || "—"} cc</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1">Impedance</p>
-                      <p className="text-sm font-black text-black">{selectedResult.product?.impedance || "High (12-14Ω)"}</p>
+                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Impedance</p>
+                      <p className="text-base font-black text-black">{selectedResult.product?.impedance || "High (12-14Ω)"}</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1">Brand</p>
-                      <p className="text-sm font-black text-black">{selectedResult.product?.brand || selectedResult.product?.manufacturer || "FiveO"}</p>
+                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Brand</p>
+                      <p className="text-base font-black text-black">{selectedResult.product?.brand || selectedResult.product?.manufacturer || "FiveO"}</p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1">Connector</p>
-                      <p className="text-sm font-black text-black">{selectedResult.product?.connector_type || "Standard"}</p>
+                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Connector</p>
+                      <p className="text-base font-black text-black">{selectedResult.product?.connector_type || "Standard"}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Final CTA */}
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-col md:flex-row gap-6 px-1 sm:px-8">
                   {selectedResult.product?.product_url && (
                     <a 
                       href={selectedResult.product.product_url} 
                       target="_blank" 
-                      className="oracle-cta-primary flex-1 text-center py-5 text-sm"
+                      className="oracle-cta-primary flex-1 text-center py-6 text-xs font-black tracking-widest"
                     >
-                      View & Add to Cart on FiveO Store
+                      Browse In Full FiveO Catalog
                     </a>
                   )}
                   <button 
                     onClick={() => setSelectedResult(null)}
-                    className="border border-gray-200 px-8 py-5 text-xs font-black uppercase tracking-widest hover:bg-gray-50 transition-colors"
+                    className="border border-gray-200 px-10 py-6 text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-colors text-gray-400 hover:text-black"
                   >
                     Back to Results
                   </button>
