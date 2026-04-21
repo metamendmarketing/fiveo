@@ -170,7 +170,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Make */}
-            <div className="bg-white rounded border border-gray-100 p-3 shadow-sm">
+            <div className="bg-white rounded border border-gray-100 px-6 py-4 shadow-sm">
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Make</label>
               <select
                 value={profile.make || ""}
@@ -188,7 +188,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-11 bg-gray-50 border border-gray-100 rounded px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
               >
                 <option value="">{loading ? "Loading..." : "Make..."}</option>
                 {makes.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
@@ -196,7 +196,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
             </div>
 
             {/* Model */}
-            <div className={`bg-white rounded border border-gray-100 p-3 shadow-sm ${!profile.makeId ? "opacity-40" : ""}`}>
+            <div className={`bg-white rounded border border-gray-100 px-6 py-4 shadow-sm ${!profile.makeId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Model</label>
               <select
                 value={profile.model || ""}
@@ -213,7 +213,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-11 bg-gray-50 border border-gray-100 rounded px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
               >
                 <option value="">Model...</option>
                 {models.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
@@ -223,7 +223,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Year */}
-            <div className={`bg-white rounded border border-gray-100 p-3 shadow-sm ${!profile.modelId ? "opacity-40" : ""}`}>
+            <div className={`bg-white rounded border border-gray-100 px-6 py-4 shadow-sm ${!profile.modelId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Year</label>
               <select
                 value={profile.year?.toString() || ""}
@@ -238,7 +238,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(selectedYear?.id || null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-11 bg-gray-50 border border-gray-100 rounded px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
               >
                 <option value="">Year...</option>
                 {years.map((y) => <option key={y.id} value={y.year}>{y.year}</option>)}
@@ -246,7 +246,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
             </div>
 
             {/* Engine */}
-            <div className={`bg-white rounded border border-gray-100 p-3 shadow-sm ${!selectedYearId ? "opacity-40" : ""}`}>
+            <div className={`bg-white rounded border border-gray-100 px-6 py-4 shadow-sm ${!selectedYearId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Engine</label>
               <select
                 value={profile.engineLabel || ""}
@@ -259,7 +259,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     engineStatus: null
                   });
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-11 bg-gray-50 border border-gray-100 rounded px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
               >
                 <option value="">Engine...</option>
                 {engines.map((eng) => (

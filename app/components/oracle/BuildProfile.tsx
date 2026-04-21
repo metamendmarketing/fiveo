@@ -70,7 +70,7 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
   }
 
   return (
-    <div className="oracle-build-profile p-5 sticky top-24">
+    <div className="oracle-build-profile px-8 py-6 sticky top-24">
       <div className="oracle-build-profile-label mb-4">Your Build</div>
       <div className="space-y-3">
         {activeItems.map((item) => (
