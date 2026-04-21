@@ -301,6 +301,18 @@ body { --cache-bust: '1758'; }
   padding-left: 15px;
 }
 
+/* 
+  ORACLE APP CONTAINMENT
+  Enforces symmetrical framing and prevents margin collapsing.
+  The transparent border acts as a 'strut' to ensure the grey 
+  background is visible around the white card.
+*/
+.oracle-app-containment {
+  margin-top: 48px !important;
+  margin-bottom: 48px !important;
+  border: 1px solid transparent;
+}
+
 .oracle-footer-top {
   padding-top: 10px;
 }
