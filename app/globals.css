@@ -314,29 +314,18 @@ body { --cache-bust: '1758'; }
 }
 
 /* 
-  ORACLE SELECTION TARGETS
-  Hardened design-system classes that bypass JIT compiler stalls.
-  Ensures premium framing for all interactive cards.
+  ORACLE DESIGN SYSTEM TWEAKS
+  Definitive, non-JIT rules for high-precision alignment.
 */
-.oracle-selection-card {
-  padding: 2.5rem 2rem !important; /* py-10 px-8 */
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
+.oracle-attribute-container {
+  padding: 1.25rem 1.5rem !important; /* Forces 24px horizontal gutter */
+  background: white !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
 }
 
-.oracle-status-card {
-  padding: 2rem 1.5rem !important; /* py-8 px-6 */
-}
-
-.oracle-photo-overlay {
-  padding: 2rem 2rem !important; /* py-8 px-8 */
-  position: absolute !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%) !important;
+.oracle-sidebar-panel {
+  padding: 1.5rem 1.5rem !important; /* Forces 24px horizontal gutter */
 }
 
 .oracle-footer-top {

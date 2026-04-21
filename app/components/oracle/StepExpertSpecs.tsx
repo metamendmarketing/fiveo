@@ -29,7 +29,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
 
         <div className="space-y-6">
           {/* QX1: Desired Injector Size */}
-          <div className="bg-white/5 border border-white/10 rounded-md px-6 py-10">
+          <div className="bg-white/5 border border-white/10 rounded-md p-5">
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-2 block">
               Desired Injector Size (cc/min)
             </label>
@@ -48,7 +48,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
           </div>
 
           {/* QX2: Fuel Pressure */}
-          <div className="bg-white/5 border border-white/10 rounded-md px-6 py-10">
+          <div className="bg-white/5 border border-white/10 rounded-md p-5">
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-2 block">
               Fuel Pressure (PSI) — Default: 43.5
             </label>
@@ -62,7 +62,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
           </div>
 
           {/* QX3: Headroom Preference */}
-          <div className="bg-white/5 border border-white/10 rounded-md px-6 py-10">
+          <div className="bg-white/5 border border-white/10 rounded-md p-5">
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-center">
               Headroom Preference
             </label>
@@ -75,7 +75,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ headroomPref: opt.value })}
-                  className={`oracle-mod-check flex-col items-center text-center px-4 py-8 ${
+                  className={`oracle-mod-check flex-col items-center text-center py-4 ${
                     profile.headroomPref === opt.value ? "oracle-mod-check-active" : ""
                   }`}
                 >

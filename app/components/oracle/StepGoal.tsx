@@ -48,7 +48,7 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
               }`}
               style={{ backgroundImage: `url(${g.image})` }}
             >
-              <div className="oracle-photo-overlay">
+              <div className="oracle-card-content absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-white font-black uppercase text-lg leading-tight mb-1">
                   {g.label}
                 </h3>
