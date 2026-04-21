@@ -290,10 +290,14 @@ Return valid JSON:
 
     // Relative rescaling (top match = 100%)
     const maxScore = Math.max(...finalResults.map((r) => r.score || 0));
-    const anchored = finalResults.map((r) => ({
-      ...r,
-      score: maxScore > 0 ? Math.round(((r.score || 0) / maxScore) * 100) : 100,
-    }));
+    const anchored = finalResults.map((r) => {
+      const rawScore = maxScore > 0 ? ((r.score || 0) / maxScore) * 100 : 100;
+      // High-precision decimals to break clumping and prove new code is active
+      return {
+        ...r,
+        score: Number(rawScore.toFixed(1))
+      };
+    });
 
     anchored.sort((a, b) => (b.score || 0) - (a.score || 0));
 

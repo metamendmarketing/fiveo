@@ -40,15 +40,15 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
   const others = results.slice(1);
 
   return (
-    <div className="oracle-bg-results min-h-[60vh] px-6 py-16">
+    <div className="oracle-bg-results min-h-[60vh] px-8 py-24">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <h2 className="text-3xl font-black uppercase italic text-black mb-2">
-            Your <span data-deploy-sig="SIG-1776809870" className="text-[#00AEEF]">Oracle Selection</span>
+            Oracle <span data-deploy-sig="SIG-1776813350" className="text-[#E10600]">Selection v3.5</span>
           </h2>
-          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-6"></div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
+          <div className="h-0.5 w-16 bg-[#E10600] mx-auto mb-8"></div>
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.4em] font-black">
             {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -83,7 +83,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
 
               <div className="md:flex items-stretch min-h-[380px]">
                 {/* Image Section */}
-                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-12 border-r border-gray-100">
+                <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-16 border-r border-gray-100">
                   <img 
                     src={topPick.product?.heroImageUrl || topPick.product?.hero_image_url} 
                     alt={topPick.product?.name}
@@ -92,7 +92,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                 </div>
                 
                 {/* Content Section */}
-                <div className="md:w-3/5 p-12 flex flex-col justify-center">
+                <div className="md:w-3/5 p-16 flex flex-col justify-center">
                    <div className="mb-6">
                       <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest">
                         {topPick.matchStrategy || "Top Recommendation"}
@@ -115,7 +115,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                           className="h-full bg-[#00AEEF]"
                         />
                       </div>
-                      <span className="text-lg font-black text-[#00AEEF] tracking-tighter">{topPick.score || 0}% Match</span>
+                      <span className="text-2xl font-black text-[#00AEEF] tracking-tighter">{Number(topPick.score).toFixed(1)}% Match</span>
                    </div>
 
                    <div className="flex flex-wrap gap-6 items-center">
@@ -176,8 +176,8 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                     {/* Compact Score */}
                     <div className="mt-auto pt-6 border-t border-gray-50">
                       <div className="flex justify-between items-center mb-6">
-                        <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Match Score</span>
-                        <span className="text-sm font-black text-[#00AEEF]">{result.score}%</span>
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Match Score</span>
+                        <span className="text-xl font-black text-[#00AEEF]">{Number(result.score).toFixed(1)}%</span>
                       </div>
                       
                       <button 
