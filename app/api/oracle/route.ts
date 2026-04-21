@@ -263,7 +263,7 @@ Return strictly valid JSON:
     let outputResults = finalResults.slice(0, rules.poolSize.aiMaxResults);
 
     // Check if AI assigned its own scores (they'll be 0-100 range)
-    const hasAiScores = outputResults.some((r) => r.matchStrategy);
+    const hasAiScores = outputResults.some((r: any) => r.matchStrategy);
     if (!hasAiScores && outputResults.length > 0) {
       // Rescale heuristic scores (Marquis pattern: top = 100%)
       const maxScore = Math.max(...outputResults.map((r) => r.score || 0));
