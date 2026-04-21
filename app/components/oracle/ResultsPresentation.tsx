@@ -45,7 +45,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-black uppercase italic text-black mb-2">
-            Your <span className="text-[#00AEEF]">Oracle Selection</span>
+            Your <span data-deploy-sig="SIG-1776809870" className="text-[#00AEEF]">Oracle Selection</span>
           </h2>
           <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-6"></div>
           <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
