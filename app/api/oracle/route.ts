@@ -160,65 +160,65 @@ export async function POST(req: NextRequest) {
         matchType: c.matchType,
       }));
 
-      const prompt = `You are the FiveO Motorsport Fuel Injector Oracle — a Senior Fuel Systems Engineer with 25+ years of experience in fuel injection sizing, fitment engineering, and forced-induction tuning.
+      const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
 
-You are the FINAL DECISION MAKER. Our engineering pre-filter has narrowed the catalog to ${shortList.length} viable candidates. Your job: evaluate every candidate against this customer's build profile, then select and rank the TOP 10 that best fit their specific application.
+      const prompt = `You are a senior fuel injection consultant at FiveO Motorsport. You've been helping enthusiasts find the perfect injectors for over 20 years. You're warm, approachable, knowledgeable — like the best salesperson a customer has ever talked to. You explain things simply but you clearly know your stuff.
 
-═══ CUSTOMER BUILD PROFILE ═══
-${JSON.stringify(profile, null, 2)}
+A customer just walked you through their build. Here's what they told you:
 
-═══ ENGINEERING CALCULATIONS ═══
-- Required flow rate: ${requiredCC || "Not specified"} cc/min
-- BSFC factor: ${FUEL_BSFC[profile.fuelType || "pump"]} lb/hp/hr
-- Vehicle fitment matches found: ${fitmentProductIds.length} (model-level), ${makeFitmentProductIds.length} (make-level)
+THEIR VEHICLE: ${vehicleLabel}
+THEIR GOAL: ${profile.goal || "general upgrade"}
+HOW THEY DRIVE: ${profile.usage || "not specified"} ${profile.engineStatus ? `(engine: ${profile.engineStatus})` : ""}
+TARGET HP: ${profile.targetHP || "not specified"}
+FUEL TYPE: ${profile.fuelType || "pump gas"}
+BUDGET: ${profile.budget || "flexible"}
+WHAT MATTERS MOST: ${(profile.priorities || []).join(", ") || "not specified"}
+INJECTOR PREFERENCE: ${profile.injectorPref || "best match"}
+BRAND PREFERENCE: ${profile.brandPref || "no preference"}
 
-═══ CANDIDATE POOL (${shortList.length} products from heuristic engine) ═══
+ENGINEERING MATH:
+- Their build needs approximately ${requiredCC || "unknown"} cc/min of fuel flow
+- We found ${fitmentProductIds.length} injectors confirmed to fit their exact model
+- We found ${makeFitmentProductIds.length} injectors compatible with their make
+
+Here are ${shortList.length} candidates our system pre-selected:
 ${JSON.stringify(candidateData, null, 2)}
 
-═══ KNOWLEDGE BASE ═══
-${JSON.stringify((kbData || []).slice(0, 8), null, 2)}
+YOUR JOB: Pick the best 8-10 injectors for this customer and explain your choices like you're having a conversation with them.
 
-═══ YOUR INSTRUCTIONS ═══
+RULES FOR YOUR RESPONSE:
 
-1. THE ORACLE PERSONA: You are the all-knowing fuel injection expert. Warm but authoritative. Grounded in engineering facts, not marketing fluff.
+1. TONE: Talk like a helpful human, not a robot. Say "you" and "your." Be direct. No corporate jargon. No phrases like "as the Oracle" or "my primary directive." Just be a knowledgeable person helping someone.
 
-2. EVALUATION CRITERIA — Weigh each factor:
-   - Flow rate fit (is the cc/min right for their HP target and fuel type?)
-   - Vehicle fitment (is this confirmed for their vehicle, or a generic/universal fit?)
-   - Impedance compatibility (high-Z preferred for modern ECUs)
-   - Fuel type compatibility (E85 requires specific materials)
-   - Price-to-performance value
-   - Brand engineering quality
-   - Connector type match
-   - Use case suitability (daily driver vs track vs mixed)
+2. "selectionStrategy" (60-80 words max): A brief, warm overview of how you approached finding injectors for THEIR specific build. Reference their vehicle by name, their goals, and what drove your top picks. Think of it as the opening paragraph of a personal email to the customer.
 
-3. SELECTION: Pick the TOP 10 products, ranked by overall build suitability. Products with confirmed vehicle fitment should be strongly preferred, but a better-fitting flow rate can override fitment if the technical case is compelling.
+3. For each injector, provide:
+   - "matchStrategy": A short, friendly label (3-5 words) for the results card. Examples: "Best All-Around Pick", "Premium Upgrade Path", "Great Value Option".
+   - "aiHeadline": A punchy, expert headline for the detail view (3-6 words). Example: "The Gold Standard for J32A2 Builds".
+   - "preferenceSummary": ONE conversational sentence (max 20 words) about why this fits THEIR build. Start with "This" or "These" — not "We chose." Example: "This injector nails your flow needs while keeping your daily driving smooth."
+   - "technicalNarrative": 80-120 words. Explain why you're recommending this in plain English. Mention the flow rate and how it compares to what they need. If it has vehicle fitment, say so clearly. Mention one or two technical strengths. Keep it readable — short sentences, no walls of text.
+   - "proTip": ONE practical, specific sentence of advice for this particular injector. Something a tuner friend would tell them. 15-25 words max. Example: "Ask your tuner to set base fuel pressure to 43.5 PSI — these Bosch units respond really well at that setting."
 
-4. FOR EACH SELECTION, provide:
-   - "matchStrategy": A 2-5 word technical badge (e.g., "Precision OEM Replacement", "High-Flow Track Weapon")
-   - "preferenceSummary": ONE sentence starting with "We chose this because..." that directly references their specific build profile. Max 30 words.
-   - "technicalNarrative": 150-250 words of deep technical analysis. COMPARE this injector against other candidates in the pool. Explain WHY this specific SKU was chosen over alternatives. Reference specific specs (flow rate, impedance, spray pattern). Include a "Pro-Tip" for tuning. Each narrative MUST be unique — do not reuse phrasing across products.
+4. "score": Your honest assessment 0-100. Top pick should be 95-100. Every score must be different — no ties. Space them out naturally.
 
-5. Write a "selectionStrategy" paragraph (100-150 words) explaining your overall reasoning process — how you weighed fitment vs flow rate vs budget, and why the top pick is #1.
+5. You MUST return results. If nothing is perfect, be honest about trade-offs.
 
-6. SCORING: Assign each product a "score" from 0-100 based on YOUR holistic assessment. The #1 pick should be 95-100. Scores MUST be meaningfully different (minimum 2-point gaps). Do not cluster scores.
-
-7. You MUST return results. If no perfect match exists, recommend the closest options with honest trade-off analysis.
-
-═══ OUTPUT FORMAT ═══
-Return strictly valid JSON:
+OUTPUT FORMAT — Return strictly valid JSON:
 {
-  "selectionStrategy": "Your overall reasoning paragraph...",
+  "selectionStrategy": "...",
   "refinement": [
     {
       "id": 123,
       "score": 97,
       "matchStrategy": "...",
+      "aiHeadline": "...",
       "preferenceSummary": "...",
-      "technicalNarrative": "..."
+      "technicalNarrative": "...",
+      "proTip": "..."
     }
   ]
 }`;
+
 
       const result = await model.generateContent(prompt);
       const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
@@ -243,8 +243,10 @@ Return strictly valid JSON:
               ...original,
               score: r.score || original.score,
               matchStrategy: r.matchStrategy,
+              aiHeadline: r.aiHeadline,
               preferenceSummary: r.preferenceSummary,
               technicalNarrative: r.technicalNarrative,
+              proTip: r.proTip,
             };
           })
           .filter(Boolean);
@@ -252,7 +254,7 @@ Return strictly valid JSON:
     } catch (aiError: any) {
       console.error("[Oracle] AI refinement failed, using heuristic results:", aiError.message);
       // Fallback: use heuristic scores directly, rescaled to 100
-      selectionStrategy = "Our engineering analysis has identified these injectors as the strongest technical matches based on flow rate compatibility, vehicle fitment data, and your specified build parameters. While our AI advisor is temporarily unavailable, these recommendations are grounded in verified engineering calculations.";
+      selectionStrategy = "I've carefully analyzed your build specs, and while my advanced advisor is taking a quick breather, our engineering core has identified these as your absolute best matches. We've prioritized proven vehicle fitment and the flow rates you'll need to hit your performance goals safely.";
     }
 
     // ═══════════════════════════════════════
@@ -270,8 +272,9 @@ Return strictly valid JSON:
       outputResults = outputResults.map((r) => ({
         ...r,
         score: maxScore > 0 ? Math.round(((r.score || 0) / maxScore) * 100) : 50,
-        matchStrategy: r.hasFitment ? "Fitment Verified" : "Technical Match",
-        preferenceSummary: r.reasons?.[0] || "Selected based on engineering compatibility.",
+        matchStrategy: r.hasFitment ? "Expert Fitment Match" : "Technical Compatibility",
+        preferenceSummary: r.reasons?.[0] || "This injector aligns perfectly with your fuel flow requirements.",
+        proTip: "Make sure to verify your connector type matches your harness before installation.",
       }));
     }
 
@@ -292,6 +295,7 @@ Return strictly valid JSON:
     return Response.json({
       results: finalWithImages,
       selectionStrategy,
+      vehicleLabel,
       calculatedCC: requiredCC,
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,

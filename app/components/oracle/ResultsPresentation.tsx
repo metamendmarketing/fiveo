@@ -44,25 +44,32 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <h2 className="text-2xl md:text-3xl font-black uppercase italic text-black mb-2">
-            Your <span className="text-[#00AEEF]">Oracle Selection</span>
+          <h2 className="text-2xl md:text-4xl font-black uppercase italic text-black mb-1">
+            Oracle <span className="text-[#00AEEF]">Selection</span>
           </h2>
-          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-4"></div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
-            {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
-          </p>
-          {apiData?.fitmentMatches > 0 && (
-            <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest mt-2">✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found</p>
+          {apiData?.vehicleLabel && (
+            <p className="text-sm font-black uppercase tracking-[0.2em] text-gray-500 mb-6">
+              Project: <span className="text-black">{apiData.vehicleLabel}</span>
+            </p>
           )}
+          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-4"></div>
+          <div className="flex flex-col items-center gap-1">
+            <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
+              {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
+            </p>
+            {apiData?.fitmentMatches > 0 && (
+              <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found</p>
+            )}
+          </div>
         </div>
 
         {/* AI Selection Strategy */}
         {apiData?.selectionStrategy && (
-          <div className="oracle-strategy-card p-8 md:p-10 mb-14 text-white shadow-xl bg-black/90 rounded-xl">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-4">
-              Oracle Strategy & Methodology
+          <div className="oracle-strategy-card p-8 md:p-12 mb-14 text-white shadow-xl bg-black/95 rounded-2xl border border-white/5">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
+              Expert Advisor Strategy & Methodology
             </h3>
-            <p className="text-sm md:text-base text-white/80 leading-relaxed italic border-l-2 border-[#00AEEF]/30 pl-6">
+            <p className="text-base md:text-lg text-white/90 leading-relaxed italic font-medium border-l-4 border-[#00AEEF] pl-8">
               "{apiData.selectionStrategy}"
             </p>
           </div>
@@ -256,10 +263,15 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                         />
                       </div>
                    </div>
-                   <div className="md:w-2/3 flex flex-col justify-center">
-                      <h2 className="text-3xl font-black uppercase italic text-black leading-tight mb-6">
+                    <div className="md:w-2/3 flex flex-col justify-center">
+                      {selectedResult.aiHeadline && (
+                        <h2 className="text-3xl md:text-4xl font-black uppercase italic text-[#00AEEF] leading-tight mb-2">
+                          {selectedResult.aiHeadline}
+                        </h2>
+                      )}
+                      <h3 className={`text-xl font-black uppercase italic text-black leading-tight ${selectedResult.aiHeadline ? 'mb-6 text-gray-500' : 'mb-6 text-3xl'}`}>
                         {selectedResult.product?.name}
-                      </h2>
+                      </h3>
                       <div className="flex flex-wrap gap-4 mb-8">
                         <span className="bg-black text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest">{selectedResult.matchStrategy}</span>
                         <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest border border-[#00AEEF]/20">{selectedResult.score}% Compatibility</span>
@@ -274,17 +286,20 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
 
                 {/* The Technical Narrative */}
                 <div className="mb-16">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">Full Technical Rationale</h4>
-                  <div className="oracle-narrative-text whitespace-pre-wrap px-1 sm:px-8">
-                    {selectedResult.technicalNarrative || "Calibrating expert technical rationale... This specific model is a standout choice for high-duty cycle applications. It features advanced internal solenoid architecture that maintains linear flow even under heat-soak conditions common in performance tuning."}
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert's Rationale</h4>
+                  <div className="oracle-narrative-text whitespace-pre-wrap px-1 sm:px-8 text-lg text-gray-800 leading-relaxed mb-12">
+                    {selectedResult.technicalNarrative || "I've selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you're looking for."}
                   </div>
                   
-                  <div className="oracle-pro-tip mx-1 sm:mx-8">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic">FiveO Expert Tuning Pro-Tip</p>
-                    <p className="text-gray-700 not-italic text-sm leading-relaxed">
-                      "Ensure your ECU is calibrated for the specific impedance and flow rate of this {selectedResult.product?.brand || "FiveO"} injector. While this model is high-impedance and universally compatible, we recommend verified dead-time mapping at 13.5V for the crispest idle quality. Reach out to our technical team for the exact CSV mapping for your specific ECU platform."
-                    </p>
-                  </div>
+                  {selectedResult.proTip && (
+                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-8 mx-1 sm:mx-8 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#00AEEF]/10 rounded-full -mr-12 -mt-12"></div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic relative z-10">Expert Consultant Pro-Tip</p>
+                      <p className="text-gray-800 not-italic text-base leading-relaxed relative z-10 font-medium">
+                        "{selectedResult.proTip}"
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Specs Grid */}
