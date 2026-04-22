@@ -38,9 +38,9 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
 
-  /* Unified Design System (UDS) Padding Metrics — Marquis Standard */
-  --uds-padding: 7rem;           /* 112px High-Fidelity Desktop Gutter */
-  --uds-padding-mobile: 2rem;    /* 32px High-Fidelity Mobile Gutter */
+  /* Unified Design System (UDS) Padding Metrics — Balanced Premium */
+  --uds-padding: 3rem;           /* 48px Balanced Desktop Gutter */
+  --uds-padding-mobile: 1.5rem;  /* 24px Standard Mobile Gutter */
 
   /* Touch Target Minimum (WCAG 2.5.5 / Google recommendation) */
   --touch-min: 44px;
@@ -229,20 +229,20 @@ img, video, svg {
   padding-right: var(--uds-padding-mobile);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .fiveo-container {
     padding-left: var(--uds-padding);
     padding-right: var(--uds-padding);
   }
 }
 
-/* UDS Section Padding Utility — Enforcing Marquis-level gutters */
+/* UDS Section Padding Utility — Balanced Gutters */
 .uds-section-padding {
   padding-left: var(--uds-padding-mobile);
   padding-right: var(--uds-padding-mobile);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .uds-section-padding {
     padding-left: var(--uds-padding);
     padding-right: var(--uds-padding);

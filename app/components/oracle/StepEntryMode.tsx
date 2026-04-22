@@ -54,7 +54,7 @@ export function StepEntryMode({
 }) {
   return (
     <div
-      className="relative min-h-[70vh] flex flex-col items-center justify-center px-8 lg:px-28 py-12"
+      className="relative min-h-[70vh] flex flex-col items-center justify-center px-6 md:px-12 py-12"
       style={{
         backgroundImage: `url(${IMAGES.engineBayHero})`,
         backgroundSize: "cover",

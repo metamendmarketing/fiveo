@@ -35,7 +35,7 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="relative oracle-bg-preferences min-h-[65vh] flex items-center justify-center px-8 lg:px-28 py-12">
+    <div className="relative oracle-bg-preferences min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
       <div className="relative z-10 w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
