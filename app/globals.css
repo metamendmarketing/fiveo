@@ -39,6 +39,10 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
 
+  /* Unified Design System (UDS) Padding Metrics */
+  --uds-padding: 2rem;           /* 32px Standard Desktop Gutter */
+  --uds-padding-mobile: 1.5rem;   /* 24px Standard Mobile Gutter */
+
   /* Touch Target Minimum (WCAG 2.5.5 / Google recommendation) */
   --touch-min: 44px;
 }
@@ -222,8 +226,28 @@ img, video, svg {
   max-width: 1280px; /* Ground-Truth Porto width */
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: var(--uds-padding-mobile);
+  padding-right: var(--uds-padding-mobile);
+}
+
+@media (min-width: 640px) {
+  .fiveo-container {
+    padding-left: var(--uds-padding);
+    padding-right: var(--uds-padding);
+  }
+}
+
+/* UDS Section Padding Utility */
+.uds-section-padding {
+  padding-left: var(--uds-padding-mobile);
+  padding-right: var(--uds-padding-mobile);
+}
+
+@media (min-width: 640px) {
+  .uds-section-padding {
+    padding-left: var(--uds-padding);
+    padding-right: var(--uds-padding);
+  }
 }
 
 @media (min-width: 640px) {
@@ -242,9 +266,18 @@ img, video, svg {
 
 /* Safe-area only for edge-touching elements on notched devices */
 @supports (padding: env(safe-area-inset-left)) {
-  .fiveo-container {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
+  .fiveo-container, .uds-section-padding {
+    padding-left: max(var(--uds-padding-mobile), env(safe-area-inset-left));
+    padding-right: max(var(--uds-padding-mobile), env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 640px) {
+  @supports (padding: env(safe-area-inset-left)) {
+    .fiveo-container, .uds-section-padding {
+      padding-left: max(var(--uds-padding), env(safe-area-inset-left));
+      padding-right: max(var(--uds-padding), env(safe-area-inset-right));
+    }
   }
 }
 
@@ -318,10 +351,16 @@ body { --cache-bust: '1758'; }
   Definitive, non-JIT rules for high-precision alignment.
 */
 .oracle-attribute-container {
-  padding: 1.25rem 1.5rem !important; /* Forces 24px horizontal gutter */
+  padding: 1.25rem var(--uds-padding-mobile) !important; 
   background: white !important;
   border-radius: 6px !important;
   border: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+@media (min-width: 640px) {
+  .oracle-attribute-container {
+    padding: 1.25rem var(--uds-padding) !important;
+  }
 }
 
 .oracle-sidebar-panel {

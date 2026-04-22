@@ -60,7 +60,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="oracle-bg-performance min-h-[65vh] flex items-center justify-center px-6 py-12">
+    <div className="oracle-bg-performance min-h-[65vh] flex items-center justify-center px-6 sm:px-8 py-12">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">

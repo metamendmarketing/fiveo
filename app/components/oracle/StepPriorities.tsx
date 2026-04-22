@@ -31,7 +31,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 py-12">
+    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 sm:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
