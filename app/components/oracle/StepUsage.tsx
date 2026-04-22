@@ -25,7 +25,6 @@ interface Props {
 
 export function StepUsage({ profile, onUpdate, onNext }: Props) {
   return (
-  return (
     <div className="oracle-bg-intent min-h-[65vh] flex items-center justify-center px-8 lg:px-28 py-12">
       <div className="w-full max-w-3xl mx-auto">
         {/* Header */}
