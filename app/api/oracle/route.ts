@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "Profile is required" }, { status: 400 });
     }
 
-    console.log("[Oracle] Received profile:", JSON.stringify(profile, null, 2));
+    const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
+    console.log("[Oracle] Received profile for:", vehicleLabel);
 
     const supabase = getServerSupabase();
 
@@ -160,7 +161,6 @@ export async function POST(req: NextRequest) {
         matchType: c.matchType,
       }));
 
-      const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
 
       const prompt = `You are a senior fuel injection consultant at FiveO Motorsport. You've been helping enthusiasts find the perfect injectors for over 20 years. You're warm, approachable, knowledgeable — like the best salesperson a customer has ever talked to. You explain things simply but you clearly know your stuff.
 
