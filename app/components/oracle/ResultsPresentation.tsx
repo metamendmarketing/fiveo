@@ -43,7 +43,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
   const others = results.slice(1);
 
   return (
-    <div className="oracle-bg-results min-h-[60vh] px-6 sm:px-8 py-16 md:py-20">
+    <div className="oracle-bg-results min-h-[60vh] px-8 lg:px-28 py-16 md:py-20">
       <div className="max-w-7xl mx-auto">
         
         {/* Results Header */}

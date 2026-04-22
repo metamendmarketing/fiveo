@@ -112,7 +112,8 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
-    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 sm:px-8 py-12">
+  return (
+    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-8 lg:px-28 py-12">
       <div className="w-full max-w-xl mx-auto">
         
         {/* Step Header */}

@@ -192,7 +192,7 @@ export default function RootLayout({
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
         <div className="flex-grow w-full bg-[#f8f9fa] flex flex-col items-center">
-          <div className="fiveo-container px-6 sm:px-8 w-full oracle-app-containment">
+          <div className="fiveo-container px-8 lg:px-28 w-full oracle-app-containment">
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
@@ -211,7 +211,7 @@ export default function RootLayout({
               </div>
 
               {/* Main Content Wrapper */}
-              <main className="flex-grow w-full px-6 sm:px-8 pb-10" id="main-content" role="main">
+              <main className="flex-grow w-full px-8 lg:px-28 pb-10" id="main-content" role="main">
                 {children}
               </main>
               
