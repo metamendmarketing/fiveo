@@ -1,72 +1,81 @@
-/**
- * ProcessingSequence — Synthesis animation with real API call
- *
- * Pattern borrowed from Marquis: fires API in background,
- * runs paced progress bar with status messages,
- * accelerates once real data arrives.
- */
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import type { BuildProfile } from "@/app/lib/constants";
 import { PROCESSING_MESSAGES } from "@/app/lib/constants";
+import { OracleApiResponse } from "@/app/lib/types";
 
 interface Props {
   profile: BuildProfile;
-  onComplete: (data: any) => void;
+  onComplete: (data: OracleApiResponse) => void;
 }
 
+/**
+ * ProcessingSequence — Analysis Synthesis Animation
+ * 
+ * This component performs the background API call to the Oracle engine
+ * while displaying a paced "scanning" animation to manage user expectations.
+ * The progress bar accelerates once the actual data is received.
+ */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
   const [statusText, setStatusText] = useState<string>(PROCESSING_MESSAGES[0].text);
   const hasCompletedRef = useRef(false);
 
   useEffect(() => {
-    let apiData: any = null;
+    let apiData: OracleApiResponse | null = null;
     let apiReady = false;
 
-    // 1. Fire API call in background
-    const fetchTask = (async () => {
+    // 1. Initiate background analysis
+    (async () => {
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),
         });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
         apiReady = true;
       } catch (err) {
-        console.error("[ProcessingSequence] API call failed:", err);
-        apiData = { results: [], error: "API call failed" };
+        console.error("[ProcessingSequence] Analysis failed:", err);
+        apiData = { 
+          results: [], 
+          selectionStrategy: "", 
+          vehicleLabel: "your vehicle", 
+          calculatedCC: 0, 
+          fitmentMatches: 0, 
+          makeFitmentMatches: 0, 
+          candidatePoolSize: 0,
+          error: "API call failed" 
+        };
         apiReady = true;
       }
     })();
 
-    // 2. Run progress simulation
+    // 2. Execute progress simulation
     const runProgress = async () => {
       for (let i = 0; i <= 99; i++) {
         if (hasCompletedRef.current) return;
 
         setProgress(i);
 
-        // Update status text based on threshold
+        // Map progress thresholds to status messages
         const msg = [...PROCESSING_MESSAGES]
           .reverse()
           .find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Pacing: slower when waiting for API, fast when data arrived
+        // Intelligent pacing: slow until API is ready, then sprint to finish
         let delay = 60;
         if (i >= 15 && i < 85) {
-          delay = apiReady ? 30 : 200 + Math.random() * 500;
+          delay = apiReady ? 20 : 150 + Math.random() * 300;
         } else if (i >= 85) {
-          delay = apiReady ? 20 : Math.max(80, 300 - (i - 85) * 15);
+          delay = apiReady ? 15 : Math.max(80, 300 - (i - 85) * 15);
         }
 
         await new Promise((r) => setTimeout(r, delay));
       }
 
-      // Wait for actual data if animation finished first
+      // Safeguard: Ensure API data has arrived before transitioning
       if (!apiReady) {
         setStatusText("Securing final match data...");
         while (!apiReady) {
@@ -74,14 +83,22 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         }
       }
 
-      // Final tick
+      // Transition to results
       setProgress(100);
       setStatusText("Analysis Complete!");
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 800));
 
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
-        onComplete(apiData || { results: [] });
+        onComplete(apiData || { 
+          results: [], 
+          selectionStrategy: "", 
+          vehicleLabel: "your vehicle", 
+          calculatedCC: 0, 
+          fitmentMatches: 0, 
+          makeFitmentMatches: 0, 
+          candidatePoolSize: 0 
+        });
       }
     };
 
@@ -90,11 +107,11 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     return () => {
       hasCompletedRef.current = true;
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [profile, onComplete]); 
 
   return (
     <div className="oracle-bg-processing min-h-[70vh] flex flex-col items-center justify-center px-4 py-16">
-      {/* Radar rings */}
+      {/* Visual Radar Rings */}
       <div className="relative flex items-center justify-center mb-12">
         <div className="oracle-radar-ring-outer absolute" />
         <div className="oracle-radar-ring flex items-center justify-center">
@@ -114,13 +131,13 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         </div>
       </div>
 
-      {/* Progress percentage */}
+      {/* Progress Readout */}
       <div className="oracle-progress-percent mb-6">
         {progress}
         <span className="text-lg text-white/40 ml-1">%</span>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress Bar Container */}
       <div className="oracle-progress-bar mb-6">
         <div
           className="oracle-progress-bar-fill"
@@ -128,8 +145,8 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         />
       </div>
 
-      {/* Status text */}
-      <p className="text-sm text-white/60 font-medium tracking-wide min-h-[1.5em]">
+      {/* Dynamic Status Label */}
+      <p className="text-sm text-white/60 font-medium tracking-wide min-h-[1.5em] text-center">
         {statusText}
       </p>
     </div>

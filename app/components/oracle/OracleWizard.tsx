@@ -15,6 +15,7 @@ import {
   INITIAL_PROFILE,
   STEP_SEQUENCES,
 } from "@/app/lib/constants";
+import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
 import { StepIndicator } from "@/app/components/ui/StepIndicator";
 import { BuildProfilePanel } from "@/app/components/oracle/BuildProfile";
 import { StepEntryMode } from "@/app/components/oracle/StepEntryMode";
@@ -28,7 +29,9 @@ import { StepExpertSpecs } from "@/app/components/oracle/StepExpertSpecs";
 import { ProcessingSequence } from "@/app/components/oracle/ProcessingSequence";
 import { ResultsPresentation } from "@/app/components/oracle/ResultsPresentation";
 
-// ─── Reducer ───
+/**
+ * Reducer for managing the BuildProfile state.
+ */
 type ProfileAction =
   | { type: "UPDATE"; payload: Partial<BuildProfile> }
   | { type: "RESET" };
@@ -44,20 +47,31 @@ function profileReducer(state: BuildProfile, action: ProfileAction): BuildProfil
   }
 }
 
-// ─── Step animation variants ───
+/**
+ * Step animation variants for smooth transitions.
+ */
 const stepVariants = {
   enter: { opacity: 0, x: 24 },
   center: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -24 },
 };
 
+/**
+ * OracleWizard — Main Wizard Shell & State Machine
+ *
+ * This component orchestrates the entire multi-step fuel injector sizing flow.
+ * It manages the global wizard state (BuildProfile), handles navigation logic,
+ * and renders the appropriate step components.
+ */
 export default function OracleWizard() {
   const [profile, dispatch] = useReducer(profileReducer, INITIAL_PROFILE);
   const [stepIndex, setStepIndex] = useState(0);
-  const [results, setResults] = useState<any[] | null>(null);
-  const [apiData, setApiData] = useState<any>(null);
+  const [results, setResults] = useState<ScoredProduct[] | null>(null);
+  const [apiData, setApiData] = useState<OracleApiResponse | null>(null);
 
-  // Derive step sequence from entry mode
+  /** 
+   * Derive the current step sequence based on the selected entry mode 
+   */
   const steps = useMemo(() => {
     if (!profile.entryMode) return ["entry"] as WizardStep[];
     return STEP_SEQUENCES[profile.entryMode] || STEP_SEQUENCES.guide;
@@ -65,20 +79,26 @@ export default function OracleWizard() {
 
   const currentStep = steps[stepIndex] || "entry";
 
-  // Progress percentage (exclude entry and results from count)
+  /**
+   * Calculate progress percentage for the progress bar.
+   * Excludes 'entry' and 'results' from the denominator.
+   */
   const progressPercent = useMemo(() => {
     if (stepIndex === 0) return 0;
-    const total = steps.length - 1; // exclude results
+    const total = steps.length - 1; 
     return Math.min(Math.round((stepIndex / total) * 100), 100);
   }, [stepIndex, steps.length]);
 
+  /**
+   * Update the global profile state.
+   */
   const update = useCallback(
     (partial: Partial<BuildProfile>) => {
-      // Cast known numeric IDs to ensure integrity
+      // Cast known numeric values to ensure data integrity
       const sanitized = { ...partial };
-      if ("makeId" in sanitized && sanitized.makeId !== undefined) sanitized.makeId = Number(sanitized.makeId);
-      if ("modelId" in sanitized && sanitized.modelId !== undefined) sanitized.modelId = Number(sanitized.modelId);
-      if ("year" in sanitized && sanitized.year !== undefined) sanitized.year = Number(sanitized.year);
+      if ("makeId" in sanitized && sanitized.makeId !== undefined) sanitized.makeId = sanitized.makeId ? Number(sanitized.makeId) : null;
+      if ("modelId" in sanitized && sanitized.modelId !== undefined) sanitized.modelId = sanitized.modelId ? Number(sanitized.modelId) : null;
+      if ("year" in sanitized && sanitized.year !== undefined) sanitized.year = sanitized.year ? Number(sanitized.year) : null;
       
       dispatch({ type: "UPDATE", payload: sanitized });
     },
@@ -93,25 +113,17 @@ export default function OracleWizard() {
     setStepIndex((i) => Math.max(i - 1, 0));
   }, []);
 
-  const goToStep = useCallback(
-    (step: WizardStep) => {
-      const idx = steps.indexOf(step);
-      if (idx >= 0) setStepIndex(idx);
-    },
-    [steps]
-  );
-
   const handleEntrySelect = useCallback(
     (mode: "guide" | "setup" | "specs") => {
       update({ entryMode: mode });
-      // After setting entry mode, advance to step 1 of the new sequence
+      // Skip to the first real step after mode selection
       setStepIndex(1);
     },
     [update]
   );
 
   const handleProcessingComplete = useCallback(
-    (data: any) => {
+    (data: OracleApiResponse) => {
       setResults(data.results || []);
       setApiData(data);
       next();
@@ -119,10 +131,9 @@ export default function OracleWizard() {
     [next]
   );
 
-  // Determine if current step is dark-themed (for text contrast)
-  const isDarkStep = ["entry", "engine-status", "goal", "usage", "performance", "expert-specs", "processing"].includes(currentStep);
-
-  // ─── Render current step ───
+  /**
+   * Render the current step component with injected props.
+   */
   function renderStep() {
     const commonProps = { profile, onUpdate: update, onNext: next, onBack: back };
 
@@ -171,21 +182,19 @@ export default function OracleWizard() {
 
   return (
     <div className="w-full">
-      {/* Step indicator — hidden on entry and results */}
+      {/* Progress tracking UI */}
       {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
         <div className="max-w-4xl mx-auto px-4 pt-4">
           <StepIndicator
-            current={stepIndex}
-            total={steps.length}
             percent={progressPercent}
           />
         </div>
       )}
 
-      {/* Main content area */}
+      {/* Main step container */}
       <div className="relative">
         <div className="flex gap-0 lg:gap-8 max-w-7xl mx-auto">
-          {/* Step content */}
+          {/* Active Step Content */}
           <div className="flex-1 min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
@@ -201,7 +210,7 @@ export default function OracleWizard() {
             </AnimatePresence>
           </div>
 
-          {/* Build Profile sidebar — visible after entry, hidden on processing/results */}
+          {/* Profile Summary Sidebar */}
           {profile.entryMode &&
             currentStep !== "entry" &&
             currentStep !== "processing" &&
@@ -213,7 +222,7 @@ export default function OracleWizard() {
         </div>
       </div>
 
-      {/* Navigation footer — hidden on entry, processing, results */}
+      {/* Step Navigation Footer */}
       {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
         <div className="max-w-4xl mx-auto px-4 py-6 flex justify-between items-center">
           <button onClick={back} className="oracle-cta-secondary text-sm">

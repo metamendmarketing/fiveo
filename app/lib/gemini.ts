@@ -1,40 +1,48 @@
-/**
- * Vertex AI Client — Gemini 2.5 Flash
- *
- * Dual-path credential loading:
- * - Production (Vercel): VERTEX_CREDENTIALS_JSON env var (minified JSON)
- * - Local Dev: vertex-key.json file in project root
- *
- * Pattern borrowed from the Marquis Buying Assistant.
- */
-import { VertexAI } from "@google-cloud/vertexai";
+import { VertexAI, GenerativeModel } from "@google-cloud/vertexai";
 import fs from "fs";
 import path from "path";
 
-export function getVertexModel(modelName: string = "gemini-2.5-flash") {
+/**
+ * Vertex AI / Gemini Utility
+ * 
+ * Handles authenticated access to Google Cloud Vertex AI.
+ * Supports dual-path credential loading:
+ * 1. VERTEX_CREDENTIALS_JSON (env var) for production/Vercel.
+ * 2. vertex-key.json (local file) for local development.
+ */
+
+let modelInstance: any = null;
+
+/**
+ * Returns a configured Gemini GenerativeModel instance.
+ * Memoizes the instance to avoid re-initializing the Vertex client on every call.
+ */
+export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
+  if (modelInstance) return modelInstance;
+
   let credentials;
 
-  // 1. Production (Vercel) — env var containing minified service account JSON
-  if (process.env.VERTEX_CREDENTIALS_JSON) {
-    try {
+  try {
+    // Priority 1: Environment Variable (Production)
+    if (process.env.VERTEX_CREDENTIALS_JSON) {
       credentials = JSON.parse(process.env.VERTEX_CREDENTIALS_JSON);
-    } catch (e) {
-      console.error("[VERTEX] Failed to parse credentials from env", e);
-    }
-  }
-  // 2. Local dev — read from file (gitignored)
-  else {
-    try {
+    } 
+    // Priority 2: Local JSON File (Development)
+    else {
       const filePath = path.join(process.cwd(), "vertex-key.json");
-      const fileContents = fs.readFileSync(filePath, "utf8");
-      credentials = JSON.parse(fileContents);
-    } catch (e) {
-      console.error("[VERTEX] No vertex-key.json found. AI features will fail.", e);
+      if (fs.existsSync(filePath)) {
+        credentials = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      }
     }
+  } catch (err) {
+    console.error("[VertexAI] Failed to load credentials:", err);
   }
 
   const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
-  if (!projectId) return null;
+  if (!projectId) {
+    console.warn("[VertexAI] Project ID missing. AI functionality disabled.");
+    return null;
+  }
 
   const vertex = new VertexAI({
     project: projectId,
@@ -42,8 +50,13 @@ export function getVertexModel(modelName: string = "gemini-2.5-flash") {
     googleAuthOptions: credentials ? { credentials } : undefined,
   });
 
-  return vertex.preview.getGenerativeModel({
+  modelInstance = vertex.preview.getGenerativeModel({
     model: modelName,
-    generationConfig: { responseMimeType: "application/json" },
+    generationConfig: { 
+      responseMimeType: "application/json",
+      temperature: 0.2, // Lower temperature for more deterministic technical advice
+    },
   });
+
+  return modelInstance;
 }

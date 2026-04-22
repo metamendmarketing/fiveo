@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -310,7 +309,6 @@ export default function RootLayout({
 
             <div className="!pt-10 pb-4 border-t border-white/20 flex flex-col items-center justify-center gap-2 text-[11px] text-[#cccccc] text-center w-full">
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
-              <span className="text-[9px] text-[#00AEEF] mt-2">Build: 23:17 (Manual Restoration to b84685d)</span>
             </div>
           </div>
         </footer>
@@ -318,5 +316,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-/* Vercel Force-Sync Build Trigger: April 16, 2026 - 23:17 (Manual Restoration to b84685d) */

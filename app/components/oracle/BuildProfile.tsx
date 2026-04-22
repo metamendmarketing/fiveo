@@ -1,5 +1,8 @@
 /**
- * BuildProfilePanel — Glassmorphic sidebar showing current selections
+ * BuildProfilePanel — Real-time Synthesis Sidebar
+ * 
+ * Displays a summary of the user's current selections from the BuildProfile.
+ * Acts as a persistent "memory" for the user as they progress through the wizard.
  */
 "use client";
 

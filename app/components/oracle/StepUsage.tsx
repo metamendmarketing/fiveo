@@ -1,6 +1,8 @@
 /**
- * StepUsage — Q5: How you drive — lifestyle photography cards
- * Centered layout, 2x2 grid with hero images
+ * StepUsage — Application Environment Selection
+ * 
+ * Users specify how the vehicle will be used (Daily, Track, Towing, Off-road).
+ * Influences the AI's "Pro Tip" and match strategy selection.
  */
 "use client";
 

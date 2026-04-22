@@ -5,9 +5,9 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { BuildProfile } from "@/app/lib/constants";
-import { IMAGES } from "@/app/lib/constants";
+import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib/types";
 
 interface Props {
   profile: BuildProfile;
@@ -56,57 +56,66 @@ const STATUS_OPTIONS = [
   },
 ];
 
+/**
+ * StepVehicle — Machine Identification
+ * 
+ * Handles the cascaded selection of vehicle make, model, year, and engine.
+ * Once a vehicle is fully identified, the user selects their current engine status.
+ */
 export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Props) {
-  const [makes, setMakes] = useState<{ id: number; name: string }[]>([]);
-  const [models, setModels] = useState<{ id: number; name: string }[]>([]);
-  const [years, setYears] = useState<{ id: number; year: number }[]>([]);
-  const [engines, setEngines] = useState<{ id: number; label: string; displacement?: string }[]>([]);
+  const [makes, setMakes] = useState<VehicleMake[]>([]);
+  const [models, setModels] = useState<VehicleModel[]>([]);
+  const [years, setYears] = useState<VehicleYear[]>([]);
+  const [engines, setEngines] = useState<VehicleEngine[]>([]);
   const [selectedYearId, setSelectedYearId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Fetch makes on mount
-  useEffect(() => {
-    setLoading(true);
-    fetch("/fiveo/demo/api/oracle/vehicles?type=makes")
-      .then((r) => r.json())
-      .then((d) => setMakes(d.data || []))
-      .catch(() => setMakes([]))
-      .finally(() => setLoading(false));
+  // Helper for API calls that prepends the basePath automatically
+  const fetchVehicleData = useCallback(async (params: string) => {
+    try {
+      const response = await fetch(`/fiveo/demo/api/oracle/vehicles?${params}`);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const json = await response.json();
+      return json.data || [];
+    } catch (err) {
+      console.error("[StepVehicle] Fetch error:", err);
+      return [];
+    }
   }, []);
 
-  // Fetch models when make changes
+  // Fetch makes on initial mount
+  useEffect(() => {
+    setLoading(true);
+    fetchVehicleData("type=makes")
+      .then(setMakes)
+      .finally(() => setLoading(false));
+  }, [fetchVehicleData]);
+
+  // Cascade: Fetch models when make changes
   useEffect(() => {
     if (!profile.makeId) { setModels([]); return; }
-    fetch(`/fiveo/demo/api/oracle/vehicles?type=models&makeId=${profile.makeId}`)
-      .then((r) => r.json())
-      .then((d) => setModels(d.data || []))
-      .catch(() => setModels([]));
-  }, [profile.makeId]);
+    fetchVehicleData(`type=models&makeId=${profile.makeId}`).then(setModels);
+  }, [profile.makeId, fetchVehicleData]);
 
-  // Fetch years when model changes
+  // Cascade: Fetch years when model changes
   useEffect(() => {
     if (!profile.modelId) { setYears([]); return; }
-    fetch(`/fiveo/demo/api/oracle/vehicles?type=years&modelId=${profile.modelId}`)
-      .then((r) => r.json())
-      .then((d) => setYears(d.data || []))
-      .catch(() => setYears([]));
-  }, [profile.modelId]);
+    fetchVehicleData(`type=years&modelId=${profile.modelId}`).then(setYears);
+  }, [profile.modelId, fetchVehicleData]);
 
-  // Fetch engines when year changes
+  // Cascade: Fetch engines when year changes
   useEffect(() => {
     if (!selectedYearId) { setEngines([]); return; }
-    fetch(`/fiveo/demo/api/oracle/vehicles?type=engines&yearId=${selectedYearId}`)
-      .then((r) => r.json())
-      .then((d) => setEngines(d.data || []))
-      .catch(() => setEngines([]));
-  }, [selectedYearId]);
+    fetchVehicleData(`type=engines&yearId=${selectedYearId}`).then(setEngines);
+  }, [selectedYearId, fetchVehicleData]);
 
-  const canAdvance = profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus;
+  const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
     <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-xl mx-auto">
-        {/* Header */}
+        
+        {/* Step Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl font-black uppercase italic text-black mb-1">
             Machine <span className="text-[#00AEEF]">Identification</span>
@@ -116,7 +125,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </p>
         </div>
 
-        {/* 1. Vehicle Type (only shown on Guide path initially) */}
+        {/* 1. Category Selection (Car/Moto/Marine) */}
         {showTypeSelector && (
           <div className="mb-8">
             <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
@@ -162,14 +171,14 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         )}
 
-        {/* 2. Cascading Dropdowns */}
+        {/* 2. Cascaded Attribute Selection */}
         <div className={`space-y-3 transition-opacity ${!profile.vehicleType && showTypeSelector ? "opacity-30 pointer-events-none" : ""}`}>
           <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1 block text-center">
             B. VEHICLE ATTRIBUTES
           </label>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Make */}
+            {/* Make Selector */}
             <div className="oracle-attribute-container shadow-sm">
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Make</label>
               <select
@@ -190,12 +199,12 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 }}
                 className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
               >
-                <option value="">{loading ? "Loading..." : "Make..."}</option>
+                <option value="">{loading ? "Loading..." : "Select Make..."}</option>
                 {makes.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
               </select>
             </div>
 
-            {/* Model */}
+            {/* Model Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!profile.makeId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Model</label>
               <select
@@ -222,16 +231,17 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Year */}
+            {/* Year Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!profile.modelId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Year</label>
               <select
                 value={profile.year?.toString() || ""}
                 disabled={!profile.modelId}
                 onChange={(e) => {
-                  const selectedYear = years.find((y) => y.year === parseInt(e.target.value));
+                  const val = e.target.value ? parseInt(e.target.value) : null;
+                  const selectedYear = years.find((y) => y.year === val);
                   onUpdate({
-                    year: e.target.value ? parseInt(e.target.value) : null,
+                    year: val,
                     engineCode: null,
                     engineLabel: null,
                     engineStatus: null
@@ -245,7 +255,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
               </select>
             </div>
 
-            {/* Engine */}
+            {/* Engine Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!selectedYearId ? "opacity-40" : ""}`}>
               <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Engine</label>
               <select
@@ -272,7 +282,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         </div>
 
-        {/* 3. Engine Status (The "Oracle Reveal") */}
+        {/* 3. Engine Modification Status */}
         {profile.engineLabel && (
           <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
@@ -305,7 +315,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         )}
 
-        {/* Education Beat */}
+        {/* Guidance Prompt */}
         {!profile.engineStatus && (
           <div className="oracle-education-beat mt-8 text-center text-gray-400 bg-transparent border-none">
             <p className="text-[10px] font-bold uppercase italic tracking-widest">
@@ -314,7 +324,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         )}
 
-        {/* Continue Button */}
+        {/* Confirmation CTA */}
         <div className="mt-10">
           <button
             onClick={onNext}

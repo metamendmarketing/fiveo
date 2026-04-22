@@ -251,4 +251,4 @@ export const MOD_OPTIONS = [
   { value: "ecu", label: "ECU Tune", icon: "chip" },
   { value: "none", label: "None", icon: "minus" },
 ] as const;
-// Force Redeploy: Tue Apr 21 20:47:05 PDT 2026
+// EOF

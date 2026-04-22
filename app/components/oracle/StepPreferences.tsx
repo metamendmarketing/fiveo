@@ -1,6 +1,8 @@
 /**
- * StepPreferences — Q10-Q12: Injector preference, Budget, Brand
- * Light aesthetic with carbon fiber texture, centered
+ * StepPreferences — Component & Brand Preferences
+ * 
+ * Final refinement step where users select their preferred injector type,
+ * budget range, and manufacturer preference.
  */
 "use client";
 
@@ -118,7 +120,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
 
         {/* Education Beat */}
         <div className="oracle-education-beat mt-8">
-          <strong>Pro Tip:</strong> "Best of Both" selects injectors with OEM-grade build quality
+          <strong>Pro Tip:</strong> &quot;Best of Both&quot; selects injectors with OEM-grade build quality
           but performance-level flow rates. This is the most popular choice for street builds
           that need more fuel without sacrificing daily drivability.
         </div>

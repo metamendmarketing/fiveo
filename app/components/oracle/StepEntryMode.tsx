@@ -1,6 +1,10 @@
 /**
- * StepEntryMode — Q0: "The Ignition Screen"
- * Full-bleed engine bay hero + three path selection cards
+ * StepEntryMode — The Ignition Screen
+ * 
+ * The entry point of the Oracle wizard. Users select one of three funnels:
+ * 1. Guide Me: Full educational experience (Marquis style).
+ * 2. I Know My Setup: Technical matching for known vehicle/mods.
+ * 3. I Know My Specs: Direct engineering input for advanced users.
  */
 "use client";
 

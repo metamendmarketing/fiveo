@@ -1,6 +1,9 @@
 /**
- * StepExpertSpecs — QX1-QX4: Direct spec input for Expert path
- * Technical HUD aesthetic, centered layout
+ * StepExpertSpecs — Direct Technical Input
+ * 
+ * Used by the "Setup & Specs" entry mode. Allows users to bypass vehicle
+ * matching and directly enter desired flow rates, fuel pressure,
+ * and connector types.
  */
 "use client";
 

@@ -1,6 +1,9 @@
 /**
- * StepPerformance — Q7-Q9: HP, Fuel type, Mods
- * Dark HUD aesthetic, centered layout with internal sub-sections
+ * StepPerformance — Power & Fuel Specification
+ * 
+ * Users specify Target HP, Fuel Type (E85/Pump), and Key Modifications.
+ * Drives the "requiredCC" calculation and triggers specific heuristic boosts
+ * for forced induction or high-ethanol content.
  */
 "use client";
 
@@ -38,7 +41,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
     if (preset.value === "custom") {
       onUpdate({ hpMode: "custom" });
     } else {
-      onUpdate({ hpMode: preset.value as any, targetHP: preset.hp });
+      onUpdate({ hpMode: preset.value as "stock" | "+50" | "+100" | "+150" | "custom" | "unsure", targetHP: preset.hp });
       setTimeout(() => setSection("fuel"), 200);
     }
   };
@@ -182,7 +185,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
               <p className="text-xs text-white/50 leading-relaxed">
                 <strong className="text-[#00AEEF]">Turbo/Supercharger?</strong> Forced induction
                 significantly increases fuel demand. Selecting this triggers our high-flow matching
-                algorithm to ensure you don't run lean under boost.
+                algorithm to ensure you don&apos;t run lean under boost.
               </p>
             </div>
 

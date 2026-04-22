@@ -4,12 +4,8 @@
 "use client";
 
 export function StepIndicator({
-  current,
-  total,
   percent,
 }: {
-  current: number;
-  total: number;
   percent: number;
 }) {
   return (

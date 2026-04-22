@@ -1,6 +1,8 @@
 /**
- * StepPriorities — Q6: Priority ranking (tap to rank 1-2-3)
- * Centered layout on light background
+ * StepPriorities — Driver Preference Weighting
+ * 
+ * Users select multiple priorities (Idle Quality, Value, Peak Power, Brand).
+ * Directly impacts the "priorityBoost" in the heuristic engine.
  */
 "use client";
 
@@ -66,8 +68,8 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
         {/* Education Beat */}
         <div className="oracle-education-beat mt-8">
           <strong>How this helps:</strong> Your priorities directly influence how we weight our
-          scoring engine. "Horsepower" prioritizes flow capacity, "Reliability" favors OEM-grade
-          construction, and "Plug-and-Play" ensures connector compatibility.
+          scoring engine. &quot;Horsepower&quot; prioritizes flow capacity, &quot;Reliability&quot; favors OEM-grade
+          construction, and &quot;Plug-and-Play&quot; ensures connector compatibility.
         </div>
 
         <div className="mt-8">

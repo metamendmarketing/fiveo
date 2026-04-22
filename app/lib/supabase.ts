@@ -1,14 +1,19 @@
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
 /**
- * Supabase Client — Server & Client singletons
- *
- * Server client uses the service key (full access) for API routes.
- * Client uses the anon key (read-only) for browser-side vehicle dropdowns.
+ * Supabase Utility Singletons
+ * 
+ * Manages connections for both Server-side (Service Role) 
+ * and Client-side (Public Anon) access patterns.
  */
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-// ─── Server Client (API Routes only) ───
 let serverClient: SupabaseClient | null = null;
+let browserClient: SupabaseClient | null = null;
 
+/**
+ * Returns a Supabase client authorized for server-side operations.
+ * Uses the Service Role key for full database access.
+ */
 export function getServerSupabase(): SupabaseClient {
   if (serverClient) return serverClient;
 
@@ -16,18 +21,17 @@ export function getServerSupabase(): SupabaseClient {
   const key = process.env.SUPABASE_SERVICE_KEY;
 
   if (!url || !key) {
-    throw new Error(
-      "[Supabase] Missing SUPABASE_URL or SUPABASE_SERVICE_KEY environment variables."
-    );
+    throw new Error("[Supabase] Missing Server Environment Variables.");
   }
 
   serverClient = createClient(url, key);
   return serverClient;
 }
 
-// ─── Client (Browser — read-only for vehicle cascade) ───
-let browserClient: SupabaseClient | null = null;
-
+/**
+ * Returns a Supabase client authorized for browser-side operations.
+ * Uses the Public Anon key for restricted read-only access.
+ */
 export function getBrowserSupabase(): SupabaseClient {
   if (browserClient) return browserClient;
 
@@ -35,9 +39,7 @@ export function getBrowserSupabase(): SupabaseClient {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_KEY;
 
   if (!url || !key) {
-    throw new Error(
-      "[Supabase] Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY."
-    );
+    throw new Error("[Supabase] Missing Client Environment Variables.");
   }
 
   browserClient = createClient(url, key);

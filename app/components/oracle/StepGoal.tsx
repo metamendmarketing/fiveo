@@ -1,6 +1,8 @@
 /**
- * StepGoal — Q4: Intent/Goal with action photography cards
- * Centered layout with 2x2 image cards
+ * StepGoal — Build Intent Selection
+ * 
+ * Users select their primary performance goal (Replace, Improve, Max Power, Fix).
+ * This selection influences the heuristic weighting and the AI's "Selection Strategy".
  */
 "use client";
 
@@ -31,7 +33,7 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
             Your <span className="text-[#00AEEF]">Mission</span>
           </h2>
           <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold">
-            What's your goal with these injectors?
+            What&apos;s your goal with these injectors?
           </p>
         </div>
 

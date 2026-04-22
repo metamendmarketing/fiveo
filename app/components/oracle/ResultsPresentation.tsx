@@ -1,23 +1,26 @@
-/**
- * ResultsPresentation — Final results page showing matched products
- * Features interactive 'Explore' modals and expanded AI narratives.
- */
-"use client";
-
 import React, { useState } from "react";
 import { BuildProfile } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
+import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
 
 interface Props {
   profile: BuildProfile;
-  results: any[];
-  apiData: any;
+  results: ScoredProduct[];
+  apiData: OracleApiResponse | null;
   onRestart: () => void;
 }
 
-export function ResultsPresentation({ profile, results, apiData, onRestart }: Props) {
-  const [selectedResult, setSelectedResult] = useState<any | null>(null);
+/**
+ * ResultsPresentation — Final matched component display
+ * 
+ * Renders the top recommended injector as a featured card, followed by
+ * a grid of alternative matches. Includes an interactive modal for
+ * viewing the AI-generated technical narrative and engineering specs.
+ */
+export function ResultsPresentation({ results, apiData, onRestart }: Props) {
+  const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
 
+  // Handle empty state
   if (!results || results.length === 0) {
     return (
       <div className="oracle-bg-results min-h-[60vh] px-6 py-20 flex items-center justify-center">
@@ -42,7 +45,8 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
   return (
     <div className="oracle-bg-results min-h-[60vh] px-6 md:px-10 py-16 md:py-20">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        
+        {/* Results Header */}
         <div className="text-center mb-14">
           <h2 className="text-2xl md:text-4xl font-black uppercase italic text-black mb-1">
             Oracle <span className="text-[#00AEEF]">Selection</span>
@@ -57,28 +61,30 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
             <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
               {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
             </p>
-            {apiData?.fitmentMatches > 0 && (
-              <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found</p>
+            {apiData && apiData.fitmentMatches > 0 && (
+              <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
+                ✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found
+              </p>
             )}
           </div>
         </div>
 
-        {/* AI Selection Strategy */}
+        {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
           <div className="oracle-strategy-card p-8 md:p-12 mb-14 text-white shadow-xl bg-black/95 rounded-2xl border border-white/5">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
               Expert Advisor Strategy & Methodology
             </h3>
             <p className="text-base md:text-lg text-white/90 leading-relaxed italic font-medium border-l-4 border-[#00AEEF] pl-8">
-              "{apiData.selectionStrategy}"
+              &quot;{apiData.selectionStrategy}&quot;
             </p>
           </div>
         )}
 
-        {/* Results Container */}
+        {/* Results Grid/List */}
         <div className="flex flex-col gap-10">
           
-          {/* 1. TOP PICK (Featured) */}
+          {/* 1. Primary Recommendation (Featured) */}
           {topPick && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -92,16 +98,16 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
               </div>
 
               <div className="md:flex items-stretch min-h-[340px]">
-                {/* Image Section */}
+                {/* Product Image */}
                 <div className="md:w-2/5 bg-gray-50 flex items-center justify-center p-10 md:p-14 border-r border-gray-100">
                   <img 
-                    src={topPick.product?.heroImageUrl || topPick.product?.hero_image_url} 
-                    alt={topPick.product?.name}
+                    src={topPick.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
+                    alt={topPick.product.name}
                     className="w-full h-full object-contain max-h-64"
                   />
                 </div>
                 
-                {/* Content Section */}
+                {/* Essential Details */}
                 <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
                    <div className="flex flex-wrap gap-2 mb-4">
                       <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest rounded-sm">
@@ -112,18 +118,17 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                       )}
                    </div>
                    <h3 className="text-xl md:text-2xl font-black uppercase italic text-black leading-tight mb-2 line-clamp-2">
-                     {topPick.product?.name}
+                     {topPick.product.name}
                    </h3>
                    <p className="text-[#00AEEF] text-xs font-bold uppercase tracking-[0.15em] mb-6">
-                     {topPick.product?.manufacturer || topPick.product?.brand || "FiveO"} | {topPick.product?.flow_rate_cc || topPick.product?.size_cc || "—"} cc/min
+                     {topPick.product.manufacturer || topPick.product.brand || "FiveO"} | {topPick.product.flow_rate_cc || topPick.product.size_cc || "—"} cc/min
                    </p>
 
-                   {/* Score */}
                    {topPick.preferenceSummary && (
-                     <p className="text-sm text-gray-600 italic mb-6 leading-relaxed">"{topPick.preferenceSummary}"</p>
+                     <p className="text-sm text-gray-600 italic mb-6 leading-relaxed">&quot;{topPick.preferenceSummary}&quot;</p>
                    )}
 
-                   {/* Score */}
+                   {/* Compatibility Score */}
                    <div className="flex items-center gap-4 mb-8">
                       <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
                         <motion.div 
@@ -143,10 +148,11 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                       >
                         Explore Tech Deep-Dive
                       </button>
-                      {topPick.product?.product_url && (
+                      {topPick.product.product_url && (
                         <a 
                           href={topPick.product.product_url} 
                           target="_blank" 
+                          rel="noopener noreferrer"
                           className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-300 hover:text-black transition-colors"
                         >
                           View in Store →
@@ -158,28 +164,26 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
             </motion.div>
           )}
 
-          {/* 2. REMAINING RECOMMENDATIONS (Centered Grid) */}
+          {/* 2. Alternative Candidates Grid */}
           {others.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-4">
-              {others.map((result: any, i: number) => (
+              {others.map((result, i) => (
                 <motion.div
-                  key={result.product?.id || i}
+                  key={result.product.id || i}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * (i + 1) }}
                   onClick={() => setSelectedResult(result)}
                   className="oracle-result-card oracle-card-clickable bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
                 >
-                  {/* Image Container - Fixed height, centered */}
                   <div className="h-52 bg-gray-50 flex items-center justify-center p-6 border-b border-gray-100 group-hover:bg-white transition-colors">
                     <img 
-                      src={result.product?.heroImageUrl || result.product?.hero_image_url} 
-                      alt={result.product?.name}
+                      src={result.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
+                      alt={result.product.name}
                       className="w-full h-full object-contain"
                     />
                   </div>
 
-                  {/* Content */}
                   <div className="p-5 flex-1 flex flex-col">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       <span className="text-[8px] font-black uppercase tracking-widest text-[#00AEEF] border border-[#00AEEF]/30 px-2 py-0.5 rounded-sm">
@@ -191,17 +195,16 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                     </div>
 
                     <h4 className="text-sm font-black uppercase italic text-black leading-tight mb-3 min-h-[2rem] line-clamp-2">
-                       {result.product?.name}
+                       {result.product.name}
                     </h4>
 
                     <p className="text-[11px] text-gray-500 mb-3">
-                      {result.product?.flow_rate_cc || result.product?.size_cc || "—"} cc/min · {result.product?.manufacturer || result.product?.brand || "FiveO"}
+                      {result.product.flow_rate_cc || result.product.size_cc || "—"} cc/min · {result.product.manufacturer || result.product.brand || "FiveO"}
                     </p>
 
-                    {/* Compact Score */}
                     <div className="mt-auto pt-4 border-t border-gray-100">
                       <div className="flex justify-between items-center mb-3">
-                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Match</span>
+                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Compatibility</span>
                         <span className="text-lg font-black text-[#00AEEF]">{result.score}%</span>
                       </div>
                       
@@ -218,7 +221,7 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
           )}
         </div>
 
-        {/* Global Restart */}
+        {/* Reset Flow */}
         <div className="text-center mt-24">
           <button onClick={onRestart} className="oracle-cta-secondary px-12 py-4 opacity-40 hover:opacity-100 transition-opacity text-[10px]">
             Return to Advisor and Start New Build
@@ -251,14 +254,14 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                 </button>
               </div>
 
-              {/* Modal Body */}
               <div className="p-10 md:p-16">
+                {/* Hero Section */}
                 <div className="md:flex gap-16 mb-16">
                    <div className="md:w-1/3 mb-10 md:mb-0">
                       <div className="bg-gray-50 rounded-xl p-10 aspect-square flex items-center justify-center shadow-inner">
                         <img 
-                          src={selectedResult.product?.heroImageUrl || selectedResult.product?.hero_image_url} 
-                          alt={selectedResult.product?.name}
+                          src={selectedResult.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
+                          alt={selectedResult.product.name}
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -270,25 +273,25 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                         </h2>
                       )}
                       <h3 className={`text-xl font-black uppercase italic text-black leading-tight ${selectedResult.aiHeadline ? 'mb-6 text-gray-500' : 'mb-6 text-3xl'}`}>
-                        {selectedResult.product?.name}
+                        {selectedResult.product.name}
                       </h3>
                       <div className="flex flex-wrap gap-4 mb-8">
-                        <span className="bg-black text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest">{selectedResult.matchStrategy}</span>
+                        <span className="bg-black text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest">{selectedResult.matchStrategy || "Technical Recommendation"}</span>
                         <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest border border-[#00AEEF]/20">{selectedResult.score}% Compatibility</span>
                       </div>
                       <p className="text-xl text-gray-700 font-medium leading-relaxed italic border-l-4 border-gray-100 pl-8">
-                        "{selectedResult.preferenceSummary}"
+                        &quot;{selectedResult.preferenceSummary}&quot;
                       </p>
                    </div>
                 </div>
 
                 <div className="h-px w-full bg-gray-50 mb-16"></div>
 
-                {/* The Technical Narrative */}
+                {/* Expert Rationale Narrative */}
                 <div className="mb-16">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert's Rationale</h4>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
                   <div className="oracle-narrative-text whitespace-pre-wrap px-1 sm:px-8 text-lg text-gray-800 leading-relaxed mb-12">
-                    {selectedResult.technicalNarrative || "I've selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you're looking for."}
+                    {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
@@ -296,41 +299,42 @@ export function ResultsPresentation({ profile, results, apiData, onRestart }: Pr
                       <div className="absolute top-0 right-0 w-24 h-24 bg-[#00AEEF]/10 rounded-full -mr-12 -mt-12"></div>
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic relative z-10">Expert Consultant Pro-Tip</p>
                       <p className="text-gray-800 not-italic text-base leading-relaxed relative z-10 font-medium">
-                        "{selectedResult.proTip}"
+                        &quot;{selectedResult.proTip}&quot;
                       </p>
                     </div>
                   )}
                 </div>
 
-                {/* Specs Grid */}
+                {/* Engineering Specifications */}
                 <div className="bg-gray-50 rounded-2xl p-10 mb-16 border border-gray-100">
                   <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-black/20 mb-8">Engineering Specifications</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
                     <div>
                       <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Flow Rate</p>
-                      <p className="text-base font-black text-black">{selectedResult.product?.flow_rate_cc || selectedResult.product?.size_cc || "—"} cc</p>
+                      <p className="text-base font-black text-black">{selectedResult.product.flow_rate_cc || selectedResult.product.size_cc || "—"} cc</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Impedance</p>
-                      <p className="text-base font-black text-black">{selectedResult.product?.impedance || "High (12-14Ω)"}</p>
+                      <p className="text-base font-black text-black">{selectedResult.product.impedance || "High (12-14Ω)"}</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Brand</p>
-                      <p className="text-base font-black text-black">{selectedResult.product?.brand || selectedResult.product?.manufacturer || "FiveO"}</p>
+                      <p className="text-base font-black text-black">{selectedResult.product.brand || selectedResult.product.manufacturer || "FiveO"}</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Connector</p>
-                      <p className="text-base font-black text-black">{selectedResult.product?.connector_type || "Standard"}</p>
+                      <p className="text-base font-black text-black">{selectedResult.product.connector_type || "Standard"}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Final CTA */}
+                {/* Actions */}
                 <div className="flex flex-col md:flex-row gap-6 px-1 sm:px-8">
-                  {selectedResult.product?.product_url && (
+                  {selectedResult.product.product_url && (
                     <a 
                       href={selectedResult.product.product_url} 
                       target="_blank" 
+                      rel="noopener noreferrer"
                       className="oracle-cta-primary flex-1 text-center py-6 text-xs font-black tracking-widest"
                     >
                       Browse In Full FiveO Catalog
