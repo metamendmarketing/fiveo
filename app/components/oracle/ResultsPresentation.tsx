@@ -241,7 +241,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
               className="oracle-modal-content overflow-visible"
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-50 p-8 flex justify-between items-center z-10 rounded-t-xl">
+              <div className="sticky top-0 bg-white border-b border-gray-50 px-6 md:px-12 py-8 flex justify-between items-center z-10 rounded-t-xl">
                 <div>
                   <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
                   <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
@@ -254,7 +254,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </button>
               </div>
 
-              <div className="p-10 md:p-16">
+              <div className="px-6 md:px-12 py-10 md:py-16">
                 {/* Hero Section */}
                 <div className="md:flex gap-16 mb-16">
                    <div className="md:w-1/3 mb-10 md:mb-0">
@@ -290,12 +290,12 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 {/* Expert Rationale Narrative */}
                 <div className="mb-16">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
-                  <div className="oracle-narrative-text whitespace-pre-wrap px-1 sm:px-8 text-lg text-gray-800 leading-relaxed mb-12">
+                  <div className="oracle-narrative-text whitespace-pre-wrap text-lg text-gray-800 leading-relaxed mb-12">
                     {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
-                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-8 mx-1 sm:mx-8 relative overflow-hidden">
+                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-8 relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-24 h-24 bg-[#00AEEF]/10 rounded-full -mr-12 -mt-12"></div>
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic relative z-10">Expert Consultant Pro-Tip</p>
                       <p className="text-gray-800 not-italic text-base leading-relaxed relative z-10 font-medium">
@@ -329,7 +329,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col md:flex-row gap-6 px-1 sm:px-8">
+                <div className="flex flex-col md:flex-row gap-6">
                   {selectedResult.product.product_url && (
                     <a 
                       href={selectedResult.product.product_url} 
