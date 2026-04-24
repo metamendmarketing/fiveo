@@ -211,13 +211,13 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className="relative h-[650px] rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden max-w-6xl mx-auto w-full">
+      <div className="relative min-h-[750px] rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden w-full mx-auto">
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
-            backgroundSize: "100% 100%", // Force full image visibility without zooming
+            backgroundSize: "cover", 
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
@@ -225,7 +225,7 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
         
         {/* Content Container */}
-        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-8 sm:p-12 lg:p-16 gap-8 lg:gap-12 items-center justify-center">
+        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-8 sm:p-12 lg:p-16 gap-8 lg:gap-12 items-center justify-center min-h-[750px]">
           {/* Active Step Content */}
           <div className="flex-1 min-w-0 flex flex-col items-center justify-center w-full">
             <AnimatePresence mode="wait">

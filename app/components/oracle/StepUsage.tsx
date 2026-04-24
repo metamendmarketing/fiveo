@@ -26,7 +26,7 @@ interface Props {
 export function StepUsage({ profile, onUpdate, onNext }: Props) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">

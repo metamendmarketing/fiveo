@@ -38,9 +38,9 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs") => void;
 }) {
   return (
-    <div className="w-full h-full flex flex-col justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center">
       {/* Content */}
-      <div className="w-full max-w-4xl mx-auto text-center">
+      <div className="w-full max-w-4xl text-center mx-auto">
         <h1
           className="font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}

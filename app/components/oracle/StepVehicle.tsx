@@ -100,7 +100,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-4xl mx-auto">
         
         {/* Step Header */}
         <div className="text-center mb-10">
