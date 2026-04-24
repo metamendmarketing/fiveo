@@ -31,7 +31,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">

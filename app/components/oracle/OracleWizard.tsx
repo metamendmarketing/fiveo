@@ -14,6 +14,7 @@ import {
   type WizardStep,
   INITIAL_PROFILE,
   STEP_SEQUENCES,
+  IMAGES,
 } from "@/app/lib/constants";
 import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
 import { StepIndicator } from "@/app/components/ui/StepIndicator";
@@ -180,8 +181,44 @@ export default function OracleWizard() {
     }
   }
 
+  const getBackgroundImage = useCallback(() => {
+    switch (currentStep) {
+      case "entry":
+        return IMAGES.engineBayHero;
+      case "vehicle-details":
+        return IMAGES.diagnosticBay;
+      case "goal":
+        return IMAGES.improveStreet;
+      case "usage":
+        return IMAGES.sunsetHighway;
+      case "priorities":
+        return IMAGES.nightStreet;
+      case "performance":
+        return IMAGES.dynoFlames;
+      case "preferences":
+        return IMAGES.mixedUse;
+      case "expert-specs":
+        return IMAGES.carbonFiber;
+      default:
+        return IMAGES.engineBayHero;
+    }
+  }, [currentStep]);
+
   return (
-    <div className="w-full">
+    <div className="relative min-h-screen w-full flex flex-col pt-8 pb-16">
+      {/* Dynamic Cinematic Background */}
+      <div 
+        className="fixed inset-0 z-0 transition-opacity duration-1000 ease-in-out"
+        style={{
+          backgroundImage: `url(${getBackgroundImage()})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90 transition-opacity duration-1000" />
+      
+      {/* Wizard Content Shell */}
+      <div className="relative z-10 w-full flex flex-col">
       {/* Progress tracking UI */}
       {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -224,15 +261,16 @@ export default function OracleWizard() {
 
       {/* Step Navigation Footer */}
       {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center border-t border-gray-100 mt-8">
-          <button onClick={back} className="oracle-cta-secondary text-sm">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center mt-8">
+          <button onClick={back} className="oracle-cta-secondary text-sm bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20">
             ← Back
           </button>
-          <span className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          <span className="text-xs font-bold uppercase tracking-widest text-white/50">
             Step {stepIndex} of {steps.length - 2}
           </span>
         </div>
       )}
+      </div>
     </div>
   );
 }

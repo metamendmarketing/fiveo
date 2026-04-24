@@ -8,42 +8,26 @@
  */
 "use client";
 
-import { IMAGES } from "@/app/lib/constants";
+import { Compass, Wrench, SlidersHorizontal } from "lucide-react";
 
 const PATHS = [
   {
     mode: "guide" as const,
     title: "Guide Me",
     tagline: "Built for first-timers and weekend warriors.",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L2 12l10 10 10-10L12 2z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-    ),
+    icon: <Compass className="w-8 h-8 stroke-[1.5px]" />,
   },
   {
     mode: "setup" as const,
     title: "I Know My Setup",
     tagline: "You know your build. We'll match the tech.",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66-5.66L7.17 8.1l4.25 4.25 8.49-8.49 1.41 1.41z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21.66 10.5a10 10 0 11-3.14-6.36" />
-      </svg>
-    ),
+    icon: <Wrench className="w-8 h-8 stroke-[1.5px]" />,
   },
   {
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="2" x2="12" y2="22" />
-        <line x1="2" y1="12" x2="22" y2="12" />
-      </svg>
-    ),
+    icon: <SlidersHorizontal className="w-8 h-8 stroke-[1.5px]" />,
   },
 ];
 
@@ -53,30 +37,20 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs") => void;
 }) {
   return (
-    <div 
-      className="relative rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 overflow-hidden"
-      style={{
-        backgroundImage: `url(${IMAGES.engineBayHero})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
-
+    <div className="flex flex-col items-center justify-center min-h-[65vh] px-4 py-16">
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto w-full">
+      <div className="text-center max-w-4xl mx-auto w-full">
         <h1
           className="font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
         >
           Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
         </h1>
-        <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-16">
+        <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-16 drop-shadow-sm">
           The ultimate technical sizing assistant for high-performance builds
         </p>
 
-        <h2 className="text-white text-lg font-bold mb-8">
+        <h2 className="text-white text-lg font-bold mb-8 drop-shadow-md">
           How do you want to dial in your injectors?
         </h2>
 

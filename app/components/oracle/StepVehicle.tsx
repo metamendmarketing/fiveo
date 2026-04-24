@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { BuildProfile } from "@/app/lib/constants";
 import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib/types";
+import { Car, Bike, Anchor, CheckCircle2, Settings2, Zap } from "lucide-react";
 
 interface Props {
   profile: BuildProfile;
@@ -24,35 +25,21 @@ const STATUS_OPTIONS = [
     label: "Completely Stock",
     desc: "Factory original — no modifications",
     accent: "#22c55e",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
+    icon: <CheckCircle2 className="w-8 h-8 stroke-[1.5px]" />,
   },
   {
     value: "light-mods" as const,
     label: "Light Mods",
     desc: "Bolt-ons: intake, exhaust, tune",
     accent: "#f59e0b",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.66-5.66L7.17 8.1l4.25 4.25 8.49-8.49 1.41 1.41z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21.66 10.5a10 10 0 11-3.14-6.36" />
-      </svg>
-    ),
+    icon: <Settings2 className="w-8 h-8 stroke-[1.5px]" />,
   },
   {
     value: "heavily-modified" as const,
     label: "Heavily Modified",
     desc: "Built engine, turbo/blower, standalone",
     accent: "#ef4444",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.545 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-      </svg>
-    ),
+    icon: <Zap className="w-8 h-8 stroke-[1.5px]" />,
   },
 ];
 
@@ -112,7 +99,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         
         {/* Step Header */}
@@ -143,24 +130,10 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   } ${type !== "car" ? "opacity-30 cursor-not-allowed" : ""}`}
                   disabled={type !== "car"}
                 >
-                  <div className="mb-1 flex justify-center">
-                    {type === "car" && (
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18M6 14.25H3.375a1.125 1.125 0 01-1.125-1.125V9.75L5.25 6h13.5l3 3.75v3.375c0 .621-.504 1.125-1.125 1.125H18m-12 0v-3h12v3" />
-                      </svg>
-                    )}
-                    {type === "motorcycle" && (
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                        <circle cx="5.5" cy="17.5" r="3.5" />
-                        <circle cx="18.5" cy="17.5" r="3.5" />
-                        <path strokeLinecap="round" d="M9 17.5h6M5.5 14l4-6h3l2 3h4" />
-                      </svg>
-                    )}
-                    {type === "marine" && (
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 17.5c2-2 4-2 6 0s4 2 6 0 4-2 6 0M5 12l7-7 7 7" />
-                      </svg>
-                    )}
+                  <div className="mb-2 flex justify-center text-gray-500 group-hover:text-[#00AEEF] transition-colors">
+                    {type === "car" && <Car className="w-7 h-7 stroke-[1.5px]" />}
+                    {type === "motorcycle" && <Bike className="w-7 h-7 stroke-[1.5px]" />}
+                    {type === "marine" && <Anchor className="w-7 h-7 stroke-[1.5px]" />}
                   </div>
                   <span className="font-black uppercase text-[10px] block">
                     {type === "car" ? "Auto" : type === "motorcycle" ? "Bike" : "Marine"}

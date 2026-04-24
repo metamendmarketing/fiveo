@@ -7,6 +7,7 @@
 "use client";
 
 import type { BuildProfile } from "@/app/lib/constants";
+import { Wrench, Gauge, Zap } from "lucide-react";
 
 interface Props {
   profile: BuildProfile;
@@ -16,9 +17,9 @@ interface Props {
 }
 
 const INJECTOR_TYPES = [
-  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: "🔧" },
-  { value: "performance" as const, label: "Performance", desc: "Higher flow, race-grade", icon: "🏁" },
-  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: "⚡" },
+  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: <Wrench className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
+  { value: "performance" as const, label: "Performance", desc: "Higher flow, race-grade", icon: <Gauge className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
+  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: <Zap className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
 ];
 
 const BUDGET_OPTIONS = [
@@ -35,7 +36,7 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="relative bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="relative bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="relative z-10 w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -58,7 +59,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ injectorPref: opt.value })}
-                  className={`p-5 rounded-xl border transition-all ${
+                  className={`p-5 rounded-xl border transition-all group ${
                     profile.injectorPref === opt.value
                       ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
                       : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
@@ -82,7 +83,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ budget: opt.value })}
-                  className={`p-5 rounded-xl border transition-all ${
+                  className={`p-5 rounded-xl border transition-all group ${
                     profile.budget === opt.value
                       ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
                       : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
