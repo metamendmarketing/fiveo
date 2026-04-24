@@ -211,15 +211,15 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className="relative min-h-[70vh] rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden max-w-6xl mx-auto w-full">
+      <div className="relative h-[650px] rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden max-w-6xl mx-auto w-full">
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
-            backgroundSize: "cover",
+            backgroundSize: "100% 100%", // Force full image visibility without zooming
             backgroundPosition: "center",
-            transform: "scale(1.02)", // Subtle overscan to ensure no white edges
+            backgroundRepeat: "no-repeat",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
