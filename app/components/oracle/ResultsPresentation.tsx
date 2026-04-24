@@ -56,7 +56,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
     <div 
       className="relative min-h-[60vh] px-4 sm:px-6 lg:px-8 py-16 md:py-20 overflow-hidden"
       style={{
-        backgroundImage: `url(${IMAGES.carbonFiber})`,
+        backgroundImage: `url(${IMAGES.diagnosticBay})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -90,9 +90,9 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-14 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-20 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
-              Expert Advisor Strategy & Methodology
+              Fuel Injector Selection Methodology
             </h3>
             <p className="text-base md:text-lg text-white/90 leading-relaxed italic font-medium border-l-4 border-[#00AEEF] pl-8">
               &quot;{apiData.selectionStrategy}&quot;
@@ -259,8 +259,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
               onClick={(e) => e.stopPropagation()}
               className="bg-black/90 backdrop-blur-2xl w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto relative shadow-[0_0_80px_rgba(0,174,239,0.15)] border border-white/20"
             >
-              {/* Modal Header */}
-              <div className="sticky top-0 bg-black/80 backdrop-blur-xl border-b border-white/10 px-4 sm:px-6 lg:px-8 py-10 flex justify-between items-center z-10 rounded-t-3xl">
+              <div className="sticky top-0 bg-[#0a0a0a] border-b border-white/10 px-4 sm:px-6 lg:px-8 py-8 flex justify-between items-center z-50 rounded-t-3xl shadow-xl">
                 <div>
                   <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
                   <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
@@ -273,7 +272,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </button>
               </div>
 
-              <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+              <div className="px-4 sm:px-6 lg:px-12 py-16 md:py-24">
                 {/* Hero Section */}
                 <div className="md:flex gap-16 mb-24">
                    <div className="md:w-1/3 mb-10 md:mb-0">
@@ -287,14 +286,14 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                    </div>
                     <div className="md:w-2/3 flex flex-col justify-center">
                       {selectedResult.aiHeadline && (
-                        <h2 className="text-3xl md:text-4xl font-black uppercase italic text-[#00AEEF] leading-tight mb-2">
+                        <h2 className="text-3xl md:text-5xl font-black uppercase italic text-[#00AEEF] leading-tight mb-4">
                           {selectedResult.aiHeadline}
                         </h2>
                       )}
                       <h3 className={`text-xl font-black uppercase italic text-white leading-tight ${selectedResult.aiHeadline ? 'mb-6 text-white/50' : 'mb-6 text-3xl'}`}>
                         {selectedResult.product.name}
                       </h3>
-                      <div className="flex flex-wrap gap-4 mb-8">
+                      <div className="flex flex-wrap gap-4 mb-10 mt-2">
                         <span className="bg-white/10 border border-white/20 text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest rounded-sm">{selectedResult.matchStrategy || "Technical Recommendation"}</span>
                         <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest border border-[#00AEEF]/20">{selectedResult.score}% Compatibility</span>
                       </div>
@@ -306,29 +305,27 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
                 <div className="h-px w-full bg-white/10 mb-24"></div>
 
-                {/* Expert Rationale Narrative */}
-                <div className="mb-24">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
-                  <div className="text-lg text-white/70 leading-relaxed whitespace-pre-wrap mb-12">
+                <div className="mb-24 pt-8">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-12 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
+                  <div className="text-lg md:text-xl text-white/80 leading-relaxed whitespace-pre-wrap mb-16">
                     {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
                     <div className="bg-[#00AEEF]/5 border-l-4 border-[#00AEEF] p-8 md:p-10 rounded-r-2xl relative backdrop-blur-sm">
                       <div className="flex items-center gap-3 mb-4">
-                        <Lightbulb className="w-5 h-5 text-[#00AEEF] fill-[#00AEEF]/20" />
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] m-0">Expert Consultant Pro-Tip</p>
+                        <Lightbulb className="w-6 h-6 text-[#00AEEF] fill-[#00AEEF]/20" />
+                        <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#00AEEF] m-0">Expert Consultant Pro-Tip</p>
                       </div>
-                      <p className="text-white/90 text-lg leading-relaxed italic font-medium pl-8">
+                      <p className="text-white/90 text-xl leading-relaxed italic font-medium pl-9">
                         &quot;{selectedResult.proTip}&quot;
                       </p>
                     </div>
                   )}
                 </div>
 
-                {/* Engineering Specifications */}
-                <div className="bg-white/5 rounded-2xl p-10 mb-24 border border-white/10">
-                  <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Engineering Specifications</h4>
+                <div className="bg-white/5 rounded-2xl p-12 mb-24 border border-white/10 mt-16">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-10">Engineering Specifications</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
                     <div>
                       <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Flow Rate</p>
@@ -343,14 +340,14 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                       <p className="text-base font-black text-white">{selectedResult.product.brand || selectedResult.product.manufacturer || "FiveO"}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Connector</p>
-                      <p className="text-base font-black text-white">{selectedResult.product.connector_type || "Standard"}</p>
+                      <p className="text-[11px] font-black uppercase text-[#00AEEF] mb-3 tracking-widest">Connector</p>
+                      <p className="text-lg font-black text-white">{selectedResult.product.connector_type || "Standard"}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col md:flex-row gap-8">
                   {selectedResult.product.product_url && (
                     <a 
                       href={selectedResult.product.product_url} 
