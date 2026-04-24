@@ -1,7 +1,7 @@
 /**
  * FiveO Oracle — Heuristic Scoring Engine
  *
- * Multi-vector weighted scoring modeled after the Marquis Buying Assistant.
+ * Multi-vector weighted scoring.
  * Ranks ALL products against user preference vectors to produce a candidate pool.
  * The AI layer then acts as the "Final Decision Maker" on this pre-filtered pool.
  *
