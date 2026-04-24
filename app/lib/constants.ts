@@ -220,6 +220,7 @@ export const IMAGES = {
   nightStreet: `${BASE}/night-street.png`,
   dynoFlames: `${BASE}/dyno-flames.png`,
   carbonFiber: `${BASE}/carbon-fiber.png`,
+  darkWeave: `${BASE}/dark-weave.png`,
   fuelE85: `${BASE}/fuel-e85.png`,
   raceFuel: `${BASE}/race-fuel.png`,
   pumpGas: `${BASE}/pump-gas.png`,
