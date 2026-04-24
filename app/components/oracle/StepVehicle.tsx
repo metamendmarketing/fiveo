@@ -112,7 +112,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm rounded-2xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         
         {/* Step Header */}
@@ -197,7 +197,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-12 bg-slate-50 border border-gray-200 rounded-xl px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF] focus:ring-1 focus:ring-[#00AEEF]"
               >
                 <option value="">{loading ? "Loading..." : "Select Make..."}</option>
                 {makes.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
@@ -222,7 +222,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-12 bg-slate-50 border border-gray-200 rounded-xl px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF] focus:ring-1 focus:ring-[#00AEEF]"
               >
                 <option value="">Model...</option>
                 {models.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
@@ -248,7 +248,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   });
                   setSelectedYearId(selectedYear?.id || null);
                 }}
-                className="w-full h-10 bg-gray-50 border border-gray-100 rounded px-3 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-12 bg-slate-50 border border-gray-200 rounded-xl px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF] focus:ring-1 focus:ring-[#00AEEF]"
               >
                 <option value="">Year...</option>
                 {years.map((y) => <option key={y.id} value={y.year}>{y.year}</option>)}
@@ -269,7 +269,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     engineStatus: null
                   });
                 }}
-                className="w-full h-11 bg-gray-50 border border-gray-100 rounded px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF]"
+                className="w-full h-12 bg-slate-50 border border-gray-200 rounded-xl px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF] focus:ring-1 focus:ring-[#00AEEF]"
               >
                 <option value="">Engine...</option>
                 {engines.map((eng) => (
@@ -293,7 +293,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ engineStatus: opt.value })}
-                  className={`flex items-center gap-4 p-4 rounded border-2 text-left transition-all backdrop-blur-sm ${
+                  className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${
                     profile.engineStatus === opt.value
                       ? "border-[#00AEEF] bg-[#00AEEF]/5 shadow-sm"
                       : "border-gray-100 bg-white hover:border-gray-200"
@@ -317,7 +317,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* Guidance Prompt */}
         {!profile.engineStatus && (
-          <div className="oracle-education-beat mt-8 text-center text-gray-400 bg-transparent border-none">
+          <div className="mt-8 text-center text-gray-400">
             <p className="text-[10px] font-bold uppercase italic tracking-widest">
               Precisely Matching Your Build →
             </p>

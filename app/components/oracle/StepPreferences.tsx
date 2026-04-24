@@ -35,14 +35,14 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="relative bg-[#f8f9fa] rounded-2xl border border-gray-100 shadow-sm min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="relative z-10 w-full max-w-xl mx-auto">
+    <div className="relative bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+      <div className="relative z-10 w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl font-black uppercase italic text-black mb-2">
             Dialing It <span className="text-[#00AEEF]">In</span>
           </h2>
-          <p className="text-xs text-gray-500 uppercase tracking-[0.2em] font-bold">
+          <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-bold">
             Final preferences to refine your results
           </p>
         </div>
@@ -53,20 +53,20 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
               Injector Type Preference
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {INJECTOR_TYPES.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ injectorPref: opt.value })}
-                  className={`p-5 rounded-md border-2 text-center transition-all ${
+                  className={`p-5 rounded-xl border transition-all ${
                     profile.injectorPref === opt.value
-                      ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
                   }`}
                 >
                   <div className="text-2xl mb-2">{opt.icon}</div>
                   <span className="font-bold uppercase text-xs block mb-1">{opt.label}</span>
-                  <span className="text-[10px] text-gray-400 block">{opt.desc}</span>
+                  <span className={`text-[10px] block ${profile.injectorPref === opt.value ? 'text-[#00AEEF]/80' : 'text-gray-400'}`}>{opt.desc}</span>
                 </button>
               ))}
             </div>
@@ -77,19 +77,19 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
               Budget Range
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {BUDGET_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ budget: opt.value })}
-                  className={`p-5 rounded-md border-2 text-center transition-all ${
+                  className={`p-5 rounded-xl border transition-all ${
                     profile.budget === opt.value
-                      ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
                   }`}
                 >
                   <span className="font-bold uppercase text-xs block mb-1">{opt.label}</span>
-                  <span className="text-[10px] text-gray-400 block">{opt.desc}</span>
+                  <span className={`text-[10px] block ${profile.budget === opt.value ? 'text-[#00AEEF]/80' : 'text-gray-400'}`}>{opt.desc}</span>
                 </button>
               ))}
             </div>
@@ -100,15 +100,15 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
               Brand Preference
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {BRAND_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ brandPref: opt.value })}
-                  className={`p-5 rounded-md border-2 text-center transition-all ${
+                  className={`p-4 rounded-xl border transition-all ${
                     profile.brandPref === opt.value
-                      ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-md"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
                   }`}
                 >
                   <span className="font-bold uppercase text-xs block">{opt.label}</span>
@@ -119,17 +119,20 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
         </div>
 
         {/* Education Beat */}
-        <div className="oracle-education-beat mt-8">
-          <strong>Pro Tip:</strong> &quot;Best of Both&quot; selects injectors with OEM-grade build quality
-          but performance-level flow rates. This is the most popular choice for street builds
-          that need more fuel without sacrificing daily drivability.
+        <div className="mt-8 p-5 rounded-xl border border-blue-100 bg-blue-50/50">
+          <p className="text-sm text-gray-600 leading-relaxed font-medium">
+            <strong className="text-[#00AEEF] block mb-1 uppercase tracking-widest text-[10px]">Pro Tip</strong> 
+            &quot;Best of Both&quot; selects injectors with OEM-grade build quality
+            but performance-level flow rates. This is the most popular choice for street builds
+            that need more fuel without sacrificing daily drivability.
+          </p>
         </div>
 
         <div className="mt-8">
           <button
             onClick={onNext}
             disabled={!profile.injectorPref}
-            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full py-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Find My Injectors →
           </button>

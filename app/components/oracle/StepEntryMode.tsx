@@ -8,8 +8,6 @@
  */
 "use client";
 
-import { IMAGES } from "@/app/lib/constants";
-
 const PATHS = [
   {
     mode: "guide" as const,
@@ -53,53 +51,40 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs") => void;
 }) {
   return (
-    <div
-      className="relative min-h-[70vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12"
-      style={{
-        backgroundImage: `url(${IMAGES.engineBayHero})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
-
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
+      <div className="relative z-10 text-center max-w-4xl mx-auto w-full">
         <h1
-          className="font-black uppercase italic text-white mb-2 tracking-tighter"
+          className="font-black uppercase italic text-black mb-2 tracking-tighter"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
         >
           Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
         </h1>
-        <p className="text-white/60 text-xs uppercase tracking-[0.25em] font-bold mb-12">
+        <p className="text-gray-400 text-[10px] uppercase tracking-[0.25em] font-bold mb-16">
           The ultimate technical sizing assistant for high-performance builds
         </p>
 
-        <h2 className="text-white/90 text-lg font-bold mb-8">
+        <h2 className="text-gray-900 text-lg font-bold mb-8">
           How do you want to dial in your injectors?
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto">
-          {PATHS.map((p, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {PATHS.map((p) => (
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 group px-8 py-[52px] text-left"
-              style={{ animationDelay: `${i * 150}ms` }}
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-[#00AEEF]/50 group p-8 text-center flex flex-col items-center gap-5"
             >
-              <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[#00AEEF] group-hover:bg-[#00AEEF]/20 transition-colors">
-                  {p.icon}
-                </div>
-                <div>
-                  <h3 className="text-white font-black uppercase italic text-lg mb-1">
-                    {p.title}
-                  </h3>
-                  <p className="text-white/50 text-xs font-medium">
-                    {p.tagline}
-                  </p>
-                </div>
+              <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#00AEEF]/10 group-hover:text-[#00AEEF] transition-colors">
+                {p.icon}
+              </div>
+              <div>
+                <h3 className="text-gray-900 font-black uppercase italic text-lg mb-2">
+                  {p.title}
+                </h3>
+                <p className="text-gray-500 text-[11px] font-medium leading-relaxed">
+                  {p.tagline}
+                </p>
               </div>
             </button>
           ))}

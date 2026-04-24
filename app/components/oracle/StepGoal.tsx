@@ -25,14 +25,14 @@ interface Props {
 
 export function StepGoal({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="bg-[#0a0a0a] text-white rounded-2xl border border-white/5 min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-white mb-2">
+          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-black mb-2">
             Your <span className="text-[#00AEEF]">Mission</span>
           </h2>
-          <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold">
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">
             What&apos;s your goal with these injectors?
           </p>
         </div>
@@ -45,16 +45,19 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
                 onUpdate({ goal: g.value });
                 setTimeout(onNext, 200);
               }}
-              className={`relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 h-52 md:h-56 ${
-                profile.goal === g.value ? "relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-selected" : ""
+              className={`relative overflow-hidden rounded-xl border bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] h-52 md:h-56 group ${
+                profile.goal === g.value 
+                  ? "border-[#00AEEF] shadow-[0_0_0_2px_rgba(0,174,239,0.3)]" 
+                  : "border-gray-200"
               }`}
               style={{ backgroundImage: `url(${g.image})` }}
             >
-              <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-white font-black uppercase text-lg leading-tight mb-1">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity group-hover:from-black/95"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
+                <h3 className="text-white font-black uppercase text-xl leading-tight mb-1">
                   {g.label}
                 </h3>
-                <p className="text-white/50 text-xs font-medium">{g.desc}</p>
+                <p className="text-gray-300 text-[11px] font-medium tracking-wide">{g.desc}</p>
               </div>
             </button>
           ))}

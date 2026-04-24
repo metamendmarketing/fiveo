@@ -60,14 +60,14 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-[#0d1117] via-[#0a0e14] to-[#0d1117] text-white rounded-2xl border border-white/5 shadow-xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-white mb-2">
+          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-black mb-2">
             The <span className="text-[#00AEEF]">Numbers</span>
           </h2>
-          <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold">
+          <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">
             {section === "hp" && "Power target"}
             {section === "fuel" && "Fuel type"}
             {section === "mods" && "Installed modifications"}
@@ -79,12 +79,12 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   onClick={() => setSection(s)}
                   className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                    section === s ? "text-[#00AEEF]" : "text-white/25 hover:text-white/40"
+                    section === s ? "text-[#00AEEF]" : "text-gray-300 hover:text-gray-500"
                   }`}
                 >
                   {s === "hp" ? "Power" : s === "fuel" ? "Fuel" : "Mods"}
                 </button>
-                {i < 2 && <span className="text-white/15 text-xs">›</span>}
+                {i < 2 && <span className="text-gray-200 text-xs">›</span>}
               </div>
             ))}
           </div>
@@ -98,8 +98,10 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={p.value}
                   onClick={() => handleHPSelect(p)}
-                  className={`flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white justify-center text-center py-5 ${
-                    profile.hpMode === p.value ? "flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white-active" : ""
+                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
+                    profile.hpMode === p.value 
+                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF]" 
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
                   }`}
                 >
                   {p.label}
@@ -113,9 +115,9 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                   value={customHP}
                   onChange={(e) => setCustomHP(e.target.value)}
                   placeholder="Enter HP target..."
-                  className="flex-1 h-14 bg-white/5 border border-white/10 rounded px-5 text-white text-lg font-bold outline-none focus:border-[#00AEEF]"
+                  className="flex-1 h-14 bg-gray-50 border border-gray-200 rounded-lg px-5 text-black text-lg font-bold outline-none focus:border-[#00AEEF]"
                 />
-                <button onClick={handleCustomHP} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-6">
+                <button onClick={handleCustomHP} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-md transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-8">
                   Set
                 </button>
               </div>
@@ -131,21 +133,24 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={f.value}
                   onClick={() => handleFuelSelect(f.value)}
-                  className={`relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 h-44 ${
-                    profile.fuelType === f.value ? "relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-selected" : ""
+                  className={`relative overflow-hidden rounded-xl border bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] h-44 group ${
+                    profile.fuelType === f.value 
+                      ? "border-[#00AEEF] shadow-[0_0_0_2px_rgba(0,174,239,0.3)]" 
+                      : "border-gray-200"
                   }`}
                   style={{ backgroundImage: `url(${f.image})` }}
                 >
-                  <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content absolute bottom-0 left-0 right-0 p-5 text-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity group-hover:from-black/95"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
                     <h3 className="text-white font-black uppercase text-sm mb-0.5">{f.label}</h3>
-                    <p className="text-white/40 text-[10px]">{f.desc}</p>
+                    <p className="text-gray-300 text-[10px] tracking-wide">{f.desc}</p>
                   </div>
                 </button>
               ))}
             </div>
             <button
               onClick={() => { onUpdate({ fuelType: "unsure" }); setSection("mods"); }}
-              className="bg-transparent text-gray-500 font-bold uppercase tracking-wider text-xs border border-gray-200 rounded px-5 py-2.5 hover:text-black hover:border-gray-400 transition-colors w-full mt-4 text-xs"
+              className="bg-transparent text-gray-500 font-bold uppercase tracking-widest text-[10px] border border-gray-200 rounded-md px-5 py-3 hover:text-black hover:border-gray-400 hover:bg-gray-50 transition-colors w-full mt-4"
             >
               Not Sure Yet
             </button>
@@ -171,8 +176,10 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                     else filtered.push(m.value);
                     onUpdate({ mods: filtered });
                   }}
-                  className={`flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white justify-center text-center py-5 ${
-                    profile.mods.includes(m.value) ? "flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white-active" : ""
+                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
+                    profile.mods.includes(m.value) 
+                      ? "border-[#00AEEF] bg-[#00AEEF]/10 text-[#00AEEF]" 
+                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
                   }`}
                 >
                   {m.label}
@@ -181,17 +188,16 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
 
             {/* Education Beat */}
-            <div className="mt-8 p-4 rounded border border-[#00AEEF]/20 bg-[#00AEEF]/5">
-              <p className="text-xs text-white/50 leading-relaxed">
-                <strong className="text-[#00AEEF]">Turbo/Supercharger?</strong> Forced induction
-                significantly increases fuel demand. Selecting this triggers our high-flow matching
-                algorithm to ensure you don&apos;t run lean under boost.
+            <div className="mt-8 p-5 rounded-xl border border-blue-100 bg-blue-50/50">
+              <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                <strong className="text-[#00AEEF] block mb-1 uppercase tracking-widest text-[10px]">Technical Note</strong> 
+                Forced induction (Turbo/Supercharger) significantly increases fuel demand. Selecting this triggers our high-flow matching algorithm to ensure you don&apos;t run lean under boost.
               </p>
             </div>
 
-            <div className="mt-6">
-              <button onClick={onNext} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm">
-                Continue →
+            <div className="mt-8">
+              <button onClick={onNext} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full py-4 text-sm">
+                Continue Analysis →
               </button>
             </div>
           </div>

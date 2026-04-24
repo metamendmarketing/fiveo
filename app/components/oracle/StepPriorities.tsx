@@ -31,7 +31,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm rounded-2xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -54,11 +54,17 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
               <button
                 key={p}
                 onClick={() => handleToggle(p)}
-                className={`w-full inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF] justify-between text-sm ${isActive ? "inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF]-active" : ""}`}
+                className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-[13px] font-bold uppercase tracking-[0.05em] transition-all duration-200 border ${
+                  isActive 
+                    ? "border-[#00AEEF] bg-[#00AEEF]/5 text-black shadow-sm" 
+                    : "border-gray-200 bg-white text-gray-500 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                }`}
               >
                 <span>{p}</span>
                 {isActive && (
-                  <span className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF]-rank">{rank}</span>
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#00AEEF] text-white text-[11px] font-black">
+                    {rank}
+                  </span>
                 )}
               </button>
             );
@@ -66,17 +72,18 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
         </div>
 
         {/* Education Beat */}
-        <div className="oracle-education-beat mt-8">
-          <strong>How this helps:</strong> Your priorities directly influence how we weight our
-          scoring engine. &quot;Horsepower&quot; prioritizes flow capacity, &quot;Reliability&quot; favors OEM-grade
-          construction, and &quot;Plug-and-Play&quot; ensures connector compatibility.
+        <div className="mt-8 p-5 rounded-xl border border-blue-100 bg-blue-50/50">
+          <p className="text-sm text-gray-600 leading-relaxed font-medium">
+            <strong className="text-[#00AEEF] block mb-1 uppercase tracking-widest text-[10px]">How this helps</strong> 
+            Your priorities directly influence how we weight our scoring engine. &quot;Peak Horsepower&quot; prioritizes flow capacity, &quot;Reliability&quot; favors OEM-grade construction, and &quot;Plug-and-Play&quot; ensures connector compatibility.
+          </p>
         </div>
 
         <div className="mt-8">
           <button
             onClick={onNext}
             disabled={!canAdvance}
-            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full py-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Continue →
           </button>

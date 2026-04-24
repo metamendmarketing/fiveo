@@ -18,7 +18,7 @@ interface Props {
 
 export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="bg-gradient-to-br from-[#0d1117] via-[#0a0e14] to-[#0d1117] text-white rounded-2xl border border-white/5 shadow-xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">

@@ -232,13 +232,13 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
       {/* THE ORACLE DEEP-DIVE MODAL */}
       <AnimatePresence>
         {selectedResult && (
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[1000] flex items-center justify-center p-4 sm:p-6" onClick={() => setSelectedResult(null)}>
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-[1000] flex items-center justify-center p-4 sm:p-6" onClick={() => setSelectedResult(null)}>
             <motion.div 
               initial={{ opacity: 0, scale: 0.98, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 10 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white w-full max-w-4xl max-h-[90vh] rounded-xl overflow-y-auto relative shadow-2xl border border-white/10"
+              className="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto relative shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-gray-100"
             >
               {/* Modal Header */}
               <div className="sticky top-0 bg-white border-b border-gray-50 px-4 sm:px-6 lg:px-8 py-10 flex justify-between items-center z-10 rounded-t-xl">
@@ -290,15 +290,19 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 {/* Expert Rationale Narrative */}
                 <div className="mb-24">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
-                  <div className="text-[15px] leading-[1.8] text-[#444] whitespace-pre-wrap text-lg text-gray-800 leading-relaxed mb-12">
+                  <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-wrap mb-12">
                     {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
-                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-10 relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#00AEEF]/10 rounded-full -mr-12 -mt-12"></div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic relative z-10">Expert Consultant Pro-Tip</p>
-                      <p className="text-gray-800 not-italic text-base leading-relaxed relative z-10 font-medium">
+                    <div className="bg-slate-50 border-l-4 border-[#00AEEF] p-8 md:p-10 rounded-r-2xl relative">
+                      <div className="flex items-center gap-3 mb-4">
+                        <svg className="w-5 h-5 text-[#00AEEF]" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] m-0">Expert Consultant Pro-Tip</p>
+                      </div>
+                      <p className="text-gray-800 text-lg leading-relaxed italic font-medium pl-8">
                         &quot;{selectedResult.proTip}&quot;
                       </p>
                     </div>
