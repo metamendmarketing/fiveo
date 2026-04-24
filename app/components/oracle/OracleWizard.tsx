@@ -211,22 +211,23 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className="relative min-h-[65vh] rounded-[2rem] border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden max-w-6xl mx-auto w-full">
+      <div className="relative min-h-[70vh] rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden max-w-6xl mx-auto w-full">
         {/* Dynamic Background Layer */}
         <div 
-          className="absolute inset-0 transition-opacity duration-1000"
+          className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            transform: "scale(1.02)", // Subtle overscan to ensure no white edges
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
         
         {/* Content Container */}
-        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-6 sm:p-10 lg:p-12 gap-8 lg:gap-12">
+        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-8 sm:p-12 lg:p-16 gap-8 lg:gap-12 items-center justify-center">
           {/* Active Step Content */}
-          <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <div className="flex-1 min-w-0 flex flex-col items-center justify-center w-full">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
