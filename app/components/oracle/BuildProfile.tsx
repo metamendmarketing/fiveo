@@ -65,23 +65,23 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
 
   if (activeItems.length === 0) {
     return (
-      <div className="bg-white border border-gray-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6">
-        <div className="text-[10px] font-black uppercase tracking-widest text-[#00AEEF] mb-3">Your Build</div>
-        <p className="text-xs text-gray-400">Answer questions to build your profile...</p>
+      <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-6">
+        <div className="text-[10px] font-black uppercase tracking-widest text-[#00AEEF] mb-3 drop-shadow-sm">Your Build</div>
+        <p className="text-xs text-white/40">Answer questions to build your profile...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sticky top-24">
-      <div className="text-[10px] font-black uppercase tracking-widest text-[#00AEEF] mb-6">Your Build</div>
+    <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-6 sticky top-24">
+      <div className="text-[10px] font-black uppercase tracking-widest text-[#00AEEF] mb-6 drop-shadow-sm">Your Build</div>
       <div className="space-y-5">
         {activeItems.map((item) => (
-          <div key={item.label} className="border-l-2 border-gray-100 pl-3">
-            <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">
+          <div key={item.label} className="border-l-2 border-[#00AEEF]/30 pl-3">
+            <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/40 mb-1">
               {item.label}
             </div>
-            <div className="text-[13px] font-semibold text-gray-900 leading-snug">{item.value}</div>
+            <div className="text-[13px] font-semibold text-white/90 leading-snug">{item.value}</div>
           </div>
         ))}
       </div>
