@@ -90,7 +90,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-20 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]" style={{ marginBottom: '80px' }}>
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-10 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
               Fuel Injector Selection Methodology
             </h3>
