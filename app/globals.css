@@ -41,6 +41,8 @@
   /* Unified Design System (UDS) Padding Metrics — Balanced Premium */
   --uds-padding: 3rem;           /* 48px Balanced Desktop Gutter */
   --uds-padding-mobile: 1.5rem;  /* 24px Standard Mobile Gutter */
+  --uds-modal-padding: 5rem;     /* 80px High-Fidelity Modal Gutter */
+  --uds-modal-padding-mobile: 2rem; /* 32px Mobile Modal Gutter */
 
   /* Touch Target Minimum (WCAG 2.5.5 / Google recommendation) */
   --touch-min: 44px;
@@ -978,7 +980,7 @@ body { --cache-bust: '1758'; }
 .oracle-modal-content {
   background: white;
   width: 100%;
-  max-width: 800px;
+  max-width: 850px;
   max-height: 90vh;
   border-radius: 12px;
   overflow-y: auto;

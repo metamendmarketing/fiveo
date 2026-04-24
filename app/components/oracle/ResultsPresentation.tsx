@@ -241,7 +241,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
               className="oracle-modal-content overflow-visible"
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-50 px-6 md:px-12 py-8 flex justify-between items-center z-10 rounded-t-xl">
+              <div className="sticky top-0 bg-white border-b border-gray-50 px-8 md:px-20 py-10 flex justify-between items-center z-10 rounded-t-xl">
                 <div>
                   <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
                   <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
@@ -254,9 +254,9 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </button>
               </div>
 
-              <div className="px-6 md:px-12 py-10 md:py-16">
+              <div className="px-8 md:px-20 py-12 md:py-20">
                 {/* Hero Section */}
-                <div className="md:flex gap-16 mb-16">
+                <div className="md:flex gap-16 mb-24">
                    <div className="md:w-1/3 mb-10 md:mb-0">
                       <div className="bg-gray-50 rounded-xl p-10 aspect-square flex items-center justify-center shadow-inner">
                         <img 
@@ -285,17 +285,17 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                    </div>
                 </div>
 
-                <div className="h-px w-full bg-gray-50 mb-16"></div>
+                <div className="h-px w-full bg-gray-50 mb-24"></div>
 
                 {/* Expert Rationale Narrative */}
-                <div className="mb-16">
+                <div className="mb-24">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
                   <div className="oracle-narrative-text whitespace-pre-wrap text-lg text-gray-800 leading-relaxed mb-12">
                     {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
-                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-8 relative overflow-hidden">
+                    <div className="bg-[#00AEEF]/5 border border-[#00AEEF]/20 rounded-2xl p-10 relative overflow-hidden">
                       <div className="absolute top-0 right-0 w-24 h-24 bg-[#00AEEF]/10 rounded-full -mr-12 -mt-12"></div>
                       <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00AEEF] mb-3 font-not-italic relative z-10">Expert Consultant Pro-Tip</p>
                       <p className="text-gray-800 not-italic text-base leading-relaxed relative z-10 font-medium">
@@ -306,7 +306,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </div>
 
                 {/* Engineering Specifications */}
-                <div className="bg-gray-50 rounded-2xl p-10 mb-16 border border-gray-100">
+                <div className="bg-gray-50 rounded-2xl p-10 mb-24 border border-gray-100">
                   <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-black/20 mb-8">Engineering Specifications</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
                     <div>
