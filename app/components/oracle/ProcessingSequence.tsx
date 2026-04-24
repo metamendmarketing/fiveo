@@ -110,7 +110,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
   }, [profile, onComplete]); 
 
   return (
-    <div className="bg-black text-white rounded-2xl min-h-[70vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
+    <div className="w-full h-full flex flex-col items-center justify-center py-12">
       {/* Visual Radar Rings */}
       <div className="relative flex items-center justify-center mb-12">
         <div className="oracle-radar-ring-outer absolute" />

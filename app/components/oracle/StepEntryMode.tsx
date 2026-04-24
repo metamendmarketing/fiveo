@@ -38,18 +38,9 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs") => void;
 }) {
   return (
-    <div 
-      className="relative rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 overflow-hidden"
-      style={{
-        backgroundImage: `url(${IMAGES.engineBayHero})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
-
+    <div className="w-full h-full flex flex-col justify-center">
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto w-full">
+      <div className="w-full max-w-4xl mx-auto text-center">
         <h1
           className="font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}

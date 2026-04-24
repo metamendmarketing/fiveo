@@ -181,6 +181,24 @@ export default function OracleWizard() {
     }
   }
 
+  const getStepBackground = (step: WizardStep) => {
+    switch (step) {
+      case "entry": return IMAGES.engineBayHero;
+      case "vehicle-type":
+      case "vehicle-details": return IMAGES.diagnosticBay;
+      case "engine-status": return IMAGES.diagnosticBay;
+      case "goal": return IMAGES.dynoFlames;
+      case "usage": return IMAGES.mixedUse;
+      case "priorities": return IMAGES.sunsetHighway;
+      case "performance": return IMAGES.trackDrift;
+      case "preferences": return IMAGES.carbonFiber;
+      case "expert-specs": return IMAGES.diagnosticBay;
+      case "processing": return IMAGES.engineBayHero;
+      case "results": return IMAGES.darkWeave;
+      default: return IMAGES.diagnosticBay;
+    }
+  };
+
   return (
     <div className="w-full">
       {/* Progress tracking UI */}
@@ -192,11 +210,23 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container */}
-      <div className="relative">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 max-w-7xl mx-auto w-full">
+      {/* Main step container - Now acts as the MASTER Cinematic Window */}
+      <div className="relative min-h-[65vh] rounded-[2rem] border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden max-w-[85rem] mx-auto w-full">
+        {/* Dynamic Background Layer */}
+        <div 
+          className="absolute inset-0 transition-opacity duration-1000"
+          style={{
+            backgroundImage: `url(${getStepBackground(currentStep)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px]" />
+        
+        {/* Content Container */}
+        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-6 sm:p-10 lg:p-14 lg:gap-16">
           {/* Active Step Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -205,6 +235,7 @@ export default function OracleWizard() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full"
               >
                 {renderStep()}
               </motion.div>
@@ -216,7 +247,7 @@ export default function OracleWizard() {
             currentStep !== "entry" &&
             currentStep !== "processing" &&
             currentStep !== "results" && (
-              <div className="hidden lg:block w-72 shrink-0 pt-4">
+              <div className="hidden lg:block w-80 shrink-0">
                 <BuildProfilePanel profile={profile} />
               </div>
             )}

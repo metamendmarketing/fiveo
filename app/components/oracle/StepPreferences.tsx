@@ -36,16 +36,8 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div 
-      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
-      style={{
-        backgroundImage: `url(${IMAGES.mixedUse})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
-      <div className="relative z-10 w-full max-w-2xl mx-auto">
+    <div className="w-full h-full flex flex-col justify-center">
+      <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl font-black uppercase italic text-white mb-2 drop-shadow-md">

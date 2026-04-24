@@ -53,16 +53,8 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
   const others = results.slice(1);
 
   return (
-    <div 
-      className="relative min-h-[60vh] px-4 sm:px-6 lg:px-8 py-16 md:py-20 overflow-hidden"
-      style={{
-        backgroundImage: `url(${IMAGES.darkWeave})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
-      <div className="relative z-10 max-w-7xl mx-auto">
+    <div className="w-full h-full flex flex-col justify-center">
+      <div className="w-full max-w-7xl mx-auto">
       
         
         {/* Results Header */}
