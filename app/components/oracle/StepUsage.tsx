@@ -25,39 +25,49 @@ interface Props {
 
 export function StepUsage({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="w-full max-w-3xl mx-auto">
+    <div 
+      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.sunsetHighway})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+      <div className="relative z-10 w-full max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-black mb-2">
+          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
             How You <span className="text-[#00AEEF]">Drive</span>
           </h2>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-black drop-shadow-sm">
             How do you use your vehicle?
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {USAGE_OPTIONS.map((u) => (
+          {USAGE_OPTIONS.map((opt) => (
             <button
-              key={u.value}
+              key={opt.value}
               onClick={() => {
-                onUpdate({ usage: u.value });
+                onUpdate({ usage: opt.value });
                 setTimeout(onNext, 200);
               }}
-              className={`relative overflow-hidden rounded-xl border bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] h-52 md:h-56 group ${
-                profile.usage === u.value 
-                  ? "border-[#00AEEF] shadow-[0_0_0_2px_rgba(0,174,239,0.3)]" 
-                  : "border-gray-200"
+              className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-52 md:h-56 ${
+                profile.usage === opt.value
+                  ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)]"
+                  : "border-white/20 shadow-lg hover:border-white/50"
               }`}
-              style={{ backgroundImage: `url(${u.image})` }}
+              style={{ backgroundImage: `url(${opt.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity group-hover:from-black/95"></div>
+              <div className={`absolute inset-0 transition-opacity duration-300 ${profile.usage === opt.value ? 'bg-gradient-to-t from-black/90 via-black/40 to-[#00AEEF]/20' : 'bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:from-black/95'}`} />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
-                <h3 className="text-white font-black uppercase text-xl leading-tight mb-1">
-                  {u.label}
+                <h3 className={`font-black uppercase text-xl leading-tight mb-1 ${profile.usage === opt.value ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>
+                  {opt.label}
                 </h3>
-                <p className="text-gray-300 text-[11px] font-medium tracking-wide">{u.desc}</p>
+                <p className={`text-[11px] font-medium tracking-wide ${profile.usage === opt.value ? 'text-[#00AEEF]' : 'text-gray-300'}`}>
+                  {opt.desc}
+                </p>
               </div>
             </button>
           ))}

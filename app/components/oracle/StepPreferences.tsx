@@ -6,7 +6,7 @@
  */
 "use client";
 
-import type { BuildProfile } from "@/app/lib/constants";
+import { type BuildProfile, IMAGES } from "@/app/lib/constants";
 import { Wrench, Gauge, Zap } from "lucide-react";
 
 interface Props {
@@ -17,9 +17,9 @@ interface Props {
 }
 
 const INJECTOR_TYPES = [
-  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: <Wrench className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
-  { value: "performance" as const, label: "Performance", desc: "Higher flow, race-grade", icon: <Gauge className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
-  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: <Zap className="w-8 h-8 stroke-[1.5px] mx-auto text-gray-500 group-hover:text-[#00AEEF] transition-colors" /> },
+  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: <Wrench className="w-5 h-5 stroke-[2px]" /> },
+  { value: "performance" as const, label: "Performance", desc: "Higher flow, race-grade", icon: <Gauge className="w-5 h-5 stroke-[2px]" /> },
+  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: <Zap className="w-5 h-5 stroke-[2px]" /> },
 ];
 
 const BUDGET_OPTIONS = [
@@ -36,14 +36,22 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="relative bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div 
+      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.mixedUse})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
       <div className="relative z-10 w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-black mb-2">
+          <h2 className="text-3xl font-black uppercase italic text-white mb-2 drop-shadow-md">
             Dialing It <span className="text-[#00AEEF]">In</span>
           </h2>
-          <p className="text-xs text-gray-400 uppercase tracking-[0.2em] font-bold">
+          <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold drop-shadow-sm">
             Final preferences to refine your results
           </p>
         </div>
@@ -51,7 +59,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
         <div className="space-y-8">
           {/* Q10: Injector Preference */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               Injector Type Preference
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -59,15 +67,26 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ injectorPref: opt.value })}
-                  className={`p-5 rounded-xl border transition-all group ${
+                  className={`relative p-5 rounded-2xl border transition-all text-center group overflow-hidden flex flex-col items-center ${
                     profile.injectorPref === opt.value
-                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
-                  <div className="text-2xl mb-2">{opt.icon}</div>
-                  <span className="font-bold uppercase text-xs block mb-1">{opt.label}</span>
-                  <span className={`text-[10px] block ${profile.injectorPref === opt.value ? 'text-[#00AEEF]/80' : 'text-gray-400'}`}>{opt.desc}</span>
+                  {profile.injectorPref === opt.value && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
+                  )}
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full mb-3 relative flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.injectorPref === opt.value ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
+                      <div className={`relative z-10 ${profile.injectorPref === opt.value ? "text-white" : "text-white/60 group-hover:text-white"}`}>
+                        {opt.icon}
+                      </div>
+                    </div>
+                    <span className={`font-black uppercase text-xs block mb-1 ${profile.injectorPref === opt.value ? 'text-white' : 'text-white/80 group-hover:text-white'}`}>{opt.label}</span>
+                    <span className={`text-[10px] block ${profile.injectorPref === opt.value ? 'text-[#00AEEF]' : 'text-white/40 group-hover:text-white/60'}`}>{opt.desc}</span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -75,7 +94,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
 
           {/* Q11: Budget */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               Budget Range
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -83,14 +102,19 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ budget: opt.value })}
-                  className={`p-5 rounded-xl border transition-all group ${
+                  className={`relative p-5 rounded-2xl border transition-all text-center group overflow-hidden flex flex-col items-center ${
                     profile.budget === opt.value
-                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
-                  <span className="font-bold uppercase text-xs block mb-1">{opt.label}</span>
-                  <span className={`text-[10px] block ${profile.budget === opt.value ? 'text-[#00AEEF]/80' : 'text-gray-400'}`}>{opt.desc}</span>
+                  {profile.budget === opt.value && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
+                  )}
+                  <div className="relative z-10">
+                    <span className={`font-black uppercase text-xs block mb-1 ${profile.budget === opt.value ? 'text-white' : 'text-white/80 group-hover:text-white'}`}>{opt.label}</span>
+                    <span className={`text-[10px] block ${profile.budget === opt.value ? 'text-[#00AEEF]' : 'text-white/40 group-hover:text-white/60'}`}>{opt.desc}</span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -98,7 +122,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
 
           {/* Q12: Brand Preference */}
           <div>
-            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               Brand Preference
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -106,13 +130,16 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ brandPref: opt.value })}
-                  className={`p-4 rounded-xl border transition-all ${
+                  className={`relative p-4 rounded-2xl border transition-all text-center group overflow-hidden flex flex-col items-center ${
                     profile.brandPref === opt.value
-                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF] shadow-sm"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
-                  <span className="font-bold uppercase text-xs block">{opt.label}</span>
+                  {profile.brandPref === opt.value && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
+                  )}
+                  <span className={`relative z-10 font-black uppercase text-xs block ${profile.brandPref === opt.value ? 'text-white' : 'text-white/80 group-hover:text-white'}`}>{opt.label}</span>
                 </button>
               ))}
             </div>

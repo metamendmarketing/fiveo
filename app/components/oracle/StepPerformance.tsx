@@ -60,14 +60,22 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="w-full max-w-2xl mx-auto">
+    <div 
+      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.dynoFlames})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+      <div className="relative z-10 w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-black mb-2">
+          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
             The <span className="text-[#00AEEF]">Numbers</span>
           </h2>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold drop-shadow-sm">
             {section === "hp" && "Power target"}
             {section === "fuel" && "Fuel type"}
             {section === "mods" && "Installed modifications"}
@@ -79,12 +87,12 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   onClick={() => setSection(s)}
                   className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                    section === s ? "text-[#00AEEF]" : "text-gray-300 hover:text-gray-500"
+                    section === s ? "text-[#00AEEF]" : "text-white/30 hover:text-white/60"
                   }`}
                 >
                   {s === "hp" ? "Power" : s === "fuel" ? "Fuel" : "Mods"}
                 </button>
-                {i < 2 && <span className="text-gray-200 text-xs">›</span>}
+                {i < 2 && <span className="text-white/20 text-xs">›</span>}
               </div>
             ))}
           </div>
@@ -98,10 +106,10 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={p.value}
                   onClick={() => handleHPSelect(p)}
-                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
+                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-xl text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
                     profile.hpMode === p.value 
-                      ? "border-[#00AEEF] bg-[#00AEEF]/5 text-[#00AEEF]" 
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)] text-white" 
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/60 hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
                   {p.label}
@@ -115,7 +123,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                   value={customHP}
                   onChange={(e) => setCustomHP(e.target.value)}
                   placeholder="Enter HP target..."
-                  className="flex-1 h-14 bg-gray-50 border border-gray-200 rounded-lg px-5 text-black text-lg font-bold outline-none focus:border-[#00AEEF]"
+                  className="flex-1 h-14 bg-white/5 border border-white/20 rounded-xl px-5 text-white text-lg font-bold outline-none focus:border-[#00AEEF] placeholder-white/20 backdrop-blur-sm"
                 />
                 <button onClick={handleCustomHP} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-md transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-8">
                   Set
@@ -133,24 +141,24 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={f.value}
                   onClick={() => handleFuelSelect(f.value)}
-                  className={`relative overflow-hidden rounded-xl border bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] h-44 group ${
+                  className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-44 ${
                     profile.fuelType === f.value 
-                      ? "border-[#00AEEF] shadow-[0_0_0_2px_rgba(0,174,239,0.3)]" 
-                      : "border-gray-200"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)] text-white" 
+                      : "border-white/20 shadow-lg hover:border-white/50 text-white/50"
                   }`}
-                  style={{ backgroundImage: `url(${f.image})` }}
+                  style={{ backgroundImage: `url(${f.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity group-hover:from-black/95"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                    <h3 className="text-white font-black uppercase text-sm mb-0.5">{f.label}</h3>
-                    <p className="text-gray-300 text-[10px] tracking-wide">{f.desc}</p>
+                  <div className={`absolute inset-0 transition-opacity duration-300 ${profile.fuelType === f.value ? 'bg-gradient-to-t from-black/90 via-black/40 to-[#00AEEF]/20' : 'bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:from-black/95'}`} />
+                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center relative z-10">
+                    <h3 className={`font-black uppercase text-sm mb-0.5 ${profile.fuelType === f.value ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>{f.label}</h3>
+                    <p className={`text-[10px] tracking-wide ${profile.fuelType === f.value ? 'text-[#00AEEF]' : 'text-gray-300'}`}>{f.desc}</p>
                   </div>
                 </button>
               ))}
             </div>
             <button
               onClick={() => { onUpdate({ fuelType: "unsure" }); setSection("mods"); }}
-              className="bg-transparent text-gray-500 font-bold uppercase tracking-widest text-[10px] border border-gray-200 rounded-md px-5 py-3 hover:text-black hover:border-gray-400 hover:bg-gray-50 transition-colors w-full mt-4"
+              className="bg-transparent text-white/40 font-bold uppercase tracking-widest text-[10px] border border-white/20 rounded-xl px-5 py-3 hover:text-white hover:border-white/50 hover:bg-white/10 transition-colors w-full mt-4 backdrop-blur-sm"
             >
               Not Sure Yet
             </button>
@@ -176,10 +184,10 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                     else filtered.push(m.value);
                     onUpdate({ mods: filtered });
                   }}
-                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-lg text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
+                  className={`flex items-center justify-center text-center gap-3 px-4 py-5 rounded-xl text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 border ${
                     profile.mods.includes(m.value) 
-                      ? "border-[#00AEEF] bg-[#00AEEF]/10 text-[#00AEEF]" 
-                      : "border-gray-200 bg-white text-gray-600 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)] text-white" 
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/60 hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
                   {m.label}
@@ -188,8 +196,8 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
 
             {/* Education Beat */}
-            <div className="mt-8 p-5 rounded-xl border border-blue-100 bg-blue-50/50">
-              <p className="text-sm text-gray-600 leading-relaxed font-medium">
+            <div className="mt-8 p-5 rounded-2xl border border-[#00AEEF]/20 bg-[#00AEEF]/10 backdrop-blur-md">
+              <p className="text-sm text-white/80 leading-relaxed font-medium">
                 <strong className="text-[#00AEEF] block mb-1 uppercase tracking-widest text-[10px]">Technical Note</strong> 
                 Forced induction (Turbo/Supercharger) significantly increases fuel demand. Selecting this triggers our high-flow matching algorithm to ensure you don&apos;t run lean under boost.
               </p>

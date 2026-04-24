@@ -6,8 +6,7 @@
  */
 "use client";
 
-import type { BuildProfile } from "@/app/lib/constants";
-import { PRIORITY_OPTIONS } from "@/app/lib/constants";
+import { type BuildProfile, IMAGES, PRIORITY_OPTIONS } from "@/app/lib/constants";
 
 interface Props {
   profile: BuildProfile;
@@ -31,17 +30,25 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="w-full max-w-xl mx-auto">
+    <div 
+      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.nightStreet})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+      <div className="relative z-10 w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-black mb-2">
+          <h2 className="text-3xl font-black uppercase italic text-white mb-2 drop-shadow-md">
             What Matters <span className="text-[#00AEEF]">Most</span>
           </h2>
-          <p className="text-xs text-gray-500 uppercase tracking-[0.2em] font-bold mb-2">
+          <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold mb-2 drop-shadow-sm">
             Select 2-3 priorities in order of importance
           </p>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-white/40">
             Tap to rank — first selection = highest priority
           </p>
         </div>
@@ -54,39 +61,47 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
               <button
                 key={p}
                 onClick={() => handleToggle(p)}
-                className={`w-full flex items-center justify-between px-5 py-4 rounded-xl text-[13px] font-bold uppercase tracking-[0.05em] transition-all duration-200 border ${
+                className={`relative w-full flex items-center justify-between px-5 py-4 rounded-xl text-[13px] font-bold uppercase tracking-[0.05em] transition-all duration-200 border overflow-hidden group ${
                   isActive 
-                    ? "border-[#00AEEF] bg-[#00AEEF]/5 text-black shadow-sm" 
-                    : "border-gray-200 bg-white text-gray-500 hover:border-[#00AEEF]/50 hover:bg-gray-50"
+                    ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white" 
+                    : "border-white/10 bg-white/5 backdrop-blur-sm text-white/60 hover:border-white/30 hover:bg-white/10"
                 }`}
               >
-                <span>{p}</span>
                 {isActive && (
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#00AEEF] text-white text-[11px] font-black">
-                    {rank}
-                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#00AEEF]/20 to-transparent" />
                 )}
+                <span className={`relative z-10 ${isActive ? "text-white" : "group-hover:text-white"}`}>{p}</span>
+                <span className="relative z-10 flex gap-2">
+                  {isActive && (
+                    <span className="bg-[#00AEEF] text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                      {rank}
+                    </span>
+                  )}
+                  {/* Empty state visual affordance */}
+                  {!isActive && profile.priorities.length < 3 && (
+                    <span className="w-5 h-5 rounded-full border-2 border-white/20 group-hover:border-[#00AEEF]/50 transition-colors" />
+                  )}
+                </span>
               </button>
             );
           })}
         </div>
 
-        {/* Education Beat */}
-        <div className="mt-8 p-5 rounded-xl border border-blue-100 bg-blue-50/50">
-          <p className="text-sm text-gray-600 leading-relaxed font-medium">
-            <strong className="text-[#00AEEF] block mb-1 uppercase tracking-widest text-[10px]">How this helps</strong> 
-            Your priorities directly influence how we weight our scoring engine. &quot;Peak Horsepower&quot; prioritizes flow capacity, &quot;Reliability&quot; favors OEM-grade construction, and &quot;Plug-and-Play&quot; ensures connector compatibility.
-          </p>
-        </div>
-
-        <div className="mt-8">
+        <div className="mt-8 pt-6 border-t border-white/10">
           <button
             onClick={onNext}
             disabled={!canAdvance}
             className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full py-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            Continue →
+            Confirm Priorities →
           </button>
+          
+          {/* Helper text showing what remains */}
+          {!canAdvance && (
+            <p className="text-center text-[10px] text-white/40 mt-4 uppercase tracking-widest font-bold">
+              Select {2 - profile.priorities.length} more to continue
+            </p>
+          )}
         </div>
       </div>
     </div>

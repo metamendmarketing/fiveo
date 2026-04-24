@@ -6,7 +6,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import type { BuildProfile } from "@/app/lib/constants";
+import { type BuildProfile, IMAGES } from "@/app/lib/constants";
 import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib/types";
 import { Car, Bike, Anchor, CheckCircle2, Settings2, Zap } from "lucide-react";
 
@@ -99,15 +99,23 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
-    <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="w-full max-w-xl mx-auto">
+    <div 
+      className="relative rounded-3xl border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.diagnosticBay})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+      <div className="relative z-10 w-full max-w-xl mx-auto">
         
         {/* Step Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-black mb-1">
+          <h2 className="text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             Machine <span className="text-[#00AEEF]">Identification</span>
           </h2>
-          <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
             Configure Your Setup
           </p>
         </div>
@@ -115,7 +123,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 1. Category Selection (Car/Moto/Marine) */}
         {showTypeSelector && (
           <div className="mb-8">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
+            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               A. SELECT CATEGORY
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -123,21 +131,33 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={type}
                   onClick={() => onUpdate({ vehicleType: type })}
-                  className={`px-4 py-8 rounded-md border-2 text-center transition-all ${
+                  className={`relative p-6 rounded-2xl border-2 text-center transition-all group overflow-hidden ${
                     profile.vehicleType === type
-                      ? "border-[#00AEEF] bg-blue-50 text-[#00AEEF] shadow-sm"
-                      : "border-gray-100 bg-white text-gray-400 hover:border-gray-200"
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
+                      : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
                   } ${type !== "car" ? "opacity-30 cursor-not-allowed" : ""}`}
                   disabled={type !== "car"}
                 >
-                  <div className="mb-2 flex justify-center text-gray-500 group-hover:text-[#00AEEF] transition-colors">
-                    {type === "car" && <Car className="w-7 h-7 stroke-[1.5px]" />}
-                    {type === "motorcycle" && <Bike className="w-7 h-7 stroke-[1.5px]" />}
-                    {type === "marine" && <Anchor className="w-7 h-7 stroke-[1.5px]" />}
+                  {profile.vehicleType === type && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
+                  )}
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full mb-3 relative flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      {/* Glassmorphic Badge Background */}
+                      <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.vehicleType === type ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
+                      
+                      {/* Icon */}
+                      <div className={`relative z-10 ${profile.vehicleType === type ? "text-white" : "text-white/60 group-hover:text-white"}`}>
+                        {type === "car" && <Car className="w-5 h-5 stroke-[2px]" />}
+                        {type === "motorcycle" && <Bike className="w-5 h-5 stroke-[2px]" />}
+                        {type === "marine" && <Anchor className="w-5 h-5 stroke-[2px]" />}
+                      </div>
+                    </div>
+                    <span className="font-black uppercase text-[10px] tracking-widest block">
+                      {type === "car" ? "Auto" : type === "motorcycle" ? "Bike" : "Marine"}
+                    </span>
                   </div>
-                  <span className="font-black uppercase text-[10px] block">
-                    {type === "car" ? "Auto" : type === "motorcycle" ? "Bike" : "Marine"}
-                  </span>
                 </button>
               ))}
             </div>
@@ -146,7 +166,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* 2. Cascaded Attribute Selection */}
         <div className={`space-y-3 transition-opacity ${!profile.vehicleType && showTypeSelector ? "opacity-30 pointer-events-none" : ""}`}>
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1 block text-center">
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
             B. VEHICLE ATTRIBUTES
           </label>
           
@@ -258,29 +278,38 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 3. Engine Modification Status */}
         {profile.engineLabel && (
           <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 block text-center">
+            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               C. CURRENT CONFIGURATION
             </label>
             <div className="grid grid-cols-1 gap-2">
-              {STATUS_OPTIONS.map((opt) => (
+              {STATUS_OPTIONS.map((status) => (
                 <button
-                  key={opt.value}
-                  onClick={() => onUpdate({ engineStatus: opt.value })}
-                  className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${
-                    profile.engineStatus === opt.value
-                      ? "border-[#00AEEF] bg-[#00AEEF]/5 shadow-sm"
-                      : "border-gray-100 bg-white hover:border-gray-200"
+                  key={status.value}
+                  onClick={() => onUpdate({ engineStatus: status.value })}
+                  className={`relative flex items-center p-5 rounded-2xl border transition-all text-left group overflow-hidden ${
+                    profile.engineStatus === status.value
+                      ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)]"
+                      : "border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/30 hover:bg-white/10"
                   }`}
                 >
-                  <div 
-                    className="w-12 h-12 rounded flex items-center justify-center shrink-0"
-                    style={{ background: `${opt.accent}10`, color: opt.accent }}
-                  >
-                    {opt.icon}
+                  {profile.engineStatus === status.value && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#00AEEF]/20 to-transparent" />
+                  )}
+                  
+                  <div className="relative z-10 w-12 h-12 rounded-full mr-5 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.engineStatus === status.value ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
+                    
+                    <div className={`relative z-10 ${profile.engineStatus === status.value ? "text-white" : "text-white/60 group-hover:text-white"}`}>
+                      {status.icon}
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-black font-black uppercase text-sm leading-tight">{opt.label}</h3>
-                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-tight">{opt.desc}</p>
+                  
+                  <div className="relative z-10">
+                    <span className={`block font-black uppercase tracking-widest text-sm mb-1 ${profile.engineStatus === status.value ? "text-white" : "text-white/80 group-hover:text-white"}`}>
+                      {status.label}
+                    </span>
+                    <span className="block text-[11px] font-medium text-white/50 leading-relaxed">{status.desc}</span>
                   </div>
                 </button>
               ))}
@@ -290,7 +319,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* Guidance Prompt */}
         {!profile.engineStatus && (
-          <div className="mt-8 text-center text-gray-400">
+          <div className="mt-8 text-center text-white/40">
             <p className="text-[10px] font-bold uppercase italic tracking-widest">
               Precisely Matching Your Build →
             </p>
@@ -302,7 +331,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           <button
             onClick={onNext}
             disabled={!canAdvance}
-            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm py-4 disabled:opacity-20 disabled:grayscale"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full py-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
             CONFIRM CONFIGURATION & CONTINUE →
           </button>

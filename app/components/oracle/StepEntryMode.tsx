@@ -8,6 +8,7 @@
  */
 "use client";
 
+import { IMAGES } from "@/app/lib/constants";
 import { Compass, Wrench, SlidersHorizontal } from "lucide-react";
 
 const PATHS = [
@@ -15,19 +16,19 @@ const PATHS = [
     mode: "guide" as const,
     title: "Guide Me",
     tagline: "Built for first-timers and weekend warriors.",
-    icon: <Compass className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <Compass className="w-8 h-8 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "setup" as const,
     title: "I Know My Setup",
     tagline: "You know your build. We'll match the tech.",
-    icon: <Wrench className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <Wrench className="w-8 h-8 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
-    icon: <SlidersHorizontal className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <SlidersHorizontal className="w-8 h-8 text-white stroke-[2px] relative z-10" />,
   },
 ];
 
@@ -37,9 +38,18 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs") => void;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[65vh] px-4 py-16">
+    <div 
+      className="relative rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] min-h-[65vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.engineBayHero})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
+
       {/* Content */}
-      <div className="text-center max-w-4xl mx-auto w-full">
+      <div className="relative z-10 text-center max-w-4xl mx-auto w-full">
         <h1
           className="font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
@@ -59,9 +69,11 @@ export function StepEntryMode({
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/50 group p-8 text-center flex flex-col items-center gap-5"
+              className="bg-white/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-8 text-center flex flex-col items-center gap-5"
             >
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#00AEEF]/10 group-hover:text-[#00AEEF] transition-colors">
+              <div className="w-16 h-16 rounded-full relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
+                <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 {p.icon}
               </div>
               <div>
