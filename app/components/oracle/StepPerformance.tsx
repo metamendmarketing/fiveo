@@ -60,8 +60,8 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-center">
-      <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">

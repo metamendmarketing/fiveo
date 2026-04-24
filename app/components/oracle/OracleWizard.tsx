@@ -211,7 +211,7 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className="relative min-h-[65vh] rounded-[2rem] border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden max-w-[85rem] mx-auto w-full">
+      <div className="relative min-h-[65vh] rounded-[2rem] border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.3)] overflow-hidden max-w-6xl mx-auto w-full">
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000"
@@ -224,7 +224,7 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px]" />
         
         {/* Content Container */}
-        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-6 sm:p-10 lg:p-14 lg:gap-16">
+        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-6 sm:p-10 lg:p-12 gap-8 lg:gap-12">
           {/* Active Step Content */}
           <div className="flex-1 min-w-0 flex flex-col justify-center">
             <AnimatePresence mode="wait">
