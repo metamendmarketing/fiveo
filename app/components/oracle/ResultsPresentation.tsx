@@ -56,7 +56,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
     <div 
       className="relative min-h-[60vh] px-4 sm:px-6 lg:px-8 py-16 md:py-20 overflow-hidden"
       style={{
-        backgroundImage: `url(${IMAGES.diagnosticBay})`,
+        backgroundImage: `url(${IMAGES.carbonFiber})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
