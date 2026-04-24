@@ -35,7 +35,7 @@ const BRAND_OPTIONS = [
 
 export function StepPreferences({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="relative oracle-bg-preferences min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="relative bg-[#f8f9fa] rounded-2xl border border-gray-100 shadow-sm min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="relative z-10 w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -129,7 +129,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
           <button
             onClick={onNext}
             disabled={!profile.injectorPref}
-            className="oracle-cta-primary w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Find My Injectors →
           </button>

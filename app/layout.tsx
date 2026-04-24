@@ -72,7 +72,7 @@ export default function RootLayout({
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
         <div className="bg-[#00AEEF] w-full h-auto sm:h-auto lg:h-[48px] min-h-0 hidden sm:flex items-center justify-center py-3 lg:py-0 px-4 relative z-50">
-          <div className="fiveo-container flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6">
             <span 
               className="text-white text-[15px] sm:text-[16px] antialiased text-shadow-sm font-medium"
               style={{ fontFamily: 'var(--font-open-sans), sans-serif', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}
@@ -95,11 +95,11 @@ export default function RootLayout({
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="fiveo-container flex items-center justify-between pt-5 sm:pt-6 oracle-logo-offset">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between pt-5 sm:pt-6 pb-2">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
-              <Link href="/" className="flex-shrink-0 flex items-center oracle-logo-top-margin" aria-label="FiveO Motorsport Home">
+              <Link href="/" className="flex-shrink-0 flex items-center mt-2" aria-label="FiveO Motorsport Home">
                 <Image
                   src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
                   alt="FiveO Motorsport Logo"
@@ -192,11 +192,11 @@ export default function RootLayout({
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
         <div className="flex-grow w-full bg-[#f8f9fa] flex flex-col items-center">
-          <div className="fiveo-container px-6 md:px-12 w-full oracle-app-containment">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-6 sm:my-12">
             <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
-              <div className="pt-6 pb-4 uds-section-padding border-b border-gray-100 oracle-breadcrumb-indent">
+              <div className="pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100 pl-8">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8] pl-[10px]">
                   <Link href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</Link>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@ export default function RootLayout({
               </div>
 
               {/* Main Content Wrapper */}
-              <main className="flex-grow w-full px-6 md:px-12 pb-10" id="main-content" role="main">
+              <main className="flex-grow w-full pb-10" id="main-content" role="main">
                 {children}
               </main>
               
@@ -224,11 +224,11 @@ export default function RootLayout({
           className="bg-black text-white border-t-[3px] border-[#00AEEF] pt-16 pb-8"
           role="contentinfo"
         >
-          <div className="fiveo-container">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-6 mb-16">
               
               {/* Col 1: Logos */}
-              <div className="flex flex-col gap-6 items-start lg:col-span-1 oracle-footer-heading-offset">
+              <div className="flex flex-col gap-6 items-start lg:col-span-1 pt-5">
                 <Link href="/">
                   <Image
                     src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png"
@@ -242,7 +242,7 @@ export default function RootLayout({
 
               {/* Col 2: Shop */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Shop</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 pt-5">Shop</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">Fuel Injectors</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Fuel Pumps</a></li>
@@ -252,7 +252,7 @@ export default function RootLayout({
 
               {/* Col 3: Menu */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Menu</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 pt-5">Menu</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Links</a></li>
@@ -262,7 +262,7 @@ export default function RootLayout({
 
               {/* Col 4: Contact Us */}
               <div className="lg:col-span-1">
-                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Contact us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 pt-5">Contact us</h4>
                 <div className="space-y-4 text-[11px] text-[#cccccc]">
                   <div>
                     <strong className="text-white uppercase font-bold text-[12px] block mb-1">Phone:</strong>
@@ -278,7 +278,7 @@ export default function RootLayout({
 
               {/* Col 5: Follow Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Follow us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 pt-5">Follow us</h4>
                 <ul className="space-y-6 text-[12px] text-[#cccccc] uppercase font-bold">
                   <li>
                     <a href="#" className="hover:text-white transition-colors flex items-center gap-4">
@@ -299,7 +299,7 @@ export default function RootLayout({
 
               {/* Col 6: Join Us */}
               <div>
-                <h4 className="text-[16px] font-bold text-white mb-6 oracle-footer-heading-offset">Join us</h4>
+                <h4 className="text-[16px] font-bold text-white mb-6 pt-5">Join us</h4>
                 <ul className="space-y-4 text-[12px] text-[#cccccc] uppercase">
                   <li><a href="#" className="hover:text-white transition-colors">Join Our Newsletter</a></li>
                 </ul>

@@ -110,7 +110,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
   }, [profile, onComplete]); 
 
   return (
-    <div className="oracle-bg-processing min-h-[70vh] flex flex-col items-center justify-center px-6 md:px-12 py-16">
+    <div className="bg-black text-white rounded-2xl min-h-[70vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16">
       {/* Visual Radar Rings */}
       <div className="relative flex items-center justify-center mb-12">
         <div className="oracle-radar-ring-outer absolute" />
@@ -132,15 +132,15 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       </div>
 
       {/* Progress Readout */}
-      <div className="oracle-progress-percent mb-6">
+      <div className="text-[32px] font-black italic text-[#00AEEF] font-[var(--font-open-sans-condensed)] mb-6">
         {progress}
         <span className="text-lg text-white/40 ml-1">%</span>
       </div>
 
       {/* Progress Bar Container */}
-      <div className="oracle-progress-bar mb-6">
+      <div className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden mb-6">
         <div
-          className="oracle-progress-bar-fill"
+          className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden-fill"
           style={{ width: `${progress}%` }}
         />
       </div>

@@ -184,7 +184,7 @@ export default function OracleWizard() {
     <div className="w-full">
       {/* Progress tracking UI */}
       {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
-        <div className="max-w-4xl mx-auto px-6 md:px-12 pt-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
           <StepIndicator
             percent={progressPercent}
           />
@@ -193,7 +193,7 @@ export default function OracleWizard() {
 
       {/* Main step container */}
       <div className="relative">
-        <div className="flex gap-0 lg:gap-8 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 max-w-7xl mx-auto w-full">
           {/* Active Step Content */}
           <div className="flex-1 min-w-0">
             <AnimatePresence mode="wait">
@@ -224,7 +224,7 @@ export default function OracleWizard() {
 
       {/* Step Navigation Footer */}
       {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
-        <div className="max-w-4xl mx-auto px-6 md:px-12 py-6 flex justify-between items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center border-t border-gray-100 mt-8">
           <button onClick={back} className="oracle-cta-secondary text-sm">
             ← Back
           </button>

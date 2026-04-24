@@ -25,7 +25,7 @@ interface Props {
 
 export function StepGoal({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="oracle-bg-intent min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="bg-[#0a0a0a] text-white rounded-2xl border border-white/5 min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -45,12 +45,12 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
                 onUpdate({ goal: g.value });
                 setTimeout(onNext, 200);
               }}
-              className={`oracle-card h-52 md:h-56 ${
-                profile.goal === g.value ? "oracle-card-selected" : ""
+              className={`relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 h-52 md:h-56 ${
+                profile.goal === g.value ? "relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-selected" : ""
               }`}
               style={{ backgroundImage: `url(${g.image})` }}
             >
-              <div className="oracle-card-content absolute bottom-0 left-0 right-0 p-6">
+              <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-white font-black uppercase text-lg leading-tight mb-1">
                   {g.label}
                 </h3>

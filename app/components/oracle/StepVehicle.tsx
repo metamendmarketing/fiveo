@@ -112,7 +112,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   const canAdvance = !!(profile.make && profile.model && profile.year && profile.engineLabel && profile.engineStatus);
 
   return (
-    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm rounded-2xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         
         {/* Step Header */}
@@ -329,7 +329,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           <button
             onClick={onNext}
             disabled={!canAdvance}
-            className="oracle-cta-primary w-full text-sm py-4 disabled:opacity-20 disabled:grayscale"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm py-4 disabled:opacity-20 disabled:grayscale"
           >
             CONFIRM CONFIGURATION & CONTINUE →
           </button>

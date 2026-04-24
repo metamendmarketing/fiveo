@@ -54,7 +54,7 @@ export function StepEntryMode({
 }) {
   return (
     <div
-      className="relative min-h-[70vh] flex flex-col items-center justify-center px-6 md:px-12 py-12"
+      className="relative min-h-[70vh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12"
       style={{
         backgroundImage: `url(${IMAGES.engineBayHero})`,
         backgroundSize: "cover",
@@ -85,10 +85,10 @@ export function StepEntryMode({
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="oracle-card group px-8 py-[52px] text-left"
+              className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 group px-8 py-[52px] text-left"
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              <div className="oracle-card-content flex flex-col items-center text-center gap-4">
+              <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content flex flex-col items-center text-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[#00AEEF] group-hover:bg-[#00AEEF]/20 transition-colors">
                   {p.icon}
                 </div>

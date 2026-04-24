@@ -18,7 +18,7 @@ interface Props {
 
 export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="oracle-bg-performance min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="bg-gradient-to-br from-[#0d1117] via-[#0a0e14] to-[#0d1117] text-white rounded-2xl border border-white/5 shadow-xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -78,8 +78,8 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ headroomPref: opt.value })}
-                  className={`oracle-mod-check flex-col items-center text-center py-4 ${
-                    profile.headroomPref === opt.value ? "oracle-mod-check-active" : ""
+                  className={`flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white flex-col items-center text-center py-4 ${
+                    profile.headroomPref === opt.value ? "flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white-active" : ""
                   }`}
                 >
                   <span className="font-black text-xs">{opt.label}</span>
@@ -109,7 +109,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
         </div>
 
         <div className="mt-8">
-          <button onClick={onNext} className="oracle-cta-primary w-full text-sm">
+          <button onClick={onNext} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm">
             Continue →
           </button>
         </div>

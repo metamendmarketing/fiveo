@@ -31,7 +31,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="oracle-bg-vehicle min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 shadow-sm rounded-2xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -54,11 +54,11 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
               <button
                 key={p}
                 onClick={() => handleToggle(p)}
-                className={`w-full oracle-priority-chip justify-between text-sm ${isActive ? "oracle-priority-chip-active" : ""}`}
+                className={`w-full inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF] justify-between text-sm ${isActive ? "inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF]-active" : ""}`}
               >
                 <span>{p}</span>
                 {isActive && (
-                  <span className="oracle-priority-chip-rank">{rank}</span>
+                  <span className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-[#e2e4e8] rounded text-[13px] font-bold uppercase tracking-[0.05em] text-[#333] cursor-grab select-none transition-all duration-200 hover:border-[#00AEEF]-rank">{rank}</span>
                 )}
               </button>
             );
@@ -76,7 +76,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
           <button
             onClick={onNext}
             disabled={!canAdvance}
-            className="oracle-cta-primary w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Continue →
           </button>

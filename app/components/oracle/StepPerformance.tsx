@@ -60,7 +60,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="oracle-bg-performance min-h-[65vh] flex items-center justify-center px-6 md:px-12 py-12">
+    <div className="bg-gradient-to-br from-[#0d1117] via-[#0a0e14] to-[#0d1117] text-white rounded-2xl border border-white/5 shadow-xl min-h-[65vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -98,8 +98,8 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={p.value}
                   onClick={() => handleHPSelect(p)}
-                  className={`oracle-mod-check justify-center text-center py-5 ${
-                    profile.hpMode === p.value ? "oracle-mod-check-active" : ""
+                  className={`flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white justify-center text-center py-5 ${
+                    profile.hpMode === p.value ? "flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white-active" : ""
                   }`}
                 >
                   {p.label}
@@ -115,7 +115,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                   placeholder="Enter HP target..."
                   className="flex-1 h-14 bg-white/5 border border-white/10 rounded px-5 text-white text-lg font-bold outline-none focus:border-[#00AEEF]"
                 />
-                <button onClick={handleCustomHP} className="oracle-cta-primary px-6">
+                <button onClick={handleCustomHP} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-6">
                   Set
                 </button>
               </div>
@@ -131,12 +131,12 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={f.value}
                   onClick={() => handleFuelSelect(f.value)}
-                  className={`oracle-card h-44 ${
-                    profile.fuelType === f.value ? "oracle-card-selected" : ""
+                  className={`relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20 h-44 ${
+                    profile.fuelType === f.value ? "relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-selected" : ""
                   }`}
                   style={{ backgroundImage: `url(${f.image})` }}
                 >
-                  <div className="oracle-card-content absolute bottom-0 left-0 right-0 p-5 text-center">
+                  <div className="relative overflow-hidden rounded-md border border-white/5 bg-cover bg-center cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.2)] hover:border-[#00AEEF]/20-content absolute bottom-0 left-0 right-0 p-5 text-center">
                     <h3 className="text-white font-black uppercase text-sm mb-0.5">{f.label}</h3>
                     <p className="text-white/40 text-[10px]">{f.desc}</p>
                   </div>
@@ -145,7 +145,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
             <button
               onClick={() => { onUpdate({ fuelType: "unsure" }); setSection("mods"); }}
-              className="oracle-cta-secondary w-full mt-4 text-xs"
+              className="bg-transparent text-gray-500 font-bold uppercase tracking-wider text-xs border border-gray-200 rounded px-5 py-2.5 hover:text-black hover:border-gray-400 transition-colors w-full mt-4 text-xs"
             >
               Not Sure Yet
             </button>
@@ -171,8 +171,8 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                     else filtered.push(m.value);
                     onUpdate({ mods: filtered });
                   }}
-                  className={`oracle-mod-check justify-center text-center py-5 ${
-                    profile.mods.includes(m.value) ? "oracle-mod-check-active" : ""
+                  className={`flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white justify-center text-center py-5 ${
+                    profile.mods.includes(m.value) ? "flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded text-white/70 text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 hover:border-[#00AEEF]/30 hover:text-white-active" : ""
                   }`}
                 >
                   {m.label}
@@ -190,7 +190,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
 
             <div className="mt-6">
-              <button onClick={onNext} className="oracle-cta-primary w-full text-sm">
+              <button onClick={onNext} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] w-full text-sm">
                 Continue →
               </button>
             </div>

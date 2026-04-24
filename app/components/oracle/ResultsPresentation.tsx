@@ -23,7 +23,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
   // Handle empty state
   if (!results || results.length === 0) {
     return (
-      <div className="oracle-bg-results min-h-[60vh] px-6 py-20 flex items-center justify-center">
+      <div className="bg-gradient-to-b from-[#f2f4f7] to-white min-h-[60vh] px-6 py-20 flex items-center justify-center">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-black uppercase italic text-black mb-4">
             No Matches Found
@@ -31,7 +31,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
           <p className="text-gray-500 mb-8">
             {apiData?.reason || "We couldn't find injectors matching your exact specifications. Try adjusting your criteria."}
           </p>
-          <button onClick={onRestart} className="oracle-cta-primary">
+          <button onClick={onRestart} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)]">
             Start Over
           </button>
         </div>
@@ -43,7 +43,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
   const others = results.slice(1);
 
   return (
-    <div className="oracle-bg-results min-h-[60vh] px-6 md:px-12 py-16 md:py-20">
+    <div className="bg-gradient-to-b from-[#f2f4f7] to-white min-h-[60vh] px-4 sm:px-6 lg:px-8 py-16 md:py-20">
       <div className="max-w-7xl mx-auto">
         
         {/* Results Header */}
@@ -71,7 +71,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="oracle-strategy-card p-8 md:p-12 mb-14 text-white shadow-xl bg-black/95 rounded-2xl border border-white/5">
+          <div className="bg-black/80 backdrop-blur-md border border-white/10 rounded-xl border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-14 text-white shadow-xl bg-black/95 rounded-2xl border border-white/5">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
               Expert Advisor Strategy & Methodology
             </h3>
@@ -89,10 +89,10 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="oracle-result-card ring-1 ring-gray-200 rounded-2xl overflow-hidden bg-white shadow-xl relative"
+              className="bg-white rounded-md border border-black/5 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] ring-1 ring-gray-200 rounded-2xl overflow-hidden bg-white shadow-xl relative"
             >
               <div className="absolute top-0 right-0 p-6">
-                <div className="oracle-expert-pick inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
+                <div className="bg-gradient-to-br from-[#00AEEF] to-[#0088cc] text-white text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
                   ★ Primary Match
                 </div>
               </div>
@@ -144,7 +144,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                    <div className="flex flex-wrap gap-6 items-center">
                       <button 
                         onClick={() => setSelectedResult(topPick)}
-                        className="oracle-cta-primary px-10 py-4 text-xs font-black tracking-[0.2em]"
+                        className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-10 py-4 text-xs font-black tracking-[0.2em]"
                       >
                         Explore Tech Deep-Dive
                       </button>
@@ -174,7 +174,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * (i + 1) }}
                   onClick={() => setSelectedResult(result)}
-                  className="oracle-result-card oracle-card-clickable bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
+                  className="bg-white rounded-md border border-black/5 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.1)] bg-white rounded-xl border border-gray-100 overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-shadow cursor-pointer"
                 >
                   <div className="h-52 bg-gray-50 flex items-center justify-center p-6 border-b border-gray-100 group-hover:bg-white transition-colors">
                     <img 
@@ -223,7 +223,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
         {/* Reset Flow */}
         <div className="text-center mt-24">
-          <button onClick={onRestart} className="oracle-cta-secondary px-12 py-4 opacity-40 hover:opacity-100 transition-opacity text-[10px]">
+          <button onClick={onRestart} className="bg-transparent text-gray-500 font-bold uppercase tracking-wider text-xs border border-gray-200 rounded px-5 py-2.5 hover:text-black hover:border-gray-400 transition-colors px-12 py-4 opacity-40 hover:opacity-100 transition-opacity text-[10px]">
             Return to Advisor and Start New Build
           </button>
         </div>
@@ -232,16 +232,16 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
       {/* THE ORACLE DEEP-DIVE MODAL */}
       <AnimatePresence>
         {selectedResult && (
-          <div className="oracle-modal-overlay" onClick={() => setSelectedResult(null)}>
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[1000] flex items-center justify-center p-4 sm:p-6" onClick={() => setSelectedResult(null)}>
             <motion.div 
               initial={{ opacity: 0, scale: 0.98, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: 10 }}
               onClick={(e) => e.stopPropagation()}
-              className="oracle-modal-content overflow-visible"
+              className="bg-white w-full max-w-4xl max-h-[90vh] rounded-xl overflow-y-auto relative shadow-2xl border border-white/10"
             >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white border-b border-gray-50 px-8 md:px-20 py-10 flex justify-between items-center z-10 rounded-t-xl">
+              <div className="sticky top-0 bg-white border-b border-gray-50 px-4 sm:px-6 lg:px-8 py-10 flex justify-between items-center z-10 rounded-t-xl">
                 <div>
                   <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
                   <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
@@ -254,7 +254,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 </button>
               </div>
 
-              <div className="px-8 md:px-20 py-12 md:py-20">
+              <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-20">
                 {/* Hero Section */}
                 <div className="md:flex gap-16 mb-24">
                    <div className="md:w-1/3 mb-10 md:mb-0">
@@ -290,7 +290,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                 {/* Expert Rationale Narrative */}
                 <div className="mb-24">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-8 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
-                  <div className="oracle-narrative-text whitespace-pre-wrap text-lg text-gray-800 leading-relaxed mb-12">
+                  <div className="text-[15px] leading-[1.8] text-[#444] whitespace-pre-wrap text-lg text-gray-800 leading-relaxed mb-12">
                     {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
                   </div>
                   
@@ -335,7 +335,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
                       href={selectedResult.product.product_url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="oracle-cta-primary flex-1 text-center py-6 text-xs font-black tracking-widest"
+                      className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] flex-1 text-center py-6 text-xs font-black tracking-widest"
                     >
                       Browse In Full FiveO Catalog
                     </a>

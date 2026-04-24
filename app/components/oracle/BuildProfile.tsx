@@ -65,23 +65,23 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
 
   if (activeItems.length === 0) {
     return (
-      <div className="oracle-build-profile p-5">
-        <div className="oracle-build-profile-label mb-3">Your Build</div>
+      <div className="bg-[#0f0f0f]/75 backdrop-blur-md border border-white/10 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.15)] p-5">
+        <div className="bg-[#0f0f0f]/75 backdrop-blur-md border border-white/10 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.15)]-label mb-3">Your Build</div>
         <p className="text-xs text-white/40">Answer questions to build your profile...</p>
       </div>
     );
   }
 
   return (
-    <div className="oracle-build-profile oracle-sidebar-panel sticky top-24">
-      <div className="oracle-build-profile-label mb-4">Your Build</div>
+    <div className="bg-[#0f0f0f]/75 backdrop-blur-md border border-white/10 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.15)] oracle-sidebar-panel sticky top-24">
+      <div className="bg-[#0f0f0f]/75 backdrop-blur-md border border-white/10 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.15)]-label mb-4">Your Build</div>
       <div className="space-y-3">
         {activeItems.map((item) => (
           <div key={item.label}>
             <div className="text-[9px] font-bold uppercase tracking-[0.15em] text-white/30 mb-0.5">
               {item.label}
             </div>
-            <div className="oracle-build-profile-value">{item.value}</div>
+            <div className="bg-[#0f0f0f]/75 backdrop-blur-md border border-white/10 rounded-lg shadow-[0_4px_24px_rgba(0,0,0,0.15)]-value">{item.value}</div>
           </div>
         ))}
       </div>
