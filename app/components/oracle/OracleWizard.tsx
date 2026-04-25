@@ -211,7 +211,7 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className="relative w-full aspect-video rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto">
+      <div className={`relative w-full rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto ${currentStep === 'results' ? 'min-h-[90vh]' : 'aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
@@ -225,9 +225,9 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
         
         {/* Content Container */}
-        <div className="relative z-10 flex flex-col lg:flex-row w-full h-full p-8 sm:p-12 lg:p-16 gap-8 lg:gap-12 items-center justify-center">
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-8 sm:p-12 lg:p-16 gap-8 lg:gap-12 ${currentStep === 'results' ? 'items-start' : 'items-center justify-center h-full'}`}>
           {/* Active Step Content */}
-          <div className="flex-1 min-w-0 flex flex-col items-center justify-center w-full">
+          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'} w-full`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}

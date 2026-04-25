@@ -53,7 +53,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
   const others = results.slice(1);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center">
+    <div className="w-full flex flex-col">
       <div className="w-full max-w-7xl mx-auto">
       
         
