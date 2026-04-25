@@ -258,120 +258,141 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
       {/* THE ORACLE DEEP-DIVE MODAL */}
       <AnimatePresence>
         {selectedResult && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-lg z-[1000] flex items-center justify-center p-4 sm:p-6" onClick={() => setSelectedResult(null)}>
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4 sm:p-6 md:p-8" onClick={() => setSelectedResult(null)}>
             <motion.div 
-              initial={{ opacity: 0, scale: 0.98, y: 10 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: 10 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-black/90 backdrop-blur-2xl w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-y-auto relative shadow-[0_0_80px_rgba(0,174,239,0.15)] border border-white/20"
+              className="relative w-full max-w-4xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh]"
             >
-              <div className="sticky top-0 bg-[#0a0a0a] border-b border-white/10 px-4 sm:px-6 lg:px-8 py-8 flex justify-between items-center z-50 rounded-t-3xl shadow-xl">
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-white/10">
                 <div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-1">Oracle Technical Deep-Dive</h3>
-                  <p className="text-[9px] text-gray-300 font-bold uppercase tracking-widest italic">Authentic FiveO Expert Knowledge</p>
+                  <h2 className="text-xl font-black uppercase italic text-[#00AEEF] drop-shadow-md">
+                    Oracle Technical <span className="text-white">Deep-Dive</span>
+                  </h2>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold mt-1">
+                    Authentic FiveO Expert Knowledge
+                  </p>
                 </div>
                 <button 
                   onClick={() => setSelectedResult(null)}
-                  className="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-colors text-white text-xs"
+                  className="text-white/50 hover:text-white transition-colors p-2"
                 >
-                  ✕
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
 
-              <div className="px-4 sm:px-6 lg:px-12 py-16 md:py-24">
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar">
+                
                 {/* Hero Section */}
-                <div className="md:flex gap-16 mb-24">
-                   <div className="md:w-1/3 mb-10 md:mb-0">
-                      <div className="bg-white/5 border border-white/10 rounded-2xl p-10 aspect-square flex items-center justify-center shadow-inner relative"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/10 to-transparent" />
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                   {/* Product Image */}
+                   <div className="w-full md:w-1/3 shrink-0">
+                      <div className="bg-white/5 border border-white/10 rounded-xl p-8 aspect-square flex items-center justify-center shadow-inner relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/10 to-transparent" />
                         <img 
                           src={selectedResult.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                           alt={selectedResult.product.name}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain relative z-10"
                         />
                       </div>
                    </div>
-                    <div className="md:w-2/3 flex flex-col justify-center">
-                      {selectedResult.aiHeadline && (
-                        <h2 className="text-3xl md:text-5xl font-black uppercase italic text-[#00AEEF] leading-tight mb-4">
-                          {selectedResult.aiHeadline}
-                        </h2>
-                      )}
-                      <h3 className={`text-xl font-black uppercase italic text-white leading-tight ${selectedResult.aiHeadline ? 'mb-6 text-white/50' : 'mb-6 text-3xl'}`}>
-                        {selectedResult.product.name}
-                      </h3>
-                      <div className="flex flex-wrap gap-4 mb-10 mt-2">
-                        <span className="bg-white/10 border border-white/20 text-white text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest rounded-sm">{selectedResult.matchStrategy || "Technical Recommendation"}</span>
-                        <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-4 py-1.5 uppercase italic tracking-widest border border-[#00AEEF]/20">{selectedResult.score}% Compatibility</span>
+                   
+                   {/* Core Details */}
+                   <div className="w-full md:w-2/3 flex flex-col justify-center">
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        <span className="bg-white/10 border border-white/20 text-white text-[9px] font-black px-3 py-1 uppercase italic tracking-widest rounded-sm">
+                          {selectedResult.matchStrategy || "Technical Recommendation"}
+                        </span>
+                        <span className="bg-[#00AEEF]/10 text-[#00AEEF] text-[9px] font-black px-3 py-1 uppercase italic tracking-widest border border-[#00AEEF]/20 rounded-sm">
+                          {selectedResult.score}% Compatibility
+                        </span>
                       </div>
-                      <p className="text-xl text-white/80 font-medium leading-relaxed italic border-l-4 border-white/20 pl-8">
+                      
+                      {selectedResult.aiHeadline && (
+                        <h3 className="text-2xl md:text-3xl font-black uppercase italic text-[#00AEEF] leading-tight mb-2">
+                          {selectedResult.aiHeadline}
+                        </h3>
+                      )}
+                      
+                      <h4 className={`text-lg md:text-xl font-black uppercase italic leading-tight mb-4 ${selectedResult.aiHeadline ? 'text-white/70' : 'text-white'}`}>
+                        {selectedResult.product.name}
+                      </h4>
+                      
+                      <p className="text-sm md:text-base text-white/80 font-medium leading-relaxed italic border-l-2 border-[#00AEEF] pl-4">
                         &quot;{selectedResult.preferenceSummary}&quot;
                       </p>
                    </div>
                 </div>
 
-                <div className="h-px w-full bg-white/10 mb-24"></div>
-
-                <div className="mb-24 pt-8">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300 mb-12 text-center underline underline-offset-8 decoration-[#00AEEF]/30">The Expert&apos;s Rationale</h4>
-                  <div className="text-lg md:text-xl text-white/80 leading-relaxed whitespace-pre-wrap mb-16">
-                    {selectedResult.technicalNarrative || "I&apos;ve selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you&apos;re looking for."}
+                {/* The Expert's Rationale */}
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 md:p-8">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-4">The Expert&apos;s Rationale</h4>
+                  <div className="text-sm md:text-base text-white/80 leading-relaxed whitespace-pre-wrap mb-6">
+                    {selectedResult.technicalNarrative || "I've selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you're looking for."}
                   </div>
                   
                   {selectedResult.proTip && (
-                    <div className="bg-[#00AEEF]/5 border-l-4 border-[#00AEEF] p-8 md:p-10 rounded-r-2xl relative backdrop-blur-sm">
-                      <div className="flex items-center gap-3 mb-4">
-                        <Lightbulb className="w-6 h-6 text-[#00AEEF] fill-[#00AEEF]/20" />
-                        <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#00AEEF] m-0">Expert Consultant Pro-Tip</p>
+                    <div className="bg-[#00AEEF]/5 border-l-4 border-[#00AEEF] p-5 rounded-r-xl relative backdrop-blur-sm mt-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Lightbulb className="w-4 h-4 text-[#00AEEF] fill-[#00AEEF]/20" />
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] m-0">Expert Consultant Pro-Tip</p>
                       </div>
-                      <p className="text-white/90 text-xl leading-relaxed italic font-medium pl-9">
+                      <p className="text-white/90 text-sm leading-relaxed italic pl-6">
                         &quot;{selectedResult.proTip}&quot;
                       </p>
                     </div>
                   )}
                 </div>
 
-                <div className="bg-white/5 rounded-2xl p-12 mb-24 border border-white/10 mt-16">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-10">Engineering Specifications</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Flow Rate</p>
-                      <p className="text-base font-black text-white">{selectedResult.product.flow_rate_cc || selectedResult.product.size_cc || "—"} cc</p>
+                {/* Engineering Specifications */}
+                <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/50 mb-4 border-b border-white/10 pb-2">Engineering Specifications</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1 tracking-widest">Flow Rate</p>
+                      <p className="text-sm font-black text-white">{selectedResult.product.flow_rate_cc || selectedResult.product.size_cc || "—"} cc</p>
                     </div>
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Impedance</p>
-                      <p className="text-base font-black text-white">{selectedResult.product.impedance || "High (12-14Ω)"}</p>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1 tracking-widest">Impedance</p>
+                      <p className="text-sm font-black text-white">{selectedResult.product.impedance || "High (12-14Ω)"}</p>
                     </div>
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-[#00AEEF] mb-2 tracking-widest">Brand</p>
-                      <p className="text-base font-black text-white">{selectedResult.product.brand || selectedResult.product.manufacturer || "FiveO"}</p>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1 tracking-widest">Brand</p>
+                      <p className="text-sm font-black text-white">{selectedResult.product.brand || selectedResult.product.manufacturer || "FiveO"}</p>
                     </div>
-                    <div>
-                      <p className="text-[11px] font-black uppercase text-[#00AEEF] mb-3 tracking-widest">Connector</p>
-                      <p className="text-lg font-black text-white">{selectedResult.product.connector_type || "Standard"}</p>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                      <p className="text-[9px] font-black uppercase text-[#00AEEF] mb-1 tracking-widest">Connector</p>
+                      <p className="text-sm font-black text-white">{selectedResult.product.connector_type || "Standard"}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex flex-col md:flex-row gap-8">
-                  {selectedResult.product.product_url && (
-                    <a 
-                      href={selectedResult.product.product_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] flex-1 text-center py-6 text-xs font-black tracking-widest"
-                    >
-                      Browse In Full FiveO Catalog
-                    </a>
-                  )}
-                  <button 
-                    onClick={() => setSelectedResult(null)}
-                    className="border border-white/20 bg-white/5 rounded-sm px-10 py-6 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-colors text-white/50 hover:text-white"
+              </div>
+
+              {/* Fixed Footer Actions */}
+              <div className="p-6 border-t border-white/10 bg-black/40 backdrop-blur-md flex flex-col md:flex-row justify-end gap-4">
+                <button 
+                  onClick={() => setSelectedResult(null)}
+                  className="px-6 py-3 text-xs font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors border border-transparent rounded-lg hover:bg-white/5"
+                >
+                  Back to Results
+                </button>
+                {selectedResult.product.product_url && (
+                  <a 
+                    href={selectedResult.product.product_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-[#E10600] text-white text-xs font-black uppercase tracking-[0.2em] px-8 py-3 rounded-lg shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] transition-all flex items-center justify-center"
                   >
-                    Back to Results
-                  </button>
-                </div>
+                    View in Store
+                  </a>
+                )}
               </div>
             </motion.div>
           </div>
