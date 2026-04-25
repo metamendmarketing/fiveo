@@ -63,7 +63,7 @@ export function scoreProducts(
   fitmentProductIds: number[],
   makeFitmentProductIds: number[]
 ): ScoredProduct[] {
-  const requiredCC = profile.targetHP
+  const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
     ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
     : profile.desiredSizeCC || null;
 

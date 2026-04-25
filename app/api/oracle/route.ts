@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     
-    const requiredCC = profile.targetHP
+    const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
       ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
       : profile.desiredSizeCC || null;
 
@@ -189,7 +189,7 @@ export async function POST(req: NextRequest) {
         .replace("{{goal}}", profile.goal || "general upgrade")
         .replace("{{usage}}", profile.usage || "not specified")
         .replace("{{engineStatus}}", profile.engineStatus ? `(engine: ${profile.engineStatus})` : "")
-        .replace("{{targetHP}}", profile.targetHP?.toString() || "not specified")
+        .replace("{{targetHP}}", profile.hpMode === "custom" ? `${profile.targetHP} HP (Total)` : (profile.hpMode !== "unsure" && profile.hpMode ? profile.hpMode : "not specified"))
         .replace("{{fuelType}}", profile.fuelType || "pump gas")
         .replace("{{budget}}", profile.budget || "flexible")
         .replace("{{priorities}}", (profile.priorities || []).join(", ") || "not specified")
