@@ -29,6 +29,7 @@ import { StepPreferences } from "@/app/components/oracle/StepPreferences";
 import { StepExpertSpecs } from "@/app/components/oracle/StepExpertSpecs";
 import { ProcessingSequence } from "@/app/components/oracle/ProcessingSequence";
 import { ResultsPresentation } from "@/app/components/oracle/ResultsPresentation";
+import { EditBuildModal } from "@/app/components/oracle/EditBuildModal";
 
 /**
  * Reducer for managing the BuildProfile state.
@@ -69,6 +70,7 @@ export default function OracleWizard() {
   const [stepIndex, setStepIndex] = useState(0);
   const [results, setResults] = useState<ScoredProduct[] | null>(null);
   const [apiData, setApiData] = useState<OracleApiResponse | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   /** 
    * Derive the current step sequence based on the selected entry mode 
@@ -175,9 +177,7 @@ export default function OracleWizard() {
               setApiData(null);
             }}
             onEdit={() => {
-              setStepIndex(1); // Back to StepVehicle
-              setResults(null);
-              setApiData(null);
+              setIsEditModalOpen(true);
             }}
           />
         );
@@ -271,6 +271,27 @@ export default function OracleWizard() {
           </span>
         </div>
       )}
+
+
+      {/* Edit Build Modal */}
+      <AnimatePresence>
+        {isEditModalOpen && (
+          <EditBuildModal 
+            profile={profile}
+            onClose={() => setIsEditModalOpen(false)}
+            onSubmit={(updatedProfile) => {
+              dispatch({ type: "UPDATE", payload: updatedProfile });
+              setIsEditModalOpen(false);
+              setResults(null);
+              setApiData(null);
+              const processingIndex = steps.indexOf("processing");
+              if (processingIndex !== -1) {
+                setStepIndex(processingIndex);
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
