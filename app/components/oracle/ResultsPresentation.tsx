@@ -9,6 +9,7 @@ interface Props {
   results: ScoredProduct[];
   apiData: OracleApiResponse | null;
   onRestart: () => void;
+  onEdit: () => void;
 }
 
 /**
@@ -18,7 +19,7 @@ interface Props {
  * a grid of alternative matches. Includes an interactive modal for
  * viewing the AI-generated technical narrative and engineering specs.
  */
-export function ResultsPresentation({ results, apiData, onRestart }: Props) {
+export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
 
   // Handle empty state
@@ -41,9 +42,14 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
           <p className="text-white/60 drop-shadow-sm mb-8">
             {apiData?.reason || "We couldn't find injectors matching your exact specifications. Try adjusting your criteria."}
           </p>
-          <button onClick={onRestart} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)]">
-            Start Over
-          </button>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button onClick={onRestart} className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] px-8 py-3 rounded-sm transition-all hover:bg-[#c70500]">
+              Start Over
+            </button>
+            <button onClick={onEdit} className="bg-[#00AEEF] text-white font-black italic uppercase tracking-[0.2em] px-8 py-3 rounded-sm transition-all hover:bg-[#0088cc]">
+              Edit Build
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -82,7 +88,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-10 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-6 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
               Fuel Injector Selection Methodology
             </h3>
@@ -93,7 +99,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
         )}
 
         {/* Results Grid/List */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-6">
           
           {/* 1. Primary Recommendation (Featured) */}
           {topPick && (
@@ -177,7 +183,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
 
           {/* 2. Alternative Candidates Grid */}
           {others.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {others.map((result, i) => (
                 <motion.div
                   key={result.product.id || i}
@@ -232,10 +238,19 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
           )}
         </div>
 
-        {/* Reset Flow */}
-        <div className="text-center mt-24">
-          <button onClick={onRestart} className="bg-white/5 backdrop-blur-sm text-white/50 font-bold uppercase tracking-wider border border-white/20 rounded-xl px-12 py-4 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all text-[10px]">
-            Return to Advisor and Start New Build
+        {/* Reset Flow Actions */}
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-6 pb-20">
+          <button 
+            onClick={onRestart} 
+            className="bg-[#E10600] text-white font-black uppercase tracking-[0.2em] border border-transparent rounded-xl px-12 py-5 hover:bg-[#c70500] transition-all text-xs shadow-lg"
+          >
+            Start over
+          </button>
+          <button 
+            onClick={onEdit} 
+            className="bg-[#00AEEF] text-white font-black uppercase tracking-[0.2em] border border-transparent rounded-xl px-12 py-5 hover:bg-[#0088cc] transition-all text-xs shadow-lg"
+          >
+            Edit your build
           </button>
         </div>
       </div>

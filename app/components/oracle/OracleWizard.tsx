@@ -174,6 +174,11 @@ export default function OracleWizard() {
               setResults(null);
               setApiData(null);
             }}
+            onEdit={() => {
+              setStepIndex(1); // Back to StepVehicle
+              setResults(null);
+              setApiData(null);
+            }}
           />
         );
       default:
