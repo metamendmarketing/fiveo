@@ -67,7 +67,7 @@ export function ResultsPresentation({ results, apiData, onRestart }: Props) {
               Project: <span className="text-white">{apiData.vehicleLabel}</span>
             </p>
           )}
-          <div className="h-0.5 w-16 bg-[#00AEEF] mx-auto mb-4"></div>
+
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
               {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
