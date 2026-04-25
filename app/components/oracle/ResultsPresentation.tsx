@@ -60,11 +60,11 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
 
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
       
         
         {/* Results Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-8">
           <h2 className="text-2xl md:text-4xl font-black uppercase italic text-white drop-shadow-md mb-1">
             Oracle <span className="text-[#00AEEF]">Selection</span>
           </h2>
@@ -88,7 +88,7 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 mb-6 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
               Fuel Injector Selection Methodology
             </h3>
