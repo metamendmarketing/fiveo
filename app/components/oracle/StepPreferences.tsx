@@ -84,7 +84,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
         </div>
 
         {/* Q11: Budget */}
-        <div>
+        <div className="pt-6">
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-left">
             Budget Range
           </label>
@@ -112,7 +112,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
         </div>
 
         {/* Q12: Brand Preference */}
-        <div>
+        <div className="pt-6">
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-left">
             Brand Preference
           </label>
