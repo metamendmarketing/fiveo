@@ -14,17 +14,33 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   
   const type = searchParams.get("type");
+  const vehicleType = searchParams.get("vehicleType") || "car";
   const makeId = searchParams.get("makeId");
   const modelId = searchParams.get("modelId");
   const yearId = searchParams.get("yearId");
 
+  // Helper for powersports/marine filtering (since DB column is deferred)
+  const MOTO_MAKES = ["KAWASAKI", "YAMAHA", "HONDA", "SUZUKI", "DUCATI", "HARLEY-DAVIDSON", "POLARIS", "TRIUMPH", "KTM"];
+  const MARINE_MAKES = ["DELPHI MARINE", "MERCURY MARINE", "YAMAHA", "HONDA", "SUZUKI"];
+  const CAR_ONLY_MAKES = ["ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET", "CHRYSLER", "DODGE", "FORD", "GMC", "JEEP", "LEXUS", "LINCOLN", "MAZDA", "MERCEDES-BENZ", "NISSAN", "PORSCHE", "RAM", "SUBARU", "TOYOTA", "VOLKSWAGEN", "VOLVO"];
+
+
   try {
     // 1. Fetch all Makes
     if (type === "makes") {
-      const { data, error } = await supabase
-        .from("makes")
-        .select("id, name")
-        .order("name");
+      let query = supabase.from("makes").select("id, name");
+      
+      if (vehicleType === "motorcycle") {
+        query = query.in("name", MOTO_MAKES);
+      } else if (vehicleType === "marine") {
+        query = query.in("name", MARINE_MAKES);
+      } else {
+        // For cars, we show everything except pure motorcycle/marine brands 
+        // that don't also make cars.
+        query = query.not("name", "in", "('KAWASAKI','DUCATI','POLARIS','DELPHI MARINE','MERCURY MARINE')");
+      }
+
+      const { data, error } = await query.order("name");
       if (error) throw error;
       return NextResponse.json({ data: data || [] });
     }

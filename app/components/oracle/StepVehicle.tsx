@@ -60,7 +60,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
   // Helper for API calls that prepends the basePath automatically
   const fetchVehicleData = useCallback(async (params: string) => {
     try {
-      const response = await fetch(`/fiveo/demo/api/oracle/vehicles?${params}`);
+      const response = await fetch(`/fiveo/demo/api/oracle/vehicles?${params}&vehicleType=${profile.vehicleType || 'car'}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const json = await response.json();
       return json.data || [];
@@ -76,7 +76,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
     fetchVehicleData("type=makes")
       .then(setMakes)
       .finally(() => setLoading(false));
-  }, [fetchVehicleData]);
+  }, [fetchVehicleData, profile.vehicleType]);
 
   // Cascade: Fetch models when make changes
   useEffect(() => {
