@@ -59,9 +59,11 @@ export function StepEntryMode({
         <p className="text-white/60 text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold mb-2 lg:mb-6 drop-shadow-sm">
           The ultimate technical sizing assistant for high-performance builds
         </p>
-        <h2 className="text-white text-xs lg:text-lg font-bold mb-[10px] drop-shadow-md uppercase tracking-wider">
+        <h2 className="text-white text-xs lg:text-lg font-bold drop-shadow-md uppercase tracking-wider">
           How do you want to dial in your injectors?
         </h2>
+
+        <div className="h-[10px]" />
 
         {/* Card grid */}
         <div className="entry-card-grid">
