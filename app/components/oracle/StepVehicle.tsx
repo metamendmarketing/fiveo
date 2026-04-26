@@ -122,7 +122,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 1. Category Selection (Car/Moto/Marine) */}
         {showTypeSelector && (
           <div className="mb-8">
-            <label className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-2 md:mb-3 block text-center">
+            <label className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
               A. SELECT CATEGORY
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -164,7 +164,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* 2. Cascaded Attribute Selection */}
         <div className={`space-y-3 transition-opacity ${!profile.vehicleType && showTypeSelector ? "opacity-30 pointer-events-none" : ""}`}>
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
             B. VEHICLE ATTRIBUTES
           </label>
           
@@ -281,7 +281,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 3. Engine Modification Status (Only show for non-OEM paths) */}
         {profile.engineLabel && profile.entryMode !== "oem" && (
           <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
+            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
               C. CURRENT CONFIGURATION
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -322,7 +322,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* Guidance Prompt */}
         {!profile.engineStatus && (
-          <div className="mt-8 text-center text-white/40">
+          <div className="mt-[5px] mb-[5px] text-center text-white/40">
             <p className="text-[10px] font-bold uppercase italic tracking-widest">
               Precisely Matching Your Build →
             </p>
@@ -330,7 +330,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         )}
 
         {/* Confirmation CTA */}
-        <div className="mt-6 md:mt-10">
+        <div className="mt-[5px]">
           <button
             onClick={onNext}
             disabled={!canAdvance}
