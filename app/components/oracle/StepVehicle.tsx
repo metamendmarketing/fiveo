@@ -68,7 +68,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
       console.error("[StepVehicle] Fetch error:", err);
       return [];
     }
-  }, []);
+  }, [profile.vehicleType]);
 
   // Fetch makes on initial mount
   useEffect(() => {
@@ -146,7 +146,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                       </div>
                     </div>
                     <span className="font-black uppercase text-[10px] tracking-widest block">
-                      {type === "car" ? "Auto" : type === "motorcycle" ? "Bike" : "Marine"}
+                      {type === "car" ? "Auto" : type === "motorcycle" ? "Motorcycle" : "Marine"}
                     </span>
                   </div>
                 </button>
