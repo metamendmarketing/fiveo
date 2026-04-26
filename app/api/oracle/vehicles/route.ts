@@ -35,9 +35,8 @@ export async function GET(req: NextRequest) {
       } else if (vehicleType === "marine") {
         query = query.in("name", MARINE_MAKES);
       } else {
-        // For cars, we show everything except pure motorcycle/marine brands 
-        // that don't also make cars.
-        query = query.not("name", "in", ["KAWASAKI", "DUCATI", "POLARIS", "DELPHI MARINE", "MERCURY MARINE"]);
+        // For cars, we exclude pure powersports brands
+        query = query.filter("name", "not.in", '("KAWASAKI","DUCATI","POLARIS","DELPHI MARINE","MERCURY MARINE")');
       }
 
       const { data, error } = await query.order("name");
