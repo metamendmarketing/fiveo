@@ -107,6 +107,21 @@ export default function OracleWizard() {
     }
   }, [stepIndex]);
 
+  /** 
+   * Delay the appearance of the Build Profile sidebar to prevent 
+   * layout squeezing during the Entry Mode -> Step 1 transition.
+   * Also ensures perfect centering on the home screen by keeping it single-column.
+   */
+  const [showSidebar, setShowSidebar] = useState(false);
+  useEffect(() => {
+    if (stepIndex > 0 && currentStep !== 'processing' && currentStep !== 'results') {
+      const timer = setTimeout(() => setShowSidebar(true), 500); 
+      return () => clearTimeout(timer);
+    } else {
+      setShowSidebar(false);
+    }
+  }, [stepIndex, currentStep]);
+
   /**
    * Calculate progress percentage for the progress bar.
    * Excludes 'entry' and 'results' from the denominator.
@@ -267,7 +282,7 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] lg:rounded-[2.5rem]" />
         
         {/* Content Container — centered within the cinematic frame */}
-        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : 'flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-12 h-full'}`}>
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''} h-full`}`}>
           {/* Active Step Content */}
           <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col items-center justify-center'}`}>
             <AnimatePresence mode="wait">
@@ -286,24 +301,18 @@ export default function OracleWizard() {
           </div>
 
           {/* Profile Summary Sidebar — desktop only */}
-          {profile.entryMode &&
-            currentStep !== "entry" &&
-            currentStep !== "processing" &&
-            currentStep !== "results" && (
-              <div className="hidden lg:block w-80 shrink-0">
-                <BuildProfilePanel profile={profile} />
-              </div>
-            )}
-        </div>
-        {/* Profile Summary — mobile only, below content */}
-        {profile.entryMode &&
-          currentStep !== "entry" &&
-          currentStep !== "processing" &&
-          currentStep !== "results" && (
-            <div className="lg:hidden relative z-10 px-4 pb-4">
+          {showSidebar && (
+            <div className="hidden lg:block w-80 shrink-0">
               <BuildProfilePanel profile={profile} />
             </div>
           )}
+        </div>
+        {/* Profile Summary — mobile only, below content */}
+        {showSidebar && (
+          <div className="lg:hidden relative z-10 px-4 pb-4">
+            <BuildProfilePanel profile={profile} />
+          </div>
+        )}
       </div>
 
       {/* Step Navigation Footer */}
