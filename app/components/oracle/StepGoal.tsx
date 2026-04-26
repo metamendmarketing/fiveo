@@ -26,14 +26,17 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 lg:mb-12">
+        <div className="text-center mb-0">
           <h2 className="text-2xl lg:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             What is the <span className="text-[#00AEEF]">Mission</span>?
           </h2>
-          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm mb-6">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
             Define your primary objective
           </p>
         </div>
+
+        {/* Forced Spacer Gap — Guarantees space between text and cards */}
+        <div className="h-10 lg:h-16" />
 
         {/* Goal Selection Cards — Always stacked vertically */}
         <div className="grid grid-cols-1 gap-4">
