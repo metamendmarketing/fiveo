@@ -227,7 +227,7 @@ export default function OracleWizard() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex-1 min-h-0 flex flex-col">
       {/* Progress tracking UI */}
       {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -237,9 +237,9 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container - Responsive Cinematic Window */}
-      <div className={`relative w-full max-w-none md:max-w-7xl md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto 
-        ${currentStep === 'results' ? 'min-h-[100dvh] md:min-h-[90dvh]' : 'h-[100dvh] md:h-auto md:aspect-video'}`}>
+      {/* Main step container — fills remaining viewport on mobile, cinematic on desktop */}
+      <div className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex-1 min-h-0 flex flex-col
+        ${currentStep === 'results' ? 'md:min-h-[90dvh] md:flex-none' : 'md:flex-none md:aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
@@ -252,10 +252,10 @@ export default function OracleWizard() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
         
-        {/* Content Container - Fixed background, scrolling content on mobile */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-2.5 sm:p-8 lg:p-16 gap-3 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-start lg:items-center justify-start lg:justify-center min-h-full'}`}>
+        {/* Content Container — scrollable on mobile, centered on desktop */}
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-4 lg:gap-12 flex-1 min-h-0 overflow-y-auto ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center lg:justify-center'} w-full h-full`}>
+          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'} w-full`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -264,7 +264,7 @@ export default function OracleWizard() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="w-full h-full"
+                className="w-full"
               >
                 {renderStep()}
               </motion.div>

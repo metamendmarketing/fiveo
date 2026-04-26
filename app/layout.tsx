@@ -68,7 +68,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${openSans.variable} ${openSansCondensed.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
+      <body className="min-h-dvh flex flex-col bg-[#f8f9fa] text-[#333333] font-sans">
         
         {/* ═══ 0. Promotional Top Bar ═══ */}
         <div className="bg-[#00AEEF] w-full h-auto sm:h-auto lg:h-[48px] min-h-0 hidden sm:flex items-center justify-center py-3 lg:py-0 px-4 relative z-50">
@@ -191,9 +191,9 @@ export default function RootLayout({
         </header>
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
-        <div className="flex-grow w-full bg-[#f8f9fa] md:bg-[#f8f9fa] flex flex-col items-center">
-          <div className="max-w-none md:max-w-7xl mx-auto px-0 md:px-6 lg:px-8 w-full md:my-12">
-            <div className="bg-transparent md:bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex flex-col overflow-hidden">
+        <div className="flex-1 min-h-0 w-full flex flex-col items-center">
+          <div className="w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8 md:my-12 flex-1 min-h-0 flex flex-col">
+            <div className="md:bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex-1 min-h-0 flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="hidden md:block pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100 pl-8">
@@ -211,7 +211,7 @@ export default function RootLayout({
               </div>
 
               {/* Main Content Wrapper */}
-              <main className="flex-grow w-full pb-0 md:pb-10" id="main-content" role="main">
+              <main className="flex-1 min-h-0 w-full pb-0 md:pb-10 flex flex-col" id="main-content" role="main">
                 {children}
               </main>
               
