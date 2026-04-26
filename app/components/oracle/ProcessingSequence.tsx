@@ -51,44 +51,52 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       }
     })();
 
-    // 2. Execute progress simulation
+    // 2. Execute progress simulation with Sub-Decimal Smoothness
     const runProgress = async () => {
-      for (let i = 0; i <= 100; i++) {
+      let current = 0;
+      
+      while (current <= 100) {
         if (hasCompletedRef.current) return;
 
-        setProgress(i);
+        setProgress(current);
 
-        // Map progress thresholds to status messages
-        const msg = [...PROCESSING_MESSAGES].reverse().find((m) => i >= m.threshold);
+        // Map status messages
+        const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        let delay = 30;
+        // Dynamic Pacing logic
+        let delay = 40;
+        let increment = 1;
 
-        if (i < 20) {
+        if (current < 25) {
+          // Phase 1: Fast Start
           delay = 25;
-        } else if (i >= 20 && i < 85) {
-          // Phase 2: The Crunch
-          // If API isn't ready as we approach the sprint, crawl but don't stop
-          if (i > 70 && !apiReady) {
-            delay = 600 + Math.random() * 400; // Snail's pace
-          } else {
-            delay = apiReady ? 60 : 120 + Math.random() * 100;
-          }
+          increment = 0.8;
+        } else if (current >= 25 && current < 83) {
+          // Phase 2: The Deep Crunch
+          delay = apiReady ? 60 : 100 + Math.random() * 80;
+          increment = apiReady ? 0.6 : 0.3;
         } else {
-          // Phase 3: Redline Sprint (85-100)
-          // Only sprint if API is ready. If not, wait at 85.
+          // Phase 3: The Sprint (83-100)
+          // If API isn't ready, crawl at 0.1 increments to keep it moving
           if (!apiReady) {
-            i = 84; // Hold at 84
-            delay = 500;
+            delay = 200;
+            increment = 0.1;
           } else {
-            delay = 10; // BLISTERING FAST
+            // Blistering but smooth sprint
+            delay = 20;
+            increment = 1.2;
           }
         }
 
         await new Promise((r) => setTimeout(r, delay));
+        current += increment;
+
+        // Cap at 100
+        if (current > 100) current = 101; 
       }
 
-      // 3. Explosion Hit (100%) - Instant Load
+      // 3. Instant Completion
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
         onComplete(apiData || { 
