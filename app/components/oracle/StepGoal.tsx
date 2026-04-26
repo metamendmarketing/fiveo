@@ -35,8 +35,8 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
           </p>
         </div>
 
-        {/* Goal Selection Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Goal Selection Cards — stacked until lg screen */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           {GOALS.map((opt) => (
             <button
               key={opt.value}
@@ -44,7 +44,7 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
                 onUpdate({ goal: opt.value });
                 onNext();
               }}
-              className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-52 md:h-56 ${
+              className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-40 lg:h-56 ${
                 profile.goal === opt.value
                   ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)]"
                   : "border-white/20 shadow-lg hover:border-white/50"
