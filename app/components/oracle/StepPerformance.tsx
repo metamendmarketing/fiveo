@@ -65,11 +65,11 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-start pt-6 lg:pt-10">
       <div className="w-full max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
+        <div className="text-center mb-12 lg:mb-16">
+          <h2 className="text-2xl lg:text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
             The <span className="text-[#00AEEF]">Numbers</span>
           </h2>
           <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold drop-shadow-sm">
