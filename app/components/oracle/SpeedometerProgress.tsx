@@ -197,21 +197,29 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
 
           {/* Tapered Needle */}
-          <motion.g
-            animate={{ rotate: rotation }}
-            style={{ originX: "100px", originY: "100px" }}
+          <motion.path 
+            d="M -3 0 L 0 -75 L 3 0 Z" 
+            fill={progress > 95 ? "#ef4444" : "#fff"}
+            initial={false}
+            animate={{ 
+              rotate: rotation,
+              translateX: 100,
+              translateY: 100
+            }}
+            style={{ 
+              originX: 0, 
+              originY: 0,
+              filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))"
+            }}
             transition={{ type: "spring", stiffness: 45, damping: 12 }}
-          >
-            {/* Needle Body */}
-            <path 
-              d="M 98 100 L 100 25 L 102 100 Z" 
-              fill={progress > 95 ? "#ef4444" : "#fff"}
-              style={{ filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
-            />
-            {/* Needle Pin Center */}
-            <circle cx="100" cy="100" r="4" fill="#666" />
-            <circle cx="100" cy="100" r="2" fill="#999" />
-          </motion.g>
+          />
+
+          {/* Needle Pin Center (Above Needle) */}
+          <circle cx="100" cy="100" r="10" fill="#333" />
+          <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
+          <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
+          <circle cx="100" cy="100" r="4" fill="#666" />
+          <circle cx="100" cy="100" r="2" fill="#999" />
         </svg>
 
         {/* Shake Container */}
