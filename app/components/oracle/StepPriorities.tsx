@@ -45,7 +45,7 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="flex flex-col gap-[10px]">
           {PRIORITY_OPTIONS.map((p) => {
             const rank = profile.priorities.indexOf(p) + 1;
             const isActive = rank > 0;
