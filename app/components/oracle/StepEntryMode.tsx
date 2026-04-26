@@ -61,7 +61,7 @@ export function StepEntryMode({
           How do you want to dial in your injectors?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-4 max-w-5xl mx-auto px-1 md:px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-1.5 md:gap-4 max-w-5xl mx-auto px-1 md:px-2">
           {PATHS.map((p) => (
             <button
               key={p.mode}

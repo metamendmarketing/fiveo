@@ -239,7 +239,7 @@ export default function OracleWizard() {
 
       {/* Main step container - Responsive Cinematic Window */}
       <div className={`relative w-full max-w-7xl md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto 
-        ${currentStep === 'results' ? 'min-h-[90dvh]' : 'min-h-0 md:aspect-video'}`}>
+        ${currentStep === 'results' ? 'min-h-[100dvh] md:min-h-[90dvh]' : 'h-[100dvh] md:h-auto md:aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
