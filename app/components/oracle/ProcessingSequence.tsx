@@ -68,30 +68,26 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           .find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Pacing Logic
-        let delay = 50;
-        
-        if (i < 20) {
-          // Phase 1: Initial Spin-up (Fast)
-          delay = 25;
-        } else if (i >= 20 && i < 80) {
-          // Phase 2: Deep Analysis (Slow & Methodical)
-          // Adjust based on API readiness to keep it feeling alive
-          delay = apiReady ? 90 : 150 + Math.random() * 150;
+        let delay = 30; // default
+
+        // Phase 2: Deep Analysis (Slow & Methodical)
+        if (i >= 20 && i < 80) {
+          // If we hit 60% and API isn't ready, dwell here (the slow part)
+          if (i === 60) {
+            if (!apiReady) {
+              setStatusText("Synthesizing complex flow maps...");
+              while (!apiReady) {
+                await new Promise((r) => setTimeout(r, 200));
+              }
+            }
+          }
+          delay = apiReady ? 80 : 180 + Math.random() * 150;
         } else if (i >= 80) {
-          // Phase 3: Final Sprint (Fast)
-          delay = 15;
+          // Phase 3: Final Sprint (Very Fast)
+          delay = 12;
         }
 
         await new Promise((r) => setTimeout(r, delay));
-        
-        // Safety check at 95% - if API is somehow still not ready, wait here
-        if (i === 95 && !apiReady) {
-          setStatusText("Finalizing high-flow synthesis...");
-          while (!apiReady) {
-            await new Promise((r) => setTimeout(r, 200));
-          }
-        }
       }
 
       // 4. Hit Top Speed (100%) - Instant Load

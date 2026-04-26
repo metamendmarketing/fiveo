@@ -24,7 +24,7 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
         
         {/* 1. Fire Halo Animation (Outer Glow) */}
         <AnimatePresence>
-          {progress >= 60 && (
+          {progress >= 66 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
@@ -34,18 +34,18 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
               }}
               exit={{ opacity: 0 }}
               transition={{ 
-                opacity: { duration: 0.5 },
                 scale: { repeat: Infinity, duration: 2 },
                 rotate: { repeat: Infinity, duration: 10, ease: "linear" }
               }}
               className="absolute inset-0 rounded-full"
               style={{
                 background: progress >= 95
-                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.4) 70%, rgba(255, 0, 0, 0.6) 85%, transparent 100%)" // White/Red hot
+                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.6) 72%, rgba(255, 0, 0, 0.8) 88%, transparent 100%)" 
                   : progress >= 80
-                  ? "radial-gradient(circle, transparent 65%, rgba(239, 68, 68, 0.4) 80%, transparent 100%)" // Red
-                  : "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.3) 80%, transparent 100%)", // Yellow/Orange
-                filter: "blur(8px)"
+                  ? "radial-gradient(circle, transparent 65%, rgba(239, 68, 68, 0.6) 82%, transparent 100%)" 
+                  : "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.5) 82%, transparent 100%)",
+                filter: "blur(12px)",
+                zIndex: 5
               }}
             />
           )}
@@ -53,22 +53,22 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
 
         {/* 2. Intense Flame Particles (at 100%) */}
         {progress >= 95 && (
-          <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 pointer-events-none z-20">
             {[...Array(12)].map((_, i) => (
               <motion.div
                 key={i}
                 animate={{ 
-                  scale: [1, 1.5, 0.5],
-                  opacity: [0.8, 1, 0],
-                  y: [0, -40 - Math.random() * 40],
-                  x: [0, (Math.random() - 0.5) * 40],
+                  scale: [1, 1.8, 0.4],
+                  opacity: [0.9, 1, 0],
+                  y: [0, -50 - Math.random() * 50],
+                  x: [0, (Math.random() - 0.5) * 50],
                 }}
                 transition={{ 
                   repeat: Infinity, 
-                  duration: 0.6 + Math.random() * 0.4,
-                  delay: i * 0.05
+                  duration: 0.5 + Math.random() * 0.4,
+                  delay: i * 0.04
                 }}
-                className="absolute left-1/2 top-1/2 w-4 h-4 bg-orange-500 rounded-full blur-[6px]"
+                className="absolute left-1/2 top-1/2 w-4 h-4 bg-orange-500 rounded-full blur-[5px]"
                 style={{ 
                   transform: `rotate(${i * 30}deg) translateY(-140px)`
                 }}
@@ -204,8 +204,8 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
               animate={{ rotate: rotation }}
               transition={{ type: "spring", stiffness: 45, damping: 12 }}
             >
-              {/* Force the bounding box to be centered at 0,0 */}
-              <rect x="-100" y="-100" width="200" height="200" fill="transparent" pointerEvents="none" />
+              {/* Force the bounding box to be centered at 0,0 - No artifacts */}
+              <rect x="-100" y="-100" width="200" height="200" fill="none" opacity={0} pointerEvents="none" />
               
               {/* Needle Body (relative to base at 0,0) */}
               <path 
