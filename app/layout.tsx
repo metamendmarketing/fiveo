@@ -191,9 +191,9 @@ export default function RootLayout({
         </header>
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
-        <div className="flex-grow w-full bg-[#f8f9fa] flex flex-col items-center">
-          <div className="max-w-7xl mx-auto px-0 md:px-6 lg:px-8 w-full md:my-12">
-            <div className="bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex flex-col overflow-hidden">
+        <div className="flex-grow w-full bg-[#f8f9fa] md:bg-[#f8f9fa] flex flex-col items-center">
+          <div className="max-w-none md:max-w-7xl mx-auto px-0 md:px-6 lg:px-8 w-full md:my-12">
+            <div className="bg-transparent md:bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
               <div className="hidden md:block pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100 pl-8">
