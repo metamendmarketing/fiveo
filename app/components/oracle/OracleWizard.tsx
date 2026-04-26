@@ -65,6 +65,20 @@ const stepVariants = {
  * It manages the global wizard state (BuildProfile), handles navigation logic,
  * and renders the appropriate step components.
  */
+/**
+ * OracleWizard — The entry point for the FiveO Fuel Injector Recommendation Engine.
+ * 
+ * This component manages the state machine for the multi-step diagnostic process.
+ * It coordinates vehicle selection, performance goals, and engineering preferences
+ * to build a profile that is ultimately scored by the heuristic engine and 
+ * refined by the AI Oracle.
+ * 
+ * Features:
+ * - Reducer-based state management for robust profile building.
+ * - Dynamic step sequences based on entry mode (Guide vs Specs).
+ * - Cinematic UI transitions and glassmorphic aesthetics.
+ * - Memoized handlers to prevent unnecessary re-renders across steps.
+ */
 export default function OracleWizard() {
   const [profile, dispatch] = useReducer(profileReducer, INITIAL_PROFILE);
   const [stepIndex, setStepIndex] = useState(0);
@@ -134,6 +148,17 @@ export default function OracleWizard() {
     [next]
   );
 
+  const handleRestart = useCallback(() => {
+    dispatch({ type: "RESET" });
+    setStepIndex(0);
+    setResults(null);
+    setApiData(null);
+  }, []);
+
+  const handleEditBuild = useCallback(() => {
+    setIsEditModalOpen(true);
+  }, []);
+
   /**
    * Render the current step component with injected props.
    */
@@ -170,15 +195,8 @@ export default function OracleWizard() {
             profile={profile}
             results={results || []}
             apiData={apiData}
-            onRestart={() => {
-              dispatch({ type: "RESET" });
-              setStepIndex(0);
-              setResults(null);
-              setApiData(null);
-            }}
-            onEdit={() => {
-              setIsEditModalOpen(true);
-            }}
+            onRestart={handleRestart}
+            onEdit={handleEditBuild}
           />
         );
       default:
@@ -216,7 +234,7 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Now acts as the MASTER Cinematic Window */}
-      <div className={`relative w-full rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto ${currentStep === 'results' ? 'min-h-[90vh]' : 'aspect-video'}`}>
+      <div className={`relative w-full rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto ${currentStep === 'results' ? 'min-h-[90dvh]' : 'aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"

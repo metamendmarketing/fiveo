@@ -6,7 +6,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { type BuildProfile, IMAGES } from "@/app/lib/constants";
+import { type BuildProfile } from "@/app/lib/constants";
 import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib/types";
 import { Car, Bike, Anchor, CheckCircle2, Settings2, Zap } from "lucide-react";
 

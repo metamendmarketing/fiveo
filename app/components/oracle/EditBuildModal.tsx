@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import type { BuildProfile } from "@/app/lib/constants";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Props {
   profile: BuildProfile;
@@ -10,33 +10,39 @@ interface Props {
   onSubmit: (updatedProfile: BuildProfile) => void;
 }
 
+// Helper for rendering select fields
+const SelectField = ({ label, field, value, options, onChange }: { 
+  label: string, 
+  field: keyof BuildProfile, 
+  value: string,
+  options: { label: string, value: string }[],
+  onChange: (field: keyof BuildProfile, val: string) => void
+}) => (
+  <div className="flex flex-col gap-1.5 mb-4">
+    <label className="text-[10px] font-black uppercase tracking-widest text-white/50">{label}</label>
+    <select
+      value={value}
+      onChange={(e) => onChange(field, e.target.value)}
+      className="w-full bg-white/10 border border-white/20 text-white text-sm rounded-lg px-4 py-3 appearance-none focus:outline-none focus:border-[#00AEEF] transition-colors"
+    >
+      <option value="" disabled className="text-black">Select {label}</option>
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value} className="text-black">{opt.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
 export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
   const [edited, setEdited] = useState<BuildProfile>({ ...profile });
 
-  const handleChange = (field: keyof BuildProfile, value: any) => {
+  const handleChange = (field: keyof BuildProfile, value: string) => {
     setEdited((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = () => {
     onSubmit(edited);
   };
-
-  // Helper for rendering select fields
-  const SelectField = ({ label, field, options }: { label: string, field: keyof BuildProfile, options: { label: string, value: string }[] }) => (
-    <div className="flex flex-col gap-1.5 mb-4">
-      <label className="text-[10px] font-black uppercase tracking-widest text-white/50">{label}</label>
-      <select
-        value={(edited[field] as string) || ""}
-        onChange={(e) => handleChange(field, e.target.value)}
-        className="w-full bg-white/10 border border-white/20 text-white text-sm rounded-lg px-4 py-3 appearance-none focus:outline-none focus:border-[#00AEEF] transition-colors"
-      >
-        <option value="" disabled className="text-black">Select {label}</option>
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value} className="text-black">{opt.label}</option>
-        ))}
-      </select>
-    </div>
-  );
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 sm:p-6 md:p-8">
@@ -51,7 +57,7 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-2xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-2xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90dvh]"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -84,6 +90,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Goal" 
                 field="goal" 
+                value={(edited.goal as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "replace", label: "OEM Replacement" },
                   { value: "improve", label: "Mild Improvement" },
@@ -95,6 +103,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Usage" 
                 field="usage" 
+                value={(edited.usage as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "daily", label: "Daily Driver" },
                   { value: "street", label: "Street Performance" },
@@ -106,6 +116,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Build Level" 
                 field="engineStatus" 
+                value={(edited.engineStatus as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "stock", label: "Stock" },
                   { value: "light-mods", label: "Light Mods" },
@@ -121,6 +133,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Target HP" 
                 field="hpMode" 
+                value={(edited.hpMode as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "stock", label: "Stock Power" },
                   { value: "+50", label: "+50 HP" },
@@ -133,6 +147,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Fuel Type" 
                 field="fuelType" 
+                value={(edited.fuelType as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "pump", label: "Pump Gas" },
                   { value: "e85", label: "E85 / Flex Fuel" },
@@ -144,6 +160,8 @@ export function EditBuildModal({ profile, onClose, onSubmit }: Props) {
               <SelectField 
                 label="Budget" 
                 field="budget" 
+                value={(edited.budget as string) || ""}
+                onChange={handleChange}
                 options={[
                   { value: "budget", label: "Budget-Friendly" },
                   { value: "mid", label: "Mid-Range Performance" },

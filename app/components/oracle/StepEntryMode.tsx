@@ -8,7 +8,7 @@
  */
 "use client";
 
-import { IMAGES } from "@/app/lib/constants";
+
 import { Compass, Wrench, SlidersHorizontal } from "lucide-react";
 
 const PATHS = [

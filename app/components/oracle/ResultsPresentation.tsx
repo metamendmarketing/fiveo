@@ -3,6 +3,7 @@ import { type BuildProfile, IMAGES } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
+import Image from "next/image";
 
 interface Props {
   profile: BuildProfile;
@@ -19,14 +20,30 @@ interface Props {
  * a grid of alternative matches. Includes an interactive modal for
  * viewing the AI-generated technical narrative and engineering specs.
  */
-export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Props) {
+/**
+ * ResultsPresentation Component
+ * 
+ * Final cinematic display for the Oracle recommendation engine.
+ * 
+ * Features:
+ * - Featured "Primary Match" spotlighting the top-scored injector.
+ * - Alternative Candidates grid for lower-scored but compatible matches.
+ * - Glassmorphic design language with backdrop blurs and subtle gradients.
+ * - Deep Dive Modal for AI-generated engineering analysis and persona-based consultation.
+ * - Optimized image delivery using next/image with intelligent resizing.
+ */
+export const ResultsPresentation = React.memo(function ResultsPresentation({ 
+  results, 
+  apiData, 
+  onRestart, 
+  onEdit 
+}: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
 
-  // Handle empty state
   if (!results || results.length === 0) {
     return (
       <div 
-      className="relative min-h-[60vh] px-6 py-20 flex items-center justify-center overflow-hidden"
+      className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url(${IMAGES.carbonFiber})`,
         backgroundSize: "cover",
@@ -115,12 +132,13 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
               </div>
 
               <div className="md:flex items-stretch min-h-[340px]">
-                {/* Product Image */}
                 <div className="md:w-2/5 bg-white/5 flex items-center justify-center p-10 md:p-14 border-r border-white/10 relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
-                  <img 
+                  <Image 
                     src={topPick.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                     alt={topPick.product.name}
-                    className="max-w-full max-h-full object-contain drop-shadow-xl"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    className="object-contain drop-shadow-xl p-8"
                   />
                 </div>
                 
@@ -194,10 +212,12 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
                   className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden flex flex-col group shadow-lg transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-white/40 cursor-pointer"
                 >
                   <div className="h-52 bg-white/5 flex items-center justify-center p-6 border-b border-white/10 group-hover:bg-white/10 transition-colors relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <img 
+                    <Image 
                       src={result.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                       alt={result.product.name}
-                      className="max-w-full max-h-full object-contain drop-shadow-md"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain drop-shadow-md p-4"
                     />
                   </div>
 
@@ -264,7 +284,7 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[90dvh]"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -295,10 +315,12 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
                    <div className="w-full md:w-1/3 shrink-0">
                       <div className="bg-white/5 border border-white/10 rounded-xl p-8 aspect-square flex items-center justify-center shadow-inner relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/10 to-transparent" />
-                        <img 
+                        <Image 
                           src={selectedResult.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                           alt={selectedResult.product.name}
-                          className="w-full h-full object-contain relative z-10"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-contain relative z-10 p-6 drop-shadow-lg"
                         />
                       </div>
                    </div>
@@ -400,4 +422,4 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
       </AnimatePresence>
     </div>
   );
-}
+});

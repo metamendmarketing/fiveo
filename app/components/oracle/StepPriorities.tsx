@@ -6,7 +6,7 @@
  */
 "use client";
 
-import { type BuildProfile, IMAGES, PRIORITY_OPTIONS } from "@/app/lib/constants";
+import { type BuildProfile, PRIORITY_OPTIONS } from "@/app/lib/constants";
 
 interface Props {
   profile: BuildProfile;

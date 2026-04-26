@@ -6,7 +6,7 @@
  */
 "use client";
 
-import { type BuildProfile, IMAGES } from "@/app/lib/constants";
+import { type BuildProfile } from "@/app/lib/constants";
 import { Wrench, Gauge, Zap } from "lucide-react";
 
 interface Props {
