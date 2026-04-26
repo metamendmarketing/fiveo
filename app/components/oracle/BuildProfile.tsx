@@ -24,6 +24,20 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
         : null,
     },
     {
+      label: "Target CC",
+      value: profile.desiredSizeCC ? `${profile.desiredSizeCC} CC` : null,
+    },
+    {
+      label: "Base PSI",
+      value: profile.fuelPressurePSI ? `${profile.fuelPressurePSI} PSI` : null,
+    },
+    {
+      label: "Headroom",
+      value: profile.headroomPref
+        ? { conservative: "Conservative", balanced: "Balanced", aggressive: "Aggressive" }[profile.headroomPref]
+        : null,
+    },
+    {
       label: "Goal",
       value: profile.goal
         ? { replace: "Replace Worn", improve: "Improve Performance", "max-power": "Max Power", "fix-issues": "Fix Issues" }[profile.goal]
@@ -58,6 +72,10 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
       value: profile.budget
         ? { budget: "Budget", mid: "Mid-Range", premium: "Premium" }[profile.budget]
         : null,
+    },
+    {
+      label: "Connector",
+      value: profile.connectorType,
     },
   ];
 
