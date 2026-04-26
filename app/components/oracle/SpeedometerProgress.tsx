@@ -196,22 +196,24 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
           <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
 
-          {/* Tapered Needle - Absolute Mathematical Fix */}
+          {/* Tapered Needle - Bounding Box Anchor Hack */}
           <g transform="translate(100, 100)">
             <motion.g
               animate={{ rotate: rotation }}
-              style={{ originX: 0, originY: 0 }}
               transition={{ type: "spring", stiffness: 45, damping: 12 }}
             >
+              {/* Force the bounding box to be centered at 0,0 */}
+              <rect x="-100" y="-100" width="200" height="200" fill="transparent" pointerEvents="none" />
+              
               {/* Needle Body (relative to base at 0,0) */}
               <path 
-                d="M -3 2 L 0 -75 L 3 2 Z" 
+                d="M -3 3 L 0 -75 L 3 3 Z" 
                 fill={progress > 95 ? "#ef4444" : "#fff"}
                 style={{ filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
               />
               {/* Highlight */}
               <path 
-                d="M -1 0 L 0 -70 L 1 0 Z" 
+                d="M -1 0 L 0 -72 L 1 0 Z" 
                 fill="rgba(255,255,255,0.3)"
               />
             </motion.g>
