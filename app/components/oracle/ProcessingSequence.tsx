@@ -12,11 +12,13 @@ interface Props {
 /**
  * ProcessingSequence — Analysis Synthesis Animation
  * 
- * Re-imagined as a high-performance "dyno run" speedometer.
- * Features:
- * - 0 to 300 MPH progress mapping
- * - "Afterburner" phase at 99% with flame effects
- * - Digital readout and screen shake
+ * High-performance "dyno run" speedometer with "Exploding Finish".
+ * 
+ * Timing Logic:
+ * - 0-20%: Spin-up (Fast)
+ * - 20-80%: Computation (Slow & jittery)
+ * - 80-100%: Redline Sprint (Extremely Fast/Chaotic)
+ * - NO STALLS: Dials down to a crawl if API is slow, but keeps moving.
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -41,66 +43,57 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
         apiData = { 
-          results: [], 
-          selectionStrategy: "", 
-          vehicleLabel: "your vehicle", 
-          calculatedCC: 0, 
-          fitmentMatches: 0, 
-          makeFitmentMatches: 0, 
-          candidatePoolSize: 0,
-          error: "API call failed" 
+          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
+          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, 
+          candidatePoolSize: 0, error: "API call failed" 
         };
         apiReady = true;
       }
     })();
 
-    // 2. Execute progress simulation with variable pacing
+    // 2. Execute progress simulation
     const runProgress = async () => {
-      // Sweep from 0 to 100
       for (let i = 0; i <= 100; i++) {
         if (hasCompletedRef.current) return;
 
         setProgress(i);
 
         // Map progress thresholds to status messages
-        const msg = [...PROCESSING_MESSAGES]
-          .reverse()
-          .find((m) => i >= m.threshold);
+        const msg = [...PROCESSING_MESSAGES].reverse().find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        let delay = 30; // default
+        let delay = 30;
 
-        // Phase 2: Deep Analysis (Slow & Methodical)
-        if (i >= 20 && i < 80) {
-          // If we hit 60% and API isn't ready, dwell here (the slow part)
-          if (i === 60) {
-            if (!apiReady) {
-              setStatusText("Synthesizing complex flow maps...");
-              while (!apiReady) {
-                await new Promise((r) => setTimeout(r, 200));
-              }
-            }
+        if (i < 20) {
+          delay = 25;
+        } else if (i >= 20 && i < 85) {
+          // Phase 2: The Crunch
+          // If API isn't ready as we approach the sprint, crawl but don't stop
+          if (i > 70 && !apiReady) {
+            delay = 600 + Math.random() * 400; // Snail's pace
+          } else {
+            delay = apiReady ? 60 : 120 + Math.random() * 100;
           }
-          delay = apiReady ? 80 : 180 + Math.random() * 150;
-        } else if (i >= 80) {
-          // Phase 3: Final Sprint (Very Fast)
-          delay = 12;
+        } else {
+          // Phase 3: Redline Sprint (85-100)
+          // Only sprint if API is ready. If not, wait at 85.
+          if (!apiReady) {
+            i = 84; // Hold at 84
+            delay = 500;
+          } else {
+            delay = 10; // BLISTERING FAST
+          }
         }
 
         await new Promise((r) => setTimeout(r, delay));
       }
 
-      // 4. Hit Top Speed (100%) - Instant Load
+      // 3. Explosion Hit (100%) - Instant Load
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
         onComplete(apiData || { 
-          results: [], 
-          selectionStrategy: "", 
-          vehicleLabel: "your vehicle", 
-          calculatedCC: 0, 
-          fitmentMatches: 0, 
-          makeFitmentMatches: 0, 
-          candidatePoolSize: 0 
+          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
+          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
         });
       }
     };
@@ -114,11 +107,9 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-6">
-      {/* Cinematic Gauge Area */}
       <SpeedometerProgress progress={progress} />
 
-      {/* Dynamic Status Label */}
-      <div className="mt-8 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+      <div className="mt-8 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full min-w-[280px]">
         <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.25em] min-h-[1.5em] text-center">
           {statusText}
         </p>
