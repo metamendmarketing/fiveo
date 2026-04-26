@@ -32,21 +32,21 @@ const STATUS_OPTIONS = [
     label: "Completely Stock",
     desc: "Factory original — no modifications",
     accent: "#22c55e",
-    icon: <CheckCircle2 className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <CheckCircle2 className="w-5 h-5 stroke-[2px]" />,
   },
   {
     value: "light-mods" as const,
     label: "Light Mods",
     desc: "Bolt-ons: intake, exhaust, tune",
     accent: "#f59e0b",
-    icon: <Settings2 className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <Settings2 className="w-5 h-5 stroke-[2px]" />,
   },
   {
     value: "heavily-modified" as const,
     label: "Heavily Modified",
     desc: "Built engine, turbo/blower, standalone",
     accent: "#ef4444",
-    icon: <Zap className="w-8 h-8 stroke-[1.5px]" />,
+    icon: <Zap className="w-5 h-5 stroke-[2px]" />,
   },
 ];
 
@@ -289,7 +289,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={status.value}
                   onClick={() => onUpdate({ engineStatus: status.value })}
-                  className={`relative flex flex-row md:flex-col items-center md:items-start p-4 md:p-6 rounded-2xl border transition-all text-left group overflow-hidden ${
+                  className={`relative flex flex-row items-center p-3 md:p-4 rounded-2xl border transition-all text-left group overflow-hidden ${
                     profile.engineStatus === status.value
                       ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)]"
                       : "border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/30 hover:bg-white/10"
@@ -299,7 +299,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     <div className="absolute inset-0 bg-gradient-to-r from-[#00AEEF]/20 to-transparent" />
                   )}
                   
-                  <div className="relative z-10 w-10 h-10 md:w-14 md:h-14 rounded-full mr-4 md:mr-0 md:mb-4 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative z-10 w-8 h-8 rounded-full mr-3 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.engineStatus === status.value ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
                     
@@ -309,10 +309,10 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   </div>
                   
                   <div className="relative z-10">
-                    <span className={`block font-black uppercase tracking-widest text-[11px] md:text-sm mb-0.5 ${profile.engineStatus === status.value ? "text-white" : "text-white/80 group-hover:text-white"}`}>
+                    <span className={`block font-black uppercase tracking-widest text-[10px] md:text-xs mb-0.5 ${profile.engineStatus === status.value ? "text-white" : "text-white/80 group-hover:text-white"}`}>
                       {status.label}
                     </span>
-                    <span className="hidden md:block text-[10px] font-medium text-white/50 leading-relaxed">{status.desc}</span>
+                    <span className="hidden lg:block text-[9px] font-medium text-white/50 leading-tight">{status.desc}</span>
                   </div>
                 </button>
               ))}
