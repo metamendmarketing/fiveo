@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     let selectionStrategy = "";
 
     try {
-      const model = getVertexModel("gemini-2.5-flash");
+      const model = getVertexModel("gemini-1.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
       const candidateData = candidatePool.map(c => ({
