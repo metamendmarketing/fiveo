@@ -132,13 +132,14 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
               </div>
 
               <div className="md:flex items-stretch min-h-[340px]">
-                <div className="md:w-2/5 bg-white/5 flex items-center justify-center p-10 md:p-14 border-r border-white/10 relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
+                <div className="h-64 md:h-auto md:w-2/5 bg-white/5 flex items-center justify-center p-6 md:p-14 border-b md:border-b-0 md:border-r border-white/10 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
                   <Image 
                     src={topPick.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                     alt={topPick.product.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 40vw"
-                    className="object-contain drop-shadow-xl p-8"
+                    className="object-contain drop-shadow-2xl p-6 md:p-8"
                   />
                 </div>
                 
