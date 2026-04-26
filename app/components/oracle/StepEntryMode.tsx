@@ -84,6 +84,8 @@ export function StepEntryMode({
             </button>
           ))}
         </div>
+        {/* Temporary deployment marker — remove after verification */}
+        <p className="text-white/20 text-[8px] mt-4 font-mono">v2.1-viewport</p>
       </div>
     </div>
   );

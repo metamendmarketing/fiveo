@@ -237,9 +237,12 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container — min-h-dvh fills viewport on mobile, aspect-video on desktop */}
-      <div className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col
-        ${currentStep === 'results' ? 'min-h-dvh' : 'min-h-dvh md:min-h-0 md:aspect-video'}`}>
+      {/* Main step container — inline min-height ensures viewport fill on all devices */}
+      <div
+        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col
+          ${currentStep === 'results' ? '' : 'md:aspect-video'}`}
+        style={{ minHeight: '100dvh' }}
+      >
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
