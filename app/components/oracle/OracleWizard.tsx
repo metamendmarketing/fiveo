@@ -266,7 +266,7 @@ export default function OracleWizard() {
       {/* Main step container — expands to fit content on phones, cinematic on lg+ */}
       <div
         ref={wizardRef}
-        className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] 
+        className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col 
           ${currentStep === 'results' ? '' : 'min-h-[500px] lg:min-h-[700px]'}`}
       >
         {/* Dynamic Background Layer */}
