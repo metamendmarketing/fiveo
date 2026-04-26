@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { BuildProfile } from "@/app/lib/constants";
 import { PROCESSING_MESSAGES } from "@/app/lib/constants";
 import { OracleApiResponse } from "@/app/lib/types";
+import { SpeedometerProgress } from "./SpeedometerProgress";
 
 interface Props {
   profile: BuildProfile;
@@ -11,9 +12,11 @@ interface Props {
 /**
  * ProcessingSequence — Analysis Synthesis Animation
  * 
- * This component performs the background API call to the Oracle engine
- * while displaying a paced "scanning" animation to manage user expectations.
- * The progress bar accelerates once the actual data is received.
+ * Re-imagined as a high-performance "dyno run" speedometer.
+ * Features:
+ * - 0 to 300 MPH progress mapping
+ * - "Afterburner" phase at 99% with flame effects
+ * - Digital readout and screen shake
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -53,6 +56,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
 
     // 2. Execute progress simulation
     const runProgress = async () => {
+      // Accelerate from 0 to 99
       for (let i = 0; i <= 99; i++) {
         if (hasCompletedRef.current) return;
 
@@ -64,29 +68,32 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           .find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Intelligent pacing: slow until API is ready, then sprint to finish
-        let delay = 60;
-        if (i >= 15 && i < 85) {
-          delay = apiReady ? 20 : 150 + Math.random() * 300;
-        } else if (i >= 85) {
-          delay = apiReady ? 15 : Math.max(80, 300 - (i - 85) * 15);
+        // Intelligent pacing
+        let delay = 50;
+        if (i >= 15 && i < 90) {
+          delay = apiReady ? 25 : 120 + Math.random() * 200;
+        } else if (i >= 90) {
+          delay = apiReady ? 30 : 200;
         }
 
         await new Promise((r) => setTimeout(r, delay));
       }
 
-      // Safeguard: Ensure API data has arrived before transitioning
-      if (!apiReady) {
+      // 3. Afterburner Phase (Stay at 99% for flames)
+      if (apiReady) {
+        setStatusText("Engaging final optimization...");
+        await new Promise((r) => setTimeout(r, 1800));
+      } else {
         setStatusText("Securing final match data...");
         while (!apiReady) {
           await new Promise((r) => setTimeout(r, 200));
         }
       }
 
-      // Transition to results
+      // 4. Hit Top Speed (100%)
       setProgress(100);
-      setStatusText("Analysis Complete!");
-      await new Promise((r) => setTimeout(r, 800));
+      setStatusText("Maximum Velocity Reached!");
+      await new Promise((r) => setTimeout(r, 1000));
 
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
@@ -110,45 +117,16 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
   }, [profile, onComplete]); 
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center py-12">
-      {/* Visual Radar Rings */}
-      <div className="relative flex items-center justify-center mb-12">
-        <div className="oracle-radar-ring-outer absolute" />
-        <div className="oracle-radar-ring flex items-center justify-center">
-          <svg
-            className="w-10 h-10 text-[#00AEEF]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-        </div>
-      </div>
-
-      {/* Progress Readout */}
-      <div className="text-[32px] font-black italic text-[#00AEEF] font-[var(--font-open-sans-condensed)] mb-6">
-        {progress}
-        <span className="text-lg text-white/40 ml-1">%</span>
-      </div>
-
-      {/* Progress Bar Container */}
-      <div className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden mb-6">
-        <div
-          className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden-fill"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+    <div className="w-full h-full flex flex-col items-center justify-center py-6">
+      {/* Cinematic Gauge Area */}
+      <SpeedometerProgress progress={progress} />
 
       {/* Dynamic Status Label */}
-      <p className="text-sm text-white/60 font-medium tracking-wide min-h-[1.5em] text-center">
-        {statusText}
-      </p>
+      <div className="mt-8 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+        <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.25em] min-h-[1.5em] text-center">
+          {statusText}
+        </p>
+      </div>
     </div>
   );
 }
