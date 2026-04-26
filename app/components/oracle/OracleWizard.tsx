@@ -227,7 +227,7 @@ export default function OracleWizard() {
   };
 
   return (
-    <div className="w-full flex-1 min-h-0 flex flex-col">
+    <div className="w-full">
       {/* Progress tracking UI */}
       {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -237,11 +237,10 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container — inline min-height ensures viewport fill on all devices */}
+      {/* Main step container — content-sized on mobile, cinematic on desktop */}
       <div
-        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col
+        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden
           ${currentStep === 'results' ? '' : 'md:aspect-video'}`}
-        style={{ minHeight: '100dvh' }}
       >
         {/* Dynamic Background Layer */}
         <div 
@@ -255,10 +254,10 @@ export default function OracleWizard() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
         
-        {/* Content Container — stretches to fill wizard, scrolls only if needed */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-6 lg:p-16 gap-4 lg:gap-12 flex-1 overflow-y-auto ${currentStep === 'results' ? 'items-start' : ''}`}>
+        {/* Content Container */}
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : 'flex flex-col lg:flex-row gap-4 lg:gap-12'}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : ''} w-full`}>
+          <div className={`flex-1 min-w-0 ${currentStep === 'results' ? '' : ''} w-full`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -267,7 +266,7 @@ export default function OracleWizard() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="w-full flex-1 flex flex-col"
+                className="w-full"
               >
                 {renderStep()}
               </motion.div>
