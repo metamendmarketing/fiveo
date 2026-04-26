@@ -42,14 +42,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
   if (!results || results.length === 0) {
     return (
-      <div 
-      className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden"
-      style={{
-        backgroundImage: `url(${IMAGES.carbonFiber})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+      <div className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         
