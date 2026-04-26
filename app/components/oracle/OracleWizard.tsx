@@ -238,11 +238,11 @@ export default function OracleWizard() {
       )}
 
       {/* Main step container - Responsive Cinematic Window */}
-      <div className={`relative w-full max-w-7xl rounded-2xl md:rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto 
+      <div className={`relative w-full max-w-7xl md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto 
         ${currentStep === 'results' ? 'min-h-[90dvh]' : 'min-h-0 md:aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
-          className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
+          className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
             backgroundSize: "cover", 
@@ -250,7 +250,7 @@ export default function OracleWizard() {
             backgroundRepeat: "no-repeat",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
         
         {/* Content Container - Fixed background, scrolling content on mobile */}
         <div className={`relative z-10 flex flex-col lg:flex-row w-full p-2.5 sm:p-8 lg:p-16 gap-3 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-start lg:items-center justify-start lg:justify-center min-h-full'}`}>

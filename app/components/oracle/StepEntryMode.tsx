@@ -57,16 +57,16 @@ export function StepEntryMode({
           The ultimate technical sizing assistant for high-performance builds
         </p>
 
-        <h2 className="text-white text-[10px] md:text-lg font-bold mb-3 md:mb-8 drop-shadow-md uppercase tracking-wider">
+        <h2 className="text-white text-[10px] md:text-lg font-bold mb-2 md:mb-8 drop-shadow-md uppercase tracking-wider">
           How do you want to dial in your injectors?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-4 max-w-5xl mx-auto px-1 md:px-2">
           {PATHS.map((p) => (
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-2.5 md:p-8 text-left md:text-center flex flex-row md:flex-col items-center gap-3 md:gap-5"
+              className="bg-white/95 backdrop-blur-md rounded-lg md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-2 md:p-8 text-left md:text-center flex flex-row md:flex-col items-center gap-2 md:gap-5"
             >
               <div className="w-8 h-8 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />

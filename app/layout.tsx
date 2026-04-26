@@ -192,11 +192,11 @@ export default function RootLayout({
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
         <div className="flex-grow w-full bg-[#f8f9fa] flex flex-col items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-6 sm:my-12">
-            <div className="bg-white rounded-lg shadow-sm ring-1 ring-black/5 w-full flex flex-col overflow-hidden">
+          <div className="max-w-7xl mx-auto px-0 md:px-6 lg:px-8 w-full md:my-12">
+            <div className="bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
-              <div className="pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100 pl-8">
+              <div className="hidden md:block pt-6 pb-4 px-6 sm:px-10 border-b border-gray-100 pl-8">
                 <nav className="flex items-center gap-2.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] text-[#a8a8a8] pl-[10px]">
                   <Link href="/" className="inline-flex items-center leading-none hover:text-black transition-colors">Home</Link>
                   <svg className="w-3 h-3 text-gray-300 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@ export default function RootLayout({
               </div>
 
               {/* Main Content Wrapper */}
-              <main className="flex-grow w-full pb-10" id="main-content" role="main">
+              <main className="flex-grow w-full pb-0 md:pb-10" id="main-content" role="main">
                 {children}
               </main>
               
