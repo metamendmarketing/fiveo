@@ -24,7 +24,7 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
         
         {/* 1. Fire Halo Animation (Outer Glow) */}
         <AnimatePresence>
-          {showHalo && (
+          {progress >= 60 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
@@ -40,9 +40,11 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
               }}
               className="absolute inset-0 rounded-full"
               style={{
-                background: showFullFlames 
-                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.4) 70%, rgba(245, 158, 11, 0.6) 85%, transparent 100%)"
-                  : "radial-gradient(circle, transparent 65%, rgba(239, 68, 68, 0.2) 80%, transparent 100%)",
+                background: progress >= 95
+                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.4) 70%, rgba(255, 0, 0, 0.6) 85%, transparent 100%)" // White/Red hot
+                  : progress >= 80
+                  ? "radial-gradient(circle, transparent 65%, rgba(239, 68, 68, 0.4) 80%, transparent 100%)" // Red
+                  : "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.3) 80%, transparent 100%)", // Yellow/Orange
                 filter: "blur(8px)"
               }}
             />
@@ -50,7 +52,7 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
         </AnimatePresence>
 
         {/* 2. Intense Flame Particles (at 100%) */}
-        {showFullFlames && (
+        {progress >= 95 && (
           <div className="absolute inset-0 pointer-events-none">
             {[...Array(12)].map((_, i) => (
               <motion.div

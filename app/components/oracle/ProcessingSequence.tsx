@@ -54,10 +54,10 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       }
     })();
 
-    // 2. Execute progress simulation
+    // 2. Execute progress simulation with variable pacing
     const runProgress = async () => {
-      // Accelerate from 0 to 99
-      for (let i = 0; i <= 99; i++) {
+      // Sweep from 0 to 100
+      for (let i = 0; i <= 100; i++) {
         if (hasCompletedRef.current) return;
 
         setProgress(i);
@@ -68,33 +68,33 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           .find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Intelligent pacing
+        // Pacing Logic
         let delay = 50;
-        if (i >= 15 && i < 90) {
-          delay = apiReady ? 25 : 120 + Math.random() * 200;
-        } else if (i >= 90) {
-          delay = apiReady ? 30 : 200;
+        
+        if (i < 20) {
+          // Phase 1: Initial Spin-up (Fast)
+          delay = 25;
+        } else if (i >= 20 && i < 80) {
+          // Phase 2: Deep Analysis (Slow & Methodical)
+          // Adjust based on API readiness to keep it feeling alive
+          delay = apiReady ? 90 : 150 + Math.random() * 150;
+        } else if (i >= 80) {
+          // Phase 3: Final Sprint (Fast)
+          delay = 15;
         }
 
         await new Promise((r) => setTimeout(r, delay));
-      }
-
-      // 3. Afterburner Phase (Stay at 99% for flames)
-      if (apiReady) {
-        setStatusText("Engaging final optimization...");
-        await new Promise((r) => setTimeout(r, 1800));
-      } else {
-        setStatusText("Securing final match data...");
-        while (!apiReady) {
-          await new Promise((r) => setTimeout(r, 200));
+        
+        // Safety check at 95% - if API is somehow still not ready, wait here
+        if (i === 95 && !apiReady) {
+          setStatusText("Finalizing high-flow synthesis...");
+          while (!apiReady) {
+            await new Promise((r) => setTimeout(r, 200));
+          }
         }
       }
 
-      // 4. Hit Top Speed (100%)
-      setProgress(100);
-      setStatusText("Maximum Velocity Reached!");
-      await new Promise((r) => setTimeout(r, 1000));
-
+      // 4. Hit Top Speed (100%) - Instant Load
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
         onComplete(apiData || { 
