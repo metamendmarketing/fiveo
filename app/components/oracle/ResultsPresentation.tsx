@@ -93,7 +93,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
-              {results.length} Precision-Matched Component{results.length !== 1 ? "s" : ""}
+              {results.length} Precision-Matched Injector{results.length !== 1 ? "s" : ""}
             </p>
             {apiData && apiData.fitmentMatches > 0 && (
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
