@@ -69,7 +69,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-center">
               Headroom Preference
             </label>
-            <div className="grid grid-cols-1 gap-[10px]">
+            <div className="grid grid-cols-3 gap-[10px]">
               {([
                 { value: "conservative", label: "Conservative", desc: "More overhead" },
                 { value: "balanced", label: "Balanced", desc: "Standard 80% DC" },
@@ -78,14 +78,14 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
                 <button
                   key={opt.value}
                   onClick={() => onUpdate({ headroomPref: opt.value })}
-                  className={`flex items-center justify-between py-4 px-5 bg-white/5 border rounded text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 ${
+                  className={`flex flex-col items-center text-center py-4 px-4 bg-white/5 border rounded text-[13px] font-semibold uppercase tracking-[0.05em] cursor-pointer transition-all duration-200 ${
                     profile.headroomPref === opt.value 
                       ? "border-[#00AEEF] text-white shadow-[0_0_15px_rgba(0,174,239,0.3)]" 
                       : "border-white/10 text-white/70 hover:border-[#00AEEF]/30 hover:text-white"
                   }`}
                 >
                   <span className="font-black text-xs">{opt.label}</span>
-                  <span className="text-[10px] text-white/40 font-medium">{opt.desc}</span>
+                  <span className="text-[10px] text-white/40 mt-1">{opt.desc}</span>
                 </button>
               ))}
             </div>
