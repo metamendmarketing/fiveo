@@ -48,36 +48,36 @@ export function StepEntryMode({
       {/* Content */}
       <div className="w-full max-w-4xl text-center mx-auto">
         <h1
-          className="hidden md:block font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
-          style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
+          className="font-black uppercase italic text-white mb-1 md:mb-2 tracking-tighter drop-shadow-md"
+          style={{ fontSize: "clamp(1.2rem, 4vw, 3.5rem)" }}
         >
           Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
         </h1>
-        <p className="hidden md:block text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-6 md:mb-16 drop-shadow-sm">
+        <p className="text-white/60 text-[8px] md:text-[10px] uppercase tracking-[0.25em] font-bold mb-4 md:mb-16 drop-shadow-sm">
           The ultimate technical sizing assistant for high-performance builds
         </p>
 
-        <h2 className="text-white text-xs md:text-lg font-bold mb-2 md:mb-8 drop-shadow-md uppercase tracking-wider">
+        <h2 className="text-white text-[10px] md:text-lg font-bold mb-3 md:mb-8 drop-shadow-md uppercase tracking-wider">
           How do you want to dial in your injectors?
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto px-2">
           {PATHS.map((p) => (
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-3 md:p-8 text-left md:text-center flex flex-row md:flex-col items-center gap-3 md:gap-5"
+              className="bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-2.5 md:p-8 text-left md:text-center flex flex-row md:flex-col items-center gap-3 md:gap-5"
             >
-              <div className="w-10 h-10 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
+              <div className="w-8 h-8 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 {p.icon}
               </div>
-              <div>
-                <h3 className="text-gray-900 font-black uppercase italic text-sm md:text-lg mb-1 md:mb-2">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-gray-900 font-black uppercase italic text-[11px] md:text-lg mb-0.5 md:mb-2 truncate">
                   {p.title}
                 </h3>
-                <p className="text-gray-500 text-[10px] md:text-[11px] font-medium leading-tight md:leading-relaxed">
+                <p className="text-gray-500 text-[9px] md:text-[11px] font-medium leading-[1.1] md:leading-relaxed line-clamp-2 md:line-clamp-none">
                   {p.tagline}
                 </p>
               </div>
