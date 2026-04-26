@@ -89,11 +89,22 @@ export default function OracleWizard() {
 
   /** 
    * Derive the current step sequence based on the selected entry mode 
+   * and vehicle category (Car vs Marine vs Motorcycle).
    */
   const steps = useMemo(() => {
     if (!profile.entryMode) return ["entry"] as WizardStep[];
+    
+    // specialized flows for non-car categories
+    if (profile.vehicleType === "marine") {
+      return ["entry", "vehicle-details", "performance", "processing", "results"] as WizardStep[];
+    }
+    
+    if (profile.vehicleType === "motorcycle") {
+      return ["entry", "vehicle-details", "goal", "performance", "processing", "results"] as WizardStep[];
+    }
+
     return STEP_SEQUENCES[profile.entryMode] || STEP_SEQUENCES.guide;
-  }, [profile.entryMode]);
+  }, [profile.entryMode, profile.vehicleType]);
 
   const currentStep = steps[stepIndex] || "entry";
 
@@ -235,6 +246,14 @@ export default function OracleWizard() {
   }
 
   const getStepBackground = (step: WizardStep) => {
+    // Category-specific overrides
+    if (profile.vehicleType === "marine") {
+      if (step === "performance" || step === "goal") return IMAGES.marinePerformance;
+    }
+    if (profile.vehicleType === "motorcycle") {
+      if (step === "performance" || step === "goal") return IMAGES.motorcyclePerformance;
+    }
+
     switch (step) {
       case "entry": return IMAGES.engineBayHero;
       case "vehicle-type":
@@ -248,7 +267,7 @@ export default function OracleWizard() {
       case "expert-specs": return IMAGES.diagnosticBay;
       case "processing": return IMAGES.engineBayHero;
       case "results": return IMAGES.darkWeave;
-      default: return IMAGES.diagnosticBay;
+      default: return IMAGES.carbonFiber;
     }
   };
 

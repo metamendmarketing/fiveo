@@ -227,6 +227,8 @@ export const IMAGES = {
   dynoFlames: `${BASE}/dyno-flames.png`,
   carbonFiber: `${BASE}/carbon-fiber.png`,
   darkWeave: `${BASE}/dark-weave.png`,
+  marinePerformance: `${BASE}/marine-performance.png`,
+  motorcyclePerformance: `${BASE}/motorcycle-performance.png`,
   fuelE85: `${BASE}/fuel-e85.png`,
   raceFuel: `${BASE}/race-fuel.png`,
   pumpGas: `${BASE}/pump-gas.png`,
