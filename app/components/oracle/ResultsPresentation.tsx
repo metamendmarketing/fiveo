@@ -42,7 +42,14 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
   if (!results || results.length === 0) {
     return (
-      <div className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden">
+      <div 
+      className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: `url(${IMAGES.carbonFiber})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90" />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         
@@ -119,7 +126,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
               className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,174,239,0.15)] shadow-xl relative"
             >
               <div className="absolute top-0 right-0 p-6 z-20">
-                <div className="bg-[#00AEEF] text-white px-5 py-1.5 text-[9px] font-black uppercase italic tracking-widest rounded-sm shadow-lg">
+                <div className="bg-gradient-to-br from-[#00AEEF] to-[#0088cc] text-white text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
                   ★ Primary Match
                 </div>
               </div>

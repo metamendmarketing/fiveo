@@ -129,17 +129,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
               {(["car", "motorcycle", "marine"] as const).map((type) => (
                 <button
                   key={type}
-                  onClick={() => onUpdate({ 
-                    vehicleType: type,
-                    make: null,
-                    makeId: null,
-                    model: null,
-                    modelId: null,
-                    year: null,
-                    engineCode: null,
-                    engineLabel: null,
-                    engineStatus: null
-                  })}
+                  onClick={() => onUpdate({ vehicleType: type })}
                   className={`relative p-3 md:p-6 rounded-2xl border-2 text-center transition-all group overflow-hidden ${
                     profile.vehicleType === type
                       ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
