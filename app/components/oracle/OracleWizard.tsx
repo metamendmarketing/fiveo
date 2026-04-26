@@ -282,9 +282,9 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] lg:rounded-[2.5rem]" />
         
         {/* Content Container — centered within the cinematic frame */}
-        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-start pt-8 lg:pt-12 gap-4 ${showSidebar ? 'lg:gap-12' : ''} min-h-full`}`}>
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center ${currentStep === 'processing' ? 'justify-center' : 'justify-start pt-8 lg:pt-12'} gap-4 ${showSidebar ? 'lg:gap-12' : ''} min-h-full`}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col items-center justify-start'}`}>
+          <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : `flex flex-col items-center ${currentStep === 'processing' ? 'justify-center' : 'justify-start'}`}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
