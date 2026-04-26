@@ -7,6 +7,14 @@
   --color-fiveo-grey: rgb(30, 30, 30);
 }
 
+:root {
+  --spacing: 0.25rem;
+}
+
+.p-5 {
+  padding: calc(var(--spacing) * 2);
+}
+
 /* ═══════════════════════════════════════════════════════
    1. CROSS-BROWSER RESET & NORMALIZATION
    ═══════════════════════════════════════════════════════ */
