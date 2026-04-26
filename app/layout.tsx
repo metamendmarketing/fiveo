@@ -91,11 +91,12 @@ export default function RootLayout({
 
         {/* ═══ 1. Modern Glassmorphic Header ═══ */}
         <header
-          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 relative z-50 shadow-2xl shadow-black/10"
+          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 relative z-50 shadow-2xl shadow-black/10 w-full"
           role="navigation"
           aria-label="Main navigation"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between pt-5 sm:pt-6 pb-2">
+          <div className="w-full flex justify-center">
+            <div className="max-w-7xl px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between pt-5 sm:pt-6 pb-2">
             
             {/* Left Block: Logo + Navigation */}
             <div className="flex items-center gap-10 xl:gap-14">
@@ -188,11 +189,12 @@ export default function RootLayout({
               <MobileNav items={[...NAV_ITEMS]} />
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
         {/* ═══ 2. Main Content & Context Rail (Boxed White Area) ═══ */}
-        <div className="flex-1 min-h-0 w-full flex flex-col items-center">
-          <div className="w-full max-w-7xl mx-auto px-0 md:px-6 lg:px-8 md:my-12 flex-1 min-h-0 flex flex-col">
+        <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center">
+          <div className="w-full max-w-7xl px-0 md:px-6 lg:px-8 md:my-12 flex-1 min-h-0 flex flex-col">
             <div className="md:bg-white md:rounded-lg md:shadow-sm md:ring-1 md:ring-black/5 w-full flex-1 min-h-0 flex flex-col overflow-hidden">
               
               {/* Standard Premium Breadcrumb Spacing */}
@@ -221,10 +223,11 @@ export default function RootLayout({
 
         {/* ═══ 4. Canonical FiveO Website Footer ═══ */}
         <footer
-          className="bg-black text-white border-t-[3px] border-[#00AEEF] pt-16 pb-8"
+          className="bg-black text-white border-t-[3px] border-[#00AEEF] pt-16 pb-8 w-full"
           role="contentinfo"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="w-full flex justify-center">
+            <div className="max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-6 mb-16">
               
               {/* Col 1: Logos */}
@@ -311,7 +314,8 @@ export default function RootLayout({
               <p>© {new Date().getFullYear()} FIVEOMOTORSPORT, INC. ALL RIGHTS RESERVED. LOS ANGELES, CALIFORNIA | SALEM, OREGON</p>
             </div>
           </div>
-        </footer>
+        </div>
+      </footer>
       </body>
     </html>
   );
