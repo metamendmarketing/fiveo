@@ -127,8 +127,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     profile.vehicleType === type
                       ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
                       : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
-                  } ${type !== "car" ? "opacity-30 cursor-not-allowed" : ""}`}
-                  disabled={type !== "car"}
+                  }`}
                 >
                   {profile.vehicleType === type && (
                     <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
