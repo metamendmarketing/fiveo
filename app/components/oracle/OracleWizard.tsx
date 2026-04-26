@@ -237,9 +237,9 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container — content-sized on mobile, cinematic on desktop */}
+      {/* Main step container — expands to fit content, never clips */}
       <div
-        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden
+        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] md:overflow-clip
           ${currentStep === 'results' ? '' : 'md:aspect-video'}`}
       >
         {/* Dynamic Background Layer */}
