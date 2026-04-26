@@ -78,7 +78,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             {section === "mods" && "Installed modifications"}
           </p>
           {/* Sub-section breadcrumb */}
-          <div className="flex items-center justify-start gap-2 mt-2">
+          <div className="flex items-center justify-start gap-1 mt-1">
             {(["hp", "fuel", "mods"] as const)
               .filter(s => s !== "mods" || profile.engineStatus !== "stock")
               .map((s, i, arr) => (

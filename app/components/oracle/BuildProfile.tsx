@@ -91,7 +91,7 @@ export function BuildProfilePanel({ profile }: { profile: BuildProfile }) {
   }
 
   return (
-    <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-6 sticky top-24">
+    <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-6">
       <div className="text-[10px] font-black uppercase tracking-widest text-[#00AEEF] mb-6 drop-shadow-sm">Your Build</div>
       <div className="space-y-5">
         {activeItems.map((item) => (
