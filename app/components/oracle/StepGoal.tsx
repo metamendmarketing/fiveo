@@ -24,10 +24,10 @@ interface Props {
 export function StepGoal({ profile, onUpdate, onNext }: Props) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
+        <div className="text-center mb-6 lg:mb-10">
+          <h2 className="text-2xl lg:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             What is the <span className="text-[#00AEEF]">Mission</span>?
           </h2>
           <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
@@ -35,8 +35,8 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
           </p>
         </div>
 
-        {/* Goal Selection Cards — stacked until lg screen */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+        {/* Goal Selection Cards — Always stacked vertically */}
+        <div className="grid grid-cols-1 gap-4">
           {GOALS.map((opt) => (
             <button
               key={opt.value}
@@ -44,7 +44,7 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
                 onUpdate({ goal: opt.value });
                 onNext();
               }}
-              className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-40 lg:h-56 ${
+              className={`relative overflow-hidden rounded-2xl border text-left group transition-all duration-300 hover:-translate-y-1 h-32 lg:h-40 ${
                 profile.goal === opt.value
                   ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)]"
                   : "border-white/20 shadow-lg hover:border-white/50"
@@ -52,8 +52,8 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
               style={{ backgroundImage: `url(${opt.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
             >
               <div className={`absolute inset-0 transition-opacity duration-300 ${profile.goal === opt.value ? 'bg-gradient-to-t from-black/90 via-black/40 to-[#00AEEF]/20' : 'bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:from-black/95'}`} />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
-                <h3 className={`font-black uppercase text-xl leading-tight mb-1 ${profile.goal === opt.value ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>
+              <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 text-left">
+                <h3 className={`font-black uppercase text-lg lg:text-xl leading-tight mb-1 ${profile.goal === opt.value ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>
                   {opt.label}
                 </h3>
                 <p className={`text-[11px] font-medium tracking-wide ${profile.goal === opt.value ? 'text-[#00AEEF]' : 'text-gray-300'}`}>
