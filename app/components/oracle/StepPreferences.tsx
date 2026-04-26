@@ -47,7 +47,7 @@ export function StepPreferences({ profile, onUpdate, onNext }: Props) {
         </p>
       </div>
 
-      <div className="w-full max-w-4xl mx-auto space-y-10">
+      <div className="w-full max-w-4xl mx-auto space-y-8">
         {/* Q10: Injector Preference */}
         <div>
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-left">
