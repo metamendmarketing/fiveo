@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
       } else {
         // For cars, we show everything except pure motorcycle/marine brands 
         // that don't also make cars.
-        query = query.not("name", "in", "('KAWASAKI','DUCATI','POLARIS','DELPHI MARINE','MERCURY MARINE')");
+        query = query.not("name", "in", ["KAWASAKI", "DUCATI", "POLARIS", "DELPHI MARINE", "MERCURY MARINE"]);
       }
 
       const { data, error } = await query.order("name");
