@@ -149,3 +149,90 @@ img, video, svg {
     scroll-behavior: auto !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   ORACLE WIZARD: ORIENTATION-AWARE ENTRY CARDS
+   ═══════════════════════════════════════════════════════ */
+
+/* Default: Desktop / Tablet (Large screens) */
+.entry-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  .entry-card-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.entry-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.entry-card-icon {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+}
+
+.entry-card-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.entry-card-tagline {
+  font-size: 0.75rem;
+  display: block;
+}
+
+/* PORTRAIT MODE (Phones) - Make them BIG and vertical */
+@media (max-width: 1023px) and (orientation: portrait) {
+  .entry-card {
+    padding: 2.5rem 1rem;
+    min-height: 160px;
+  }
+  .entry-card-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .entry-card-title {
+    font-size: 1.25rem;
+  }
+  .entry-card-tagline {
+    font-size: 0.875rem;
+  }
+}
+
+/* LANDSCAPE MODE (Phones) - Make them COMPACT and horizontal */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .entry-card {
+    flex-direction: row;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-height: auto;
+  }
+  .entry-card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0;
+  }
+  .entry-card-title {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+  }
+  .entry-card-tagline {
+    display: none; /* Hide tagline in mobile landscape to save precious height */
+  }
+}

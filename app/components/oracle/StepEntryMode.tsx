@@ -1,10 +1,9 @@
 /**
  * StepEntryMode — The Ignition Screen
  * 
- * Layout: 2×2 grid on all phones (portrait + landscape).
- * Cards use HORIZONTAL layout (icon left, text right) to minimize height.
- * This ensures all 4 cards fit within iPhone 16 landscape (~345px viewport).
- * On desktop (lg+), cards switch to vertical centered layout, 4-across.
+ * Portrait: Vertical card layout with generous sizing, fills the screen.
+ * Landscape: Compact horizontal layout, fits within ~345px viewport.
+ * Desktop (lg+): 4-across vertical cards with full sizing.
  */
 "use client";
 
@@ -16,25 +15,25 @@ const PATHS = [
     mode: "guide" as const,
     title: "Guide Me",
     tagline: "Built for first-timers and weekend warriors.",
-    icon: <Compass className="w-6 h-6 lg:w-8 lg:h-8 text-white stroke-[2px] relative z-10" />,
+    icon: <Compass className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "setup" as const,
     title: "I Know My Setup",
     tagline: "You know your build. We'll match the tech.",
-    icon: <Wrench className="w-6 h-6 lg:w-8 lg:h-8 text-white stroke-[2px] relative z-10" />,
+    icon: <Wrench className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
-    icon: <SlidersHorizontal className="w-6 h-6 lg:w-8 lg:h-8 text-white stroke-[2px] relative z-10" />,
+    icon: <SlidersHorizontal className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "oem" as const,
     title: "OEM Replacement",
     tagline: "Stock car? Fix it fast with verified parts.",
-    icon: <Settings2 className="w-6 h-6 lg:w-8 lg:h-8 text-white stroke-[2px] relative z-10" />,
+    icon: <Settings2 className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
 ];
 
@@ -44,40 +43,40 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs" | "oem") => void;
 }) {
   return (
-    <div className="w-full py-4 md:py-16">
+    <div className="w-full py-6 lg:py-16">
       <div className="w-full max-w-5xl mx-auto text-center">
-        {/* Title — compact spacing */}
+        {/* Title */}
         <h1
-          className="font-black uppercase italic text-white mb-0.5 md:mb-2 tracking-tighter drop-shadow-md"
-          style={{ fontSize: "clamp(1rem, 3.5vw, 3.5rem)" }}
+          className="font-black uppercase italic text-white mb-1 tracking-tighter drop-shadow-md"
+          style={{ fontSize: "clamp(1.3rem, 4vw, 3.5rem)" }}
         >
           Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
         </h1>
-        <p className="text-white/60 text-[7px] md:text-[10px] uppercase tracking-[0.2em] font-bold mb-1.5 md:mb-6 drop-shadow-sm">
+        <p className="text-white/60 text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold mb-2 lg:mb-6 drop-shadow-sm">
           The ultimate technical sizing assistant for high-performance builds
         </p>
-        <h2 className="text-white text-[10px] md:text-lg font-bold mb-3 md:mb-10 drop-shadow-md uppercase tracking-wider">
+        <h2 className="text-white text-xs lg:text-lg font-bold mb-4 lg:mb-10 drop-shadow-md uppercase tracking-wider">
           How do you want to dial in your injectors?
         </h2>
 
-        {/* Card grid — 2×2 on phones with compact horizontal cards, 4-across on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5">
+        {/* Card grid */}
+        <div className="entry-card-grid">
           {PATHS.map((p) => (
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 active:scale-[0.98] group p-2.5 md:p-8 flex flex-row lg:flex-col items-center lg:justify-center gap-2 md:gap-5 text-left lg:text-center"
+              className="entry-card bg-white/95 backdrop-blur-md rounded-xl lg:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 active:scale-[0.98] group"
             >
-              <div className="w-9 h-9 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_4px_12px_rgba(0,174,239,0.3)] md:shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
+              <div className="entry-card-icon rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_4px_12px_rgba(0,174,239,0.3)] lg:shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 {p.icon}
               </div>
               <div className="min-w-0">
-                <h3 className="text-gray-900 font-black uppercase italic text-[10px] md:text-lg leading-tight mb-0 md:mb-2">
+                <h3 className="text-gray-900 font-black uppercase italic entry-card-title">
                   {p.title}
                 </h3>
-                <p className="text-gray-500 text-[8px] md:text-[11px] font-medium leading-tight md:leading-relaxed hidden sm:block">
+                <p className="text-gray-500 entry-card-tagline font-medium leading-tight lg:leading-relaxed">
                   {p.tagline}
                 </p>
               </div>
