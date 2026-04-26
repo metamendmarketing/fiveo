@@ -25,21 +25,18 @@ interface Props {
 
 export function StepUsage({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-6">
+      {/* Header */}
+      <div className="w-full max-w-4xl mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
+          How You <span className="text-[#00AEEF]">Drive</span>
+        </h2>
+        <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-black drop-shadow-sm">
+          How do you use your vehicle?
+        </p>
+      </div>
+
       <div className="w-full max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-0">
-          <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
-            How You <span className="text-[#00AEEF]">Drive</span>
-          </h2>
-          <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-black drop-shadow-sm">
-            How do you use your vehicle?
-          </p>
-        </div>
-
-        {/* Forced Spacer Gap */}
-        <div className="h-10 lg:h-16" />
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {USAGE_OPTIONS.map((opt) => (
             <button
