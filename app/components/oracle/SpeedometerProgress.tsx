@@ -196,31 +196,28 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
           <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
 
-          {/* Tapered Needle - High-Performance Animation Fix */}
-          <motion.path 
-            d="M 97 100 L 100 25 L 103 100 Z" 
-            fill={progress > 95 ? "#ef4444" : "#fff"}
-            style={{ 
-              rotate: rotation,
-              originX: "100px",
-              originY: "100px",
-              filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))"
-            }}
-            transition={{ type: "spring", stiffness: 45, damping: 12 }}
-          />
-          <motion.path 
-            d="M 99 100 L 100 30 L 101 100 Z" 
-            fill="rgba(255,255,255,0.3)"
-            style={{ 
-              rotate: rotation,
-              originX: "100px",
-              originY: "100px"
-            }}
-            transition={{ type: "spring", stiffness: 45, damping: 12 }}
-            pointerEvents="none"
-          />
+          {/* Tapered Needle - Absolute Mathematical Fix */}
+          <g transform="translate(100, 100)">
+            <motion.g
+              animate={{ rotate: rotation }}
+              style={{ originX: 0, originY: 0 }}
+              transition={{ type: "spring", stiffness: 45, damping: 12 }}
+            >
+              {/* Needle Body (relative to base at 0,0) */}
+              <path 
+                d="M -3 2 L 0 -75 L 3 2 Z" 
+                fill={progress > 95 ? "#ef4444" : "#fff"}
+                style={{ filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
+              />
+              {/* Highlight */}
+              <path 
+                d="M -1 0 L 0 -70 L 1 0 Z" 
+                fill="rgba(255,255,255,0.3)"
+              />
+            </motion.g>
+          </g>
 
-          {/* Needle Pin Center (Above Needle) */}
+          {/* Needle Pin Center (Always Top Layer) */}
           <circle cx="100" cy="100" r="10" fill="#333" />
           <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
