@@ -196,18 +196,25 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
           <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
 
-          {/* Tapered Needle */}
-          <motion.path 
-            d="M 97 100 L 100 25 L 103 100 Z" 
-            fill={progress > 95 ? "#ef4444" : "#fff"}
-            initial={false}
-            animate={{ rotate: rotation }}
-            style={{ 
-              transformOrigin: "100px 100px",
-              filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))"
-            }}
-            transition={{ type: "spring", stiffness: 45, damping: 12 }}
-          />
+          {/* Tapered Needle - Absolute Pivot Fix */}
+          <g transform="translate(100, 100)">
+            <motion.g
+              animate={{ rotate: rotation }}
+              style={{ originX: 0, originY: 0 }}
+              transition={{ type: "spring", stiffness: 45, damping: 12 }}
+            >
+              <path 
+                d="M -3 5 L 0 -75 L 3 5 Z" 
+                fill={progress > 95 ? "#ef4444" : "#fff"}
+                style={{ filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
+              />
+              {/* Optional: Add a needle highlight */}
+              <path 
+                d="M -1 0 L 0 -70 L 1 0 Z" 
+                fill="rgba(255,255,255,0.3)"
+              />
+            </motion.g>
+          </g>
 
           {/* Needle Pin Center (Above Needle) */}
           <circle cx="100" cy="100" r="10" fill="#333" />
