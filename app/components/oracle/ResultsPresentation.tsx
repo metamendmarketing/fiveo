@@ -116,11 +116,11 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
 
               <div className="md:flex items-stretch min-h-[340px]">
                 {/* Product Image */}
-                <div className="md:w-2/5 bg-white/5 flex items-center justify-center p-10 md:p-14 border-r border-white/10 relative"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
+                <div className="md:w-2/5 bg-white/5 flex items-center justify-center p-10 md:p-14 border-r border-white/10 relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
                   <img 
                     src={topPick.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                     alt={topPick.product.name}
-                    className="w-full h-full object-contain max-h-64"
+                    className="max-w-full max-h-full object-contain drop-shadow-xl"
                   />
                 </div>
                 
@@ -193,11 +193,11 @@ export function ResultsPresentation({ results, apiData, onRestart, onEdit }: Pro
                   onClick={() => setSelectedResult(result)}
                   className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden flex flex-col group shadow-lg transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-white/40 cursor-pointer"
                 >
-                  <div className="h-52 bg-white/5 flex items-center justify-center p-6 border-b border-white/10 group-hover:bg-white/10 transition-colors relative"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="h-52 bg-white/5 flex items-center justify-center p-6 border-b border-white/10 group-hover:bg-white/10 transition-colors relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     <img 
                       src={result.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
                       alt={result.product.name}
-                      className="w-full h-full object-contain"
+                      className="max-w-full max-h-full object-contain drop-shadow-md"
                     />
                   </div>
 
