@@ -91,7 +91,7 @@ export default function RootLayout({
 
         {/* ═══ 1. Modern Glassmorphic Header ═══ */}
         <header
-          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 shadow-2xl shadow-black/10"
+          className="bg-[#09090b]/90 backdrop-blur-xl border-b border-white/5 relative z-50 shadow-2xl shadow-black/10"
           role="navigation"
           aria-label="Main navigation"
         >

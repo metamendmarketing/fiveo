@@ -253,9 +253,9 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
         
         {/* Content Container - Fixed background, scrolling content on mobile */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-6 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-center justify-center min-h-full'}`}>
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-6 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-start lg:items-center justify-start lg:justify-center min-h-full pt-8 md:pt-0'}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'} w-full`}>
+          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center lg:justify-center'} w-full`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
