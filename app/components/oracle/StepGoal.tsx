@@ -23,14 +23,14 @@ interface Props {
 
 export function StepGoal({ profile, onUpdate, onNext }: Props) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-start pt-8 lg:pt-12">
+    <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-20">
-          <h2 className="text-2xl lg:text-3xl font-black uppercase italic text-white mb-2 leading-tight drop-shadow-md">
+        <div className="text-center mb-8 lg:mb-12">
+          <h2 className="text-2xl lg:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             What is the <span className="text-[#00AEEF]">Mission</span>?
           </h2>
-          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm mb-4">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
             Define your primary objective
           </p>
         </div>
