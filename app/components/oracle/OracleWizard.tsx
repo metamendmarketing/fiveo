@@ -237,14 +237,14 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container — expands to fit content, never clips */}
+      {/* Main step container — expands to fit content on phones, cinematic on lg+ */}
       <div
-        className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] md:overflow-clip
-          ${currentStep === 'results' ? '' : 'md:aspect-video'}`}
+        className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] lg:overflow-clip
+          ${currentStep === 'results' ? '' : 'lg:aspect-video'}`}
       >
         {/* Dynamic Background Layer */}
         <div 
-          className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
+          className="absolute inset-0 transition-opacity duration-1000 lg:rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
             backgroundSize: "cover", 
@@ -252,7 +252,7 @@ export default function OracleWizard() {
             backgroundRepeat: "no-repeat",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] lg:rounded-[2.5rem]" />
         
         {/* Content Container — centered within the cinematic frame */}
         <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : 'flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-12 h-full'}`}>
