@@ -198,17 +198,12 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
 
           {/* Tapered Needle */}
           <motion.path 
-            d="M -3 0 L 0 -75 L 3 0 Z" 
+            d="M 97 100 L 100 25 L 103 100 Z" 
             fill={progress > 95 ? "#ef4444" : "#fff"}
             initial={false}
-            animate={{ 
-              rotate: rotation,
-              translateX: 100,
-              translateY: 100
-            }}
+            animate={{ rotate: rotation }}
             style={{ 
-              originX: 0, 
-              originY: 0,
+              transformOrigin: "100px 100px",
               filter: "drop-shadow(0 0 5px rgba(255,0,0,0.5))"
             }}
             transition={{ type: "spring", stiffness: 45, damping: 12 }}
