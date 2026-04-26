@@ -255,10 +255,10 @@ export default function OracleWizard() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
         
-        {/* Content Container — fills wizard height, scrolls if needed */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-4 lg:gap-12 flex-1 overflow-y-auto ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'}`}>
+        {/* Content Container — stretches to fill wizard, scrolls only if needed */}
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-6 lg:p-16 gap-4 lg:gap-12 flex-1 overflow-y-auto ${currentStep === 'results' ? 'items-start' : ''}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'} w-full`}>
+          <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : ''} w-full`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -267,7 +267,7 @@ export default function OracleWizard() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="w-full"
+                className="w-full flex-1 flex flex-col"
               >
                 {renderStep()}
               </motion.div>

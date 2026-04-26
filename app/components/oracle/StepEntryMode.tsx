@@ -44,36 +44,43 @@ export function StepEntryMode({
   onSelect: (mode: "guide" | "setup" | "specs" | "oem") => void;
 }) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      {/* Content */}
-      <div className="w-full max-w-4xl text-center mx-auto">
-        <h1
-          className="font-black uppercase italic text-white mb-1 md:mb-2 tracking-tighter drop-shadow-md"
-          style={{ fontSize: "clamp(1.2rem, 4vw, 3.5rem)" }}
+    /* Outer wrapper: flex-1 stretches to fill the full wizard height */
+    <div className="w-full flex-1 flex flex-col">
+      {/* Content column: flex-1 fills available height, centers text header */}
+      <div className="w-full max-w-5xl mx-auto flex-1 flex flex-col px-2 sm:px-4">
+        {/* Title block — compact, does not flex-grow */}
+        <div className="text-center pt-4 sm:pt-6 md:pt-8 pb-2 sm:pb-4">
+          <h1
+            className="font-black uppercase italic text-white mb-1 md:mb-2 tracking-tighter drop-shadow-md"
+            style={{ fontSize: "clamp(1.2rem, 4vw, 3.5rem)" }}
+          >
+            Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
+          </h1>
+          <p className="text-white/60 text-[8px] md:text-[10px] uppercase tracking-[0.25em] font-bold mb-2 md:mb-4 drop-shadow-sm">
+            The ultimate technical sizing assistant for high-performance builds
+          </p>
+          <h2 className="text-white text-xs md:text-lg font-bold drop-shadow-md uppercase tracking-wider">
+            How do you want to dial in your injectors?
+          </h2>
+        </div>
+
+        {/* Card grid — flex-1 fills remaining height, auto-rows-fr makes rows equal */}
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 flex-1 pb-4 sm:pb-6"
+          style={{ gridAutoRows: '1fr' }}
         >
-          Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
-        </h1>
-        <p className="text-white/60 text-[8px] md:text-[10px] uppercase tracking-[0.25em] font-bold mb-3 md:mb-16 drop-shadow-sm">
-          The ultimate technical sizing assistant for high-performance builds
-        </p>
-
-        <h2 className="text-white text-xs md:text-lg font-bold mb-3 md:mb-8 drop-shadow-md uppercase tracking-wider">
-          How do you want to dial in your injectors?
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-5xl mx-auto">
           {PATHS.map((p) => (
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 active:scale-[0.98] group p-3 sm:p-4 md:p-8 text-left sm:text-center flex flex-row sm:flex-col items-center gap-3 md:gap-5"
+              className="bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 active:scale-[0.98] group p-3 sm:p-4 md:p-8 flex flex-col items-center justify-center gap-2 sm:gap-3 md:gap-5 h-full"
             >
               <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 {p.icon}
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="text-center min-w-0">
                 <h3 className="text-gray-900 font-black uppercase italic text-xs sm:text-sm md:text-lg mb-0.5 md:mb-2">
                   {p.title}
                 </h3>
@@ -84,8 +91,6 @@ export function StepEntryMode({
             </button>
           ))}
         </div>
-        {/* Temporary deployment marker — remove after verification */}
-        <p className="text-white/20 text-[8px] mt-4 font-mono">v2.1-viewport</p>
       </div>
     </div>
   );
