@@ -104,7 +104,7 @@ export interface BuildProfile {
 
 export const INITIAL_PROFILE: BuildProfile = {
   entryMode: null,
-  vehicleType: null,
+  vehicleType: "car",
   year: null,
   make: null,
   makeId: null,
