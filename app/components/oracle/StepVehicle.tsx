@@ -11,7 +11,7 @@ import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib
 import { 
   CarFront, 
   Motorbike, 
-  Ship, 
+  Anchor, 
   CheckCircle2, 
   Settings2, 
   Zap 
@@ -149,7 +149,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                       <div className={`relative z-10 ${profile.vehicleType === type ? "text-white" : "text-white/60 group-hover:text-white"}`}>
                         {type === "car" && <CarFront className="w-5 h-5 stroke-[2px]" />}
                         {type === "motorcycle" && <Motorbike className="w-5 h-5 stroke-[2px]" />}
-                        {type === "marine" && <Ship className="w-5 h-5 stroke-[2px]" />}
+                        {type === "marine" && <Anchor className="w-5 h-5 stroke-[2px]" />}
                       </div>
                     </div>
                     <span className="font-black uppercase text-[10px] tracking-widest block">
