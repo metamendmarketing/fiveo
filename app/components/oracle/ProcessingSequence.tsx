@@ -13,12 +13,10 @@ interface Props {
  * ProcessingSequence — Analysis Synthesis Animation
  * 
  * Re-imagined as a high-performance "dyno run" speedometer.
- * 
- * Timing Logic:
- * - 0-30%: Initial spin-up (Fast)
- * - 30-75%: Deep computation (Slow/Gritty)
- * - 75-100%: Redline sprint (Fast/Intense)
- * - Total duration target: ~5-7 seconds
+ * Features:
+ * - 0 to 300 MPH progress mapping
+ * - "Afterburner" phase at 99% with flame effects
+ * - Digital readout and screen shake
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -56,9 +54,10 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       }
     })();
 
-    // 2. Execute progress simulation with variable pacing
+    // 2. Execute progress simulation
     const runProgress = async () => {
-      for (let i = 0; i <= 100; i++) {
+      // Accelerate from 0 to 99
+      for (let i = 0; i <= 99; i++) {
         if (hasCompletedRef.current) return;
 
         setProgress(i);
@@ -69,41 +68,35 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           .find((m) => i >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Variable Pacing Logic
-        let delay = 40; // Default fast
-
-        if (i < 30) {
-          // Phase 1: Spin-up
-          delay = 30;
-        } else if (i >= 30 && i < 75) {
-          // Phase 2: The "Grind" (Slow down)
-          // Slow down even more if API isn't ready
-          delay = apiReady ? 80 : 150 + Math.random() * 100;
-        } else if (i >= 75 && i < 95) {
-          // Phase 3: Redline Sprint (Speed up)
-          delay = 25;
-        } else if (i >= 95) {
-          // Phase 4: Final Velocity
-          delay = 15;
+        // Intelligent pacing
+        let delay = 50;
+        if (i >= 15 && i < 90) {
+          delay = apiReady ? 25 : 120 + Math.random() * 200;
+        } else if (i >= 90) {
+          delay = apiReady ? 30 : 200;
         }
 
         await new Promise((r) => setTimeout(r, delay));
+      }
 
-        // Safety check at 95% - wait for API if not ready
-        if (i === 95 && !apiReady) {
-          setStatusText("Securing maximum flow data...");
-          while (!apiReady) {
-            await new Promise((r) => setTimeout(r, 200));
-          }
+      // 3. Afterburner Phase (Stay at 99% for flames)
+      if (apiReady) {
+        setStatusText("Engaging final optimization...");
+        await new Promise((r) => setTimeout(r, 1800));
+      } else {
+        setStatusText("Securing final match data...");
+        while (!apiReady) {
+          await new Promise((r) => setTimeout(r, 200));
         }
       }
 
-      // 3. Final Velocity Hit - Finish immediately
+      // 4. Hit Top Speed (100%)
+      setProgress(100);
+      setStatusText("Maximum Velocity Reached!");
+      await new Promise((r) => setTimeout(r, 1000));
+
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
-        // Small pause at 100% just for visual impact, then transition
-        await new Promise((r) => setTimeout(r, 600));
-        
         onComplete(apiData || { 
           results: [], 
           selectionStrategy: "", 
@@ -129,7 +122,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       <SpeedometerProgress progress={progress} />
 
       {/* Dynamic Status Label */}
-      <div className="mt-8 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full min-w-[280px]">
+      <div className="mt-8 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
         <p className="text-[11px] text-white/70 font-black uppercase tracking-[0.25em] min-h-[1.5em] text-center">
           {statusText}
         </p>
