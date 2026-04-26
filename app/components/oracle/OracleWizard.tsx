@@ -266,7 +266,7 @@ export default function OracleWizard() {
       {/* Main step container — expands to fit content on phones, cinematic on lg+ */}
       <div
         ref={wizardRef}
-        className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col 
+        className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center 
           ${currentStep === 'results' ? '' : 'min-h-[500px] lg:min-h-[700px]'}`}
       >
         {/* Dynamic Background Layer */}
@@ -282,9 +282,9 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] lg:rounded-[2.5rem]" />
         
         {/* Content Container — centered within the cinematic frame */}
-        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''} min-h-full`}`}>
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
           {/* Active Step Content */}
-          <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col items-center justify-center'}`}>
+          <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col'}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
