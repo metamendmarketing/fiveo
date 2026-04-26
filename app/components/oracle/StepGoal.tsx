@@ -30,7 +30,7 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
           <h2 className="text-2xl lg:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             What is the <span className="text-[#00AEEF]">Mission</span>?
           </h2>
-          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
+          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm mb-6">
             Define your primary objective
           </p>
         </div>
