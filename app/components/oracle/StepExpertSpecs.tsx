@@ -69,7 +69,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00AEEF] mb-3 block text-center">
               Headroom Preference
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-[10px]">
               {([
                 { value: "conservative", label: "Conservative", desc: "More overhead" },
                 { value: "balanced", label: "Balanced", desc: "Standard 80% DC" },
