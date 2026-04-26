@@ -110,7 +110,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
       <div className="w-full max-w-4xl mx-auto">
         
         {/* Step Header */}
-        <div className="text-center mb-0">
+        <div className="text-left mb-6">
           <h2 className="text-xl md:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             Machine <span className="text-[#00AEEF]">Identification</span>
           </h2>
@@ -122,7 +122,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 1. Category Selection (Car/Moto/Marine) */}
         {showTypeSelector && (
           <div className="mt-6 mb-0">
-            <label className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
+            <label className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-left">
               A. SELECT CATEGORY
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -164,7 +164,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
         {/* 2. Cascaded Attribute Selection */}
         <div className={`mt-6 space-y-3 transition-opacity ${!profile.vehicleType && showTypeSelector ? "opacity-30 pointer-events-none" : ""}`}>
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-left">
             B. VEHICLE ATTRIBUTES
           </label>
           
@@ -281,7 +281,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 3. Engine Modification Status (Only show for non-OEM paths) */}
         {profile.engineLabel && profile.entryMode !== "oem" && (
           <div className="mt-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-center">
+            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-[5px] block text-left">
               C. CURRENT CONFIGURATION
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -320,12 +320,10 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         )}
 
-        {/* Guidance Prompt Spacer */}
-        {!profile.engineStatus && (
-          <div className="mt-[5px] mb-[5px] h-4">
-            {/* Space preserved but text removed per user request */}
-          </div>
-        )}
+        {/* Guidance Prompt Spacer — Permanent to maintain layout stability */}
+        <div className="mt-[5px] mb-[5px] h-4">
+          {/* Space preserved per user request */}
+        </div>
 
         {/* Confirmation CTA */}
         <div className="mt-[5px]">

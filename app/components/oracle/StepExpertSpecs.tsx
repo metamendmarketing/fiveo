@@ -20,7 +20,7 @@ export function StepExpertSpecs({ profile, onUpdate, onNext }: Props) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-[10px]">
       {/* Header */}
-      <div className="w-full max-w-2xl mx-auto text-center">
+      <div className="w-full max-w-2xl mx-auto text-left">
         <h2 className="text-3xl font-black uppercase italic text-white mb-2">
           Direct <span className="text-[#00AEEF]">Input</span>
         </h2>

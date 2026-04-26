@@ -27,7 +27,7 @@ export function StepUsage({ profile, onUpdate, onNext }: Props) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-6">
       {/* Header */}
-      <div className="w-full max-w-4xl mx-auto text-center">
+      <div className="w-full max-w-4xl mx-auto text-left">
         <h2 className="text-3xl md:text-4xl font-black uppercase italic text-white mb-2 drop-shadow-md">
           How You <span className="text-[#00AEEF]">Drive</span>
         </h2>
