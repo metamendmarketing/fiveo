@@ -7,6 +7,14 @@
 "use client";
 
 import { type BuildProfile, PRIORITY_OPTIONS } from "@/app/lib/constants";
+import { Wind, Banknote, Zap, ShieldCheck } from "lucide-react";
+
+const PRIORITY_ICONS: Record<string, React.ReactNode> = {
+  "Idle Quality": <Wind className="w-4 h-4" />,
+  "Value / Cost": <Banknote className="w-4 h-4" />,
+  "Peak Horsepower": <Zap className="w-4 h-4" />,
+  "Brand Reputation": <ShieldCheck className="w-4 h-4" />,
+};
 
 interface Props {
   profile: BuildProfile;
@@ -62,7 +70,12 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
                 {isActive && (
                   <div className="absolute inset-0 bg-gradient-to-r from-[#00AEEF]/20 to-transparent" />
                 )}
-                <span className={`relative z-10 ${isActive ? "text-white" : "group-hover:text-white"}`}>{p}</span>
+                <div className="relative z-10 flex items-center gap-3">
+                  <div className={`transition-colors ${isActive ? "text-[#00AEEF]" : "text-white/30 group-hover:text-white/60"}`}>
+                    {PRIORITY_ICONS[p]}
+                  </div>
+                  <span className={isActive ? "text-white" : "group-hover:text-white"}>{p}</span>
+                </div>
                 <span className="relative z-10 flex gap-2">
                   {isActive && (
                     <span className="bg-[#00AEEF] text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm">

@@ -8,7 +8,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { type BuildProfile } from "@/app/lib/constants";
 import { VehicleMake, VehicleModel, VehicleYear, VehicleEngine } from "@/app/lib/types";
-import { Car, Bike, Anchor, CheckCircle2, Settings2, Zap } from "lucide-react";
+import { 
+  CarFront, 
+  Motorbike, 
+  Ship, 
+  CheckCircle2, 
+  Settings2, 
+  Zap 
+} from "lucide-react";
 
 interface Props {
   profile: BuildProfile;
@@ -140,9 +147,9 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                       
                       {/* Icon */}
                       <div className={`relative z-10 ${profile.vehicleType === type ? "text-white" : "text-white/60 group-hover:text-white"}`}>
-                        {type === "car" && <Car className="w-5 h-5 stroke-[2px]" />}
-                        {type === "motorcycle" && <Bike className="w-5 h-5 stroke-[2px]" />}
-                        {type === "marine" && <Anchor className="w-5 h-5 stroke-[2px]" />}
+                        {type === "car" && <CarFront className="w-5 h-5 stroke-[2px]" />}
+                        {type === "motorcycle" && <Motorbike className="w-5 h-5 stroke-[2px]" />}
+                        {type === "marine" && <Ship className="w-5 h-5 stroke-[2px]" />}
                       </div>
                     </div>
                     <span className="font-black uppercase text-[10px] tracking-widest block">

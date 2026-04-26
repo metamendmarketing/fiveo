@@ -7,7 +7,7 @@
 "use client";
 
 import { type BuildProfile } from "@/app/lib/constants";
-import { Wrench, Gauge, Zap } from "lucide-react";
+import { Factory, Gauge, Sparkles } from "lucide-react";
 
 interface Props {
   profile: BuildProfile;
@@ -17,9 +17,9 @@ interface Props {
 }
 
 const INJECTOR_TYPES = [
-  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: <Wrench className="w-5 h-5 stroke-[2px]" /> },
+  { value: "oem" as const, label: "OEM Replacement", desc: "Factory spec, drop-in fit", icon: <Factory className="w-5 h-5 stroke-[2px]" /> },
   { value: "performance" as const, label: "Performance", desc: "Higher flow, race-grade", icon: <Gauge className="w-5 h-5 stroke-[2px]" /> },
-  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: <Zap className="w-5 h-5 stroke-[2px]" /> },
+  { value: "best-of-both" as const, label: "Best of Both", desc: "OEM reliability, performance flow", icon: <Sparkles className="w-5 h-5 stroke-[2px]" /> },
 ];
 
 const BUDGET_OPTIONS = [

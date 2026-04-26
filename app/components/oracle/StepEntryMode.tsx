@@ -8,20 +8,20 @@
 "use client";
 
 
-import { Compass, Wrench, SlidersHorizontal, Settings2 } from "lucide-react";
+import { Sparkles, Cpu, SlidersHorizontal, Settings2 } from "lucide-react";
 
 const PATHS = [
   {
     mode: "guide" as const,
     title: "Guide Me",
     tagline: "Built for first-timers and weekend warriors.",
-    icon: <Compass className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Sparkles className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "setup" as const,
     title: "I Know My Setup",
     tagline: "You know your build. We'll match the tech.",
-    icon: <Wrench className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Cpu className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "specs" as const,
