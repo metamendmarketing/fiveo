@@ -7,7 +7,7 @@
  */
 "use client";
 
-import React, { useReducer, useState, useCallback, useMemo } from "react";
+import React, { useReducer, useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   type BuildProfile,
@@ -95,6 +95,16 @@ export default function OracleWizard() {
   }, [profile.entryMode]);
 
   const currentStep = steps[stepIndex] || "entry";
+
+  /** Ref for the wizard container — used to scroll into view on step change */
+  const wizardRef = useRef<HTMLDivElement>(null);
+
+  /** Scroll wizard into view on every step transition */
+  useEffect(() => {
+    if (wizardRef.current) {
+      wizardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [stepIndex]);
 
   /**
    * Calculate progress percentage for the progress bar.
@@ -239,6 +249,7 @@ export default function OracleWizard() {
 
       {/* Main step container — expands to fit content on phones, cinematic on lg+ */}
       <div
+        ref={wizardRef}
         className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] lg:overflow-clip
           ${currentStep === 'results' ? '' : 'lg:aspect-video'}`}
       >
