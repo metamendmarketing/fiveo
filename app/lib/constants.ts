@@ -52,6 +52,12 @@ export const STEP_SEQUENCES: Record<string, WizardStep[]> = {
     "processing",
     "results",
   ],
+  oem: [
+    "entry",
+    "vehicle-details",
+    "processing",
+    "results",
+  ],
 };
 
 // ═══════════════════════════════════════
@@ -60,7 +66,7 @@ export const STEP_SEQUENCES: Record<string, WizardStep[]> = {
 
 export interface BuildProfile {
   // Entry
-  entryMode: "guide" | "setup" | "specs" | null;
+  entryMode: "guide" | "setup" | "specs" | "oem" | null;
 
   // Vehicle (Phase 1)
   vehicleType: "car" | "motorcycle" | "marine" | null;

@@ -248,11 +248,16 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 disabled={!selectedYearId}
                 onChange={(e) => {
                   const selected = engines.find((eng) => eng.label === e.target.value);
+                  const isOEM = profile.entryMode === "oem";
                   onUpdate({
                     engineLabel: e.target.value || null,
                     engineCode: selected?.id?.toString() || null,
-                    engineStatus: null
+                    engineStatus: isOEM ? "stock" : null
                   });
+                  // If OEM mode, we can auto-submit since we know it's stock
+                  if (isOEM && e.target.value) {
+                    setTimeout(() => onNext(), 300);
+                  }
                 }}
                 className="w-full h-12 bg-slate-50 border border-gray-200 rounded-xl px-4 text-xs font-bold uppercase text-gray-800 outline-none focus:border-[#00AEEF] focus:ring-1 focus:ring-[#00AEEF]"
               >
@@ -267,8 +272,8 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           </div>
         </div>
 
-        {/* 3. Engine Modification Status */}
-        {profile.engineLabel && (
+        {/* 3. Engine Modification Status (Only show for non-OEM paths) */}
+        {profile.engineLabel && profile.entryMode !== "oem" && (
           <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               C. CURRENT CONFIGURATION

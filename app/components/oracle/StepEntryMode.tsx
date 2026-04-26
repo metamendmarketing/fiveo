@@ -9,7 +9,7 @@
 "use client";
 
 
-import { Compass, Wrench, SlidersHorizontal } from "lucide-react";
+import { Compass, Wrench, SlidersHorizontal, Settings2 } from "lucide-react";
 
 const PATHS = [
   {
@@ -30,12 +30,18 @@ const PATHS = [
     tagline: "Direct input. No hand-holding.",
     icon: <SlidersHorizontal className="w-8 h-8 text-white stroke-[2px] relative z-10" />,
   },
+  {
+    mode: "oem" as const,
+    title: "OEM Replacement",
+    tagline: "Stock car? Fix it fast with verified parts.",
+    icon: <Settings2 className="w-8 h-8 text-white stroke-[2px] relative z-10" />,
+  },
 ];
 
 export function StepEntryMode({
   onSelect,
 }: {
-  onSelect: (mode: "guide" | "setup" | "specs") => void;
+  onSelect: (mode: "guide" | "setup" | "specs" | "oem") => void;
 }) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
@@ -55,7 +61,7 @@ export function StepEntryMode({
           How do you want to dial in your injectors?
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
           {PATHS.map((p) => (
             <button
               key={p.mode}

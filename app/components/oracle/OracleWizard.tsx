@@ -131,12 +131,16 @@ export default function OracleWizard() {
   }, []);
 
   const handleEntrySelect = useCallback(
-    (mode: "guide" | "setup" | "specs") => {
-      update({ entryMode: mode });
+    (mode: "guide" | "setup" | "specs" | "oem") => {
+      update({ 
+        entryMode: mode,
+        // Auto-set goal for OEM mode to streamline the flow
+        goal: mode === "oem" ? "replace" : profile.goal 
+      });
       // Skip to the first real step after mode selection
       setStepIndex(1);
     },
-    [update]
+    [update, profile.goal]
   );
 
   const handleProcessingComplete = useCallback(

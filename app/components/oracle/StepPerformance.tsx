@@ -56,7 +56,12 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
 
   const handleFuelSelect = (fuel: "pump" | "e85" | "race") => {
     onUpdate({ fuelType: fuel });
-    setTimeout(() => setSection("mods"), 200);
+    // If engine is stock, we don't need to ask for modifications
+    if (profile.engineStatus === "stock") {
+      setTimeout(() => onNext(), 200);
+    } else {
+      setTimeout(() => setSection("mods"), 200);
+    }
   };
 
   return (
@@ -74,7 +79,9 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
           </p>
           {/* Sub-section breadcrumb */}
           <div className="flex items-center justify-center gap-2 mt-4">
-            {(["hp", "fuel", "mods"] as const).map((s, i) => (
+            {(["hp", "fuel", "mods"] as const)
+              .filter(s => s !== "mods" || profile.engineStatus !== "stock")
+              .map((s, i, arr) => (
               <div key={s} className="flex items-center gap-2">
                 <button
                   onClick={() => setSection(s)}
@@ -84,7 +91,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
                 >
                   {s === "hp" ? "Power" : s === "fuel" ? "Fuel" : "Mods"}
                 </button>
-                {i < 2 && <span className="text-white/20 text-xs">›</span>}
+                {i < arr.length - 1 && <span className="text-white/20 text-xs">›</span>}
               </div>
             ))}
           </div>
