@@ -16,24 +16,28 @@ const PATHS = [
     title: "Guide Me",
     tagline: "Built for first-timers and weekend warriors.",
     icon: <Sparkles className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    accent: "#f59e0b", // Amber
   },
   {
     mode: "setup" as const,
     title: "I Know My Build",
     tagline: "You know your build. We'll match the tech.",
     icon: <Wrench className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    accent: "#E10600", // FiveO Red
   },
   {
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
     icon: <Cpu className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    accent: "#00AEEF", // FiveO Blue
   },
   {
     mode: "oem" as const,
     title: "OEM Replacement",
     tagline: "Stock car? Fix it fast with verified parts.",
     icon: <ShieldCheck className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    accent: "#10b981", // Emerald
   },
 ];
 
@@ -65,14 +69,31 @@ export function StepEntryMode({
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="entry-card bg-white/95 backdrop-blur-md rounded-xl lg:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 active:scale-[0.98] group"
+              className="entry-card bg-white/95 backdrop-blur-md rounded-xl lg:rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.98] group"
+              style={{ 
+                // @ts-ignore
+                "--hover-color": p.accent 
+              }}
             >
-              <div className="entry-card-icon rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_4px_12px_rgba(0,174,239,0.3)] lg:shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
+              {/* Animated Glow Effect */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500" 
+                style={{ backgroundColor: p.accent }}
+              />
+
+              <div className="entry-card-icon rounded-full shrink-0 relative overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div 
+                  className="absolute inset-0 opacity-90 transition-colors duration-300" 
+                  style={{ backgroundColor: p.accent }}
+                />
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
+                  style={{ backgroundColor: p.accent }}
+                />
                 {p.icon}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 relative z-10">
                 <h3 className="text-gray-900 font-black uppercase italic entry-card-title">
                   {p.title}
                 </h3>
