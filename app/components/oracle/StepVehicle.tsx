@@ -103,11 +103,11 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
       <div className="w-full max-w-4xl mx-auto">
         
         {/* Step Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
+        <div className="text-center mb-6 md:mb-10">
+          <h2 className="text-xl md:text-3xl font-black uppercase italic text-white mb-1 drop-shadow-md">
             Machine <span className="text-[#00AEEF]">Identification</span>
           </h2>
-          <p className="text-[10px] text-white/50 uppercase tracking-[0.3em] font-black drop-shadow-sm">
+          <p className="text-[9px] md:text-[10px] text-white/50 uppercase tracking-[0.2em] md:tracking-[0.3em] font-black drop-shadow-sm">
             Configure Your Setup
           </p>
         </div>
@@ -115,7 +115,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         {/* 1. Category Selection (Car/Moto/Marine) */}
         {showTypeSelector && (
           <div className="mb-8">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
+            <label className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-2 md:mb-3 block text-center">
               A. SELECT CATEGORY
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -123,7 +123,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                 <button
                   key={type}
                   onClick={() => onUpdate({ vehicleType: type })}
-                  className={`relative p-6 rounded-2xl border-2 text-center transition-all group overflow-hidden ${
+                  className={`relative p-3 md:p-6 rounded-2xl border-2 text-center transition-all group overflow-hidden ${
                     profile.vehicleType === type
                       ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)] text-white"
                       : "border-white/10 bg-white/5 backdrop-blur-sm text-white/50 hover:border-white/30 hover:bg-white/10"
@@ -134,7 +134,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     <div className="absolute inset-0 bg-gradient-to-b from-[#00AEEF]/20 to-transparent" />
                   )}
                   <div className="relative z-10 flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full mb-3 relative flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-full mb-2 md:mb-3 relative flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       {/* Glassmorphic Badge Background */}
                       <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.vehicleType === type ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
                       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
@@ -165,7 +165,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Make Selector */}
             <div className="oracle-attribute-container shadow-sm">
-              <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Make</label>
+              <label className="text-[8px] md:text-[9px] font-black uppercase text-gray-400 mb-0.5 md:mb-1 block">Make</label>
               <select
                 value={profile.make || ""}
                 onChange={(e) => {
@@ -191,7 +191,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
             {/* Model Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!profile.makeId ? "opacity-40" : ""}`}>
-              <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Model</label>
+              <label className="text-[8px] md:text-[9px] font-black uppercase text-gray-400 mb-0.5 md:mb-1 block">Model</label>
               <select
                 value={profile.model || ""}
                 disabled={!profile.makeId}
@@ -218,7 +218,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Year Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!profile.modelId ? "opacity-40" : ""}`}>
-              <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Year</label>
+              <label className="text-[8px] md:text-[9px] font-black uppercase text-gray-400 mb-0.5 md:mb-1 block">Year</label>
               <select
                 value={profile.year?.toString() || ""}
                 disabled={!profile.modelId}
@@ -242,7 +242,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
 
             {/* Engine Selector */}
             <div className={`oracle-attribute-container shadow-sm ${!selectedYearId ? "opacity-40" : ""}`}>
-              <label className="text-[9px] font-black uppercase text-gray-400 mb-1 block">Engine</label>
+              <label className="text-[8px] md:text-[9px] font-black uppercase text-gray-400 mb-0.5 md:mb-1 block">Engine</label>
               <select
                 value={profile.engineLabel || ""}
                 disabled={!selectedYearId}
@@ -278,12 +278,12 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
             <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/60 mb-3 block text-center">
               C. CURRENT CONFIGURATION
             </label>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {STATUS_OPTIONS.map((status) => (
                 <button
                   key={status.value}
                   onClick={() => onUpdate({ engineStatus: status.value })}
-                  className={`relative flex items-center p-5 rounded-2xl border transition-all text-left group overflow-hidden ${
+                  className={`relative flex flex-row md:flex-col items-center md:items-start p-4 md:p-6 rounded-2xl border transition-all text-left group overflow-hidden ${
                     profile.engineStatus === status.value
                       ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.2)]"
                       : "border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/30 hover:bg-white/10"
@@ -293,7 +293,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                     <div className="absolute inset-0 bg-gradient-to-r from-[#00AEEF]/20 to-transparent" />
                   )}
                   
-                  <div className="relative z-10 w-12 h-12 rounded-full mr-5 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative z-10 w-10 h-10 md:w-14 md:h-14 rounded-full mr-4 md:mr-0 md:mb-4 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <div className={`absolute inset-0 rounded-full transition-all duration-300 ${profile.engineStatus === status.value ? "bg-[#00AEEF] shadow-[0_0_15px_rgba(0,174,239,0.5)]" : "bg-white/10"}`} />
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent border border-white/20" />
                     
@@ -303,10 +303,10 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
                   </div>
                   
                   <div className="relative z-10">
-                    <span className={`block font-black uppercase tracking-widest text-sm mb-1 ${profile.engineStatus === status.value ? "text-white" : "text-white/80 group-hover:text-white"}`}>
+                    <span className={`block font-black uppercase tracking-widest text-[11px] md:text-sm mb-0.5 ${profile.engineStatus === status.value ? "text-white" : "text-white/80 group-hover:text-white"}`}>
                       {status.label}
                     </span>
-                    <span className="block text-[11px] font-medium text-white/50 leading-relaxed">{status.desc}</span>
+                    <span className="hidden md:block text-[10px] font-medium text-white/50 leading-relaxed">{status.desc}</span>
                   </div>
                 </button>
               ))}
@@ -324,7 +324,7 @@ export function StepVehicle({ profile, onUpdate, onNext, showTypeSelector }: Pro
         )}
 
         {/* Confirmation CTA */}
-        <div className="mt-10">
+        <div className="mt-6 md:mt-10">
           <button
             onClick={onNext}
             disabled={!canAdvance}

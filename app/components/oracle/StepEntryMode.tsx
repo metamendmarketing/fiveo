@@ -66,18 +66,18 @@ export function StepEntryMode({
             <button
               key={p.mode}
               onClick={() => onSelect(p.mode)}
-              className="bg-white/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-8 text-center flex flex-col items-center gap-5"
+              className="bg-white/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-[#00AEEF]/50 group p-4 md:p-8 text-left md:text-center flex flex-row md:flex-col items-center gap-4 md:gap-5"
             >
-              <div className="w-16 h-16 rounded-full relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
+              <div className="w-10 h-10 md:w-16 md:h-16 rounded-full shrink-0 relative overflow-hidden flex items-center justify-center shadow-[0_8px_20px_rgba(0,174,239,0.4)] group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF] to-[#0070B8] opacity-90" />
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-sm" />
                 {p.icon}
               </div>
               <div>
-                <h3 className="text-gray-900 font-black uppercase italic text-lg mb-2">
+                <h3 className="text-gray-900 font-black uppercase italic text-sm md:text-lg mb-1 md:mb-2">
                   {p.title}
                 </h3>
-                <p className="text-gray-500 text-[11px] font-medium leading-relaxed">
+                <p className="text-gray-500 text-[10px] md:text-[11px] font-medium leading-tight md:leading-relaxed">
                   {p.tagline}
                 </p>
               </div>
