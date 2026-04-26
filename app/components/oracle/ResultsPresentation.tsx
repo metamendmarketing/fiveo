@@ -125,8 +125,8 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
               animate={{ opacity: 1, y: 0 }}
               className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,174,239,0.15)] shadow-xl relative"
             >
-              <div className="absolute top-0 right-0 p-6">
-                <div className="bg-gradient-to-br from-[#00AEEF] to-[#0088cc] text-white text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
+              <div className="absolute top-0 right-0 p-6 z-20">
+                <div className="bg-[#00AEEF] text-white px-5 py-1.5 text-[9px] font-black uppercase italic tracking-widest rounded-sm shadow-lg">
                   ★ Primary Match
                 </div>
               </div>
