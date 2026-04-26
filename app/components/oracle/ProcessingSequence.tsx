@@ -26,27 +26,33 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
 
     // 1. Initiate background analysis
     (async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20-second timeout
+
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),
+          signal: controller.signal,
         });
+        clearTimeout(timeoutId);
+
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
-        apiReady = true;
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
         apiData = { 
           results: [], 
           selectionStrategy: "", 
-          vehicleLabel: "your vehicle", 
+          vehicleLabel: profile.make && profile.model ? `${profile.make} ${profile.model}` : "your vehicle", 
           calculatedCC: 0, 
           fitmentMatches: 0, 
           makeFitmentMatches: 0, 
           candidatePoolSize: 0,
-          error: "API call failed" 
+          error: err instanceof Error && err.name === "AbortError" ? "Request timed out" : "API call failed" 
         };
+      } finally {
         apiReady = true;
       }
     })();
@@ -140,7 +146,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       {/* Progress Bar Container */}
       <div className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden mb-6">
         <div
-          className="w-full max-w-[320px] h-[3px] bg-white/10 rounded-[2px] overflow-hidden-fill"
+          className="w-full max-w-[320px] h-[3px] bg-[#00AEEF] rounded-[2px] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
