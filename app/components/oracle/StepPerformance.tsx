@@ -157,7 +157,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
             <button
               onClick={() => { onUpdate({ fuelType: "unsure" }); setSection("mods"); }}
-              className="bg-transparent text-white/40 font-bold uppercase tracking-widest text-[10px] border border-white/20 rounded-xl px-5 py-3 hover:text-white hover:border-white/50 hover:bg-white/10 transition-colors w-full mt-4 backdrop-blur-sm"
+              className="bg-transparent text-white/40 font-bold uppercase tracking-widest text-[10px] border border-white/20 rounded-xl px-5 py-3 hover:text-white hover:border-white/50 hover:bg-white/10 transition-colors w-full mt-5 backdrop-blur-sm"
             >
               Not Sure Yet
             </button>
