@@ -239,7 +239,7 @@ export default function OracleWizard() {
 
       {/* Main step container - Responsive Cinematic Window */}
       <div className={`relative w-full max-w-7xl rounded-2xl md:rounded-[2.5rem] border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden mx-auto 
-        ${currentStep === 'results' ? 'min-h-[90dvh]' : 'min-h-[90dvh] md:min-h-0 md:aspect-video'}`}>
+        ${currentStep === 'results' ? 'min-h-[90dvh]' : 'min-h-0 md:aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 rounded-[2.5rem]"
@@ -253,7 +253,7 @@ export default function OracleWizard() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] rounded-[2.5rem]" />
         
         {/* Content Container - Fixed background, scrolling content on mobile */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-6 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-start lg:items-center justify-start lg:justify-center min-h-full pt-8 md:pt-0'}`}>
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-3 sm:p-8 lg:p-16 gap-4 md:gap-6 lg:gap-12 overflow-y-auto lg:overflow-visible ${currentStep === 'results' ? 'items-start' : 'items-start lg:items-center justify-start lg:justify-center min-h-full pt-4 md:pt-0'}`}>
           {/* Active Step Content */}
           <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center lg:justify-center'} w-full`}>
             <AnimatePresence mode="wait">

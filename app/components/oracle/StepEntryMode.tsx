@@ -48,16 +48,16 @@ export function StepEntryMode({
       {/* Content */}
       <div className="w-full max-w-4xl text-center mx-auto">
         <h1
-          className="font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
+          className="hidden md:block font-black uppercase italic text-white mb-2 tracking-tighter drop-shadow-md"
           style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}
         >
           Fuel Injector <span style={{ color: "#00AEEF" }}>Oracle</span>
         </h1>
-        <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-6 md:mb-16 drop-shadow-sm">
+        <p className="hidden md:block text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold mb-6 md:mb-16 drop-shadow-sm">
           The ultimate technical sizing assistant for high-performance builds
         </p>
 
-        <h2 className="text-white text-sm md:text-lg font-bold mb-4 md:mb-8 drop-shadow-md">
+        <h2 className="text-white text-xs md:text-lg font-bold mb-2 md:mb-8 drop-shadow-md uppercase tracking-wider">
           How do you want to dial in your injectors?
         </h2>
 
