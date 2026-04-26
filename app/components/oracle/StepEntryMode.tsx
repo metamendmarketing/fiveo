@@ -8,7 +8,7 @@
 "use client";
 
 
-import { Sparkles, Cpu, SlidersHorizontal, Settings2 } from "lucide-react";
+import { Sparkles, Cpu, Activity, Factory } from "lucide-react";
 
 const PATHS = [
   {
@@ -27,13 +27,13 @@ const PATHS = [
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
-    icon: <SlidersHorizontal className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Activity className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "oem" as const,
     title: "OEM Replacement",
     tagline: "Stock car? Fix it fast with verified parts.",
-    icon: <Settings2 className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Factory className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
 ];
 
