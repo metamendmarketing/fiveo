@@ -30,21 +30,21 @@ export function StepPriorities({ profile, onUpdate, onNext }: Props) {
   const canAdvance = profile.priorities.length >= 2;
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-[10px]">
-          <h2 className="text-3xl font-black uppercase italic text-white mb-2 drop-shadow-md">
-            What Matters <span className="text-[#00AEEF]">Most</span>
-          </h2>
-          <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold mb-2 drop-shadow-sm">
-            Select 2-3 priorities in order of importance
-          </p>
-          <p className="text-xs text-white/40">
-            Tap to rank — first selection = highest priority
-          </p>
-        </div>
+    <div className="w-full h-full flex flex-col items-center justify-center gap-[10px]">
+      {/* Header */}
+      <div className="w-full max-w-2xl mx-auto text-center">
+        <h2 className="text-3xl font-black uppercase italic text-white mb-2 drop-shadow-md">
+          What Matters <span className="text-[#00AEEF]">Most</span>
+        </h2>
+        <p className="text-xs text-white/50 uppercase tracking-[0.2em] font-bold mb-1 drop-shadow-sm">
+          Select 2-3 priorities in order of importance
+        </p>
+        <p className="text-xs text-white/40">
+          Tap to rank — first selection = highest priority
+        </p>
+      </div>
 
+      <div className="w-full max-w-2xl mx-auto">
         <div className="flex flex-col gap-[10px]">
           {PRIORITY_OPTIONS.map((p) => {
             const rank = profile.priorities.indexOf(p) + 1;

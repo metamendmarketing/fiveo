@@ -134,7 +134,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
 
         {/* Section: Fuel Type */}
         {section === "fuel" && (
-          <div>
+          <div className="flex flex-col gap-5">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {FUEL_OPTIONS.map((f) => (
                 <button
@@ -157,7 +157,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             </div>
             <button
               onClick={() => { onUpdate({ fuelType: "unsure" }); setSection("mods"); }}
-              className="bg-transparent text-white/40 font-bold uppercase tracking-widest text-[10px] border border-white/20 rounded-xl px-5 py-3 hover:text-white hover:border-white/50 hover:bg-white/10 transition-colors w-full mt-5 backdrop-blur-sm"
+              className="bg-transparent text-white/40 font-bold uppercase tracking-widest text-[10px] border border-white/20 rounded-xl px-5 py-3 hover:text-white hover:border-white/50 hover:bg-white/10 transition-colors w-full backdrop-blur-sm"
             >
               Not Sure Yet
             </button>
