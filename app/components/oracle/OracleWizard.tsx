@@ -273,7 +273,7 @@ export default function OracleWizard() {
             </AnimatePresence>
           </div>
 
-          {/* Profile Summary Sidebar */}
+          {/* Profile Summary Sidebar — desktop only */}
           {profile.entryMode &&
             currentStep !== "entry" &&
             currentStep !== "processing" &&
@@ -283,6 +283,15 @@ export default function OracleWizard() {
               </div>
             )}
         </div>
+        {/* Profile Summary — mobile only, below content */}
+        {profile.entryMode &&
+          currentStep !== "entry" &&
+          currentStep !== "processing" &&
+          currentStep !== "results" && (
+            <div className="lg:hidden relative z-10 px-4 pb-4">
+              <BuildProfilePanel profile={profile} />
+            </div>
+          )}
       </div>
 
       {/* Step Navigation Footer */}
