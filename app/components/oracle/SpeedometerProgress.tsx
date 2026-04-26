@@ -8,16 +8,16 @@ interface SpeedometerProgressProps {
 export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progress }) => {
   const rotation = (progress / 100) * 270 - 135;
 
-  // Shake Intensity Calculation (starts at 80, violent at 100)
-  const shakeIntensity = progress >= 80 
-    ? Math.pow((progress - 80) / 20, 2) * 6 // Quadratic growth up to 6px
+  // Shake Intensity Calculation (starts building at 70, violent at 100)
+  const shakeIntensity = progress >= 70 
+    ? Math.pow((progress - 70) / 30, 2) * 8 // Quadratic growth up to 8px
     : 0;
 
   return (
     <div className="relative flex flex-col items-center justify-center py-10 select-none overflow-visible">
       {/* Violent Shake Container */}
       <motion.div 
-        animate={progress >= 80 ? {
+        animate={progress >= 70 ? {
           x: [-shakeIntensity, shakeIntensity, -shakeIntensity],
           y: [shakeIntensity, -shakeIntensity, shakeIntensity],
         } : {}}
@@ -25,39 +25,44 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
         className="relative w-80 h-80 flex items-center justify-center"
       >
         
-        {/* 1. Exterior Aura (Fire Halo) - The focal point of the animation */}
+        {/* 1. Exterior Aura (Overheating Halo) - Starts building at 40, colors shift at 70 */}
         <AnimatePresence>
-          {progress >= 60 && (
+          {progress >= 40 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ 
                 opacity: 1, 
-                scale: [1, 1.03, 1],
+                scale: progress >= 90 ? [1, 1.08, 1] : [1, 1.03, 1],
                 rotate: [0, 360]
               }}
               exit={{ opacity: 0 }}
               transition={{ 
-                scale: { repeat: Infinity, duration: 1.5 },
+                scale: { repeat: Infinity, duration: progress >= 90 ? 0.6 : 1.5 }, // Faster pulsation at redline
                 rotate: { repeat: Infinity, duration: 12, ease: "linear" }
               }}
-              className="absolute inset-[-30px] rounded-full"
+              className="absolute inset-[-40px] rounded-full"
               style={{
                 background: progress >= 95
-                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0.4) 85%, transparent 100%)" // White-Hot
-                  : progress >= 90
-                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.7) 75%, rgba(255, 69, 0, 0.5) 90%, transparent 100%)" // Intense Red/Orange
-                  : progress >= 75
-                  ? "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.5) 80%, transparent 100%)" // Orange
-                  : "radial-gradient(circle, transparent 65%, rgba(252, 211, 77, 0.3) 80%, transparent 100%)", // Yellow
-                filter: `blur(${progress >= 90 ? '20px' : '12px'})`,
+                  ? "radial-gradient(circle, transparent 58%, rgba(255,255,255,0.8) 65%, rgba(255, 0, 0, 0.9) 85%, transparent 100%)" // WHITE-HOT / RED-STREAK
+                  : progress >= 85
+                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.7) 78%, transparent 100%)" // DEEP RED
+                  : progress >= 70
+                  ? "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.5) 82%, transparent 100%)" // INTENSE ORANGE
+                  : "radial-gradient(circle, transparent 65%, rgba(252, 211, 77, 0.25) 82%, transparent 100%)", // SUBTLE YELLOW
+                filter: `blur(${progress >= 85 ? '25px' : '15px'})`,
                 zIndex: 5
               }}
             />
           )}
         </AnimatePresence>
 
-        {/* 2. Main Gauge SVG - Clean Interface */}
-        <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_20px_rgba(0,0,0,1)] relative z-10">
+        {/* 2. Main Gauge SVG */}
+        <svg viewBox="0 0 200 200" 
+          className="w-full h-full drop-shadow-[0_0_20px_rgba(0,0,0,1)] relative z-10"
+          style={{
+            filter: progress > 92 ? `brightness(${1 + (progress - 92) / 10}) contrast(1.2)` : 'none'
+          }}
+        >
           <defs>
             <pattern id="carbon" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
               <rect width="10" height="10" fill="#111" />
@@ -137,14 +142,23 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
           {/* Tapered Needle */}
           <g transform="translate(100, 100)">
             <motion.g
-              animate={{ rotate: rotation }}
-              transition={{ type: "spring", stiffness: 45, damping: 12 }}
+              animate={{ 
+                rotate: rotation,
+                // Subtle high-frequency vibration inside the SVG too
+                x: progress > 90 ? [0, -0.5, 0.5, 0] : 0,
+                y: progress > 90 ? [0, 0.5, -0.5, 0] : 0
+              }}
+              transition={{ 
+                rotate: { type: "spring", stiffness: 45, damping: 12 },
+                x: { repeat: Infinity, duration: 0.05 },
+                y: { repeat: Infinity, duration: 0.05 }
+              }}
             >
               <rect x="-100" y="-100" width="200" height="200" fill="none" opacity={0} pointerEvents="none" />
               <path 
                 d="M -3 3 L 0 -75 L 3 3 Z" 
-                fill={progress > 90 ? "#fff" : "#ef4444"}
-                style={{ filter: progress > 90 ? "drop-shadow(0 0 8px #fff)" : "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
+                fill={progress > 94 ? "#fff" : "#ef4444"}
+                style={{ filter: progress > 94 ? "drop-shadow(0 0 8px #fff)" : "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
               />
               <path d="M -1 0 L 0 -72 L 1 0 Z" fill="rgba(255,255,255,0.3)" />
             </motion.g>

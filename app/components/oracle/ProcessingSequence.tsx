@@ -15,10 +15,10 @@ interface Props {
  * Precisely timed for a 43.28-second "Expert Analysis" experience.
  * 
  * Progression Profile:
- * - 0-20%: Initial spin-up (Fast - 2s)
- * - 20-60%: Deep Data Crunch (Slow & Variable - 30s)
- * - 60-90%: Building Momentum (Gradual Acceleration - 10s)
- * - 90-100%: Sudden Redline Burst (Blistering Finish - 1.28s)
+ * - 0-20%: Spin-up (Fast - 2s)
+ * - 20-70%: Deep Data Crunch (Slow & Variable - 25s)
+ * - 70-90%: Building Overheat (Gradual Acceleration - 10s)
+ * - 90-100%: Redline Final Velocity (Deliberate & Intense - 6.28s)
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -65,30 +65,29 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         let delay = 100;
 
         if (current < 20) {
-          // Phase 1: 0-20% (Fast - approx 2s total)
+          // Phase 1: 0-20% (Fast - 2s)
           delay = 100;
-        } else if (current >= 20 && current < 60) {
-          // Phase 2: 20-60% (Deep Crunch - approx 30s total)
-          // 40 steps at ~750ms avg
-          delay = 400 + Math.random() * 700;
-        } else if (current >= 60 && current < 90) {
-          // Phase 3: 60-90% (Building - approx 10s total)
-          // 30 steps accelerating from 500ms down to 150ms
-          const factor = (current - 60) / 30;
-          delay = 500 - (factor * 350);
+        } else if (current >= 20 && current < 70) {
+          // Phase 2: 20-70% (Crunch - 25s)
+          // 50 steps at ~500ms avg
+          delay = 300 + Math.random() * 400;
+        } else if (current >= 70 && current < 90) {
+          // Phase 3: 70-90% (Building Overheat - 10s)
+          // 20 steps accelerating from 600ms down to 400ms
+          const factor = (current - 70) / 20;
+          delay = 600 - (factor * 200);
         } else {
-          // Phase 4: 90-100% (Burst - approx 1.28s total)
-          // 10 steps at ~128ms
+          // Phase 4: 90-100% (Redline Velocity - 6.28s)
+          // 10 steps at ~628ms
           const factor = (current - 90) / 10;
-          delay = 150 - (factor * 100);
+          delay = 700 - (factor * 150);
         }
 
         await new Promise((r) => setTimeout(r, delay));
         current += 1;
 
-        // If we hit 99% and API isn't back, crawl slowly until it is.
-        // With 43 seconds, it's virtually guaranteed to be ready.
-        if (current === 99 && !apiReady) {
+        // Safety check - wait at 98 if API isn't ready
+        if (current === 98 && !apiReady) {
           while(!apiReady) {
             await new Promise(r => setTimeout(r, 200));
           }
@@ -98,7 +97,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       // Final state
       setProgress(100);
       setStatusText("Maximum Velocity Reached!");
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 1000));
 
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
