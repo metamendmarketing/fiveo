@@ -195,6 +195,10 @@ img, video, svg {
 .entry-card-title {
   font-size: 1.125rem;
   margin-bottom: 0.5rem;
+  min-height: 2.8rem; /* Force consistent height for 1 or 2 lines */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .entry-card-tagline {
@@ -240,6 +244,7 @@ img, video, svg {
   .entry-card-title {
     font-size: 0.875rem;
     margin-bottom: 0;
+    min-height: auto;
   }
   .entry-card-tagline {
     display: none; /* Hide tagline in mobile landscape to save precious height */

@@ -8,7 +8,7 @@
 "use client";
 
 
-import { Sparkles, Cpu, Activity, Factory } from "lucide-react";
+import { Sparkles, Cpu, Wrench, ShieldCheck } from "lucide-react";
 
 const PATHS = [
   {
@@ -19,21 +19,21 @@ const PATHS = [
   },
   {
     mode: "setup" as const,
-    title: "I Know My Setup",
+    title: "I Know My Build",
     tagline: "You know your build. We'll match the tech.",
-    icon: <Cpu className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Wrench className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "specs" as const,
     title: "I Know My Specs",
     tagline: "Direct input. No hand-holding.",
-    icon: <Activity className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <Cpu className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
   {
     mode: "oem" as const,
     title: "OEM Replacement",
     tagline: "Stock car? Fix it fast with verified parts.",
-    icon: <Factory className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
+    icon: <ShieldCheck className="w-7 h-7 text-white stroke-[2px] relative z-10" />,
   },
 ];
 
