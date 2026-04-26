@@ -237,9 +237,9 @@ export default function OracleWizard() {
         </div>
       )}
 
-      {/* Main step container — fills remaining viewport on mobile, cinematic on desktop */}
-      <div className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex-1 min-h-0 flex flex-col
-        ${currentStep === 'results' ? 'md:min-h-[90dvh] md:flex-none' : 'md:flex-none md:aspect-video'}`}>
+      {/* Main step container — min-h-dvh fills viewport on mobile, aspect-video on desktop */}
+      <div className={`relative w-full max-w-7xl mx-auto md:rounded-[2.5rem] md:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col
+        ${currentStep === 'results' ? 'min-h-dvh' : 'min-h-dvh md:min-h-0 md:aspect-video'}`}>
         {/* Dynamic Background Layer */}
         <div 
           className="absolute inset-0 transition-opacity duration-1000 md:rounded-[2.5rem]"
@@ -252,8 +252,8 @@ export default function OracleWizard() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] md:rounded-[2.5rem]" />
         
-        {/* Content Container — scrollable on mobile, centered on desktop */}
-        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-4 lg:gap-12 flex-1 min-h-0 overflow-y-auto ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'}`}>
+        {/* Content Container — fills wizard height, scrolls if needed */}
+        <div className={`relative z-10 flex flex-col lg:flex-row w-full p-4 sm:p-8 lg:p-16 gap-4 lg:gap-12 flex-1 overflow-y-auto ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'}`}>
           {/* Active Step Content */}
           <div className={`flex-1 min-w-0 flex flex-col ${currentStep === 'results' ? 'items-start' : 'items-center justify-center'} w-full`}>
             <AnimatePresence mode="wait">
