@@ -6,98 +6,64 @@ interface SpeedometerProgressProps {
 }
 
 export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progress }) => {
-  // Map progress (0-100) to needle rotation
-  // Start: approx 225deg (-135deg from top), End: approx 135deg (total 270deg range)
   const rotation = (progress / 100) * 270 - 135;
 
-  const showHalo = progress >= 95;
-  const showFullFlames = progress >= 99;
+  // Shake Intensity Calculation (starts at 80, violent at 100)
+  const shakeIntensity = progress >= 80 
+    ? Math.pow((progress - 80) / 20, 2) * 6 // Quadratic growth up to 6px
+    : 0;
 
-  // Constants for SVG circles
-  const radius = 85;
-  const circumference = 2 * Math.PI * radius;
   return (
-    <div className="relative flex flex-col items-center justify-center py-10 select-none">
-      <div className="relative w-80 h-80 flex items-center justify-center">
+    <div className="relative flex flex-col items-center justify-center py-10 select-none overflow-visible">
+      {/* Violent Shake Container */}
+      <motion.div 
+        animate={progress >= 80 ? {
+          x: [-shakeIntensity, shakeIntensity, -shakeIntensity],
+          y: [shakeIntensity, -shakeIntensity, shakeIntensity],
+        } : {}}
+        transition={{ repeat: Infinity, duration: 0.05 }}
+        className="relative w-80 h-80 flex items-center justify-center"
+      >
         
-        {/* 1. Chaotic Fire Halo (Outer Glow) */}
+        {/* 1. Exterior Aura (Fire Halo) - The focal point of the animation */}
         <AnimatePresence>
-          {progress >= 66 && (
+          {progress >= 60 && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ 
-                opacity: [0.6, 1, 0.8], 
-                scale: [1, 1.1, 1],
+                opacity: 1, 
+                scale: [1, 1.03, 1],
                 rotate: [0, 360]
               }}
               exit={{ opacity: 0 }}
               transition={{ 
-                scale: { repeat: Infinity, duration: 0.8 }, // Faster pulsation
-                rotate: { repeat: Infinity, duration: 5, ease: "linear" }
+                scale: { repeat: Infinity, duration: 1.5 },
+                rotate: { repeat: Infinity, duration: 12, ease: "linear" }
               }}
-              className="absolute inset-[-20px] rounded-full"
+              className="absolute inset-[-30px] rounded-full"
               style={{
-                background: progress >= 90
-                  ? "radial-gradient(circle, transparent 55%, rgba(255,255,255,0.7) 65%, rgba(255, 69, 0, 0.9) 85%, transparent 100%)" 
-                  : "radial-gradient(circle, transparent 60%, rgba(255, 140, 0, 0.5) 80%, transparent 100%)",
-                filter: `blur(${progress > 90 ? '25px' : '12px'})`,
+                background: progress >= 95
+                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0.4) 85%, transparent 100%)" // White-Hot
+                  : progress >= 90
+                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.7) 75%, rgba(255, 69, 0, 0.5) 90%, transparent 100%)" // Intense Red/Orange
+                  : progress >= 75
+                  ? "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.5) 80%, transparent 100%)" // Orange
+                  : "radial-gradient(circle, transparent 65%, rgba(252, 211, 77, 0.3) 80%, transparent 100%)", // Yellow
+                filter: `blur(${progress >= 90 ? '20px' : '12px'})`,
                 zIndex: 5
               }}
             />
           )}
         </AnimatePresence>
 
-        {/* 2. Intense White-Hot Particles (Chaotic) */}
-        {progress >= 85 && (
-          <div className="absolute inset-0 pointer-events-none z-20">
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                animate={{ 
-                  scale: [1, 2.5, 0],
-                  opacity: [1, 1, 0],
-                  y: [0, -100 - Math.random() * 100],
-                  x: [0, (Math.random() - 0.5) * 120],
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 0.3 + Math.random() * 0.3, // High velocity
-                  delay: i * 0.02
-                }}
-                className="absolute left-1/2 top-1/2 w-4 h-4 bg-white rounded-full blur-[4px]"
-                style={{ 
-                  transform: `rotate(${i * 18}deg) translateY(-140px)`,
-                  boxShadow: "0 0 15px #fff, 0 0 30px #ff4500"
-                }}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* 3. Overexposure Flash (Builds to white-out) */}
-        {progress >= 95 && (
-          <motion.div 
-            animate={{ opacity: [0.2, 0.6, 0.2] }}
-            transition={{ repeat: Infinity, duration: 0.1 }}
-            className="absolute inset-0 rounded-full bg-white mix-blend-overlay z-30 pointer-events-none"
-          />
-        )}
-
-        {/* 4. Main Gauge SVG */}
-        <svg viewBox="0 0 200 200" 
-          className="w-full h-full drop-shadow-[0_0_20px_rgba(0,0,0,1)] relative z-10"
-          style={{
-            filter: progress > 90 ? `brightness(${1 + (progress - 90) / 10}) contrast(1.2)` : 'none'
-          }}
-        >
+        {/* 2. Main Gauge SVG - Clean Interface */}
+        <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_20px_rgba(0,0,0,1)] relative z-10">
           <defs>
-            {/* Carbon Fiber Pattern */}
             <pattern id="carbon" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
               <rect width="10" height="10" fill="#111" />
               <path d="M0 0 L5 5 M5 0 L10 5 M0 5 L5 10 M5 5 L10 10" stroke="#1a1a1a" strokeWidth="1" />
             </pattern>
 
-            {/* Glowing Gradient for progress */}
             <linearGradient id="gaugeGradient" gradientTransform="rotate(90)">
               <stop offset="0%" stopColor="#10b981" />
               <stop offset="50%" stopColor="#f59e0b" />
@@ -110,11 +76,9 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             </filter>
           </defs>
 
-          {/* Background Outer Ring (Chrome) */}
           <circle cx="100" cy="100" r="98" fill="#222" stroke="#444" strokeWidth="1.5" />
           <circle cx="100" cy="100" r="95" fill="url(#carbon)" stroke="#000" strokeWidth="2" />
 
-          {/* Track Shadow */}
           <path
             d="M 43.5 156.5 A 80 80 0 1 1 156.5 156.5"
             fill="none"
@@ -123,7 +87,6 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             strokeLinecap="round"
           />
 
-          {/* Active Progress Glow Arc */}
           <motion.path
             d="M 43.5 156.5 A 80 80 0 1 1 156.5 156.5"
             fill="none"
@@ -138,7 +101,6 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             className="opacity-80"
           />
 
-          {/* Tick Marks & Numbers */}
           {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map((val) => {
             const angle = (val / 300) * 270 - 225;
             const rad = (angle * Math.PI) / 180;
@@ -157,10 +119,8 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             );
           })}
 
-          {/* Center Text */}
           <text x="100" y="85" fill="#555" fontSize="8" fontWeight="bold" textAnchor="middle" className="uppercase tracking-widest">MPH</text>
 
-          {/* Digital Percentage Counter */}
           <rect x="75" y="140" width="50" height="25" rx="3" fill="#000" stroke="#333" strokeWidth="1" />
           <text 
             x="100" y="157" 
@@ -174,56 +134,29 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             {Math.round(progress)}%
           </text>
 
-          {/* Needle Base Pin (3D Effect) */}
-          <circle cx="100" cy="100" r="10" fill="#333" />
-          <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
-          <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
-
           {/* Tapered Needle */}
           <g transform="translate(100, 100)">
             <motion.g
-              animate={{ 
-                rotate: rotation,
-                x: progress > 90 ? [0, -1, 1, 0] : 0,
-                y: progress > 90 ? [0, 1, -1, 0] : 0
-              }}
-              transition={{ 
-                rotate: { type: "spring", stiffness: 45, damping: 12 },
-                x: { repeat: Infinity, duration: 0.05 },
-                y: { repeat: Infinity, duration: 0.05 }
-              }}
+              animate={{ rotate: rotation }}
+              transition={{ type: "spring", stiffness: 45, damping: 12 }}
             >
               <rect x="-100" y="-100" width="200" height="200" fill="none" opacity={0} pointerEvents="none" />
               <path 
                 d="M -3 3 L 0 -75 L 3 3 Z" 
-                fill={progress > 90 ? "#fff" : progress > 70 ? "#ef4444" : "#fff"}
-                style={{ filter: `drop-shadow(0 0 ${progress > 90 ? '12px' : '5px'} #ff4500)` }}
+                fill={progress > 90 ? "#fff" : "#ef4444"}
+                style={{ filter: progress > 90 ? "drop-shadow(0 0 8px #fff)" : "drop-shadow(0 0 5px rgba(255,0,0,0.5))" }}
               />
               <path d="M -1 0 L 0 -72 L 1 0 Z" fill="rgba(255,255,255,0.3)" />
             </motion.g>
           </g>
 
-          {/* Needle Pin Center */}
           <circle cx="100" cy="100" r="10" fill="#333" />
           <circle cx="100" cy="100" r="10" fill="url(#carbon)" />
           <circle cx="100" cy="100" r="8" fill="none" stroke="#555" strokeWidth="1" />
           <circle cx="100" cy="100" r="4" fill="#666" />
           <circle cx="100" cy="100" r="2" fill="#999" />
         </svg>
-
-        {/* 5. Intense Screen Shake & Flash Overlay */}
-        {progress > 80 && (
-          <motion.div
-            animate={{ 
-              x: progress > 95 ? [-3, 3, -2, 2, 0] : [-1, 1, -1],
-              y: progress > 95 ? [3, -3, 2, -2, 0] : [1, -1, 1],
-              backgroundColor: progress > 98 ? ["rgba(255,255,255,0)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0)"] : "transparent"
-            }}
-            transition={{ repeat: Infinity, duration: 0.05 }}
-            className="absolute inset-[-50px] pointer-events-none z-40 rounded-full"
-          />
-        )}
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -12,13 +12,13 @@ interface Props {
 /**
  * ProcessingSequence — Analysis Synthesis Animation
  * 
- * High-performance "dyno run" speedometer with "Exploding Finish".
+ * Precisely timed for a 43.28-second "Expert Analysis" experience.
  * 
- * Timing Logic:
- * - 0-20%: Spin-up (Fast)
- * - 20-80%: Computation (Slow & jittery)
- * - 80-100%: Redline Sprint (Extremely Fast/Chaotic)
- * - NO STALLS: Dials down to a crawl if API is slow, but keeps moving.
+ * Progression Profile:
+ * - 0-20%: Initial spin-up (Fast - 2s)
+ * - 20-60%: Deep Data Crunch (Slow & Variable - 30s)
+ * - 60-90%: Building Momentum (Gradual Acceleration - 10s)
+ * - 90-100%: Sudden Redline Burst (Blistering Finish - 1.28s)
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -29,7 +29,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     let apiData: OracleApiResponse | null = null;
     let apiReady = false;
 
-    // 1. Initiate background analysis
+    // 1. Kick off analysis immediately
     (async () => {
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
@@ -44,59 +44,62 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         console.error("[ProcessingSequence] Analysis failed:", err);
         apiData = { 
           results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
-          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, 
-          candidatePoolSize: 0, error: "API call failed" 
+          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
         };
         apiReady = true;
       }
     })();
 
-    // 2. Execute progress simulation with Sub-Decimal Smoothness
+    // 2. Execute precision-timed progress simulation
     const runProgress = async () => {
       let current = 0;
       
-      while (current <= 100) {
+      while (current < 100) {
         if (hasCompletedRef.current) return;
 
         setProgress(current);
 
-        // Map status messages
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // Dynamic Pacing logic
-        let delay = 40;
-        let increment = 1;
+        let delay = 100;
 
-        if (current < 25) {
-          // Phase 1: Fast Start
-          delay = 25;
-          increment = 0.8;
-        } else if (current >= 25 && current < 83) {
-          // Phase 2: The Deep Crunch
-          delay = apiReady ? 60 : 100 + Math.random() * 80;
-          increment = apiReady ? 0.6 : 0.3;
+        if (current < 20) {
+          // Phase 1: 0-20% (Fast - approx 2s total)
+          delay = 100;
+        } else if (current >= 20 && current < 60) {
+          // Phase 2: 20-60% (Deep Crunch - approx 30s total)
+          // 40 steps at ~750ms avg
+          delay = 400 + Math.random() * 700;
+        } else if (current >= 60 && current < 90) {
+          // Phase 3: 60-90% (Building - approx 10s total)
+          // 30 steps accelerating from 500ms down to 150ms
+          const factor = (current - 60) / 30;
+          delay = 500 - (factor * 350);
         } else {
-          // Phase 3: The Sprint (83-100)
-          // If API isn't ready, crawl at 0.1 increments to keep it moving
-          if (!apiReady) {
-            delay = 200;
-            increment = 0.1;
-          } else {
-            // Blistering but smooth sprint
-            delay = 20;
-            increment = 1.2;
-          }
+          // Phase 4: 90-100% (Burst - approx 1.28s total)
+          // 10 steps at ~128ms
+          const factor = (current - 90) / 10;
+          delay = 150 - (factor * 100);
         }
 
         await new Promise((r) => setTimeout(r, delay));
-        current += increment;
+        current += 1;
 
-        // Cap at 100
-        if (current > 100) current = 101; 
+        // If we hit 99% and API isn't back, crawl slowly until it is.
+        // With 43 seconds, it's virtually guaranteed to be ready.
+        if (current === 99 && !apiReady) {
+          while(!apiReady) {
+            await new Promise(r => setTimeout(r, 200));
+          }
+        }
       }
 
-      // 3. Instant Completion
+      // Final state
+      setProgress(100);
+      setStatusText("Maximum Velocity Reached!");
+      await new Promise(r => setTimeout(r, 200));
+
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
         onComplete(apiData || { 
