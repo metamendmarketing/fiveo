@@ -274,7 +274,7 @@ export default function OracleWizard() {
           className="absolute inset-0 transition-opacity duration-1000 lg:rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
-            backgroundSize: (currentStep === "preferences" || currentStep === "results") ? "400px" : "cover", 
+            backgroundSize: (currentStep === "preferences" || currentStep === "results") ? "800px" : "cover", 
             backgroundPosition: "center",
             backgroundRepeat: (currentStep === "preferences" || currentStep === "results") ? "repeat" : "no-repeat",
           }}
