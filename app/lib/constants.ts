@@ -259,7 +259,7 @@ export const IMAGES = {
   raceFuel: `${BASE}/race-fuel.png`,
   pumpGas: `${BASE}/pump-gas.png`,
   diagnosticBay: `${BASE}/diagnostic-bay.png`,
-  mixedUse: `${BASE}/mixed-use-v2.png`,
+  mixedUse: `${BASE}/mixed-use.png`,
   improveStreet: `${BASE}/improve-street.png`,
 } as const;
 
