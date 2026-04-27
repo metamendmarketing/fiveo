@@ -49,7 +49,12 @@ export function StepGoal({ profile, onUpdate, onNext }: Props) {
                   ? "border-[#00AEEF] shadow-[0_0_20px_rgba(0,174,239,0.3)]"
                   : "border-white/20 shadow-lg hover:border-white/50"
               }`}
-              style={{ backgroundImage: `url(${opt.image})`, backgroundSize: "cover", backgroundPosition: "center" }}
+              style={{ 
+                backgroundImage: `url(${opt.image})`, 
+                backgroundSize: "cover", 
+                backgroundPosition: "center",
+                filter: 'brightness(1.15) contrast(1.05)'
+              }}
             >
               <div className={`absolute inset-0 transition-opacity duration-300 ${profile.goal === opt.value ? 'bg-gradient-to-t from-black/90 via-black/40 to-[#00AEEF]/20' : 'bg-gradient-to-t from-black/90 via-black/40 to-transparent group-hover:from-black/95'}`} />
               <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 text-left">
