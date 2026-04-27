@@ -274,12 +274,12 @@ export default function OracleWizard() {
           className="absolute inset-0 transition-opacity duration-1000 lg:rounded-[2.5rem]"
           style={{
             backgroundImage: `url(${getStepBackground(currentStep)})`,
-            backgroundSize: (currentStep === "preferences" || currentStep === "results") ? "320px" : "cover", 
+            backgroundSize: (currentStep === "preferences" || currentStep === "results") ? "500px" : "cover", 
             backgroundPosition: "center",
             backgroundRepeat: (currentStep === "preferences" || currentStep === "results") ? "repeat" : "no-repeat",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-[2px] lg:rounded-[2.5rem]" />
+        <div className={`absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 lg:rounded-[2.5rem] ${(currentStep === 'preferences' || currentStep === 'results') ? '' : 'backdrop-blur-[2px]'}`} />
         
         {/* Content Container — centered within the cinematic frame */}
         <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
