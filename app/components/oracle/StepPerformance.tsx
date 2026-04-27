@@ -75,7 +75,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
           <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold drop-shadow-sm">
             {section === "hp" && "What is your power target for this vehicle?"}
             {section === "fuel" && "Fuel type"}
-            {section === "mods" && "Installed modifications"}
+            {section === "mods" && "What modifications are installed?"}
           </p>
           {/* Sub-section breadcrumb */}
           <div className="flex items-center justify-start gap-1">
