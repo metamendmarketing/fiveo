@@ -117,12 +117,12 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-6 relative overflow-hidden">
-      {/* Background Watermark Logo */}
-      <div className="absolute top-12 left-12 opacity-5 pointer-events-none hidden md:block">
+      {/* Background Watermark Logo - 2X Size */}
+      <div className="absolute top-6 left-6 opacity-15 pointer-events-none">
         <img 
           src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png" 
           alt="" 
-          className="w-48 grayscale brightness-200"
+          className="w-64 md:w-96 grayscale brightness-150"
         />
       </div>
 
