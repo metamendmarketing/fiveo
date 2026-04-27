@@ -23,6 +23,7 @@ export interface Product {
   description?: string;
   hero_image_url?: string;
   product_url?: string;
+  url_key?: string;
   raw_categories?: string[];
 }
 

@@ -162,6 +162,34 @@ export function calculateRequiredCC(
   return Math.round(requiredLBHR * 10.5);
 }
 
+/**
+ * Standardizes product store URLs to the current FiveO Motorsport structure.
+ * 1. Prioritizes the clean SEO 'url_key' slug.
+ * 2. Removes legacy '.html' extensions.
+ * 3. Ensures a trailing slash for root-collapsed products.
+ */
+export function getStoreUrl(product: { url_key?: string; product_url?: string }): string {
+  const BASE_STORE = "https://www.fiveomotorsport.com";
+  
+  // Strategy A: Use the clean SEO slug (url_key) if available
+  if (product.url_key) {
+    let slug = product.url_key;
+    if (slug.startsWith("http")) return slug; // Already full URL
+    if (slug.startsWith("/")) slug = slug.slice(1);
+    if (!slug.endsWith("/")) slug += "/";
+    return `${BASE_STORE}/${slug}`;
+  }
+
+  // Strategy B: Clean up legacy product_url
+  if (product.product_url) {
+    let clean = product.product_url.replace(/\.html$/, "");
+    if (!clean.endsWith("/")) clean += "/";
+    return clean;
+  }
+
+  return "#";
+}
+
 // ═══════════════════════════════════════
 // 4. SCORING WEIGHTS (Layer 1)
 // ═══════════════════════════════════════

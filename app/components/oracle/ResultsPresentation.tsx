@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { type BuildProfile, IMAGES } from "@/app/lib/constants";
+import { type BuildProfile, IMAGES, getStoreUrl } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
@@ -406,9 +406,9 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                 >
                   Back to Results
                 </button>
-                {selectedResult.product.product_url && (
+                {(selectedResult.product.product_url || selectedResult.product.url_key) && (
                   <a 
-                    href={selectedResult.product.product_url} 
+                    href={getStoreUrl(selectedResult.product)} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="bg-[#E10600] text-white text-xs font-black uppercase tracking-[0.2em] px-8 py-3 rounded-lg shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] transition-all flex items-center justify-center"
