@@ -249,7 +249,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                       <button 
                         className="w-full bg-black text-white text-[9px] font-black uppercase py-3 tracking-[0.15em] hover:bg-[#00AEEF] transition-colors rounded"
                       >
-                        Explore Analysis
+                        Explore Fitment
                       </button>
                     </div>
                   </div>
