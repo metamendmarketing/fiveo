@@ -249,9 +249,9 @@ const BASE = "/fiveo/demo/oracle";
 
 export const IMAGES = {
   engineBayHero: `${BASE}/engine-bay-hero.png`,
-  sunsetHighway: `${BASE}/sunset-highway.png`,
-  trackDrift: `${BASE}/track-drift.png`,
-  nightStreet: `${BASE}/night-street.png`,
+  sunsetHighway: `${BASE}/daily-driver-v4.png`,
+  trackDrift: `${BASE}/track-racing-v4.png`,
+  nightStreet: `${BASE}/street-performance-v4.png`,
   dynoFlames: `${BASE}/dyno-flames.png`,
   carbonFiber: `${BASE}/carbon-v6.png`,
   darkWeave: `${BASE}/carbon-v6.png`,
@@ -259,7 +259,7 @@ export const IMAGES = {
   raceFuel: `${BASE}/race-fuel.png`,
   pumpGas: `${BASE}/pump-gas.png`,
   diagnosticBay: `${BASE}/diagnostic-bay.png`,
-  mixedUse: `${BASE}/mixed-use.png`,
+  mixedUse: `${BASE}/mixed-use-v4.png`,
   improveStreet: `${BASE}/improve-street.png`,
 } as const;
 
