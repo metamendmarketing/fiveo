@@ -254,14 +254,6 @@ export default function OracleWizard() {
 
   return (
     <div className="w-full">
-      {/* Progress tracking UI */}
-      {currentStep !== "entry" && currentStep !== "results" && currentStep !== "processing" && (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-          <StepIndicator
-            percent={progressPercent}
-          />
-        </div>
-      )}
 
       {/* Main step container — expands to fit content on phones, cinematic on lg+ */}
       <div
@@ -313,19 +305,23 @@ export default function OracleWizard() {
             <BuildProfilePanel profile={profile} />
           </div>
         )}
+
+        {/* Discreet Navigation — Inside the frame at the bottom */}
+        {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
+          <div className="relative z-10 w-full px-8 pb-8 mt-auto flex justify-between items-center opacity-60 hover:opacity-100 transition-opacity">
+            <button 
+              onClick={back} 
+              className="text-white/80 hover:text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 group transition-colors"
+            >
+              <span className="group-hover:-translate-x-1 transition-transform">←</span> Back
+            </button>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 italic">
+              Step {stepIndex} of {steps.length - 2}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Step Navigation Footer */}
-      {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center border-t border-gray-100 mt-8">
-          <button onClick={back} className="oracle-cta-secondary text-sm">
-            ← Back
-          </button>
-          <span className="text-xs font-bold uppercase tracking-widest text-gray-400">
-            Step {stepIndex} of {steps.length - 2}
-          </span>
-        </div>
-      )}
 
 
       {/* Edit Build Modal */}
