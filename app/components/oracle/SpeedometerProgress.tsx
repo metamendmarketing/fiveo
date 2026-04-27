@@ -8,16 +8,16 @@ interface SpeedometerProgressProps {
 export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progress }) => {
   const rotation = (progress / 100) * 270 - 135;
 
-  // Shake Intensity Calculation (starts building at 70, violent at 100)
-  const shakeIntensity = progress >= 70 
-    ? Math.pow((progress - 70) / 30, 2) * 8 // Quadratic growth up to 8px
+  // Shake Intensity Calculation (calmed down, starts at 80)
+  const shakeIntensity = progress >= 80 
+    ? Math.pow((progress - 80) / 20, 2) * 3 // Reduced to 3px max for a calmer feel
     : 0;
 
   return (
     <div className="relative flex flex-col items-center justify-center py-10 select-none overflow-visible">
-      {/* Violent Shake Container */}
+      {/* Reduced Shake Container */}
       <motion.div 
-        animate={progress >= 70 ? {
+        animate={progress >= 80 ? {
           x: [-shakeIntensity, shakeIntensity, -shakeIntensity],
           y: [shakeIntensity, -shakeIntensity, shakeIntensity],
         } : {}}
@@ -25,31 +25,29 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
         className="relative w-80 h-80 flex items-center justify-center"
       >
         
-        {/* 1. Exterior Aura (Overheating Halo) - Starts building at 40, colors shift at 70 */}
+        {/* 1. Exterior Aura (Fire Halo) - Starts at 80% (240 MPH) */}
         <AnimatePresence>
-          {progress >= 40 && (
+          {progress >= 80 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ 
                 opacity: 1, 
-                scale: progress >= 90 ? [1, 1.08, 1] : [1, 1.03, 1],
+                scale: [1, 1.02, 1],
                 rotate: [0, 360]
               }}
               exit={{ opacity: 0 }}
               transition={{ 
-                scale: { repeat: Infinity, duration: progress >= 90 ? 0.6 : 1.5 }, // Faster pulsation at redline
-                rotate: { repeat: Infinity, duration: 12, ease: "linear" }
+                scale: { repeat: Infinity, duration: 2 },
+                rotate: { repeat: Infinity, duration: 15, ease: "linear" }
               }}
-              className="absolute inset-[-40px] rounded-full"
+              className="absolute inset-[-25px] rounded-full"
               style={{
-                background: progress >= 95
-                  ? "radial-gradient(circle, transparent 58%, rgba(255,255,255,0.8) 65%, rgba(255, 0, 0, 0.9) 85%, transparent 100%)" // WHITE-HOT / RED-STREAK
-                  : progress >= 85
-                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.7) 78%, transparent 100%)" // DEEP RED
-                  : progress >= 70
-                  ? "radial-gradient(circle, transparent 65%, rgba(245, 158, 11, 0.5) 82%, transparent 100%)" // INTENSE ORANGE
-                  : "radial-gradient(circle, transparent 65%, rgba(252, 211, 77, 0.25) 82%, transparent 100%)", // SUBTLE YELLOW
-                filter: `blur(${progress >= 85 ? '25px' : '15px'})`,
+                background: progress >= 97
+                  ? "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.7) 70%, rgba(255,255,255,0.3) 85%, transparent 100%)" // White-Hot at very end
+                  : progress >= 90
+                  ? "radial-gradient(circle, transparent 60%, rgba(239, 68, 68, 0.6) 75%, rgba(255, 69, 0, 0.4) 90%, transparent 100%)" // Red
+                  : "radial-gradient(circle, transparent 65%, rgba(252, 211, 77, 0.4) 80%, transparent 100%)", // Yellow/Orange
+                filter: `blur(${progress >= 95 ? '18px' : '10px'})`,
                 zIndex: 5
               }}
             />
