@@ -274,7 +274,7 @@ export default function OracleWizard() {
         <div className={`absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 lg:rounded-[2.5rem] ${(currentStep === 'preferences' || currentStep === 'results') ? '' : 'backdrop-blur-[2px]'}`} />
         
         {/* Content Container — centered within the cinematic frame */}
-        <div className={`relative z-10 w-full p-4 sm:p-6 lg:p-16 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:pt-16 lg:px-16 lg:pb-4 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
           {/* Active Step Content */}
           <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col'}`}>
             <AnimatePresence mode="wait">
@@ -308,7 +308,7 @@ export default function OracleWizard() {
 
         {/* Discreet Navigation — Inside the frame at the bottom */}
         {currentStep !== "entry" && currentStep !== "processing" && currentStep !== "results" && (
-          <div className="relative z-10 w-full px-8 pb-8 mt-auto flex justify-between items-center opacity-60 hover:opacity-100 transition-opacity">
+          <div className="relative z-10 w-full px-8 pb-6 mt-auto flex justify-between items-center opacity-60 hover:opacity-100 transition-opacity">
             <button 
               onClick={back} 
               className="text-white/80 hover:text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 group transition-colors"
