@@ -73,7 +73,7 @@ export function StepPerformance({ profile, onUpdate, onNext }: Props) {
             The <span className="text-[#00AEEF]">Numbers</span>
           </h2>
           <p className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold drop-shadow-sm">
-            {section === "hp" && "Power target"}
+            {section === "hp" && "What is your power target for this vehicle?"}
             {section === "fuel" && "Fuel type"}
             {section === "mods" && "Installed modifications"}
           </p>
