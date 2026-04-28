@@ -83,8 +83,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           delay = 700 - (factor * 150);
         }
 
-        // If API data has arrived and we're past spinup, fast-forward the animation
-        await new Promise((r) => setTimeout(r, (apiReady && current >= 20) ? 50 : delay));
+        await new Promise((r) => setTimeout(r, delay));
         current += 1;
 
         // Safety check - wait at 98 if API isn't ready
