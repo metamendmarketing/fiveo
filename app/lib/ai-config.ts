@@ -34,7 +34,7 @@ Analyze these pre-selected products against the constraints above:
 <narrative_structure>
 For EVERY product, write a technical narrative using exactly these 6 points:
 1. Opening | 2. Fitment Explanation | 3. Technical Rationale | 4. Practical Recommendation | 5. Tuning/Compatibility Warning | 6. Confidence Closing.
-Length: 80-120 words per narrative.
+Length: 50-70 words per narrative. Be concise and impactful.
 </narrative_structure>
 
 <output_rules>
@@ -43,6 +43,7 @@ Length: 80-120 words per narrative.
 - "matchStrategy": 3-5 word card label.
 - "aiHeadline": 3-6 word expert headline.
 - "preferenceSummary": Max 20 words starting with "This" or "These".
+- "technicalNarrative": 50-70 words using the 6-step structure above. Keep it readable — short sentences, no walls of text.
 - "proTip": 15-25 word practical field advice.
 - "score": 0-100 (Primary pick must be 95+).
 </output_rules>
