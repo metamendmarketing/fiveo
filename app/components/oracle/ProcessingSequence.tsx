@@ -62,41 +62,23 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        let delay = 100;
-        const progress = current;
-
-        if (progress < 20) {
-          // Stage 1: Quick Climb (0-20% in ~3s)
-          delay = 150;
-        } else if (progress >= 20 && progress < 35) {
-          // Stage 2: Data Crunch (20-35% in ~5s)
-          delay = 333;
-        } else if (progress >= 35 && progress < 75) {
-          // Stage 3: File Processing Illusion (35-75% in ~14s)
-          delay = 200 + Math.random() * 300; 
-        } else {
-          // Stage 4: Acceleration (75-100% in ~7s)
-          const factor = (progress - 75) / 25;
-          delay = 400 - (factor * 250);
-        }
-
+        let delay = 50; // Fast climb for testing (0-100% in 5s)
+        
         await new Promise((r) => setTimeout(r, delay));
         
-        // REAL SPEED TRIGGER: Jump to 100 immediately if data is ready
+        // INSTANT SNAP: The moment data is ready, we finish.
         if (apiReady) {
           current = 100;
           setProgress(100);
           break;
         }
 
-        current += 1;
-
-        // Safety check - wait at 98 if API isn't ready
-        if (current === 98 && !apiReady) {
-          while(!apiReady) {
-            await new Promise(r => setTimeout(r, 200));
-          }
+        // Hold at 99% until data arrives
+        if (current < 99) {
+          current += 1;
         }
+
+        setProgress(current);
       }
 
       // Final state
