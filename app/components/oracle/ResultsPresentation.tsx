@@ -49,12 +49,16 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
   }, [results]);
 
   useEffect(() => {
-    // If we only have the top 3 narratives (tiered response), fetch the remaining ones in the background
+    // Detect which results actually have high-quality AI narratives vs heuristic fallbacks
     const resultsWithAi = results.filter(r => r.technicalNarrative && !r.matchStrategy?.includes("Expert Fitment Match"));
     
-    // In our tiered "top3" response, results[0-2] have AI data, [3-9] have heuristic fallbacks.
-    // So we check if we have exactly 3 high-quality AI narratives.
-    if (results.length > 3 && resultsWithAi.length <= 3) {
+    console.log(`[ResultsPresentation] Total results: ${results.length}, Quality AI results: ${resultsWithAi.length}`);
+
+    // Trigger background fetch if we have some AI results but not all, OR if we have at least 2
+    // We relax the condition "resultsWithAi.length <= 3" because sometimes AI might only return 2
+    if (results.length > resultsWithAi.length && resultsWithAi.length >= 1) {
+      console.log(`[ResultsPresentation] Triggering background fetch for remaining ${results.length - resultsWithAi.length} narratives...`);
+      
       (async () => {
         try {
           const skipIds = resultsWithAi.map(r => r.product.id);
@@ -67,9 +71,15 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
           const data: OracleApiResponse = await res.json();
           const newAiResults = data.results;
           
+          console.log(`[ResultsPresentation] Background fetch success! Received ${newAiResults.length} new narratives.`);
+
           setLocalResults(prev => prev.map(p => {
             const match = newAiResults.find(n => n.product.id === p.product.id);
-            return match ? { ...p, ...match } : p;
+            if (match) {
+              console.log(`[ResultsPresentation] Swapping narrative for product: ${p.product.name}`);
+              return { ...p, ...match };
+            }
+            return p;
           }));
         } catch (err) {
           console.error("[ResultsPresentation] Background AI fetch failed:", err);

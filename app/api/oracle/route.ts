@@ -189,6 +189,9 @@ export async function POST(req: NextRequest) {
         matchType: c.matchType,
       }));
 
+      console.log(`[Oracle] Prompting AI for ${aiCandidates.length} candidates...`);
+
+
       const prompt = ACTIVE_PERSONA
         .replace("{{vehicleLabel}}", vehicleLabel)
         .replace("{{goal}}", profile.goal || "general upgrade")
@@ -215,6 +218,8 @@ export async function POST(req: NextRequest) {
       
       selectionStrategy = refined.selectionStrategy || "";
       const refinedList = refined.refinement || [];
+      console.log(`[Oracle] AI returned ${refinedList.length} refined candidates`);
+
 
       if (refinedList.length > 0) {
         const aiEnriched = refinedList

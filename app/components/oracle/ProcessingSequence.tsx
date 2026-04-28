@@ -32,6 +32,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     // 1. Kick off analysis immediately (Tiered: Top 3 only for speed)
     (async () => {
       try {
+        console.log(`[ProcessingSequence] Starting tiered analysis (top3)...`);
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -39,6 +40,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
+        console.log(`[ProcessingSequence] Top 3 results received: ${apiData?.results?.length || 0}`);
         apiReady = true;
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
@@ -65,20 +67,20 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         let delay = 100;
 
         if (current < 20) {
-          // Phase 1: 0-20% (Fast - 1.5s)
-          delay = 75;
+          // Phase 1: 0-20% (Fast - 2s)
+          delay = 100;
         } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - 10s)
-          // 50 steps at ~200ms avg
-          delay = 150 + Math.random() * 100;
+          // Phase 2: 20-70% (Crunch - 15s)
+          // 50 steps at ~300ms avg
+          delay = 200 + Math.random() * 200;
         } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - 5s)
+          // Phase 3: 70-90% (Building Overheat - 6s)
           const factor = (current - 70) / 20;
-          delay = 300 - (factor * 100);
+          delay = 400 - (factor * 200);
         } else {
-          // Phase 4: 90-100% (Redline Final Velocity - 3s)
+          // Phase 4: 90-100% (Redline Final Velocity - 4s)
           const factor = (current - 90) / 10;
-          delay = 350 - (factor * 100);
+          delay = 450 - (factor * 100);
         }
 
         await new Promise((r) => setTimeout(r, delay));
