@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { type BuildProfile, IMAGES, getStoreUrl } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
@@ -41,6 +41,53 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
   onEdit 
 }: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
+  const [localResults, setLocalResults] = useState<ScoredProduct[]>(results);
+  const hasPatchedRef = useRef(false);
+
+  // Synchronize local state with incoming results
+  useEffect(() => {
+    setLocalResults(results);
+    hasPatchedRef.current = false;
+  }, [results]);
+
+  // Execute background "Patch" fetch for remaining narratives
+  useEffect(() => {
+    const missingNarratives = results.some(r => !r.technicalNarrative);
+    if (missingNarratives && !hasPatchedRef.current) {
+      hasPatchedRef.current = true;
+      (async () => {
+        try {
+          const res = await fetch("/fiveo/demo/api/oracle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              profile, 
+              tier: "patch",
+              results // Pass existing technical data to bypass DB overhead
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const patched = data.results || [];
+            if (patched.length > 0) {
+              setLocalResults(prev => {
+                const newResults = [...prev];
+                patched.forEach((p: ScoredProduct) => {
+                  const idx = newResults.findIndex(r => r.product.id === p.product.id);
+                  if (idx !== -1) {
+                    newResults[idx] = { ...newResults[idx], ...p };
+                  }
+                });
+                return newResults;
+              });
+            }
+          }
+        } catch (err) {
+          console.error("[ResultsPresentation] Background patch failed:", err);
+        }
+      })();
+    }
+  }, [profile, results]);
 
   if (!results || results.length === 0) {
     return (
@@ -74,8 +121,8 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
     );
   }
 
-  const topPick = results[0];
-  const others = results.slice(1);
+  const topPick = localResults[0];
+  const others = localResults.slice(1);
 
   return (
     <div className="w-full flex flex-col">
@@ -95,7 +142,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
-              {results.length} Precision-Matched Injector{results.length !== 1 ? "s" : ""}
+              {localResults.length} Precision-Matched Injector{localResults.length !== 1 ? "s" : ""}
             </p>
             {apiData && apiData.fitmentMatches > 0 && (
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
