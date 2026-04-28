@@ -17,7 +17,7 @@ let modelInstance: any = null;
  * Returns a configured Gemini GenerativeModel instance.
  * Memoizes the instance to avoid re-initializing the Vertex client on every call.
  */
-export function getVertexModel(modelName: string = "gemini-1.5-flash"): any {
+export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
   if (modelInstance) return modelInstance;
 
   let credentials;
