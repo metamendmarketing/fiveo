@@ -29,10 +29,9 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     let apiData: OracleApiResponse | null = null;
     let apiReady = false;
 
-    // 1. Kick off analysis immediately (Tiered: Top 3 only for speed)
+    // 1. Kick off analysis immediately (Tier: top3)
     (async () => {
       try {
-        console.log(`[ProcessingSequence] Starting tiered analysis (top3)...`);
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -40,7 +39,6 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
-        console.log(`[ProcessingSequence] Top 3 results received: ${apiData?.results?.length || 0}`);
         apiReady = true;
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
@@ -67,28 +65,21 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         let delay = 100;
 
         if (current < 20) {
-          // Phase 1: 0-20% (Fast - 2s)
           delay = 100;
         } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - 15s)
-          // 50 steps at ~300ms avg
           delay = 200 + Math.random() * 200;
         } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - 6s)
-          const factor = (current - 70) / 20;
-          delay = 400 - (factor * 200);
+          delay = 300;
         } else {
-          // Phase 4: 90-100% (Redline Final Velocity - 4s)
-          const factor = (current - 90) / 10;
-          delay = 450 - (factor * 100);
+          delay = 400;
         }
 
         await new Promise((r) => setTimeout(r, delay));
         current += 1;
 
-        // Safety check - wait at 97 if API isn't ready
+        // Hold at 97 until API is ready
         if (current >= 97 && !apiReady) {
-          current = 97; // Stay at 97
+          current = 97;
           while(!apiReady) {
             await new Promise(r => setTimeout(r, 500));
           }

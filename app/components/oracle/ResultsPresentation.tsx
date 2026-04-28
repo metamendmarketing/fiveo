@@ -43,57 +43,40 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
   const [localResults, setLocalResults] = useState<ScoredProduct[]>(results);
 
-  // Synchronize local results when prop changes (on initial load)
+  // Sync results when they arrive from the first call
   useEffect(() => {
     setLocalResults(results);
   }, [results]);
 
+  // Background fetch for the remaining narratives
   useEffect(() => {
-    // Detect which results actually have high-quality AI narratives vs heuristic fallbacks
-    const resultsWithAi = results.filter(r => r.technicalNarrative && !r.matchStrategy?.includes("Expert Fitment Match"));
-    
-    console.log(`[ResultsPresentation] Total results: ${results.length}, Quality AI results: ${resultsWithAi.length}`);
-
-    // Trigger background fetch if we have some AI results but not all, OR if we have at least 2
-    // We relax the condition "resultsWithAi.length <= 3" because sometimes AI might only return 2
-    if (results.length > resultsWithAi.length && resultsWithAi.length >= 1) {
-      console.log(`[ResultsPresentation] Triggering background fetch for remaining ${results.length - resultsWithAi.length} narratives...`);
-      
+    if (results.length > 3) {
       (async () => {
         try {
-          const skipIds = resultsWithAi.map(r => r.product.id);
-          const remainingCandidates = results.filter(r => !skipIds.includes(r.product.id));
-          
           const res = await fetch("/fiveo/demo/api/oracle", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-              profile, 
-              tier: "remaining", 
-              skipIds,
-              providedCandidates: remainingCandidates // Fast-path metadata
-            }),
+            body: JSON.stringify({ profile, tier: "remaining" }),
           });
-          if (!res.ok) throw new Error(`Background API error: ${res.status}`);
-          const data: OracleApiResponse = await res.json();
-          const newAiResults = data.results;
-          
-          console.log(`[ResultsPresentation] Background fetch success! Received ${newAiResults.length} new narratives.`);
-
-          setLocalResults(prev => prev.map(p => {
-            const match = newAiResults.find(n => n.product.id === p.product.id);
-            if (match) {
-              console.log(`[ResultsPresentation] Swapping narrative for product: ${p.product.name}`);
-              return { ...p, ...match };
-            }
-            return p;
-          }));
+          if (res.ok) {
+            const data = await res.json();
+            const remainingAi = data.results || [];
+            
+            setLocalResults(prev => {
+              const updated = [...prev];
+              remainingAi.forEach((aiItem: ScoredProduct) => {
+                const idx = updated.findIndex(p => p.product.id === aiItem.product.id);
+                if (idx !== -1) updated[idx] = { ...updated[idx], ...aiItem };
+              });
+              return updated;
+            });
+          }
         } catch (err) {
-          console.error("[ResultsPresentation] Background AI fetch failed:", err);
+          console.error("[ResultsPresentation] Background fetch failed:", err);
         }
       })();
     }
-  }, [profile, results]);
+  }, [profile, results.length]); // Only trigger if results length suggests we have something to fetch
 
   if (!results || results.length === 0) {
     return (
