@@ -219,13 +219,25 @@ export function scoreProducts(
  * @param results - Scored products to deduplicate
  */
 export function deduplicateResults(results: ScoredProduct[]): ScoredProduct[] {
-  const seen = new Set<string>();
+  const seenByName = new Set<string>();
+  const seenByUrl = new Set<string>();
   return results.filter((r) => {
+    // Strategy 1: Deduplicate by flow rate + name prefix (original logic)
     const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
     const nameKey = (r.product.name || "").toLowerCase().replace(/\s+/g, " ").trim().slice(0, 40);
-    const key = `${cc}-${nameKey}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
+    const nameDedup = `${cc}-${nameKey}`;
+
+    // Strategy 2: Deduplicate by resolved url_key (same store page = same product)
+    let urlKey = (r.product.url_key || "").toLowerCase();
+    if (urlKey.endsWith("-each")) urlKey = urlKey.slice(0, -5);
+    const urlDedup = urlKey || null;
+
+    // Reject if either dedup key has been seen before
+    if (seenByName.has(nameDedup)) return false;
+    if (urlDedup && seenByUrl.has(urlDedup)) return false;
+
+    seenByName.add(nameDedup);
+    if (urlDedup) seenByUrl.add(urlDedup);
     return true;
   });
 }
