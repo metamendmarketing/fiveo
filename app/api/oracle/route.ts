@@ -235,7 +235,7 @@ export async function POST(req: NextRequest) {
     filteredResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
     // 3. Map Real Scores to UI Confidence Range
-    const outputResults = filteredResults.slice(0, 10).map(r => {
+    const outputResults = filteredResults.slice(0, 7).map(r => {
       const real = r.score || 0;
       const mapped = UI_FLOOR + (real - REAL_THRESHOLD) * (100 - UI_FLOOR) / (100 - REAL_THRESHOLD);
       return {
