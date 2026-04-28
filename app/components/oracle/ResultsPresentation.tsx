@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
 import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
 import Image from "next/image";
+import AskOracle from "./AskOracle";
 
 interface Props {
   profile: BuildProfile;
@@ -33,6 +34,7 @@ interface Props {
  * - Optimized image delivery using next/image with intelligent resizing.
  */
 export const ResultsPresentation = React.memo(function ResultsPresentation({ 
+  profile,
   results, 
   apiData, 
   onRestart, 
@@ -395,6 +397,13 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                     </div>
                   </div>
                 </div>
+
+                {/* Ask the Oracle — Collapsible Q&A */}
+                <AskOracle
+                  productId={selectedResult.product.id}
+                  productName={selectedResult.product.name}
+                  buildProfile={profile}
+                />
 
               </div>
 
