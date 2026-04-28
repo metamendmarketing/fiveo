@@ -10,6 +10,13 @@ import { Product, ScoredProduct, FitmentRecord, OracleApiResponse } from "@/app/
 import rules from "@/app/lib/scoring-rules.json";
 import { ACTIVE_PERSONA } from "@/app/lib/ai-config";
 
+// Global cache declarations
+declare global {
+  var productCache: Product[] | undefined;
+  var productCacheTime: number | undefined;
+}
+
+
 /**
  * POST /api/oracle
  * 
@@ -31,52 +38,51 @@ export async function POST(req: NextRequest) {
 
     const supabase = getServerSupabase();
 
-    // ─── STAGE 1: DATA ACQUISITION ───
+    // ─── STAGE 1: DATA ACQUISITION (Cached) ───
     
-    // 1a. Fitment Lookup
+    // Use an in-memory cache to skip the 10s Supabase fetch on repeat searches
+    if (!global.productCache || Date.now() - (global.productCacheTime || 0) > 1000 * 60 * 60) {
+      console.log("[Oracle] Cache stale or empty. Fetching catalog from Supabase...");
+      let allProducts: Product[] = [];
+      let offset = 0;
+      const PAGE_SIZE = 1000;
+      
+      while (true) {
+        const { data: batch, error: prodErr } = await supabase
+          .from("products")
+          .select("*")
+          .range(offset, offset + PAGE_SIZE - 1);
+        
+        if (prodErr) throw prodErr;
+        if (!batch || batch.length === 0) break;
+        
+        allProducts = [...allProducts, ...(batch as Product[])];
+        if (batch.length < PAGE_SIZE) break;
+        offset += PAGE_SIZE;
+      }
+      
+      global.productCache = allProducts;
+      global.productCacheTime = Date.now();
+    } else {
+      console.log("[Oracle] Using warmed memory cache for catalog.");
+    }
+    
+    const products = global.productCache;
+
+    // 1b. Fitment Lookup (Must remain dynamic per search)
     let fitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
     if (profile.modelId) {
-      const { data: fitment, error: fitErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("model_id", Number(profile.modelId));
-
-      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
+      const { data: fitment } = await supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId));
       fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
     if (profile.makeId) {
-      const { data: makeFitment, error: makeErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("make_id", Number(profile.makeId));
-
-      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
+      const { data: makeFitment } = await supabase.from("product_fitment").select("product_id").eq("make_id", Number(profile.makeId));
       makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
-    let allProducts: Product[] = [];
-    let offset = 0;
-    const PAGE_SIZE = 1000;
-    
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
-        .from("products")
-        .select("*")
-        .range(offset, offset + PAGE_SIZE - 1);
-      
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
-      
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
-    }
-    
-    const products = allProducts;
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     
