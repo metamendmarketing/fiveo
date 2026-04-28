@@ -66,20 +66,18 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const progress = current;
 
         if (progress < 20) {
-          // Stage 1: Quick Climb (0-20% in ~2s)
-          delay = 100;
+          // Stage 1: Quick Climb (0-20% in ~3s)
+          delay = 150;
         } else if (progress >= 20 && progress < 35) {
-          // Stage 2: Data Crunch (20-35% in ~4s)
-          delay = 266;
+          // Stage 2: Data Crunch (20-35% in ~5s)
+          delay = 333;
         } else if (progress >= 35 && progress < 75) {
-          // Stage 3: File Processing Illusion (35-75% in ~12s)
-          // Jittered delay to simulate varying file sizes
-          delay = 150 + Math.random() * 300; 
+          // Stage 3: File Processing Illusion (35-75% in ~14s)
+          delay = 200 + Math.random() * 300; 
         } else {
           // Stage 4: Acceleration (75-100% in ~7s)
-          // Gradually speeds up as it nears completion
           const factor = (progress - 75) / 25;
-          delay = 400 - (factor * 300);
+          delay = 400 - (factor * 250);
         }
 
         await new Promise((r) => setTimeout(r, delay));
