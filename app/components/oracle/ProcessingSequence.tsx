@@ -86,10 +86,11 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         await new Promise((r) => setTimeout(r, delay));
         current += 1;
 
-        // Safety check - wait at 98 if API isn't ready
-        if (current === 98 && !apiReady) {
+        // Safety check - wait at 97 if API isn't ready
+        if (current >= 97 && !apiReady) {
+          current = 97; // Stay at 97
           while(!apiReady) {
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 500));
           }
         }
       }

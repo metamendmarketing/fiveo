@@ -62,10 +62,17 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
       (async () => {
         try {
           const skipIds = resultsWithAi.map(r => r.product.id);
+          const remainingCandidates = results.filter(r => !skipIds.includes(r.product.id));
+          
           const res = await fetch("/fiveo/demo/api/oracle", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ profile, tier: "remaining", skipIds }),
+            body: JSON.stringify({ 
+              profile, 
+              tier: "remaining", 
+              skipIds,
+              providedCandidates: remainingCandidates // Fast-path metadata
+            }),
           });
           if (!res.ok) throw new Error(`Background API error: ${res.status}`);
           const data: OracleApiResponse = await res.json();

@@ -23,135 +23,115 @@ export async function POST(req: NextRequest) {
     const profile: BuildProfile = body.profile;
     const tier: string | undefined = body.tier;
     const skipIds: number[] = body.skipIds || [];
+    const providedCandidates: any[] = body.providedCandidates || [];
+    
+    const isFastPath = tier === "remaining" && providedCandidates.length > 0;
+
 
     if (!profile) {
       return NextResponse.json({ error: "Profile is required" }, { status: 400 });
     }
 
-    const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
-    console.log("[Oracle] Processing build for:", vehicleLabel);
-
-    const supabase = getServerSupabase();
-
-    // ─── STAGE 1: DATA ACQUISITION ───
-    
-    // 1a. Fitment Lookup
+    let candidatePool: ScoredProduct[] = [];
     let fitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
+    let products: Product[] = [];
+    let vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
+    let requiredCC: number | null = null;
 
-    if (profile.modelId) {
-      const { data: fitment, error: fitErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("model_id", Number(profile.modelId));
+    if (!isFastPath) {
+      const supabase = getServerSupabase();
 
-      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
-      fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
-    }
-
-    if (profile.makeId) {
-      const { data: makeFitment, error: makeErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("make_id", Number(profile.makeId));
-
-      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
-      makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
-    }
-
-    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
-    let allProducts: Product[] = [];
-    let offset = 0;
-    const PAGE_SIZE = 1000;
-    
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
-        .from("products")
-        .select("*")
-        .range(offset, offset + PAGE_SIZE - 1);
+      // ─── STAGE 1: DATA ACQUISITION ───
       
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
+      if (profile.modelId) {
+        const { data: fitment, error: fitErr } = await supabase
+          .from("product_fitment")
+          .select("product_id")
+          .eq("model_id", Number(profile.modelId));
+        if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
+        fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
+      }
+
+      if (profile.makeId) {
+        const { data: makeFitment, error: makeErr } = await supabase
+          .from("product_fitment")
+          .select("product_id")
+          .eq("make_id", Number(profile.makeId));
+        if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
+        makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
+      }
+
+      let allProducts: Product[] = [];
+      let offset = 0;
+      const PAGE_SIZE = 1000;
+      while (true) {
+        const { data: batch, error: prodErr } = await supabase
+          .from("products")
+          .select("*")
+          .range(offset, offset + PAGE_SIZE - 1);
+        if (prodErr) throw prodErr;
+        if (!batch || batch.length === 0) break;
+        allProducts = [...allProducts, ...(batch as Product[])];
+        if (batch.length < PAGE_SIZE) break;
+        offset += PAGE_SIZE;
+      }
+      products = allProducts;
+
+      // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
       
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
-    }
-    
-    const products = allProducts;
+      requiredCC = (profile.hpMode === "custom" && profile.targetHP)
+        ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
+        : profile.desiredSizeCC || null;
 
-    // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
-    
-    const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
-      ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
-      : profile.desiredSizeCC || null;
+      const heuristicResults = scoreProducts(products, profile, fitmentProductIds, makeFitmentProductIds);
 
-    const heuristicResults = scoreProducts(
-      products,
-      profile,
-      fitmentProductIds,
-      makeFitmentProductIds
-    );
+      // URL Resolution & Deduplication
+      const allUrlKeys = new Set<string>();
+      for (const p of products) {
+        let key = (p.url_key || "").toLowerCase();
+        if (key.endsWith("-each")) key = key.slice(0, -5);
+        if (key.includes("-each-")) key = key.split("-each-")[0];
+        if (key) allUrlKeys.add(key);
+      }
 
-    // ─── STAGE 2b: URL RESOLUTION & DEDUPLICATION ───
-    
-    // Resolve variant url_keys to canonical parent product pages BEFORE deduplication.
-    // This ensures that physical products listed multiple times under different variant slugs
-    // are treated as the same canonical entity.
-    const allUrlKeys = new Set<string>();
-    for (const p of products) {
-      let key = (p.url_key || "").toLowerCase();
-      if (key.endsWith("-each")) key = key.slice(0, -5);
-      if (key.includes("-each-")) key = key.split("-each-")[0];
-      if (key) allUrlKeys.add(key);
-    }
-
-    const resolvedHeuristicResults = heuristicResults.map(r => {
-      let slug = (r.product.url_key || "").toLowerCase();
-      if (slug.endsWith("-each")) slug = slug.slice(0, -5);
-      if (slug.includes("-each-")) slug = slug.split("-each-")[0];
-      
-      let resolved = slug;
-      let parts = slug.split("-");
-      
-      if (parts.length > 3) {
-        for (let i = 3; i < parts.length; i++) {
-          const candidate = parts.slice(0, i).join("-");
-          if (allUrlKeys.has(candidate)) {
-            resolved = candidate;
-            break; 
+      const resolvedHeuristicResults = heuristicResults.map(r => {
+        let slug = (r.product.url_key || "").toLowerCase();
+        if (slug.endsWith("-each")) slug = slug.slice(0, -5);
+        if (slug.includes("-each-")) slug = slug.split("-each-")[0];
+        let resolved = slug;
+        let parts = slug.split("-");
+        if (parts.length > 3) {
+          for (let i = 3; i < parts.length; i++) {
+            const candidate = parts.slice(0, i).join("-");
+            if (allUrlKeys.has(candidate)) { resolved = candidate; break; }
           }
         }
+        if (resolved !== r.product.url_key) return { ...r, product: { ...r.product, url_key: resolved } };
+        return r;
+      });
+
+      const deduped = deduplicateResults(resolvedHeuristicResults);
+      candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
+
+      const fitmentMissing = deduped.filter(r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id));
+      if (fitmentMissing.length > 0) candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
+
+      if (profile.goal === "max-power") {
+        const highFlow = deduped.filter(r => {
+          const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
+          return cc >= (rules.goalBoosts["max-power"]?.minCC || 550) && !candidatePool.find(s => s.product.id === r.product.id);
+        }).slice(0, 4);
+        candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
       }
-
-      if (resolved !== r.product.url_key) {
-        return { ...r, product: { ...r.product, url_key: resolved } };
-      }
-      return r;
-    });
-
-    const deduped = deduplicateResults(resolvedHeuristicResults);
-
-    // Initial pool selection (Stage 2 Expansion)
-    let candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
-
-    // Inject fitment-confirmed products if they were missed by the top heuristic slice
-    const fitmentMissing = deduped.filter(
-      r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
-    );
-    if (fitmentMissing.length > 0) {
-      candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
+    } else {
+      console.log(`[Oracle] Fast-Path: Bypassing Supabase for ${providedCandidates.length} provided candidates`);
+      candidatePool = providedCandidates;
+      requiredCC = (profile.hpMode === "custom" && profile.targetHP)
+        ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
+        : profile.desiredSizeCC || null;
     }
 
-    // Goal-specific injections
-    if (profile.goal === "max-power") {
-      const highFlow = deduped.filter(r => {
-        const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
-        return cc >= (rules.goalBoosts["max-power"]?.minCC || 550) &&
-               !candidatePool.find(s => s.product.id === r.product.id);
-      }).slice(0, 4);
-      candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
-    }
 
     // ─── STAGE 3: AI REFINEMENT (Tiered) ───
     
@@ -207,7 +187,9 @@ export async function POST(req: NextRequest) {
         .replace("{{fitmentCount}}", fitmentProductIds.length.toString())
         .replace("{{makeFitmentCount}}", makeFitmentProductIds.length.toString())
         .replace("{{candidateCount}}", aiCandidates.length.toString())
-        .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
+        .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2))
+        + "\n\nIMPORTANT: You MUST return a refinement entry for EVERY candidate provided. Do not skip any IDs.";
+
 
       const result = await model.generateContent(prompt);
       const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
