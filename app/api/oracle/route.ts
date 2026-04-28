@@ -57,13 +57,26 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Catalog Fetch
-    const { data: allProducts, error: prodErr } = await supabase
-      .from("products")
-      .select("*");
+    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
+    let allProducts: Product[] = [];
+    let offset = 0;
+    const PAGE_SIZE = 1000;
     
-    if (prodErr) throw prodErr;
-    const products = allProducts as Product[] || [];
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("*")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+    
+    const products = allProducts;
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     

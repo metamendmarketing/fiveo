@@ -57,12 +57,22 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 1c. Fetch full catalog summary (lightweight — just key fields)
-    const { data: allProductsRaw } = await supabase
-      .from("products")
-      .select("id, name, flow_rate_cc, impedance, connector_type, manufacturer, fuel_types, price");
-
-    const allProducts = (allProductsRaw || []) as Product[];
+    // 1c. Fetch full catalog summary (lightweight — just key fields, paginated)
+    let allProducts: Product[] = [];
+    let catOffset = 0;
+    const CAT_PAGE_SIZE = 1000;
+    
+    while (true) {
+      const { data: batch } = await supabase
+        .from("products")
+        .select("id, name, flow_rate_cc, impedance, connector_type, manufacturer, fuel_types, price")
+        .range(catOffset, catOffset + CAT_PAGE_SIZE - 1);
+      
+      if (!batch || batch.length === 0) break;
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < CAT_PAGE_SIZE) break;
+      catOffset += CAT_PAGE_SIZE;
+    }
 
     // ─── STAGE 2: BUILD KNOWLEDGE BASE ───
 
