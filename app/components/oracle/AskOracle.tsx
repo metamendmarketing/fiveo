@@ -41,7 +41,7 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
     setResponse(null);
 
     try {
-      const res = await fetch("/api/oracle/ask", {
+      const res = await fetch("/fiveo/demo/api/oracle/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, productId, buildProfile }),
@@ -126,7 +126,7 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
                   type="text"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  placeholder={`Ask about ${productName.slice(0, 30)}...`}
+                  placeholder="Ask me anything..."
                   className="w-full bg-white/5 border border-white/15 rounded-xl py-3.5 pl-4 pr-14 text-sm font-medium text-white placeholder:text-white/30 focus:outline-none focus:border-[#00AEEF]/50 focus:bg-white/8 transition-all"
                 />
                 <button
