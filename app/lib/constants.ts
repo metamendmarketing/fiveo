@@ -185,7 +185,7 @@ export function getStoreUrl(product: { url_key?: string; product_url?: string })
 
   // Strategy B: Clean up legacy product_url
   if (product.product_url) {
-    let clean = product.product_url.replace(/\.html$/, "");
+    let clean = product.product_url.replace(/\.html/g, "");
     if (!clean.endsWith("/")) clean += "/";
     return clean;
   }
