@@ -63,24 +63,28 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         if (msg) setStatusText(msg.text);
 
         let delay = 100;
+        const progress = current;
 
-        if (current < 20) {
-          // Phase 1: 0-20% (Fast - 2s)
+        if (progress < 20) {
+          // Stage 1: Quick Climb (0-20% in ~2s)
           delay = 100;
-        } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - ~10s)
-          delay = 200;
-        } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - ~4s)
-          delay = 200;
+        } else if (progress >= 20 && progress < 35) {
+          // Stage 2: Data Crunch (20-35% in ~4s)
+          delay = 266;
+        } else if (progress >= 35 && progress < 75) {
+          // Stage 3: File Processing Illusion (35-75% in ~12s)
+          // Jittered delay to simulate varying file sizes
+          delay = 150 + Math.random() * 300; 
         } else {
-          // Phase 4: 90-100% (Redline Velocity - ~2.5s)
-          delay = 250;
+          // Stage 4: Acceleration (75-100% in ~7s)
+          // Gradually speeds up as it nears completion
+          const factor = (progress - 75) / 25;
+          delay = 400 - (factor * 300);
         }
 
         await new Promise((r) => setTimeout(r, delay));
         
-        // REAL SPEED TEST: Jump to 100 immediately if data is ready
+        // REAL SPEED TRIGGER: Jump to 100 immediately if data is ready
         if (apiReady) {
           current = 100;
           setProgress(100);
