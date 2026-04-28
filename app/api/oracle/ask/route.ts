@@ -63,11 +63,15 @@ export async function POST(req: NextRequest) {
     const CAT_PAGE_SIZE = 1000;
     
     while (true) {
-      const { data: batch } = await supabase
+      const { data: batch, error: catErr } = await supabase
         .from("products")
         .select("id, name, flow_rate_cc, impedance, connector_type, manufacturer, fuel_types, price")
         .range(catOffset, catOffset + CAT_PAGE_SIZE - 1);
       
+      if (catErr) {
+        console.error("[Oracle/Ask] Catalog Fetch Error:", catErr);
+        break; 
+      }
       if (!batch || batch.length === 0) break;
       allProducts = [...allProducts, ...(batch as Product[])];
       if (batch.length < CAT_PAGE_SIZE) break;
@@ -138,7 +142,7 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 3: AI PROMPT ───
 
-    const model = getVertexModel("gemini-2.5-flash");
+    const model = getVertexModel("gemini-1.5-flash");
     if (!model) {
       return NextResponse.json({
         answer: "Our AI service is temporarily unavailable. Please try again in a moment.",
