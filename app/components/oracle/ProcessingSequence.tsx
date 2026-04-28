@@ -29,13 +29,13 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     let apiData: OracleApiResponse | null = null;
     let apiReady = false;
 
-    // 1. Kick off analysis immediately (Tier: top3)
+    // 1. Kick off analysis immediately
     (async () => {
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ profile, tier: "top3" }),
+          body: JSON.stringify({ profile }),
         });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
@@ -62,35 +62,35 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // If API is ready, fast-forward to 100%
-        if (apiReady) {
-          await new Promise((r) => setTimeout(r, 50));
-          current += 1;
-          continue;
-        }
-
-        // Otherwise, move according to the cinematic curve
         let delay = 100;
 
         if (current < 20) {
+          // Phase 1: 0-20% (Fast - 2s)
           delay = 100;
         } else if (current >= 20 && current < 70) {
-          delay = 200 + Math.random() * 200;
+          // Phase 2: 20-70% (Crunch - 25s)
+          // 50 steps at ~500ms avg
+          delay = 300 + Math.random() * 400;
         } else if (current >= 70 && current < 90) {
-          delay = 400;
+          // Phase 3: 70-90% (Building Overheat - 10s)
+          // 20 steps accelerating from 600ms down to 400ms
+          const factor = (current - 70) / 20;
+          delay = 600 - (factor * 200);
         } else {
-          // Decelerate heavily as we approach 100% without data
+          // Phase 4: 90-100% (Redline Velocity - 6.28s)
+          // 10 steps at ~628ms
           const factor = (current - 90) / 10;
-          delay = 500 + (factor * 2000); // Slower and slower...
+          delay = 700 - (factor * 150);
         }
 
-        // Cap at 99% until API is ready
-        if (current >= 99) {
-          current = 99;
-          await new Promise((r) => setTimeout(r, 1000));
-        } else {
-          await new Promise((r) => setTimeout(r, delay));
-          current += 1;
+        await new Promise((r) => setTimeout(r, delay));
+        current += 1;
+
+        // Safety check - wait at 98 if API isn't ready
+        if (current === 98 && !apiReady) {
+          while(!apiReady) {
+            await new Promise(r => setTimeout(r, 200));
+          }
         }
       }
 

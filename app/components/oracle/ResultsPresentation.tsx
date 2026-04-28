@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { type BuildProfile, IMAGES, getStoreUrl } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
@@ -41,58 +41,6 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
   onEdit 
 }: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
-  const [localResults, setLocalResults] = useState<ScoredProduct[]>(results);
-
-  // Sync results when they arrive from the first call
-  useEffect(() => {
-    setLocalResults(results);
-  }, [results]);
-
-  // Background fetch for the remaining narratives (Gap-Fill Strategy)
-  useEffect(() => {
-    // Identify exactly which items are missing their AI narratives
-    // This handles both the 4-10 remainder AND any items that were skipped in the top 3
-    const missingItems = localResults.filter(r => !r.technicalNarrative);
-
-    if (missingItems.length > 0) {
-      (async () => {
-        try {
-          const targetIds = missingItems.map(r => r.product.id);
-          
-          const res = await fetch("/fiveo/demo/api/oracle", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-              profile, 
-              tier: "remaining",
-              targetIds // Tell the API exactly which gaps to fill
-            }),
-          });
-          
-          if (res.ok) {
-            const data = await res.json();
-            const gapFillResults = data.results || [];
-            
-            setLocalResults(prev => {
-              const updated = [...prev];
-              gapFillResults.forEach((aiItem: ScoredProduct) => {
-                const idx = updated.findIndex(p => p.product.id === aiItem.product.id);
-                if (idx !== -1) {
-                  // Swap in the AI content
-                  if (aiItem.technicalNarrative) {
-                    updated[idx] = { ...updated[idx], ...aiItem };
-                  }
-                }
-              });
-              return updated;
-            });
-          }
-        } catch (err) {
-          console.error("[ResultsPresentation] Gap-fill background fetch failed:", err);
-        }
-      })();
-    }
-  }, [profile, results.length]); // Re-trigger if results length changes (new search) // Only trigger if results length suggests we have something to fetch
 
   if (!results || results.length === 0) {
     return (
@@ -126,8 +74,8 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
     );
   }
 
-  const topPick = localResults[0];
-  const others = localResults.slice(1);
+  const topPick = results[0];
+  const others = results.slice(1);
 
   return (
     <div className="w-full flex flex-col">
@@ -147,7 +95,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
-              {localResults.length} Precision-Matched Injector{localResults.length !== 1 ? "s" : ""}
+              {results.length} Precision-Matched Injector{results.length !== 1 ? "s" : ""}
             </p>
             {apiData && apiData.fitmentMatches > 0 && (
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
