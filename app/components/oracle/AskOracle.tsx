@@ -24,11 +24,15 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
   const [response, setResponse] = useState<{ answer: string; citedSpecs?: string[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Auto-focus input when expanded
+  // Auto-focus input and scroll into view when expanded
   useEffect(() => {
-    if (isExpanded && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 300);
+    if (isExpanded) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+        bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 350);
     }
   }, [isExpanded]);
 
@@ -220,7 +224,7 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
               )}
 
               {/* Footer */}
-              <div className="flex justify-center pt-1 pb-1">
+              <div ref={bottomRef} className="flex justify-center pt-1 pb-1">
                 <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-white/20">
                   FiveO Engineering · Fact-Based Precision
                 </p>
