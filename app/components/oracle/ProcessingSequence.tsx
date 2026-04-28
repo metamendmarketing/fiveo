@@ -10,22 +10,25 @@ interface Props {
 }
 
 /**
- * ProcessingSequence — API-Driven Progress Animation
+ * ProcessingSequence — Analysis Synthesis Animation
  * 
- * The speedometer now reflects REAL API response time:
- * - 0→80%: Smooth animation while waiting for the API
- * - 80%: Holds here until API data arrives
- * - 80→100%: Quick completion animation once data is ready
- * - Delivers results immediately after the visual finish
+ * Precisely timed for a 43.28-second "Expert Analysis" experience.
+ * 
+ * Progression Profile:
+ * - 0-20%: Spin-up (Fast - 2s)
+ * - 20-70%: Deep Data Crunch (Slow & Variable - 25s)
+ * - 70-90%: Building Overheat (Gradual Acceleration - 10s)
+ * - 90-100%: Redline Final Velocity (Deliberate & Intense - 6.28s)
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
   const [statusText, setStatusText] = useState<string>(PROCESSING_MESSAGES[0].text);
   const hasCompletedRef = useRef(false);
-  const apiDataRef = useRef<OracleApiResponse | null>(null);
-  const apiReadyRef = useRef(false);
 
   useEffect(() => {
+    let apiData: OracleApiResponse | null = null;
+    let apiReady = false;
+
     // 1. Kick off analysis immediately
     (async () => {
       try {
@@ -35,68 +38,70 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           body: JSON.stringify({ profile }),
         });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
-        apiDataRef.current = await res.json();
-        apiReadyRef.current = true;
+        apiData = await res.json();
+        apiReady = true;
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
-        apiDataRef.current = { 
+        apiData = { 
           results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
           calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
         };
-        apiReadyRef.current = true;
+        apiReady = true;
       }
     })();
 
-    // 2. API-driven progress animation
+    // 2. Execute precision-timed progress simulation
     const runProgress = async () => {
       let current = 0;
-
-      // Phase A: Animate 0→80% smoothly (approx 3-4 seconds)
-      // This gives the user immediate visual feedback
-      while (current < 80) {
+      
+      while (current < 100) {
         if (hasCompletedRef.current) return;
 
         setProgress(current);
+
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        // If API finishes early, accelerate to 80%
-        const speed = apiReadyRef.current ? 20 : 80;
-        const delay = apiReadyRef.current ? 30 : (40 + Math.random() * 30);
+        let delay = 100;
+
+        if (current < 20) {
+          // Phase 1: 0-20% (Fast - 2s)
+          delay = 100;
+        } else if (current >= 20 && current < 70) {
+          // Phase 2: 20-70% (Crunch - 25s)
+          // 50 steps at ~500ms avg
+          delay = 300 + Math.random() * 400;
+        } else if (current >= 70 && current < 90) {
+          // Phase 3: 70-90% (Building Overheat - 10s)
+          // 20 steps accelerating from 600ms down to 400ms
+          const factor = (current - 70) / 20;
+          delay = 600 - (factor * 200);
+        } else {
+          // Phase 4: 90-100% (Redline Velocity - 6.28s)
+          // 10 steps at ~628ms
+          const factor = (current - 90) / 10;
+          delay = 700 - (factor * 150);
+        }
+
         await new Promise((r) => setTimeout(r, delay));
-        current += (100 - current) / speed;
-        current = Math.min(Math.round(current), 79);
-        
-        // Bump past thresholds to avoid getting stuck
-        if (current < 5) current = Math.max(current, 1);
-      }
+        current += 1;
 
-      // Phase B: Hold at 80% until API responds
-      setProgress(80);
-      setStatusText("Generating expert analysis...");
-
-      while (!apiReadyRef.current) {
-        if (hasCompletedRef.current) return;
-        await new Promise(r => setTimeout(r, 200));
-      }
-
-      // Phase C: API is ready — animate 80→100% quickly (~1.5s)
-      for (let i = 81; i <= 100; i++) {
-        if (hasCompletedRef.current) return;
-        setProgress(i);
-        const msg = [...PROCESSING_MESSAGES].reverse().find((m) => i >= m.threshold);
-        if (msg) setStatusText(msg.text);
-        await new Promise(r => setTimeout(r, 75));
+        // Safety check - wait at 98 if API isn't ready
+        if (current === 98 && !apiReady) {
+          while(!apiReady) {
+            await new Promise(r => setTimeout(r, 200));
+          }
+        }
       }
 
       // Final state
       setProgress(100);
       setStatusText("Maximum Velocity Reached!");
-      await new Promise(r => setTimeout(r, 800));
+      await new Promise(r => setTimeout(r, 1000));
 
       if (!hasCompletedRef.current) {
         hasCompletedRef.current = true;
-        onComplete(apiDataRef.current || { 
+        onComplete(apiData || { 
           results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
           calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
         });

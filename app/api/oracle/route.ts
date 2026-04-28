@@ -27,57 +27,56 @@ export async function POST(req: NextRequest) {
     }
 
     const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
-    console.time("[Oracle] Total Request");
     console.log("[Oracle] Processing build for:", vehicleLabel);
 
     const supabase = getServerSupabase();
 
-    // ─── STAGE 1: DATA ACQUISITION (Parallelized) ───
+    // ─── STAGE 1: DATA ACQUISITION ───
+    
+    // 1a. Fitment Lookup
+    let fitmentProductIds: number[] = [];
+    let makeFitmentProductIds: number[] = [];
 
-    // Helper: paginated catalog fetch with only scoring-relevant fields
-    async function fetchCatalog(): Promise<Product[]> {
-      const SCORING_FIELDS = "id, name, sku, flow_rate_cc, size_cc, impedance, connector_type, manufacturer, brand, fuel_types, price, url_key, raw_categories";
-      let all: Product[] = [];
-      let offset = 0;
-      const PAGE_SIZE = 1000;
-      
-      while (true) {
-        const { data: batch, error: prodErr } = await supabase
-          .from("products")
-          .select(SCORING_FIELDS)
-          .range(offset, offset + PAGE_SIZE - 1);
-        
-        if (prodErr) throw prodErr;
-        if (!batch || batch.length === 0) break;
-        all = [...all, ...(batch as Product[])];
-        if (batch.length < PAGE_SIZE) break;
-        offset += PAGE_SIZE;
-      }
-      return all;
+    if (profile.modelId) {
+      const { data: fitment, error: fitErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("model_id", Number(profile.modelId));
+
+      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
+      fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // Run all three queries in parallel
-    const [fitmentResult, makeFitmentResult, products] = await Promise.all([
-      // 1a. Model fitment
-      profile.modelId
-        ? supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId))
-        : Promise.resolve({ data: null, error: null }),
-      // 1b. Make fitment
-      profile.makeId
-        ? supabase.from("product_fitment").select("product_id").eq("make_id", Number(profile.makeId))
-        : Promise.resolve({ data: null, error: null }),
-      // 1c. Full catalog (selective fields only)
-      fetchCatalog(),
-    ]);
+    if (profile.makeId) {
+      const { data: makeFitment, error: makeErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("make_id", Number(profile.makeId));
 
-    if (fitmentResult.error) console.error("[Oracle] Model fitment query error:", fitmentResult.error.message);
-    if (makeFitmentResult.error) console.error("[Oracle] Make fitment query error:", makeFitmentResult.error.message);
+      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
+      makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
+    }
 
-    const fitmentProductIds = (fitmentResult.data as FitmentRecord[] || []).map(f => f.product_id);
-    const makeFitmentProductIds = (makeFitmentResult.data as FitmentRecord[] || []).map(f => f.product_id);
-
-    console.log(`[Oracle] Data acquired: ${products.length} products, ${fitmentProductIds.length} model fits, ${makeFitmentProductIds.length} make fits`);
-
+    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
+    let allProducts: Product[] = [];
+    let offset = 0;
+    const PAGE_SIZE = 1000;
+    
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("*")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+    
+    const products = allProducts;
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     
@@ -161,14 +160,6 @@ export async function POST(req: NextRequest) {
       const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
-      // Fetch descriptions ONLY for the ~20 candidates (not all 4,000)
-      const candidateIds = candidatePool.map(c => c.product.id);
-      const { data: descData } = await supabase
-        .from("products")
-        .select("id, description")
-        .in("id", candidateIds);
-      const descMap = new Map((descData || []).map((d: { id: number; description: string }) => [d.id, d.description]));
-
       const candidateData = candidatePool.map(c => ({
         id: c.product.id,
         name: c.product.name,
@@ -177,7 +168,7 @@ export async function POST(req: NextRequest) {
         impedance: c.product.impedance,
         connector: c.product.connector_type,
         brand: c.product.manufacturer || c.product.brand,
-        description: (descMap.get(c.product.id) || "")?.slice(0, 200),
+        description: c.product.description?.slice(0, 200),
         heuristicScore: c.score,
         hasFitment: c.hasFitment,
         matchType: c.matchType,
@@ -262,7 +253,6 @@ export async function POST(req: NextRequest) {
       candidatePoolSize: candidatePool.length,
     };
 
-    console.timeEnd("[Oracle] Total Request");
     return NextResponse.json(response);
   } catch (err: unknown) {
     console.error("[Oracle] Fatal API Error:", err instanceof Error ? err.message : err);
