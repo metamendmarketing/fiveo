@@ -228,21 +228,27 @@ export async function POST(req: NextRequest) {
       return r;
     });
 
-    // ─── STAGE 5: FINAL SORTING & NORMALIZATION ───
+    // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
     
-    // Ensure scores are sorted descending
-    outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+    const REAL_THRESHOLD = 50; // Drop anything below 50% real score
+    const UI_FLOOR = 70;       // Minimum displayed score is 70%
     
-    // Optional: Rescale if the top score is very low to maintain high-quality perception
-    const topScore = outputResults[0]?.score || 0;
-    if (topScore > 0 && topScore < 90) {
-      const factor = 98 / topScore;
-      outputResults = outputResults.map(r => ({
-        ...r,
-        score: Math.min(Math.round((r.score || 0) * factor), 99)
-      }));
-    }
+    // 1. Filter out low-quality matches
+    let filteredResults = outputResults.filter(r => (r.score || 0) >= REAL_THRESHOLD);
+    
+    // 2. Sort descending
+    filteredResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
+    // 3. Map Real Scores to UI Confidence Range
+    // Formula: UI = Floor + (Real - Threshold) * (100 - Floor) / (100 - Threshold)
+    outputResults = filteredResults.map(r => {
+      const real = r.score || 0;
+      const mapped = UI_FLOOR + (real - REAL_THRESHOLD) * (100 - UI_FLOOR) / (100 - REAL_THRESHOLD);
+      return {
+        ...r,
+        score: Math.min(Math.round(mapped), 99)
+      };
+    });
 
     const response: OracleApiResponse = {
       results: outputResults,
