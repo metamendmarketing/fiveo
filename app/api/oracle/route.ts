@@ -31,43 +31,52 @@ export async function POST(req: NextRequest) {
 
     const supabase = getServerSupabase();
 
-    // ─── STAGE 1: DATA ACQUISITION (Parallelized) ───
+    // ─── STAGE 1: DATA ACQUISITION ───
+    
+    // 1a. Fitment Lookup
+    let fitmentProductIds: number[] = [];
+    let makeFitmentProductIds: number[] = [];
 
-    // Paginated catalog fetch helper (keeps .select("*") — scoring engine needs description for fuel matching)
-    async function fetchCatalog(): Promise<Product[]> {
-      let all: Product[] = [];
-      let offset = 0;
-      const PAGE_SIZE = 1000;
-      while (true) {
-        const { data: batch, error: prodErr } = await supabase
-          .from("products")
-          .select("*")
-          .range(offset, offset + PAGE_SIZE - 1);
-        if (prodErr) throw prodErr;
-        if (!batch || batch.length === 0) break;
-        all = [...all, ...(batch as Product[])];
-        if (batch.length < PAGE_SIZE) break;
-        offset += PAGE_SIZE;
-      }
-      return all;
+    if (profile.modelId) {
+      const { data: fitment, error: fitErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("model_id", Number(profile.modelId));
+
+      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
+      fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // Fire all three queries simultaneously instead of sequentially
-    const [fitmentResult, makeFitmentResult, products] = await Promise.all([
-      profile.modelId
-        ? supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId))
-        : Promise.resolve({ data: null, error: null }),
-      profile.makeId
-        ? supabase.from("product_fitment").select("product_id").eq("make_id", Number(profile.makeId))
-        : Promise.resolve({ data: null, error: null }),
-      fetchCatalog(),
-    ]);
+    if (profile.makeId) {
+      const { data: makeFitment, error: makeErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("make_id", Number(profile.makeId));
 
-    if (fitmentResult.error) console.error("[Oracle] Model fitment query error:", fitmentResult.error.message);
-    if (makeFitmentResult.error) console.error("[Oracle] Make fitment query error:", makeFitmentResult.error.message);
+      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
+      makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
+    }
 
-    const fitmentProductIds = (fitmentResult.data as FitmentRecord[] || []).map(f => f.product_id);
-    const makeFitmentProductIds = (makeFitmentResult.data as FitmentRecord[] || []).map(f => f.product_id);
+    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
+    let allProducts: Product[] = [];
+    let offset = 0;
+    const PAGE_SIZE = 1000;
+    
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("*")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+    
+    const products = allProducts;
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     
