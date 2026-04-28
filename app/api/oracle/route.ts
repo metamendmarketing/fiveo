@@ -38,38 +38,9 @@ export async function POST(req: NextRequest) {
 
     const supabase = getServerSupabase();
 
-    // ─── STAGE 1: DATA ACQUISITION (Cached) ───
+    // ─── STAGE 1: DATA ACQUISITION (Optimized) ───
     
-    // Use an in-memory cache to skip the 10s Supabase fetch on repeat searches
-    if (!global.productCache || Date.now() - (global.productCacheTime || 0) > 1000 * 60 * 60) {
-      console.log("[Oracle] Cache stale or empty. Fetching catalog from Supabase...");
-      let allProducts: Product[] = [];
-      let offset = 0;
-      const PAGE_SIZE = 1000;
-      
-      while (true) {
-        const { data: batch, error: prodErr } = await supabase
-          .from("products")
-          .select("*")
-          .range(offset, offset + PAGE_SIZE - 1);
-        
-        if (prodErr) throw prodErr;
-        if (!batch || batch.length === 0) break;
-        
-        allProducts = [...allProducts, ...(batch as Product[])];
-        if (batch.length < PAGE_SIZE) break;
-        offset += PAGE_SIZE;
-      }
-      
-      global.productCache = allProducts;
-      global.productCacheTime = Date.now();
-    } else {
-      console.log("[Oracle] Using warmed memory cache for catalog.");
-    }
-    
-    const products = global.productCache;
-
-    // 1b. Fitment Lookup (Must remain dynamic per search)
+    // 1a. Fitment Lookup
     let fitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
@@ -83,13 +54,36 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-
-    // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
-    
+    // 1b. Targeted Catalog Fetch
+    // Instead of fetching 4,000 items, we pull a high-quality pool of confirmed fits + items in the right CC range.
     const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
       ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
       : profile.desiredSizeCC || null;
 
+    let products: Product[] = [];
+    
+    if (requiredCC) {
+      const minCC = requiredCC * 0.7;
+      const maxCC = requiredCC * 1.3;
+      
+      const { data: fastPool, error: poolErr } = await supabase
+        .from("products")
+        .select("*")
+        .or(`id.in.(${fitmentProductIds.join(",")}),and(flow_rate_cc.gte.${minCC},flow_rate_cc.lte.${maxCC})`)
+        .limit(500);
+
+      if (!poolErr && fastPool) products = fastPool as Product[];
+    }
+
+    // Fallback if pool is too small
+    if (products.length < 50) {
+      const { data: fallbackBatch } = await supabase.from("products").select("*").limit(500);
+      products = fallbackBatch as Product[] || [];
+    }
+
+
+    // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
+    
     const heuristicResults = scoreProducts(
       products,
       profile,
