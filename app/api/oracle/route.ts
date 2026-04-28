@@ -22,6 +22,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const profile: BuildProfile = body.profile;
     const tier = body.tier; // "top3" or "remaining"
+    const targetIds: number[] = body.targetIds || []; // Specifically requested IDs for gap-filling
+
 
     if (!profile) {
       return NextResponse.json({ error: "Profile is required" }, { status: 400 });
@@ -56,20 +58,33 @@ export async function POST(req: NextRequest) {
     }
 
     let allProducts: Product[] = [];
-    let offset = 0;
-    const PAGE_SIZE = 1000;
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
+    
+    // Optimization: If specific target IDs are provided, only fetch those
+    if (targetIds.length > 0) {
+      console.log(`[Oracle] Gap-Fill: Fetching ${targetIds.length} specific products...`);
+      const { data: specific, error: specErr } = await supabase
         .from("products")
         .select("*")
-        .range(offset, offset + PAGE_SIZE - 1);
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
+        .in("id", targetIds);
+      if (specErr) throw specErr;
+      allProducts = specific as Product[];
+    } else {
+      let offset = 0;
+      const PAGE_SIZE = 1000;
+      while (true) {
+        const { data: batch, error: prodErr } = await supabase
+          .from("products")
+          .select("*")
+          .range(offset, offset + PAGE_SIZE - 1);
+        if (prodErr) throw prodErr;
+        if (!batch || batch.length === 0) break;
+        allProducts = [...allProducts, ...(batch as Product[])];
+        if (batch.length < PAGE_SIZE) break;
+        offset += PAGE_SIZE;
+      }
     }
     const products = allProducts;
+
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     
@@ -118,16 +133,23 @@ export async function POST(req: NextRequest) {
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
 
-    // ─── STAGE 3: AI REFINEMENT (Simple Split) ───
+    // ─── STAGE 3: AI REFINEMENT (Gap-Fill Support) ───
     
     let aiCandidates: ScoredProduct[];
-    if (tier === "top3") {
+    if (targetIds.length > 0) {
+      // Priority 1: Specifically requested items (Gap-Fill)
+      aiCandidates = candidatePool.filter(c => targetIds.includes(c.product.id));
+    } else if (tier === "top3") {
+      // Priority 2: Initial fast wave
       aiCandidates = candidatePool.slice(0, 3);
     } else if (tier === "remaining") {
+      // Priority 3: Standard background wave
       aiCandidates = candidatePool.slice(3, rules.poolSize.aiMaxResults);
     } else {
+      // Default: Full process
       aiCandidates = candidatePool.slice(0, rules.poolSize.aiMaxResults);
     }
+
 
     let finalResults = aiCandidates;
     let selectionStrategy = "";

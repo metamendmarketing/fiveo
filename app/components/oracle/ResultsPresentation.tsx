@@ -48,30 +48,37 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
     setLocalResults(results);
   }, [results]);
 
-  // Background fetch for the remaining narratives
+  // Background fetch for the remaining narratives (Gap-Fill Strategy)
   useEffect(() => {
-    // Check if we need to fetch narratives (e.g. if others[0] is still heuristic)
-    const needsBackgroundFetch = others.length > 0 && others.some(o => !o.technicalNarrative);
+    // Identify exactly which items are missing their AI narratives
+    // This handles both the 4-10 remainder AND any items that were skipped in the top 3
+    const missingItems = localResults.filter(r => !r.technicalNarrative);
 
-    if (needsBackgroundFetch) {
+    if (missingItems.length > 0) {
       (async () => {
         try {
+          const targetIds = missingItems.map(r => r.product.id);
+          
           const res = await fetch("/fiveo/demo/api/oracle", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ profile, tier: "remaining" }),
+            body: JSON.stringify({ 
+              profile, 
+              tier: "remaining",
+              targetIds // Tell the API exactly which gaps to fill
+            }),
           });
           
           if (res.ok) {
             const data = await res.json();
-            const remainingAi = data.results || [];
+            const gapFillResults = data.results || [];
             
             setLocalResults(prev => {
               const updated = [...prev];
-              remainingAi.forEach((aiItem: ScoredProduct) => {
+              gapFillResults.forEach((aiItem: ScoredProduct) => {
                 const idx = updated.findIndex(p => p.product.id === aiItem.product.id);
                 if (idx !== -1) {
-                  // Only swap if we actually got AI content
+                  // Swap in the AI content
                   if (aiItem.technicalNarrative) {
                     updated[idx] = { ...updated[idx], ...aiItem };
                   }
@@ -81,11 +88,11 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             });
           }
         } catch (err) {
-          console.error("[ResultsPresentation] Background fetch failed:", err);
+          console.error("[ResultsPresentation] Gap-fill background fetch failed:", err);
         }
       })();
     }
-  }, [profile, results.length]); // Only trigger if results length suggests we have something to fetch
+  }, [profile, results.length]); // Re-trigger if results length changes (new search) // Only trigger if results length suggests we have something to fetch
 
   if (!results || results.length === 0) {
     return (
