@@ -166,7 +166,8 @@ export async function POST(req: NextRequest) {
           .replace("{{fitmentCount}}", fitmentProductIds.length.toString())
           .replace("{{makeFitmentCount}}", makeFitmentProductIds.length.toString())
           .replace("{{candidateCount}}", aiCandidates.length.toString())
-          .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
+          .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2))
+          + "\n\nIMPORTANT: Provide a detailed engineering narrative for EVERY single product ID listed above. Do not skip any.";
 
         const result = await model.generateContent(prompt);
         const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";

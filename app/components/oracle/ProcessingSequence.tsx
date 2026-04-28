@@ -62,6 +62,14 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
+        // If API is ready, fast-forward to 100%
+        if (apiReady) {
+          await new Promise((r) => setTimeout(r, 50));
+          current += 1;
+          continue;
+        }
+
+        // Otherwise, move according to the cinematic curve
         let delay = 100;
 
         if (current < 20) {
@@ -69,20 +77,20 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         } else if (current >= 20 && current < 70) {
           delay = 200 + Math.random() * 200;
         } else if (current >= 70 && current < 90) {
-          delay = 300;
-        } else {
           delay = 400;
+        } else {
+          // Decelerate heavily as we approach 100% without data
+          const factor = (current - 90) / 10;
+          delay = 500 + (factor * 2000); // Slower and slower...
         }
 
-        await new Promise((r) => setTimeout(r, delay));
-        current += 1;
-
-        // Hold at 97 until API is ready
-        if (current >= 97 && !apiReady) {
-          current = 97;
-          while(!apiReady) {
-            await new Promise(r => setTimeout(r, 500));
-          }
+        // Cap at 99% until API is ready
+        if (current >= 99) {
+          current = 99;
+          await new Promise((r) => setTimeout(r, 1000));
+        } else {
+          await new Promise((r) => setTimeout(r, delay));
+          current += 1;
         }
       }
 
