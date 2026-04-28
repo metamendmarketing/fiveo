@@ -62,23 +62,31 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
 
-        let delay = 50; // Fast climb for testing (0-100% in 5s)
-        
+        let delay = 100;
+
+        if (current < 20) {
+          // Phase 1: 0-20% (Fast - 1.5s)
+          delay = 75;
+        } else if (current >= 20 && current < 70) {
+          // Phase 2: 20-70% (Crunch - 15s)
+          delay = 200 + Math.random() * 200;
+        } else if (current >= 70 && current < 90) {
+          // Phase 3: 70-90% (Building Overheat - 5s)
+          delay = 250;
+        } else {
+          // Phase 4: 90-100% (Redline Velocity - 3.5s)
+          delay = 350;
+        }
+
         await new Promise((r) => setTimeout(r, delay));
-        
-        // INSTANT SNAP: The moment data is ready, we finish.
-        if (apiReady) {
-          current = 100;
-          setProgress(100);
-          break;
-        }
+        current += 1;
 
-        // Hold at 99% until data arrives
-        if (current < 99) {
-          current += 1;
+        // Safety check - wait at 98 if API isn't ready
+        if (current === 98 && !apiReady) {
+          while(!apiReady) {
+            await new Promise(r => setTimeout(r, 200));
+          }
         }
-
-        setProgress(current);
       }
 
       // Final state

@@ -10,13 +10,6 @@ import { Product, ScoredProduct, FitmentRecord, OracleApiResponse } from "@/app/
 import rules from "@/app/lib/scoring-rules.json";
 import { ACTIVE_PERSONA } from "@/app/lib/ai-config";
 
-// Global cache declarations
-declare global {
-  var productCache: Product[] | undefined;
-  var productCacheTime: number | undefined;
-}
-
-
 /**
  * POST /api/oracle
  * 
@@ -38,52 +31,59 @@ export async function POST(req: NextRequest) {
 
     const supabase = getServerSupabase();
 
-    // ─── STAGE 1: DATA ACQUISITION (Optimized) ───
+    // ─── STAGE 1: DATA ACQUISITION ───
     
     // 1a. Fitment Lookup
     let fitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
     if (profile.modelId) {
-      const { data: fitment } = await supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId));
+      const { data: fitment, error: fitErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("model_id", Number(profile.modelId));
+
+      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
       fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
     if (profile.makeId) {
-      const { data: makeFitment } = await supabase.from("product_fitment").select("product_id").eq("make_id", Number(profile.makeId));
+      const { data: makeFitment, error: makeErr } = await supabase
+        .from("product_fitment")
+        .select("product_id")
+        .eq("make_id", Number(profile.makeId));
+
+      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
       makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Targeted Catalog Fetch
-    // Instead of fetching 4,000 items, we pull a high-quality pool of confirmed fits + items in the right CC range.
+    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
+    let allProducts: Product[] = [];
+    let offset = 0;
+    const PAGE_SIZE = 1000;
+    
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("*")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+    
+    const products = allProducts;
+
+    // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
+    
     const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
       ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
       : profile.desiredSizeCC || null;
 
-    let products: Product[] = [];
-    
-    if (requiredCC) {
-      const minCC = requiredCC * 0.7;
-      const maxCC = requiredCC * 1.3;
-      
-      const { data: fastPool, error: poolErr } = await supabase
-        .from("products")
-        .select("*")
-        .or(`id.in.(${fitmentProductIds.join(",")}),and(flow_rate_cc.gte.${minCC},flow_rate_cc.lte.${maxCC})`)
-        .limit(500);
-
-      if (!poolErr && fastPool) products = fastPool as Product[];
-    }
-
-    // Fallback if pool is too small
-    if (products.length < 50) {
-      const { data: fallbackBatch } = await supabase.from("products").select("*").limit(500);
-      products = fallbackBatch as Product[] || [];
-    }
-
-
-    // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
-    
     const heuristicResults = scoreProducts(
       products,
       profile,

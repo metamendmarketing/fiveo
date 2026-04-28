@@ -99,7 +99,7 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
             strokeDasharray={377}
             initial={{ strokeDashoffset: 377 }}
             animate={{ strokeDashoffset: 377 - (progress / 100) * 377 }}
-            transition={{ duration: 0.1 }}
+            transition={{ type: "spring", stiffness: 40, damping: 15 }}
             filter="url(#outerGlow)"
             className="opacity-80"
           />
@@ -147,7 +147,7 @@ export const SpeedometerProgress: React.FC<SpeedometerProgressProps> = ({ progre
                 y: progress > 90 ? [0, 0.5, -0.5, 0] : 0
               }}
               transition={{ 
-                rotate: { duration: 0.1 },
+                rotate: { type: "spring", stiffness: 45, damping: 12 },
                 x: { repeat: Infinity, duration: 0.05 },
                 y: { repeat: Infinity, duration: 0.05 }
               }}
