@@ -174,8 +174,9 @@ export function getStoreUrl(product: { url_key?: string; product_url?: string })
   // Strategy A: Use the clean SEO slug (url_key) if available
   if (product.url_key) {
     let slug = product.url_key;
-    // Strip "-each" suffix — these are single-unit Magento variants that 404 on the live site
+    // Strip "-each" variants — single-unit Magento SKUs that 404 on the live site
     if (slug.endsWith("-each")) slug = slug.slice(0, -5);
+    if (slug.includes("-each-")) slug = slug.split("-each-")[0]; // e.g., "...-injectors-each-42lb" → "...-injectors"
     if (slug.startsWith("http")) return slug; // Already full URL
     if (slug.startsWith("/")) slug = slug.slice(1);
     if (!slug.endsWith("/")) slug += "/";

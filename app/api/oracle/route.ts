@@ -78,7 +78,44 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds
     );
 
-    const deduped = deduplicateResults(heuristicResults);
+    // ─── STAGE 2b: URL RESOLUTION & DEDUPLICATION ───
+    
+    // Resolve variant url_keys to canonical parent product pages BEFORE deduplication.
+    // This ensures that physical products listed multiple times under different variant slugs
+    // are treated as the same canonical entity.
+    const allUrlKeys = new Set<string>();
+    for (const p of products) {
+      let key = (p.url_key || "").toLowerCase();
+      if (key.endsWith("-each")) key = key.slice(0, -5);
+      if (key.includes("-each-")) key = key.split("-each-")[0];
+      if (key) allUrlKeys.add(key);
+    }
+
+    const resolvedHeuristicResults = heuristicResults.map(r => {
+      let slug = (r.product.url_key || "").toLowerCase();
+      if (slug.endsWith("-each")) slug = slug.slice(0, -5);
+      if (slug.includes("-each-")) slug = slug.split("-each-")[0];
+      
+      let resolved = slug;
+      let parts = slug.split("-");
+      
+      if (parts.length > 3) {
+        for (let i = 3; i < parts.length; i++) {
+          const candidate = parts.slice(0, i).join("-");
+          if (allUrlKeys.has(candidate)) {
+            resolved = candidate;
+            break; 
+          }
+        }
+      }
+
+      if (resolved !== r.product.url_key) {
+        return { ...r, product: { ...r.product, url_key: resolved } };
+      }
+      return r;
+    });
+
+    const deduped = deduplicateResults(resolvedHeuristicResults);
 
     // Initial pool selection (Stage 2 Expansion)
     let candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
@@ -176,6 +213,7 @@ export async function POST(req: NextRequest) {
     // ─── STAGE 4: FINALIZATION ───
     
     // Rescale scores and add fallbacks if AI didn't provide them
+    // (URL Resolution was moved to Stage 2b for better deduplication)
     let outputResults = finalResults.slice(0, rules.poolSize.aiMaxResults);
     const hasAiData = outputResults.some(r => r.matchStrategy);
 
@@ -191,50 +229,6 @@ export async function POST(req: NextRequest) {
     }
 
     outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
-
-    // ─── STAGE 4b: URL RESOLUTION ───
-    // Resolve variant url_keys to canonical parent product pages.
-    // Magento configurable products have a parent page (e.g., "black-ops-honda-acura-k-series")
-    // and variant SKUs with longer slugs (e.g., "...-40lbhr-410ccmin-with-pigtails") that 404.
-    // We build a set of all known url_keys and for any variant, find its shortest valid parent.
-    
-    const allUrlKeys = new Set<string>();
-    for (const p of products) {
-      let key = (p.url_key || "").toLowerCase();
-      if (key.endsWith("-each")) key = key.slice(0, -5);
-      if (key) allUrlKeys.add(key);
-    }
-
-    outputResults = outputResults.map(r => {
-      let slug = (r.product.url_key || "").toLowerCase();
-      if (slug.endsWith("-each")) slug = slug.slice(0, -5);
-      
-      // If this exact slug exists as-is, check if there's a shorter parent
-      // by progressively removing trailing segments
-      let resolved = slug;
-      let parts = slug.split("-");
-      
-      // Try progressively shorter prefixes to find the canonical parent
-      // Only shorten if the original slug is long enough (avoid false matches)
-      if (parts.length > 3) {
-        for (let i = parts.length - 1; i >= 3; i--) {
-          const candidate = parts.slice(0, i).join("-");
-          if (candidate !== slug && allUrlKeys.has(candidate)) {
-            resolved = candidate;
-            break; // Use the longest matching parent (most specific)
-          }
-        }
-      }
-
-      if (resolved !== slug) {
-        console.log(`[Oracle] URL resolved: ${slug} → ${resolved}`);
-        return {
-          ...r,
-          product: { ...r.product, url_key: resolved }
-        };
-      }
-      return r;
-    });
 
     const response: OracleApiResponse = {
       results: outputResults,
