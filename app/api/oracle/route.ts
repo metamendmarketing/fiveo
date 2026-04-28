@@ -223,26 +223,25 @@ export async function POST(req: NextRequest) {
       selectionStrategy = "I've analyzed your build specs against our precision engineering matrix. We've prioritized proven vehicle fitment and the flow rates you'll need to hit your performance goals safely.";
     }
 
-    // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
+    // ─── STAGE 4: FINALIZATION ───
     
-    const REAL_THRESHOLD = 50; // Drop anything below 50% real score
-    const UI_FLOOR = 70;       // Minimum displayed score is 70%
-    
-    // 1. Filter out low-quality matches and ensure we take at most 10
-    let filteredResults = finalResults.filter(r => (r.score || 0) >= REAL_THRESHOLD);
-    
-    // 2. Sort descending
-    filteredResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+    // Rescale scores and add fallbacks if AI didn't provide them
+    // (URL Resolution was moved to Stage 2b for better deduplication)
+    let outputResults = finalResults.slice(0, rules.poolSize.aiMaxResults);
+    const hasAiData = outputResults.some(r => r.matchStrategy);
 
-    // 3. Map Real Scores to UI Confidence Range
-    const outputResults = filteredResults.slice(0, 7).map(r => {
-      const real = r.score || 0;
-      const mapped = UI_FLOOR + (real - REAL_THRESHOLD) * (100 - UI_FLOOR) / (100 - REAL_THRESHOLD);
-      return {
+    if (!hasAiData) {
+      const maxHeuristic = Math.max(...outputResults.map(r => r.score || 0));
+      outputResults = outputResults.map(r => ({
         ...r,
-        score: Math.min(Math.round(mapped), 99)
-      };
-    });
+        score: maxHeuristic > 0 ? Math.round(((r.score || 0) / maxHeuristic) * 100) : 50,
+        matchStrategy: r.hasFitment ? "Expert Fitment Match" : "Technical Compatibility",
+        preferenceSummary: r.reasons?.[0] || "Aligned with your flow requirements.",
+        proTip: "Verify your connector type before ordering.",
+      }));
+    }
+
+    outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
     const response: OracleApiResponse = {
       results: outputResults,

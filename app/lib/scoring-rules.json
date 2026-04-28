@@ -50,6 +50,6 @@
   "poolSize": {
     "heuristicTop": 12,
     "maxCandidates": 20,
-    "aiMaxResults": 7
+    "aiMaxResults": 10
   }
 }

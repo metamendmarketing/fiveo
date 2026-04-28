@@ -68,14 +68,19 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           // Phase 1: 0-20% (Fast - 2s)
           delay = 100;
         } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - ~10s)
-          delay = 200;
+          // Phase 2: 20-70% (Crunch - 25s)
+          // 50 steps at ~500ms avg
+          delay = 300 + Math.random() * 400;
         } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - ~4s)
-          delay = 200;
+          // Phase 3: 70-90% (Building Overheat - 10s)
+          // 20 steps accelerating from 600ms down to 400ms
+          const factor = (current - 70) / 20;
+          delay = 600 - (factor * 200);
         } else {
-          // Phase 4: 90-100% (Redline Velocity - ~2.5s)
-          delay = 250;
+          // Phase 4: 90-100% (Redline Velocity - 6.28s)
+          // 10 steps at ~628ms
+          const factor = (current - 90) / 10;
+          delay = 700 - (factor * 150);
         }
 
         await new Promise((r) => setTimeout(r, delay));
