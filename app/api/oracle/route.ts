@@ -192,6 +192,50 @@ export async function POST(req: NextRequest) {
 
     outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
+    // ─── STAGE 4b: URL RESOLUTION ───
+    // Resolve variant url_keys to canonical parent product pages.
+    // Magento configurable products have a parent page (e.g., "black-ops-honda-acura-k-series")
+    // and variant SKUs with longer slugs (e.g., "...-40lbhr-410ccmin-with-pigtails") that 404.
+    // We build a set of all known url_keys and for any variant, find its shortest valid parent.
+    
+    const allUrlKeys = new Set<string>();
+    for (const p of products) {
+      let key = (p.url_key || "").toLowerCase();
+      if (key.endsWith("-each")) key = key.slice(0, -5);
+      if (key) allUrlKeys.add(key);
+    }
+
+    outputResults = outputResults.map(r => {
+      let slug = (r.product.url_key || "").toLowerCase();
+      if (slug.endsWith("-each")) slug = slug.slice(0, -5);
+      
+      // If this exact slug exists as-is, check if there's a shorter parent
+      // by progressively removing trailing segments
+      let resolved = slug;
+      let parts = slug.split("-");
+      
+      // Try progressively shorter prefixes to find the canonical parent
+      // Only shorten if the original slug is long enough (avoid false matches)
+      if (parts.length > 3) {
+        for (let i = parts.length - 1; i >= 3; i--) {
+          const candidate = parts.slice(0, i).join("-");
+          if (candidate !== slug && allUrlKeys.has(candidate)) {
+            resolved = candidate;
+            break; // Use the longest matching parent (most specific)
+          }
+        }
+      }
+
+      if (resolved !== slug) {
+        console.log(`[Oracle] URL resolved: ${slug} → ${resolved}`);
+        return {
+          ...r,
+          product: { ...r.product, url_key: resolved }
+        };
+      }
+      return r;
+    });
+
     const response: OracleApiResponse = {
       results: outputResults,
       selectionStrategy,
