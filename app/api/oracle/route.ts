@@ -200,17 +200,33 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Merge for final response if "top3" tier
-    let outputResults = finalResults;
-    if (tier === "top3") {
-      const heuristicRemaining = candidatePool.slice(3, rules.poolSize.aiMaxResults).map(r => ({
-        ...r,
-        matchStrategy: r.hasFitment ? "Expert Fitment Match" : "Technical Compatibility",
-        preferenceSummary: r.reasons?.[0] || "Aligned with your flow requirements.",
-        proTip: "Verify your connector type before ordering.",
-      }));
-      outputResults = [...finalResults, ...heuristicRemaining];
+    // ─── STAGE 4: FINALIZATION (Merge Tiered Results) ───
+    
+    // Start with the full heuristic pool
+    let outputResults = candidatePool.slice(0, rules.poolSize.aiMaxResults);
+    
+    // Overlay AI narratives if we have them
+    if (finalResults.length > 0) {
+      finalResults.forEach(aiItem => {
+        const idx = outputResults.findIndex(p => String(p.product.id) === String(aiItem.product.id));
+        if (idx !== -1) {
+          outputResults[idx] = { ...outputResults[idx], ...aiItem };
+        }
+      });
     }
+
+    // Ensure all items have necessary display fields (AI or Fallback)
+    outputResults = outputResults.map(r => {
+      if (!r.matchStrategy) {
+        return {
+          ...r,
+          matchStrategy: r.hasFitment ? "Expert Fitment Match" : "Technical Compatibility",
+          preferenceSummary: r.reasons?.[0] || "Aligned with your flow requirements.",
+          proTip: "Verify your connector type before ordering.",
+        };
+      }
+      return r;
+    });
 
     const response: OracleApiResponse = {
       results: outputResults,

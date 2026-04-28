@@ -50,7 +50,10 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
   // Background fetch for the remaining narratives
   useEffect(() => {
-    if (results.length > 3) {
+    // Check if we need to fetch narratives (e.g. if others[0] is still heuristic)
+    const needsBackgroundFetch = others.length > 0 && others.some(o => !o.technicalNarrative);
+
+    if (needsBackgroundFetch) {
       (async () => {
         try {
           const res = await fetch("/fiveo/demo/api/oracle", {
@@ -58,6 +61,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ profile, tier: "remaining" }),
           });
+          
           if (res.ok) {
             const data = await res.json();
             const remainingAi = data.results || [];
@@ -66,7 +70,12 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
               const updated = [...prev];
               remainingAi.forEach((aiItem: ScoredProduct) => {
                 const idx = updated.findIndex(p => p.product.id === aiItem.product.id);
-                if (idx !== -1) updated[idx] = { ...updated[idx], ...aiItem };
+                if (idx !== -1) {
+                  // Only swap if we actually got AI content
+                  if (aiItem.technicalNarrative) {
+                    updated[idx] = { ...updated[idx], ...aiItem };
+                  }
+                }
               });
               return updated;
             });
