@@ -210,16 +210,29 @@ Output strictly valid JSON:
     const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    const parsed = JSON.parse(
-      jsonMatch ? jsonMatch[0] : `{"answer": "${text.replace(/"/g, "'")}", "citedSpecs": []}`
-    );
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonMatch ? jsonMatch[0] : text);
+    } catch (e) {
+      console.error("[Oracle/Ask] JSON Parse Error. Raw text:", text);
+      parsed = { 
+        answer: text.replace(/[{}"]/g, ""), 
+        citedSpecs: [],
+        error: "Synthesized response was malformed" 
+      };
+    }
 
     return NextResponse.json(parsed);
 
   } catch (error: unknown) {
-    console.error("[Oracle/Ask] Error:", error instanceof Error ? error.message : error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[Oracle/Ask] Critical Error:", msg);
     return NextResponse.json(
-      { answer: "I'm having trouble connecting to my knowledge base right now. Please try again in a moment.", citedSpecs: [] },
+      { 
+        error: "Synthesis Failed",
+        details: msg,
+        answer: "I'm having trouble connecting to my knowledge base right now. Please try again in a moment." 
+      },
       { status: 500 }
     );
   }

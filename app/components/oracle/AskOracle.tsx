@@ -53,7 +53,8 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.details || errData.error || "Failed to connect");
+        const errorMessage = errData.details || errData.error || "Synthesis failed. Please try a different question.";
+        throw new Error(errorMessage);
       }
 
       const data = await res.json();
