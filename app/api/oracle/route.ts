@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const profile: BuildProfile = body.profile;
+    const tier: string | undefined = body.tier;
+    const skipIds: number[] = body.skipIds || [];
 
     if (!profile) {
       return NextResponse.json({ error: "Profile is required" }, { status: 400 });
@@ -151,16 +153,29 @@ export async function POST(req: NextRequest) {
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
 
-    // ─── STAGE 3: AI REFINEMENT ───
+    // ─── STAGE 3: AI REFINEMENT (Tiered) ───
     
     let finalResults = candidatePool.slice(0, rules.poolSize.aiMaxResults);
     let selectionStrategy = "";
+
+    // Determine which candidates to send to AI based on tier
+    let aiCandidates: ScoredProduct[];
+    if (tier === "top3") {
+      aiCandidates = candidatePool.slice(0, 3);
+      console.log(`[Oracle] Tier: top3 — sending ${aiCandidates.length} candidates to AI`);
+    } else if (tier === "remaining") {
+      aiCandidates = candidatePool.filter(c => !skipIds.includes(c.product.id));
+      console.log(`[Oracle] Tier: remaining — sending ${aiCandidates.length} candidates to AI (skipping ${skipIds.length} IDs)`);
+    } else {
+      aiCandidates = candidatePool;
+      console.log(`[Oracle] Tier: full — sending ${aiCandidates.length} candidates to AI`);
+    }
 
     try {
       const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
-      const candidateData = candidatePool.map(c => ({
+      const candidateData = aiCandidates.map(c => ({
         id: c.product.id,
         name: c.product.name,
         cc: Number(c.product.flow_rate_cc || c.product.size_cc) || null,
@@ -188,7 +203,7 @@ export async function POST(req: NextRequest) {
         .replace("{{requiredCC}}", requiredCC?.toString() || "unknown")
         .replace("{{fitmentCount}}", fitmentProductIds.length.toString())
         .replace("{{makeFitmentCount}}", makeFitmentProductIds.length.toString())
-        .replace("{{candidateCount}}", candidatePool.length.toString())
+        .replace("{{candidateCount}}", aiCandidates.length.toString())
         .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
 
       const result = await model.generateContent(prompt);
@@ -202,7 +217,7 @@ export async function POST(req: NextRequest) {
       const refinedList = refined.refinement || [];
 
       if (refinedList.length > 0) {
-        finalResults = refinedList
+        const aiEnriched = refinedList
           .map((r: { id: number; score: number; matchStrategy: string; aiHeadline: string; preferenceSummary: string; technicalNarrative: string; proTip: string }) => {
             const original = candidatePool.find(c => String(c.product.id) === String(r.id));
             if (!original) return null;
@@ -217,6 +232,28 @@ export async function POST(req: NextRequest) {
             } as ScoredProduct;
           })
           .filter((res: ScoredProduct | null): res is ScoredProduct => res !== null);
+
+        if (tier === "remaining") {
+          // For "remaining" tier, return ONLY the newly AI-enriched results
+          finalResults = aiEnriched;
+        } else if (tier === "top3") {
+          // For "top3" tier, merge AI-enriched top 3 with heuristic fallbacks for the rest
+          const aiIds = new Set(aiEnriched.map((r: ScoredProduct) => r.product.id));
+          const nonAiResults = candidatePool
+            .filter(c => !aiIds.has(c.product.id))
+            .slice(0, rules.poolSize.aiMaxResults - aiEnriched.length);
+          const maxHeuristic = Math.max(...nonAiResults.map(r => r.score || 0), 1);
+          const heuristicFallbacks = nonAiResults.map(r => ({
+            ...r,
+            score: Math.round(((r.score || 0) / maxHeuristic) * (aiEnriched[aiEnriched.length - 1]?.score || 80) * 0.95),
+            matchStrategy: r.hasFitment ? "Expert Fitment Match" : "Technical Compatibility",
+            preferenceSummary: r.reasons?.[0] || "Aligned with your flow requirements.",
+            proTip: "Verify your connector type before ordering.",
+          }));
+          finalResults = [...aiEnriched, ...heuristicFallbacks];
+        } else {
+          finalResults = aiEnriched;
+        }
       }
     } catch (err: unknown) {
       console.error("[Oracle] AI refinement failed, falling back to heuristic:", err instanceof Error ? err.message : err);
@@ -226,7 +263,6 @@ export async function POST(req: NextRequest) {
     // ─── STAGE 4: FINALIZATION ───
     
     // Rescale scores and add fallbacks if AI didn't provide them
-    // (URL Resolution was moved to Stage 2b for better deduplication)
     let outputResults = finalResults.slice(0, rules.poolSize.aiMaxResults);
     const hasAiData = outputResults.some(r => r.matchStrategy);
 

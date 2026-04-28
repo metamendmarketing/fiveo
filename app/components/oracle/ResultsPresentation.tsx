@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { type BuildProfile, IMAGES, getStoreUrl } from "@/app/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lightbulb } from "lucide-react";
@@ -41,6 +41,42 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
   onEdit 
 }: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
+  const [localResults, setLocalResults] = useState<ScoredProduct[]>(results);
+
+  // Synchronize local results when prop changes (on initial load)
+  useEffect(() => {
+    setLocalResults(results);
+  }, [results]);
+
+  useEffect(() => {
+    // If we only have the top 3 narratives (tiered response), fetch the remaining ones in the background
+    const resultsWithAi = results.filter(r => r.technicalNarrative && !r.matchStrategy?.includes("Expert Fitment Match"));
+    
+    // In our tiered "top3" response, results[0-2] have AI data, [3-9] have heuristic fallbacks.
+    // So we check if we have exactly 3 high-quality AI narratives.
+    if (results.length > 3 && resultsWithAi.length <= 3) {
+      (async () => {
+        try {
+          const skipIds = resultsWithAi.map(r => r.product.id);
+          const res = await fetch("/fiveo/demo/api/oracle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ profile, tier: "remaining", skipIds }),
+          });
+          if (!res.ok) throw new Error(`Background API error: ${res.status}`);
+          const data: OracleApiResponse = await res.json();
+          const newAiResults = data.results;
+          
+          setLocalResults(prev => prev.map(p => {
+            const match = newAiResults.find(n => n.product.id === p.product.id);
+            return match ? { ...p, ...match } : p;
+          }));
+        } catch (err) {
+          console.error("[ResultsPresentation] Background AI fetch failed:", err);
+        }
+      })();
+    }
+  }, [profile, results]);
 
   if (!results || results.length === 0) {
     return (
@@ -74,8 +110,8 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
     );
   }
 
-  const topPick = results[0];
-  const others = results.slice(1);
+  const topPick = localResults[0];
+  const others = localResults.slice(1);
 
   return (
     <div className="w-full flex flex-col">
@@ -95,7 +131,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
-              {results.length} Precision-Matched Injector{results.length !== 1 ? "s" : ""}
+              {localResults.length} Precision-Matched Injector{localResults.length !== 1 ? "s" : ""}
             </p>
             {apiData && apiData.fitmentMatches > 0 && (
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
