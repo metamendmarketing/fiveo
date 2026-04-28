@@ -228,6 +228,22 @@ export async function POST(req: NextRequest) {
       return r;
     });
 
+    // ─── STAGE 5: FINAL SORTING & NORMALIZATION ───
+    
+    // Ensure scores are sorted descending
+    outputResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+    
+    // Optional: Rescale if the top score is very low to maintain high-quality perception
+    const topScore = outputResults[0]?.score || 0;
+    if (topScore > 0 && topScore < 90) {
+      const factor = 98 / topScore;
+      outputResults = outputResults.map(r => ({
+        ...r,
+        score: Math.min(Math.round((r.score || 0) * factor), 99)
+      }));
+    }
+
+
     const response: OracleApiResponse = {
       results: outputResults,
       selectionStrategy,
