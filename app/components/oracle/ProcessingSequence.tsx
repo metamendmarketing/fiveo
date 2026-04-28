@@ -79,6 +79,14 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         }
 
         await new Promise((r) => setTimeout(r, delay));
+        
+        // REAL SPEED TEST: Jump to 100 immediately if data is ready
+        if (apiReady) {
+          current = 100;
+          setProgress(100);
+          break;
+        }
+
         current += 1;
 
         // Safety check - wait at 98 if API isn't ready
