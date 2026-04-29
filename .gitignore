@@ -73,3 +73,8 @@ scripts/fitment/private/
 yarn-debug.log*
 yarn-error.log*
 vertex-key.json
+
+# Local Data & Scratch
+*.db
+*.sqlite
+/scratch/
