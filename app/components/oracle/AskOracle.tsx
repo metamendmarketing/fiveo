@@ -191,7 +191,7 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
 
               {/* Quick-Ask Chips */}
               {!response && !loading && (
-                <div className="flex flex-nowrap gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                <div className="flex flex-wrap gap-1.5">
                   {quickQuestions.map((q, i) => (
                     <button
                       key={i}
