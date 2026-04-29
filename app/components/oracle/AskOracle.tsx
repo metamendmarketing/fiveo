@@ -80,54 +80,62 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
   };
 
   // ─── Dynamic Question Pool Logic ───
-  // We pick 3 questions from a larger pool based on vehicle, fuel, and goals.
+  // We pick a balanced mix of 3 questions from a pool of 30+ expert queries.
   const quickQuestions = React.useMemo(() => {
-    const make = buildProfile.make || "";
     const isE85 = buildProfile.fuelType === "e85";
     const isPerformance = buildProfile.usage === "track" || buildProfile.hpMode !== "stock";
+    const hasVehicle = !!(buildProfile.make && buildProfile.model);
     
-    // Pool of intelligently-tagged questions (Max 5 words)
+    // Pool of 30+ expert questions categorized for a balanced mix
     const pool = [
-      // Commercial (Always high relevance for purchase push)
-      { q: "Total price for a set?", weight: 10, cat: "comm" },
-      { q: "When will these ship?", weight: 8, cat: "comm" },
-      { q: "Is a warranty included?", weight: 5, cat: "comm" },
-      
-      // Technical / Drivability (High relevance for all)
-      { q: "How is the idle quality?", weight: 9, cat: "tech" },
-      { q: "Are these flow-matched sets?", weight: 9, cat: "tech" },
-      { q: "Tuning data for my tuner?", weight: 7, cat: "tech" },
-      { q: "Is characterization data available?", weight: 6, cat: "tech" },
-      
-      // Fuel Specific
-      { q: "Safe for long-term E85?", weight: isE85 ? 15 : 0, cat: "fuel" },
-      { q: "Maintenance required for E85?", weight: isE85 ? 12 : 0, cat: "fuel" },
-      { q: "Flow matched for ethanol?", weight: isE85 ? 11 : 0, cat: "fuel" },
-      
-      // Vehicle/Make Specific
-      { q: `Tuning data for ${make}?`, weight: make ? 14 : 0, cat: "fit" },
-      { q: `Fits factory ${make} rails?`, weight: make ? 13 : 0, cat: "fit" },
-      { q: `Direct fit for ${make}?`, weight: make ? 12 : 0, cat: "fit" },
-      { q: `Plug-and-play for ${make}?`, weight: make ? 11 : 0, cat: "fit" },
-      
-      // Installation / Practical
-      { q: "What connector do I need?", weight: 10, cat: "inst" },
-      { q: "Any special clips required?", weight: 8, cat: "inst" },
-      { q: "Standard length or shorty?", weight: 7, cat: "inst" },
-      
-      // Build / Goal Specific
-      { q: "Best for my turbo build?", weight: isPerformance ? 15 : 0, cat: "perf" },
-      { q: "Max HP on Pump Gas?", weight: isPerformance ? 13 : 0, cat: "perf" },
-      { q: "Better than ID1050x injectors?", weight: isPerformance ? 10 : 0, cat: "perf" },
-      { q: "Flow matched at low pulse?", weight: isPerformance ? 9 : 0, cat: "perf" },
+      // 1. Commercial / Purchase Push
+      { q: "Total price for a set?", cat: "comm", weight: 10 },
+      { q: "When will these ship out?", cat: "comm", weight: 8 },
+      { q: "Is a warranty included?", cat: "comm", weight: 7 },
+      { q: "Is the price for one?", cat: "comm", weight: 6 },
+      { q: "Any discount for 8 injectors?", cat: "comm", weight: 5 },
+      { q: "How fast is express shipping?", cat: "comm", weight: 5 },
+      { q: "Do you ship to Canada?", cat: "comm", weight: 4 },
+      { q: "Is a flow-sheet included?", cat: "comm", weight: 8 },
+
+      // 2. Technical / Intelligence
+      { q: "How is the idle quality?", cat: "tech", weight: 10 },
+      { q: "Are these flow-matched sets?", cat: "tech", weight: 10 },
+      { q: "Tuning data for my tuner?", cat: "tech", weight: 9 },
+      { q: "What is the dead-time data?", cat: "tech", weight: 8 },
+      { q: "Is spray pattern optimized?", cat: "tech", weight: 7 },
+      { q: "Flow matched at low pulse?", cat: "tech", weight: 9, cond: isPerformance },
+      { q: "Is characterization data available?", cat: "tech", weight: 8 },
+      { q: "Are these high-impedance?", cat: "tech", weight: 6 },
+      { q: "Better than ID1050x injectors?", cat: "tech", weight: 10, cond: isPerformance },
+
+      // 3. Compatibility & Fitment
+      { q: "What connector do I need?", cat: "fit", weight: 10 },
+      { q: "Direct drop-in for me?", cat: "fit", weight: 10, cond: hasVehicle },
+      { q: "Any special clips required?", cat: "fit", weight: 8, cond: hasVehicle },
+      { q: "Safe for long-term E85?", cat: "fit", weight: 15, cond: isE85 },
+      { q: "Safe for 4-bar fuel pressure?", cat: "fit", weight: 12, cond: isPerformance },
+      { q: "Do I need fuel rails?", cat: "fit", weight: 9, cond: isPerformance },
+      { q: "Standard length or shorty?", cat: "fit", weight: 7 },
+      { q: "O-ring size for my rail?", cat: "fit", weight: 7, cond: hasVehicle },
+      { q: "Will these fit factory harness?", cat: "fit", weight: 10, cond: hasVehicle },
+      { q: "Adapter needed for my plug?", cat: "fit", weight: 9 },
+      { q: "Optimized for 4-valve heads?", cat: "fit", weight: 8, cond: isPerformance },
     ];
 
-    // Sort by weight and pick top 3 unique categories if possible
-    return pool
-      .filter(item => item.weight > 0)
-      .sort((a, b) => b.weight - a.weight + (Math.random() * 2 - 1)) // Add slight randomness for variety
-      .slice(0, 3)
-      .map(item => item.q);
+    // Pick one best question from each of the 3 categories for a balanced mix
+    const getBestFromCat = (cat: string) => {
+      const options = pool
+        .filter(item => item.cat === cat && (item.cond === undefined || item.cond === true))
+        .sort((a, b) => b.weight - a.weight + (Math.random() * 4 - 2)); // Add randomness to weights
+      return options[0]?.q;
+    };
+
+    return [
+      getBestFromCat("comm"),
+      getBestFromCat("tech"),
+      getBestFromCat("fit")
+    ].filter(Boolean);
   }, [buildProfile]);
 
   return (
