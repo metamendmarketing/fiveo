@@ -79,14 +79,56 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
     }, 50);
   };
 
-  // Dynamic quick-ask chips based on available product data and build profile
-  const vehicleLabel = [buildProfile.year, buildProfile.make, buildProfile.model].filter(Boolean).join(" ");
-  const quickQuestions = [
-    vehicleLabel ? `Will this fit my ${vehicleLabel}?` : "Will this fit my vehicle?",
-    "Is this compatible with E85?",
-    "What HP can this support?",
-    "Do I need adapters to install this?",
-  ];
+  // ─── Dynamic Question Pool Logic ───
+  // We pick 3 questions from a larger pool based on vehicle, fuel, and goals.
+  const quickQuestions = React.useMemo(() => {
+    const make = buildProfile.make || "";
+    const isE85 = buildProfile.fuelType === "e85";
+    const isPerformance = buildProfile.usage === "track" || buildProfile.hpMode !== "stock";
+    
+    // Pool of intelligently-tagged questions (Max 5 words)
+    const pool = [
+      // Commercial (Always high relevance for purchase push)
+      { q: "Total price for a set?", weight: 10, cat: "comm" },
+      { q: "When will these ship?", weight: 8, cat: "comm" },
+      { q: "Is a warranty included?", weight: 5, cat: "comm" },
+      
+      // Technical / Drivability (High relevance for all)
+      { q: "How is the idle quality?", weight: 9, cat: "tech" },
+      { q: "Are these flow-matched sets?", weight: 9, cat: "tech" },
+      { q: "Tuning data for my tuner?", weight: 7, cat: "tech" },
+      { q: "Is characterization data available?", weight: 6, cat: "tech" },
+      
+      // Fuel Specific
+      { q: "Safe for long-term E85?", weight: isE85 ? 15 : 0, cat: "fuel" },
+      { q: "Maintenance required for E85?", weight: isE85 ? 12 : 0, cat: "fuel" },
+      { q: "Flow matched for ethanol?", weight: isE85 ? 11 : 0, cat: "fuel" },
+      
+      // Vehicle/Make Specific
+      { q: `Tuning data for ${make}?`, weight: make ? 14 : 0, cat: "fit" },
+      { q: `Fits factory ${make} rails?`, weight: make ? 13 : 0, cat: "fit" },
+      { q: `Direct fit for ${make}?`, weight: make ? 12 : 0, cat: "fit" },
+      { q: `Plug-and-play for ${make}?`, weight: make ? 11 : 0, cat: "fit" },
+      
+      // Installation / Practical
+      { q: "What connector do I need?", weight: 10, cat: "inst" },
+      { q: "Any special clips required?", weight: 8, cat: "inst" },
+      { q: "Standard length or shorty?", weight: 7, cat: "inst" },
+      
+      // Build / Goal Specific
+      { q: "Best for my turbo build?", weight: isPerformance ? 15 : 0, cat: "perf" },
+      { q: "Max HP on Pump Gas?", weight: isPerformance ? 13 : 0, cat: "perf" },
+      { q: "Better than ID1050x injectors?", weight: isPerformance ? 10 : 0, cat: "perf" },
+      { q: "Flow matched at low pulse?", weight: isPerformance ? 9 : 0, cat: "perf" },
+    ];
+
+    // Sort by weight and pick top 3 unique categories if possible
+    return pool
+      .filter(item => item.weight > 0)
+      .sort((a, b) => b.weight - a.weight + (Math.random() * 2 - 1)) // Add slight randomness for variety
+      .slice(0, 3)
+      .map(item => item.q);
+  }, [buildProfile]);
 
   return (
     <div className="mt-2">
@@ -149,13 +191,13 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
 
               {/* Quick-Ask Chips */}
               {!response && !loading && (
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-nowrap gap-1.5 overflow-x-auto no-scrollbar pb-1">
                   {quickQuestions.map((q, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => handleQuickAsk(q)}
-                      className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] font-bold text-white/40 hover:text-white/70 uppercase tracking-wider transition-all"
+                      className="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg text-[9px] font-bold text-white/40 hover:text-white/70 uppercase tracking-wider transition-all whitespace-nowrap"
                     >
                       {q}
                     </button>
