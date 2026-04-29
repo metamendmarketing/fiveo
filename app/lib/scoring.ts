@@ -200,6 +200,24 @@ export function scoreProducts(
       }
     }
 
+    // ── 9. URL Stability & Condition (Quality Control) ──
+    const slug = (product.url_key || "").toLowerCase();
+    const isBoschPattern = /^\d{10}/.test(slug) || slug.includes("-0280");
+    const isNew = productName.includes("new") || productDesc.includes("brand new");
+    const isReman = productName.includes("reman") || productName.includes("reconditioned");
+
+    // Penalty for raw part-number slugs (high 404 risk)
+    if (isBoschPattern) {
+      score -= 5;
+    } else if (slug && slug.length > 10 && !slug.includes("auto-")) {
+      // Bonus for descriptive SEO slugs
+      score += 5;
+    }
+
+    // Tie-breaker: Prefer "NEW" over "Reman" if everything else is equal
+    if (isNew) score += 3;
+    if (isReman) score -= 2;
+
     return {
       product,
       score,

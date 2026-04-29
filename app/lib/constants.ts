@@ -174,13 +174,20 @@ export function getStoreUrl(product: { url_key?: string; product_url?: string })
   // Strategy A: Use the clean SEO slug (url_key) if available
   if (product.url_key) {
     let slug = product.url_key;
-    // Strip "-each" variants — single-unit Magento SKUs that 404 on the live site
-    if (slug.endsWith("-each")) slug = slug.slice(0, -5);
-    if (slug.includes("-each-")) slug = slug.split("-each-")[0]; // e.g., "...-injectors-each-42lb" → "...-injectors"
+    
+    // 1. Strip legacy Magento child suffixes that 404 on the live site
+    const badSuffixes = ["-each", "-single", "-set", "-6set", "-8set"];
+    badSuffixes.forEach(s => {
+      if (slug.endsWith(s)) slug = slug.slice(0, -s.length);
+      if (slug.includes(`${s}-`)) slug = slug.replace(`${s}-`, "-");
+    });
+
+    // 2. Clean up slashes and build final URL
     if (slug.startsWith("http")) return slug; // Already full URL
     if (slug.startsWith("/")) slug = slug.slice(1);
-    if (!slug.endsWith("/")) slug += "/";
-    return `${BASE_STORE}/${slug}`;
+    if (slug.endsWith("/")) slug = slug.slice(0, -1);
+    
+    return `${BASE_STORE}/${slug}/`;
   }
 
   // Strategy B: Clean up legacy product_url
