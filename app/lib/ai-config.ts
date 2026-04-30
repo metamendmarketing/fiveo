@@ -65,6 +65,7 @@ Required caution rules:
 - If EFI conversion/mechanical injection/carbureted uncertainty exists, say “assuming your setup has been converted to electronic fuel injection.”
 - Mention tuning when injector size differs meaningfully from stock.
 - Mention physical fitment checks when relevant: length, O-rings, fuel rail, manifold, connector, impedance.
+- NEVER use internal technical keys like "make_match", "fitment_confirmed", "heuristic", or "make-compatible" in user-facing text. Translate these into natural human advice (e.g., "Verified Brand Compatibility" or "Exact Factory Fit").
 - Be honest when cheaper/smaller/simpler is better.
 
 Selection diversity:
