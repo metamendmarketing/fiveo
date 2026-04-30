@@ -10,15 +10,10 @@ interface Props {
 }
 
 /**
- * ProcessingSequence — Analysis Synthesis Animation
+ * ProcessingSequence — Truthful Performance Mode
  * 
- * Precisely timed for a 43.28-second "Expert Analysis" experience.
- * 
- * Progression Profile:
- * - 0-20%: Spin-up (Fast - 2s)
- * - 20-70%: Deep Data Crunch (Slow & Variable - 25s)
- * - 70-90%: Building Overheat (Gradual Acceleration - 10s)
- * - 90-100%: Redline Final Velocity (Deliberate & Intense - 6.28s)
+ * Configured to resolve immediately once API data is available.
+ * Use this to measure real-world stopwatch performance.
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
@@ -26,98 +21,60 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
   const hasCompletedRef = useRef(false);
 
   useEffect(() => {
-    let apiData: OracleApiResponse | null = null;
-    let apiReady = false;
+    const startTime = performance.now();
+    let isMounted = true;
+    
+    // Slow initial creep to show "life"
+    const timer = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 98) return prev;
+        return prev + 1;
+      });
+    }, 100);
 
-    // 1. Kick off analysis immediately
-    (async () => {
+    async function runOracle() {
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),
         });
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
-        apiData = await res.json();
-        apiReady = true;
+        
+        if (!res.ok) throw new Error("Oracle failed to respond");
+        const data = await res.json();
+        
+        if (!isMounted) return;
+        
+        const trueTime = Math.round(performance.now() - startTime);
+        console.log(`[Oracle Performance] ⏱️ True processing time: ${trueTime}ms`);
+        
+        // JUMP TO COMPLETION
+        clearInterval(timer);
+        setProgress(100);
+        setStatusText("Analysis Complete!");
+        
+        // Immediate transition to results
+        setTimeout(() => {
+          if (isMounted) onComplete(data);
+        }, 500); 
+        
       } catch (err) {
-        console.error("[ProcessingSequence] Analysis failed:", err);
-        apiData = { 
-          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
-          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
-        };
-        apiReady = true;
+        console.error("Oracle Execution Error:", err);
+        if (isMounted) setProgress(0);
       }
-    })();
+    }
 
-    // 2. Execute precision-timed progress simulation
-    const runProgress = async () => {
-      let current = 0;
-      
-      while (current < 100) {
-        if (hasCompletedRef.current) return;
-
-        setProgress(current);
-
-        const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
-        if (msg) setStatusText(msg.text);
-
-        let delay = 100;
-
-        if (current < 20) {
-          // Phase 1: 0-20% (Fast - 2s)
-          delay = 100;
-        } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - 25s)
-          // 50 steps at ~500ms avg
-          delay = 300 + Math.random() * 400;
-        } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - 10s)
-          // 20 steps accelerating from 600ms down to 400ms
-          const factor = (current - 70) / 20;
-          delay = 600 - (factor * 200);
-        } else {
-          // Phase 4: 90-100% (Redline Velocity - 6.28s)
-          // 10 steps at ~628ms
-          const factor = (current - 90) / 10;
-          delay = 700 - (factor * 150);
-        }
-
-        await new Promise((r) => setTimeout(r, delay));
-        current += 1;
-
-        // Safety check - wait at 98 if API isn't ready
-        if (current === 98 && !apiReady) {
-          while(!apiReady) {
-            await new Promise(r => setTimeout(r, 200));
-          }
-        }
-      }
-
-      // Final state
-      setProgress(100);
-      setStatusText("Maximum Velocity Reached!");
-      await new Promise(r => setTimeout(r, 1000));
-
-      if (!hasCompletedRef.current) {
-        hasCompletedRef.current = true;
-        onComplete(apiData || { 
-          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
-          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
-        });
-      }
-    };
-
-    runProgress();
+    runOracle();
 
     return () => {
-      hasCompletedRef.current = true;
+      isMounted = false;
+      clearInterval(timer);
     };
-  }, [profile, onComplete]); 
+  }, [profile, onComplete]);
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-6 relative overflow-hidden">
-      {/* Background Watermark Logo - 2X Size */}
+      {/* Background Watermark Logo */}
       <div className="absolute top-6 left-6 opacity-15 pointer-events-none">
         <img 
           src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png" 
