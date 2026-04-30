@@ -359,7 +359,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                 <div className="bg-white/5 border border-white/10 rounded-xl p-6 md:p-8">
                   <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#00AEEF] mb-4">The Expert&apos;s Rationale</h4>
                   <div className="text-sm md:text-base text-white/80 leading-relaxed whitespace-pre-wrap mb-6">
-                    {selectedResult.technicalNarrative || "I've selected this injector because it offers a perfect balance of reliability and performance for your specific setup. Its modern architecture ensures smooth idle quality while providing the extra headroom you're looking for."}
+                    {selectedResult.technicalNarrative || "I've hand-selected this injector because its flow characteristics and modern internals are a perfect match for your power goals. Its high-impedance design ensures clean communication with your factory ECU, while the optimized spray pattern maintains smooth drivability even at high loads."}
                   </div>
                   
                   {selectedResult.proTip && (
