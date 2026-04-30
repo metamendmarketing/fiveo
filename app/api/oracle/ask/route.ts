@@ -205,7 +205,7 @@ Output strictly valid JSON:
   "answer": "Your direct, expert answer here.",
   "citedSpecs": ["Spec or fact you referenced"]
 }`;
-    const { client, modelName } = getVertexModel("gemini-3.1-flash-lite");
+    const { client, modelName } = getVertexModel("gemini-3.1-flash-lite-preview");
     if (!client) throw new Error("AI services unavailable");
 
     const response = await client.models.generateContent({

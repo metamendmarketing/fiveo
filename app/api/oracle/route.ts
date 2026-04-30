@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
     let selectionStrategy = "";
     let aiError = null;
     try {
-      const { client, modelName } = getVertexModel("gemini-3.1-flash-lite");
+      const { client, modelName } = getVertexModel("gemini-3.1-flash-lite-preview");
       if (!client) throw new Error("AI services unavailable");
 
       const candidateData = candidatePool.map(c => {

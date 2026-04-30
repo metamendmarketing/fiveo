@@ -1,7 +1,7 @@
 /**
  * Unified Google Generative AI Client (@google/genai)
  * 
- * Hardened for 2026 Production Environments using ADC (Application Default Credentials).
+ * Optimized for the Agent Platform API (2026 standard).
  */
 import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
@@ -15,7 +15,6 @@ export function getAIClient() {
 
   let credentials;
   try {
-    // 1. Resolve Credentials
     if (process.env.VERTEX_CREDENTIALS_JSON) {
       credentials = JSON.parse(process.env.VERTEX_CREDENTIALS_JSON);
     } else {
@@ -25,14 +24,13 @@ export function getAIClient() {
       }
     }
 
-    // 2. Set up Application Default Credentials (ADC) for the SDK to find
     if (credentials) {
       const tempCredPath = path.join(os.tmpdir(), "vertex-service-account.json");
       fs.writeFileSync(tempCredPath, JSON.stringify(credentials));
       process.env.GOOGLE_APPLICATION_CREDENTIALS = tempCredPath;
     }
   } catch (err) {
-    console.error("[AI] 🚨 Credential setup failed:", err);
+    console.error("[AI] 🚨 Credential error:", err);
   }
 
   const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
@@ -42,17 +40,16 @@ export function getAIClient() {
   }
 
   /**
-   * Final SDK Initialization:
-   * By setting GOOGLE_APPLICATION_CREDENTIALS above, the SDK will 
-   * automatically find and use the service account.
+   * Agent Platform Initialization:
+   * Using the 'global' location as required by the Agent Platform API.
    */
   try {
     clientInstance = new GoogleGenAI({
       vertexai: true,
       project: projectId,
-      location: "us-central1"
+      location: "global", // Required by Agent Platform
     });
-    console.log(`[AI] ✅ Client initialized with ADC for project: ${projectId}`);
+    console.log(`[AI] ✅ Agent Platform Client initialized (Global) for project: ${projectId}`);
   } catch (initErr) {
     console.error("[AI] 🚨 Initialization failed:", initErr);
   }
@@ -60,7 +57,10 @@ export function getAIClient() {
   return clientInstance;
 }
 
-export function getVertexModel(modelName: string = "gemini-3.1-flash-lite") {
+/**
+ * Returns the client and the specific preview model ID required by Agent Platform.
+ */
+export function getVertexModel(modelName: string = "gemini-3.1-flash-lite-preview") {
   const client = getAIClient();
   return { client, modelName };
 }
