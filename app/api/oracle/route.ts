@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     while (true) {
       const { data: batch, error: prodErr } = await supabase
         .from("products")
-        .select("id, name, sku, url_key, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand, fuel_types, raw_categories")
+        .select("id, name, sku, url_key, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand")
         .range(offset, offset + PAGE_SIZE - 1);
       
       if (prodErr) throw prodErr;
