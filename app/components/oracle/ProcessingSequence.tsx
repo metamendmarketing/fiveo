@@ -10,37 +10,48 @@ interface Props {
 }
 
 /**
- * ProcessingSequence — Truthful Performance Mode
- * 
- * Configured to resolve immediately once API data is available.
- * Use this to measure real-world stopwatch performance.
+ * ProcessingSequence — Diagnostic Truthful Mode
  */
 export function ProcessingSequence({ profile, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState<string>(PROCESSING_MESSAGES[0].text);
+  const [statusText, setStatusText] = useState<string>("Initializing Connection...");
   const hasCompletedRef = useRef(false);
 
   useEffect(() => {
     const startTime = performance.now();
     let isMounted = true;
     
-    // Slow initial creep to show "life"
+    // Slow initial creep
     const timer = setInterval(() => {
       setProgress(prev => {
         if (prev >= 98) return prev;
         return prev + 1;
       });
-    }, 100);
+    }, 200);
 
     async function runOracle() {
       try {
+        setStatusText("Requesting Engineering Matrix...");
+        
+        // Add a 30s timeout to the fetch
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),
+          signal: controller.signal
         });
         
-        if (!res.ok) throw new Error("Oracle failed to respond");
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.message || `Server Error (${res.status})`);
+        }
+
+        setStatusText("Synthesizing Results...");
         const data = await res.json();
         
         if (!isMounted) return;
@@ -48,19 +59,21 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const trueTime = Math.round(performance.now() - startTime);
         console.log(`[Oracle Performance] ⏱️ True processing time: ${trueTime}ms`);
         
-        // JUMP TO COMPLETION
         clearInterval(timer);
         setProgress(100);
         setStatusText("Analysis Complete!");
         
-        // Immediate transition to results
         setTimeout(() => {
           if (isMounted) onComplete(data);
         }, 500); 
         
-      } catch (err) {
+      } catch (err: any) {
         console.error("Oracle Execution Error:", err);
-        if (isMounted) setProgress(0);
+        clearInterval(timer);
+        if (isMounted) {
+          setStatusText(`Error: ${err.message || "Connection Interrupted"}`);
+          setProgress(0);
+        }
       }
     }
 
@@ -74,7 +87,6 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-6 relative overflow-hidden">
-      {/* Background Watermark Logo */}
       <div className="absolute top-6 left-6 opacity-15 pointer-events-none">
         <img 
           src="https://www.fiveomotorsport.com/media/logo/stores/1/fiveo-logo-dec-2022-01_2.png" 
