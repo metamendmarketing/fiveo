@@ -20,7 +20,7 @@ import path from "path";
  */
 
 // Model registry to cache instances by name
-const modelInstances = new Map<string, GenerativeModel>();
+const modelInstances = new Map<string, any>();
 
 /**
  * Initializes and returns a configured Gemini GenerativeModel instance.
@@ -29,9 +29,9 @@ const modelInstances = new Map<string, GenerativeModel>();
  * - Supports encrypted environment variable loading (VERTEX_CREDENTIALS_JSON).
  * - Implements deterministic temperature controls for engineering accuracy.
  */
-export function getVertexModel(modelName: string = "gemini-2.5-flash"): GenerativeModel | null {
+export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
   // Return cached instance if available for this specific model
-  if (modelInstances.has(modelName)) return modelInstances.get(modelName)!;
+  if (modelInstances.has(modelName)) return modelInstances.get(modelName);
 
   let credentials;
 
