@@ -74,6 +74,7 @@ export interface OracleApiResponse {
     scoring: number;
     enrichment: number;
     ai: number;
+    ai_error?: string | null;
   };
   error?: string;
   reason?: string;
