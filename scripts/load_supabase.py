@@ -306,6 +306,7 @@ def load_products(supabase):
             "manufacturer": other_specs.get("manufacturer"),
             "raw_specs": json.dumps(specs) if specs else None,
             "raw_categories": p.get("categories", []),
+            "visibility": p.get("visibility"),
             "notes": p.get("notes", [])
         }
         rows.append(row)

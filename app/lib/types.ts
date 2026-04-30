@@ -24,6 +24,7 @@ export interface Product {
   hero_image_url?: string;
   product_url?: string;
   url_key?: string;
+  visibility?: string;
   raw_categories?: string[];
 }
 

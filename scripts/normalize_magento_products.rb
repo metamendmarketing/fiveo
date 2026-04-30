@@ -337,6 +337,7 @@ def main
       name: name,
       price: price_value(row),
       url_key: (row["url_key"] && !row["url_key"].strip.empty?) ? row["url_key"].strip : nil,
+      visibility: row["visibility"]&.strip,
       categories: paths,
       fitment: fitment,
       specs: specs,

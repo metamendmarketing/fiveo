@@ -62,25 +62,35 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Catalog Fetch (Paginated to get all products)
+    // 1b. Parallel Selective Catalog Fetch (High-Velocity Visibility Filter)
     let allProducts: Product[] = [];
-    let offset = 0;
     const PAGE_SIZE = 1000;
     
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
-        .from("products")
-        .select("*")
-        .range(offset, offset + PAGE_SIZE - 1);
-      
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
-      
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
-    }
-    console.log(`[Oracle] 📦 Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
+    // Filter by visibility at the SQL level to slash load by 75%
+    const { count, error: countErr } = await supabase
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .or('visibility.eq."Catalog, Search",visibility.eq.Search');
+    
+    if (countErr) throw countErr;
+    
+    const total = count || 1800; // Expected ~1,792
+    const pages = Math.ceil(total / PAGE_SIZE);
+    
+    const fetchPromises = Array.from({ length: pages }).map((_, i) => {
+      return supabase.from("products")
+        .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories")
+        .or('visibility.eq."Catalog, Search",visibility.eq.Search')
+        .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
+    });
+    
+    const batchResults = await Promise.all(fetchPromises);
+    allProducts = batchResults.flatMap(r => {
+      if (r.error) throw r.error;
+      return (r.data as Product[]) || [];
+    });
+    
+    console.log(`[Oracle] ⚡ High-Velocity Acquisition: ${allProducts.length} visible products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     const stage2Start = performance.now();
@@ -155,6 +165,26 @@ export async function POST(req: NextRequest) {
       }).slice(0, 4);
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
+
+    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
+    const enrichmentStart = performance.now();
+    const candidateIds = candidatePool.map(c => c.product.id);
+    const { data: enrichedProducts } = await supabase
+      .from("products")
+      .select("id, description, hero_image_url")
+      .in("id", candidateIds);
+    
+    if (enrichedProducts) {
+      const enrichedMap = new Map(enrichedProducts.map(p => [p.id, p]));
+      candidatePool = candidatePool.map(c => ({
+        ...c,
+        product: {
+          ...c.product,
+          ...enrichedMap.get(c.product.id)
+        }
+      }));
+    }
+    console.log(`[Oracle] 🧪 Enrichment Complete: ${candidatePool.length} products detailed in ${Math.round(performance.now() - enrichmentStart)}ms`);
 
     // ─── STAGE 3: AI REFINEMENT ───
     const stage3Start = performance.now();
