@@ -62,10 +62,10 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Parallel Catalog Fetch (Dramatically faster than sequential loop)
+    // 1b. Parallel Selective Catalog Fetch (Dramatically faster - skips heavy fields)
     let allProducts: Product[] = [];
     const PAGE_SIZE = 1000;
-    const { count, error: countErr } = await supabase.from("products").select("*", { count: "exact", head: true });
+    const { count, error: countErr } = await supabase.from("products").select("id", { count: "exact", head: true });
     if (countErr) throw countErr;
     
     const total = count || 4000;
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
-        .select("*")
+        .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories, year_start, year_end")
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
     
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
       return (r.data as Product[]) || [];
     });
     
-    console.log(`[Oracle] 📦 Parallel Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
+    console.log(`[Oracle] 📦 Optimized Acquisition: ${allProducts.length} products in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     const stage2Start = performance.now();
@@ -158,6 +158,26 @@ export async function POST(req: NextRequest) {
       }).slice(0, 4);
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
+
+    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
+    const enrichmentStart = performance.now();
+    const candidateIds = candidatePool.map(c => c.product.id);
+    const { data: enrichedProducts } = await supabase
+      .from("products")
+      .select("id, description, hero_image_url")
+      .in("id", candidateIds);
+    
+    if (enrichedProducts) {
+      const enrichedMap = new Map(enrichedProducts.map(p => [p.id, p]));
+      candidatePool = candidatePool.map(c => ({
+        ...c,
+        product: {
+          ...c.product,
+          ...enrichedMap.get(c.product.id)
+        }
+      }));
+    }
+    console.log(`[Oracle] 🧪 Enrichment Complete: ${candidatePool.length} products detailed in ${Math.round(performance.now() - enrichmentStart)}ms`);
 
     // ─── STAGE 3: AI REFINEMENT ───
     const stage3Start = performance.now();
