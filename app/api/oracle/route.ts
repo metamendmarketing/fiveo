@@ -311,4 +311,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-// Triggering fresh deployment after revert: 2026-04-30 20:24:45
+// Force fresh deployment of 2.5 baseline: 2026-04-30 20:53:15
