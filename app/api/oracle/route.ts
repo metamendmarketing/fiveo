@@ -62,25 +62,27 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Catalog Fetch (Paginated to get all products)
-    let allProducts: Product[] = [];
-    let offset = 0;
+    // 1b. Parallel Catalog Fetch (Dramatically faster than sequential loop)
     const PAGE_SIZE = 1000;
+    const { count, error: countErr } = await supabase.from("products").select("*", { count: "exact", head: true });
+    if (countErr) throw countErr;
     
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
-        .from("products")
+    const total = count || 4000;
+    const pages = Math.ceil(total / PAGE_SIZE);
+    
+    const fetchPromises = Array.from({ length: pages }).map((_, i) => {
+      return supabase.from("products")
         .select("*")
-        .range(offset, offset + PAGE_SIZE - 1);
-      
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
-      
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
-    }
-    console.log(`[Oracle] 📦 Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
+        .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
+    });
+    
+    const batchResults = await Promise.all(fetchPromises);
+    allProducts = batchResults.flatMap(r => {
+      if (r.error) throw r.error;
+      return (r.data as Product[]) || [];
+    });
+    
+    console.log(`[Oracle] 📦 Parallel Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     const stage2Start = performance.now();
