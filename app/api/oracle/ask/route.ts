@@ -205,9 +205,18 @@ Output strictly valid JSON:
   "answer": "Your direct, expert answer here.",
   "citedSpecs": ["Spec or fact you referenced"]
 }`;
+    const { client, modelName } = getVertexModel("gemini-3.1-flash-lite");
+    if (!client) throw new Error("AI services unavailable");
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+    const response = await client.models.generateContent({
+      model: modelName,
+      contents: prompt,
+      config: {
+        temperature: 0.7
+      }
+    });
+
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = JSON.parse(
