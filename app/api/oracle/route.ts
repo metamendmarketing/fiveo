@@ -11,11 +11,18 @@ import rules from "@/app/lib/scoring-rules.json";
 import { ACTIVE_PERSONA } from "@/app/lib/ai-config";
 
 /**
- * POST /api/oracle
+ * @function POST
+ * @description Main recommendation engine for the Fuel Injector Oracle.
  * 
- * The core engine of the FiveO Fuel Injector Oracle.
- * Orchestrates fitment lookup, heuristic scoring, pool expansion, 
- * and AI-driven refinement.
+ * THE ORACLE PIPELINE:
+ * 1. DATA ACQUISITION: Parallel selective catalog fetch from Supabase.
+ * 2. HEURISTIC SCORING: Initial relevance scoring based on flow and fitment.
+ * 3. POOL ENRICHMENT: Expansion of candidates if the verified pool is too shallow.
+ * 4. AI REFINEMENT: Expert narrative generation via Gemini 3.1 Flash-Lite.
+ * 5. CONFIDENCE MAPPING: Linear scaling of raw scores for professional UI display.
+ * 
+ * @param {NextRequest} req - The user's vehicle profile and power goals.
+ * @returns {NextResponse} Scored recommendations with expert technical analysis.
  */
 export async function POST(req: NextRequest) {
   const startTime = performance.now();
@@ -262,9 +269,9 @@ export async function POST(req: NextRequest) {
         }).filter((res: ScoredProduct | null): res is ScoredProduct => res !== null);
       }
       console.log(`[Oracle] 🤖 AI Refinement Complete in ${Math.round(performance.now() - stage3Start)}ms`);
-    } catch (err: any) { 
-      aiError = err.message || String(err);
-      console.error("[Oracle] AI Error:", aiError);
+    } catch (err: unknown) { 
+      aiError = err instanceof Error ? err.message : String(err);
+      console.error("[Oracle] 🚨 AI Pipeline Failure:", aiError);
       selectionStrategy = "Oracle offline. Using heuristic matches.";
     }
 
@@ -306,16 +313,17 @@ export async function POST(req: NextRequest) {
     console.log(`[Oracle] ✅ Total Execution Time: ${response.timing?.total}ms`);
     return NextResponse.json(response);
   } catch (err: unknown) {
-    console.error("[Oracle] Fatal API Error:", err instanceof Error ? err.message : err);
+    const errorMessage = err instanceof Error ? err.message : "Internal Server Error";
+    console.error("[Oracle] ❌ Fatal API Error:", errorMessage);
     return NextResponse.json(
       {
         results: [],
         error: "Fatal Engine Error",
-        message: JSON.stringify(err, Object.getOwnPropertyNames(err || {})),
+        message: errorMessage,
         details: err instanceof Error ? err.stack : "Raw object thrown"
       },
       { status: 500 }
     );
   }
 }
-// Force fresh deployment of 2.5 baseline: 2026-04-30 20:53:15
+// Force build trigger: 2026-04-30 22:59:15

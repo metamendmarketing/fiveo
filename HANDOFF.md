@@ -1,67 +1,43 @@
-# FiveO Fuel Injector Oracle — Developer Handoff
+# FiveO Fuel Injector Oracle — Engineering Handoff
 
-Welcome to the FiveO project. This application is a technical sizing assistant for high-performance fuel injectors, powered by a sophisticated data pipeline and a bleeding-edge Next.js frontend.
+Welcome to the FiveO Oracle. This application is a high-performance recommendation engine designed to bridge the gap between complex automotive fitment data and AI-driven expert advice.
 
-## 🚀 Tech Stack Overview
+## 🚀 Architectural Overview
 
-> [!IMPORTANT]
-> This project uses an advanced, unconventional tech stack. Please adhere to these versions to avoid breaking the layout or build.
+The Oracle operates as a multi-stage pipeline within a Next.js 16 (App Router) environment:
 
-- **Frontend**: Next.js 16.2.3 (App Router)
-- **React**: 19.2.4
-- **Styling**: Tailwind CSS 4 & PostCSS 4
-- **Database**: Supabase (PostgreSQL)
-- **Pipeline**: Python 3 & Ruby
+1.  **Data Layer (Supabase)**: High-velocity selective fetching from the `products` and `product_fitment` tables.
+2.  **Heuristic Engine (`scoring.ts`)**: A deterministic ranking system that filters thousands of candidates based on flow-rate math and confirmed vehicle fitment.
+3.  **AI Engine (Gemini 3.1 Flash-Lite)**: A cutting-edge LLM stage that transforms raw product data into "Seasoned Shop Guy" narratives.
+4.  **Telemetry Dashboard**: Built-in timing diagnostics that track latency across every stage of the pipeline.
 
-## 📂 Architecture
+## 🧠 AI Connectivity (Critical)
 
-### 1. The Frontend (`/app`)
-- **App Router**: Standard Next.js arrangement.
-- **Oracle Wizard**: Located in `/app/components/oracle/`. Orchestrates the multi-step build profile capture.
-- **Global Types**: `/app/lib/types.ts` centralizes all core domain interfaces (`Product`, `ScoredProduct`, `BuildProfile`, etc.).
-- **Global Styles**: `/app/globals.css` manages fluid typography and cross-browser normalization.
-- **Glassmorphism**: UI uses a consistent frosted-glass aesthetic defined in CSS variables and utility classes.
+The Oracle uses the modern **`@google/genai`** SDK and connects via the **Agent Platform API**.
 
-### 2. The Oracle Engine (`/app/lib`)
-- **Heuristic Scoring**: `scoring.ts` contains the weighted ranking engine that pre-filters the catalog based on vehicle fitment and user priorities.
-- **Rules Engine**: `scoring-rules.json` allows for tuning the heuristic weights without touching code.
-- **Constants**: `constants.ts` defines technical formulas for flow rate (CC/min) and HP calculations.
+*   **Location**: Must be set to `global`.
+*   **Model ID**: `gemini-3.1-flash-lite-preview`.
+*   **Authentication**: Implements **Application Default Credentials (ADC)**. It dynamically writes the `VERTEX_CREDENTIALS_JSON` secret to a temporary identity file at runtime to satisfy the Google handshake.
 
-### 3. AI Refinement (`/app/api/oracle`)
-- **Pipeline**: Heuristic → Pool Expansion → AI Synthesis (Gemini 2.5 Flash) → Final Selection.
-- **Persona**: The AI acts as a "Senior Fuel Injection Consultant", providing conversational narratives and technical "Pro Tips".
+## 🛠 Core Files
 
-### 4. The Data Pipeline (`/scripts`)
-- All raw data processing occurs in this directory.
-- Refer to [scripts/README.md](file:///Users/kevin/Documents/FiveO/scripts/README.md) for execution sequence.
-- Data flows from `data/raw/` -> `data/normalized/` -> **Supabase**.
+-   `app/lib/gemini.ts`: The AI client factory and authentication bridge.
+-   `app/api/oracle/route.ts`: The main pipeline orchestrator (Fetch → Score → Refine).
+-   `app/lib/ai-config.ts`: The "Expert Persona" prompt engineering and narrative constraints.
+-   `app/lib/types.ts`: Central TypeScript interfaces for the entire pipeline.
 
-### 5. The Database
-- Supabase is used primarily as a read-heavy catalog for the Oracle's vehicle fitment engine.
-- Tables: `makes`, `models`, `years`, `engines`, `products`, `product_fitment`.
+## 🔒 Security & Privacy
 
-## ✅ Completed Milestones
+-   **Secrets**: All Google Cloud and Supabase keys are managed via environment variables.
+-   **Credential Sanitization**: The ADC temporary file is managed within the OS temp directory and is never exposed to the client.
+-   **Data Privacy**: No PII (Personally Identifiable Information) is sent to the AI; only vehicle specs and power goals are transmitted for analysis.
 
-- [x] **Wizard Logic**: Fully implemented state machine with cascading vehicle lookups and logical branching.
-- [x] **Type Safety**: Centralized interfaces in `types.ts` with 0% 'any' usage in core logic.
-- [x] **AI Synthesis**: Integrated Gemini 2.5 Flash for high-fidelity personalized recommendations.
-- [x] **Scoring Engine**: Refactored heuristic engine with documented rules and weighted priorities.
+## ⚡ Performance Optimization
 
-## 🛠 Next Steps for Development
+-   **Parallel Fetching**: Catalog data is fetched in parallel batches to bypass single-request latency.
+-   **Singleton Clients**: AI and Database clients are instantiated as singletons to prevent socket exhaustion in serverless environments.
+-   **Turbopack**: The build is optimized for Turbopack, ensuring rapid deployment and high-fidelity type checking.
 
-- [ ] **E2E Testing**: Conduct full integration tests of the vehicle cascading dropdowns.
-- [ ] **Performance Tuning**: Monitor AI response latency and consider streaming responses for the "selectionStrategy".
-- [ ] **Data Expansion**: Continue normalizing motorcycle and marine fitment data in `/scripts`.
+---
 
-## 🔑 Environment Setup
-
-1. Copy `.env.example` to `.env`.
-2. Ensure `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are populated.
-3. For AI features, provide `VERTEX_CREDENTIALS_JSON` (Vercel) or `vertex-key.json` (Local).
-4. Run `npm install` and `npm run dev`.
-
-## ⚠️ Notes for Success
-- **Zero Regression**: The layout is pixel-perfect to FiveO's brand guidelines. Be very careful with layout shifts when adding new components.
-- **Fluid Typography**: Use the `--text-` variables (e.g., `var(--text-hero)`) instead of hardcoded font sizes.
-- **Touch Targets**: All interactive elements MUST meet the 44px minimum touch target requirement (defined in `globals.css`).
-- **ESLint**: Always run `npm run lint` before committing; the project enforces strict type checking.
+**Current Status**: Production Ready. All AI handshakes are stable in the `us-east4` flagship region via the Global Agent Platform endpoint.
