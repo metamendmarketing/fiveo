@@ -67,18 +67,29 @@ export async function POST(req: NextRequest) {
     let offset = 0;
     const PAGE_SIZE = 1000;
     
-    while (true) {
-      const { data: batch, error: prodErr } = await supabase
-        .from("products")
-        .select("id, name, sku, url_key, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand")
-        .range(offset, offset + PAGE_SIZE - 1);
-      
-      if (prodErr) throw prodErr;
-      if (!batch || batch.length === 0) break;
-      
-      allProducts = [...allProducts, ...(batch as Product[])];
-      if (batch.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
+    try {
+      while (true) {
+        const { data: batch, error: prodErr } = await supabase
+          .from("products")
+          .select("id, name, sku, url_key, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand")
+          .range(offset, offset + PAGE_SIZE - 1);
+        
+        if (prodErr) {
+          console.error("[Oracle API] Stage 1 Fetch Error:", prodErr);
+          throw new Error(`Catalog Fetch Failed: ${prodErr.message} (Code: ${prodErr.code})`);
+        }
+        if (!batch || batch.length === 0) break;
+        
+        allProducts = [...allProducts, ...(batch as Product[])];
+        if (batch.length < PAGE_SIZE) break;
+        offset += PAGE_SIZE;
+      }
+    } catch (err: any) {
+      return NextResponse.json({ 
+        error: "Database acquisition failed.", 
+        details: err.message,
+        phase: "Stage 1 (Catalog Fetch)"
+      }, { status: 500 });
     }
     console.log(`[Oracle] 📦 Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
