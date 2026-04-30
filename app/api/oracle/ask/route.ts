@@ -126,6 +126,9 @@ export async function POST(req: NextRequest) {
       ? [buildProfile.year, buildProfile.make, buildProfile.model].filter(Boolean).join(" ") || "Not specified"
       : "Not specified";
 
+    const { parseCylinders, FUEL_BSFC, MAX_DUTY_CYCLE } = require("@/app/lib/constants");
+    const cylinders = buildProfile?.desiredSizeCC ? 1 : parseCylinders(buildProfile?.engineLabel || "", "");
+
     const customerBuild = buildProfile ? {
       vehicle: vehicleLabel,
       goal: buildProfile.goal || "Not specified",
@@ -134,6 +137,13 @@ export async function POST(req: NextRequest) {
       fuelType: buildProfile.fuelType || "Not specified",
       priorities: buildProfile.priorities || [],
       mods: buildProfile.mods || [],
+      // Internal Oracle Logic context for explanation
+      internalLogic: {
+        detectedCylinders: cylinders,
+        bsfc: FUEL_BSFC[buildProfile.fuelType || "pump"] || 0.55,
+        maxDutyCycle: MAX_DUTY_CYCLE,
+        calculationFormula: "Required LB/HR = (Target HP × BSFC) / (Cylinders × Duty Cycle)"
+      }
     } : "No build profile available.";
 
     // ─── STAGE 3: AI PROMPT ───
@@ -199,6 +209,7 @@ RULES:
 5. STAY ON TOPIC: Fuel injectors, tuning, flow rates, HP, vehicle compatibility, fuel systems, and related automotive performance. For anything unrelated, redirect: "That's outside my area — I specialize in fuel injection and engine performance."
 6. Flow rate math reference: 1 lb/hr ≈ 10.5 cc/min. NA engines: HP × 5-6 cc/min per cylinder. Forced induction: HP × 7-8 cc/min per cylinder. E85: multiply by 1.4x vs gasoline.
 7. When you know a compatible product from the fitment list, mention it by name so the customer knows their options.
+8. TRANSPARENCY: If the customer asks how you are working or how you calculated a result, use the "internalLogic" data to explain the specific cylinders detected, the BSFC used, and the 80% duty cycle safety margin. Be open about the math.
 
 Output strictly valid JSON:
 {
