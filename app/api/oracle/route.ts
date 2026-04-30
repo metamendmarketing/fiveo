@@ -264,7 +264,7 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
     
-    const REAL_THRESHOLD = 50; 
+    const REAL_THRESHOLD = 30; 
     const UI_FLOOR = 70;       
     
     let filteredResults = finalResults.filter(r => (r.score || 0) >= REAL_THRESHOLD);
@@ -288,6 +288,7 @@ export async function POST(req: NextRequest) {
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
       catalogSize: allProducts.length,
+      sample: allProducts.slice(0, 2), // NUCLEAR DIAGNOSTIC
       debug: {
         heuristicCount: heuristicResults.length,
         dedupedCount: deduped.length,
