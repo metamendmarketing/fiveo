@@ -30,6 +30,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     let apiReady = false;
 
     // 1. Kick off analysis immediately
+    const startTime = performance.now();
     (async () => {
       try {
         const res = await fetch("/fiveo/demo/api/oracle", {
@@ -39,76 +40,43 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         });
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         apiData = await res.json();
-        apiReady = true;
+        
+        const duration = (performance.now() - startTime) / 1000;
+        console.log(`[Oracle] ⚡ Analysis complete in ${duration.toFixed(2)}s`);
+        
+        // Immediate Transition (Disabled Artificial Delay)
+        if (!hasCompletedRef.current) {
+          hasCompletedRef.current = true;
+          setProgress(100);
+          onComplete(apiData!);
+        }
       } catch (err) {
         console.error("[ProcessingSequence] Analysis failed:", err);
-        apiData = { 
-          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
-          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
-        };
-        apiReady = true;
+        if (!hasCompletedRef.current) {
+          hasCompletedRef.current = true;
+          onComplete({ 
+            results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
+            calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
+          });
+        }
       }
     })();
 
-    // 2. Execute precision-timed progress simulation
-    const runProgress = async () => {
+    // 2. Visual "Spin-up" while waiting
+    const runVisuals = async () => {
       let current = 0;
-      
-      while (current < 100) {
-        if (hasCompletedRef.current) return;
-
+      while (current < 95 && !hasCompletedRef.current) {
         setProgress(current);
-
         const msg = [...PROCESSING_MESSAGES].reverse().find((m) => current >= m.threshold);
         if (msg) setStatusText(msg.text);
-
-        let delay = 100;
-
-        if (current < 20) {
-          // Phase 1: 0-20% (Fast - 2s)
-          delay = 100;
-        } else if (current >= 20 && current < 70) {
-          // Phase 2: 20-70% (Crunch - 25s)
-          // 50 steps at ~500ms avg
-          delay = 300 + Math.random() * 400;
-        } else if (current >= 70 && current < 90) {
-          // Phase 3: 70-90% (Building Overheat - 10s)
-          // 20 steps accelerating from 600ms down to 400ms
-          const factor = (current - 70) / 20;
-          delay = 600 - (factor * 200);
-        } else {
-          // Phase 4: 90-100% (Redline Velocity - 6.28s)
-          // 10 steps at ~628ms
-          const factor = (current - 90) / 10;
-          delay = 700 - (factor * 150);
-        }
-
-        await new Promise((r) => setTimeout(r, delay));
+        
+        // Fast visual climb (simulates activity)
+        await new Promise((r) => setTimeout(r, 150));
         current += 1;
-
-        // Safety check - wait at 98 if API isn't ready
-        if (current === 98 && !apiReady) {
-          while(!apiReady) {
-            await new Promise(r => setTimeout(r, 200));
-          }
-        }
-      }
-
-      // Final state
-      setProgress(100);
-      setStatusText("Maximum Velocity Reached!");
-      await new Promise(r => setTimeout(r, 1000));
-
-      if (!hasCompletedRef.current) {
-        hasCompletedRef.current = true;
-        onComplete(apiData || { 
-          results: [], selectionStrategy: "", vehicleLabel: "your vehicle", 
-          calculatedCC: 0, fitmentMatches: 0, makeFitmentMatches: 0, candidatePoolSize: 0 
-        });
       }
     };
 
-    runProgress();
+    runVisuals();
 
     return () => {
       hasCompletedRef.current = true;
