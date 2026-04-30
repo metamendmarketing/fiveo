@@ -68,6 +68,13 @@ export interface OracleApiResponse {
   fitmentMatches: number;
   makeFitmentMatches: number;
   candidatePoolSize: number;
+  timing?: {
+    total: number;
+    acquisition: number;
+    scoring: number;
+    enrichment: number;
+    ai: number;
+  };
   error?: string;
   reason?: string;
 }

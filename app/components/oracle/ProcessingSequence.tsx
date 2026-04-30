@@ -33,9 +33,9 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
       try {
         setStatusText("Requesting Engineering Matrix...");
         
-        // Add a 30s timeout to the fetch
+        // Add a 60s timeout to the fetch
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
 
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
@@ -51,13 +51,19 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           throw new Error(errData.message || `Server Error (${res.status})`);
         }
 
-        setStatusText("Synthesizing Results...");
+        setStatusText("Synthesizing Engineering Narratives...");
         const data = await res.json();
         
         if (!isMounted) return;
         
-        const trueTime = Math.round(performance.now() - startTime);
-        console.log(`[Oracle Performance] ⏱️ True processing time: ${trueTime}ms`);
+        if (data.timing) {
+          console.log(`[Oracle Timing Breakdown]
+  Total: ${data.timing.total}ms
+  Acquisition: ${data.timing.acquisition}ms
+  Scoring: ${data.timing.scoring}ms
+  Enrichment: ${data.timing.enrichment}ms
+  AI: ${data.timing.ai}ms`);
+        }
         
         clearInterval(timer);
         setProgress(100);

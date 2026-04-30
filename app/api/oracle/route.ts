@@ -286,9 +286,16 @@ export async function POST(req: NextRequest) {
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
+      timing: {
+        total: Math.round(performance.now() - startTime),
+        acquisition: Math.round(stage2Start - stage1Start),
+        scoring: Math.round(enrichmentStart - stage2Start),
+        enrichment: Math.round(stage3Start - enrichmentStart),
+        ai: Math.round(performance.now() - stage3Start)
+      }
     };
 
-    console.log(`[Oracle] ✅ Total Execution Time: ${Math.round(performance.now() - startTime)}ms`);
+    console.log(`[Oracle] ✅ Total Execution Time: ${response.timing?.total}ms`);
     return NextResponse.json(response);
   } catch (err: unknown) {
     console.error("[Oracle] Fatal API Error:", err instanceof Error ? err.message : err);
