@@ -1,11 +1,12 @@
 /**
  * Unified Google Generative AI Client (@google/genai)
  * 
- * Hardened for 2026 Production Environments.
+ * Hardened for 2026 Production Environments using ADC (Application Default Credentials).
  */
 import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import path from "path";
+import os from "os";
 
 let clientInstance: any = null;
 
@@ -14,6 +15,7 @@ export function getAIClient() {
 
   let credentials;
   try {
+    // 1. Resolve Credentials
     if (process.env.VERTEX_CREDENTIALS_JSON) {
       credentials = JSON.parse(process.env.VERTEX_CREDENTIALS_JSON);
     } else {
@@ -22,8 +24,15 @@ export function getAIClient() {
         credentials = JSON.parse(fs.readFileSync(filePath, "utf8"));
       }
     }
+
+    // 2. Set up Application Default Credentials (ADC) for the SDK to find
+    if (credentials) {
+      const tempCredPath = path.join(os.tmpdir(), "vertex-service-account.json");
+      fs.writeFileSync(tempCredPath, JSON.stringify(credentials));
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = tempCredPath;
+    }
   } catch (err) {
-    console.error("[AI] 🚨 Credential error:", err);
+    console.error("[AI] 🚨 Credential setup failed:", err);
   }
 
   const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
@@ -33,25 +42,17 @@ export function getAIClient() {
   }
 
   /**
-   * Correct Initialization Pattern for @google/genai:
-   * Following the exact structure identified by the user.
+   * Final SDK Initialization:
+   * By setting GOOGLE_APPLICATION_CREDENTIALS above, the SDK will 
+   * automatically find and use the service account.
    */
   try {
     clientInstance = new GoogleGenAI({
       vertexai: true,
       project: projectId,
-      location: "us-central1",
-      // Service account credentials go in the top-level 'auth' field
-      auth: credentials ? {
-        credentials: {
-          type: "service_account",
-          project_id: credentials.project_id,
-          private_key: credentials.private_key,
-          client_email: credentials.client_email,
-        }
-      } : undefined
+      location: "us-central1"
     });
-    console.log(`[AI] ✅ Client initialized for project: ${projectId}`);
+    console.log(`[AI] ✅ Client initialized with ADC for project: ${projectId}`);
   } catch (initErr) {
     console.error("[AI] 🚨 Initialization failed:", initErr);
   }
