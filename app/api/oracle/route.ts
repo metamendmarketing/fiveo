@@ -191,9 +191,9 @@ export async function POST(req: NextRequest) {
     
     let finalResults = candidatePool.slice(0, rules.poolSize.aiMaxResults);
     let selectionStrategy = "";
-
+    let aiError = null;
     try {
-      const model = getVertexModel("gemini-3.1-flash-lite-preview");
+      const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
       const candidateData = candidatePool.map(c => {
@@ -203,18 +203,11 @@ export async function POST(req: NextRequest) {
           : "";
 
         return {
-          id: c.product.id,
+          id: String(c.product.id),
           name: c.product.name,
           cc: Number(c.product.flow_rate_cc) || null,
-          price: c.product.price,
-          impedance: c.product.impedance,
-          connector: c.product.connector_type,
           brand: c.product.manufacturer,
           description: cleanDescription,
-          heuristicScore: c.score,
-          hasFitment: c.hasFitment,
-          matchType: c.matchType === "fitment_confirmed" ? "Direct Factory Fit" : 
-                     c.matchType === "make_match" ? "Verified Brand Match" : "Heuristic Recommendation",
         };
       });
 
@@ -235,6 +228,7 @@ export async function POST(req: NextRequest) {
         .replace("{{candidateCount}}", candidatePool.length.toString())
         .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
 
+      console.log(`[Oracle] 🤖 Sending AI Request (${prompt.length} chars)...`);
       const result = await model.generateContent(prompt);
       const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
 
@@ -246,26 +240,25 @@ export async function POST(req: NextRequest) {
       const refinedList = refined.refinement || [];
 
       if (refinedList.length > 0) {
-        finalResults = refinedList
-          .map((r: { id: number; score: number; matchStrategy: string; aiHeadline: string; preferenceSummary: string; technicalNarrative: string; proTip: string }) => {
-            const original = candidatePool.find(c => String(c.product.id) === String(r.id));
-            if (!original) return null;
-            return {
-              ...original,
-              score: r.score || original.score,
-              matchStrategy: r.matchStrategy,
-              aiHeadline: r.aiHeadline,
-              preferenceSummary: r.preferenceSummary,
-              technicalNarrative: r.technicalNarrative,
-              proTip: r.proTip,
-            } as ScoredProduct;
-          })
-          .filter((res: ScoredProduct | null): res is ScoredProduct => res !== null);
+        finalResults = refinedList.map((r: any) => {
+          const original = candidatePool.find(c => String(c.product.id) === String(r.id));
+          if (!original) return null;
+          return {
+            ...original,
+            score: r.score || original.score,
+            matchStrategy: r.matchStrategy || original.matchType,
+            aiHeadline: r.aiHeadline || "",
+            preferenceSummary: r.preferenceSummary || "",
+            technicalNarrative: r.technicalNarrative || "",
+            proTip: r.proTip || ""
+          } as ScoredProduct;
+        }).filter((res: ScoredProduct | null): res is ScoredProduct => res !== null);
       }
       console.log(`[Oracle] 🤖 AI Refinement Complete in ${Math.round(performance.now() - stage3Start)}ms`);
-    } catch (err: unknown) {
-      console.error("[Oracle] AI refinement failed, falling back to heuristic:", err instanceof Error ? err.message : err);
-      selectionStrategy = "I've analyzed your build specs against our precision engineering matrix. We've prioritized proven vehicle fitment and the flow rates you'll need to hit your performance goals safely.";
+    } catch (err: any) { 
+      aiError = err.message || String(err);
+      console.error("[Oracle] AI Error:", aiError);
+      selectionStrategy = "Oracle offline. Using heuristic matches.";
     }
 
     // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
@@ -298,7 +291,8 @@ export async function POST(req: NextRequest) {
         acquisition: Math.round(stage2Start - stage1Start),
         scoring: Math.round(enrichmentStart - stage2Start),
         enrichment: Math.round(stage3Start - enrichmentStart),
-        ai: Math.round(performance.now() - stage3Start)
+        ai: Math.round(performance.now() - stage3Start),
+        ai_error: aiError
       }
     };
 

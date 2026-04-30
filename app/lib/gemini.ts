@@ -29,7 +29,7 @@ const modelInstances = new Map<string, any>();
  * - Supports encrypted environment variable loading (VERTEX_CREDENTIALS_JSON).
  * - Implements deterministic temperature controls for engineering accuracy.
  */
-export function getVertexModel(modelName: string = "gemini-3.1-flash-lite-preview"): any {
+export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
   // Return cached instance if available for this specific model
   if (modelInstances.has(modelName)) return modelInstances.get(modelName);
 

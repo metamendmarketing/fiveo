@@ -67,6 +67,16 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         setProgress(100);
         setStatusText("Oracle Analysis Complete!");
         
+        console.group("Oracle Performance");
+        console.log(`Total Time: ${(performance.now() - startTime).toFixed(2)}ms`);
+        console.log(`Heuristic Scoring: ${data.timing.scoring}ms`);
+        console.log(`DB Enrichment: ${data.timing.enrichment || data.timing.db_enrichment}ms`);
+        console.log(`AI Generation: ${data.timing.ai || data.timing.ai_generation}ms`);
+        if (data.timing.ai_error) {
+          console.log(`%c AI Error: ${data.timing.ai_error} `, "background: #f00; color: #fff; font-weight: bold;");
+        }
+        console.groupEnd();
+
         setTimeout(() => {
           if (isMounted) onComplete(data);
         }, 800); 
