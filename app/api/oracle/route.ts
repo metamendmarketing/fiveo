@@ -77,9 +77,6 @@ export async function POST(req: NextRequest) {
       if (!batch || batch.length === 0) break;
       
       allProducts = [...allProducts, ...(batch as Product[])];
-      if (offset === 0 && batch[0]) {
-        console.log("[Oracle] 🧬 Schema Inspection (First Item Keys):", Object.keys(batch[0]));
-      }
       if (batch.length < PAGE_SIZE) break;
       offset += PAGE_SIZE;
     }
