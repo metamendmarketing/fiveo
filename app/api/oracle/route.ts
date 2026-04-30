@@ -66,11 +66,11 @@ export async function POST(req: NextRequest) {
     let allProducts: Product[] = [];
     const PAGE_SIZE = 1000;
     
-    // Filter out "Not Visible Individually" (pigtails, o-rings, etc.) to slash load by 75%
+    // Filter out "Not Visible Individually" but KEEP NULLS (important for current data state)
     const { count, error: countErr } = await supabase
       .from("products")
       .select("id", { count: "exact", head: true })
-      .neq("visibility", "Not Visible Individually");
+      .or('visibility.is.null,visibility.neq."Not Visible Individually"');
     
     if (countErr) throw countErr;
     
@@ -79,8 +79,8 @@ export async function POST(req: NextRequest) {
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
-        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_engine_code, parsed_displacement, parsed_config")
-        .neq("visibility", "Not Visible Individually")
+        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config")
+        .or('visibility.is.null,visibility.neq."Not Visible Individually"')
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
     
@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
     let selectionStrategy = "";
 
     try {
-      const model = getVertexModel("gemini-1.5-flash");
+      const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
       const candidateData = candidatePool.map(c => ({
