@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
-        .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config")
+        .select("id, sku, name, manufacturer, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config")
         .neq("visibility", "Not Visible Individually")
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
