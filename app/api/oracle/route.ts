@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 1b. Parallel Catalog Fetch (Dramatically faster than sequential loop)
+    let allProducts: Product[] = [];
     const PAGE_SIZE = 1000;
     const { count, error: countErr } = await supabase.from("products").select("*", { count: "exact", head: true });
     if (countErr) throw countErr;
