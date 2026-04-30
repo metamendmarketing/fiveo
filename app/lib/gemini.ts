@@ -4,7 +4,7 @@
  * This modern SDK replaces the legacy Vertex AI SDK to provide stable 
  * access to the Gemini 3.1 flagship models.
  */
-import { createClient } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import path from "path";
 
@@ -40,21 +40,15 @@ export function getAIClient() {
     return null;
   }
 
-  // Initialize the new unified client
-  clientInstance = createClient({
+  /**
+   * Initialize the new unified client using the pattern you found:
+   * import { GoogleGenAI } from "@google/genai";
+   * const ai = new GoogleGenAI({ vertexai: true, project, location });
+   */
+  clientInstance = new GoogleGenAI({
     vertexai: true,
     project: projectId,
     location: "us-central1",
-    // Pass the service account credentials directly to the new SDK
-    auth: credentials ? {
-      credentials: {
-        type: "service_account",
-        project_id: credentials.project_id,
-        private_key: credentials.private_key,
-        client_email: credentials.client_email,
-        universe_domain: credentials.universe_domain || "googleapis.com"
-      }
-    } : undefined
   });
 
   return clientInstance;
