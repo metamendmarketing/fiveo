@@ -62,28 +62,25 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Parallel Selective Catalog Fetch (Dramatically faster - skips heavy fields)
+    // 1b. Catalog Fetch (Sequential but Selective for performance)
     let allProducts: Product[] = [];
+    let offset = 0;
     const PAGE_SIZE = 1000;
-    const { count, error: countErr } = await supabase.from("products").select("id", { count: "exact", head: true });
-    if (countErr) throw countErr;
     
-    const total = count || 4000;
-    const pages = Math.ceil(total / PAGE_SIZE);
-    
-    const fetchPromises = Array.from({ length: pages }).map((_, i) => {
-      return supabase.from("products")
-        .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories, year_start, year_end")
-        .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
-    });
-    
-    const batchResults = await Promise.all(fetchPromises);
-    allProducts = batchResults.flatMap(r => {
-      if (r.error) throw r.error;
-      return (r.data as Product[]) || [];
-    });
-    
-    console.log(`[Oracle] 📦 Optimized Acquisition: ${allProducts.length} products in ${Math.round(performance.now() - stage1Start)}ms`);
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
+    }
+    console.log(`[Oracle] 📦 Selective Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     const stage2Start = performance.now();
