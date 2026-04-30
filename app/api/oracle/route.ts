@@ -295,9 +295,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         results: [],
-        error: "Service Interruption",
-        message: "The Oracle encountered an unexpected error while processing your build profile. Please refine your inputs and try again.",
-        details: err instanceof Error ? err.message : "Internal Server Error"
+        error: "Fatal Engine Error",
+        message: err instanceof Error ? err.message : "The Oracle encountered an unexpected internal error.",
+        details: err instanceof Error ? err.stack : "Internal Server Error"
       },
       { status: 500 }
     );
