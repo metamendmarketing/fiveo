@@ -25,7 +25,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     const msgInterval = setInterval(() => {
       if (currentMsgIndex < PROCESSING_MESSAGES.length - 1) {
         currentMsgIndex++;
-        setStatusText(PROCESSING_MESSAGES[currentMsgIndex]);
+        setStatusText(PROCESSING_MESSAGES[currentMsgIndex].text);
       }
     }, 4500); // Cycle messages every 4.5s for a ~45s total window
 
