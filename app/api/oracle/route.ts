@@ -279,7 +279,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    const response: OracleApiResponse = {
+    const response: any = {
       results: outputResults,
       selectionStrategy,
       vehicleLabel,
@@ -287,6 +287,13 @@ export async function POST(req: NextRequest) {
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
+      catalogSize: allProducts.length,
+      debug: {
+        heuristicCount: heuristicResults.length,
+        dedupedCount: deduped.length,
+        finalCount: finalResults.length,
+        filteredCount: filteredResults.length
+      }
     };
 
     console.log(`[Oracle] ✅ Total Execution Time: ${Math.round(performance.now() - startTime)}ms`);
