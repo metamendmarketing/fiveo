@@ -152,13 +152,51 @@ export const LBHR_TO_CC = (lbhr: number) => lbhr * 10.5;
  * Calculate required injector size in cc/min
  * Formula: Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
  */
+/**
+ * Extracts numeric cylinder count from common engine configuration strings.
+ * e.g. "V8" -> 8, "Inline-6" -> 6, "L4" -> 4, "Flat 4" -> 4, "998cc L2" -> 2
+ */
+export function parseCylinders(label: string = "", config: string = ""): number {
+  const combined = `${label} ${config}`.toUpperCase();
+  
+  // 1. Direct patterns like V8, V10, V12, V6, L4, I6
+  const vMatch = combined.match(/[V|L|I](\d+)/);
+  if (vMatch) return parseInt(vMatch[1]);
+
+  // 2. Word patterns
+  if (combined.includes("EIGHT") || combined.includes("V-8")) return 8;
+  if (combined.includes("SIX") || combined.includes("V-6")) return 6;
+  if (combined.includes("FOUR") || combined.includes("L-4")) return 4;
+  if (combined.includes("TEN")) return 10;
+  if (combined.includes("TWELVE")) return 12;
+
+  // 3. Fallbacks based on common displacement/cylinders
+  if (combined.includes("5.0") || combined.includes("5.7") || combined.includes("6.2")) return 8;
+  if (combined.includes("3.5") || combined.includes("3.7") || combined.includes("3.0")) return 6;
+
+  // Global default for safety (standard automotive)
+  return 4;
+}
+
+/**
+ * Calculate required injector size in cc/min
+ * Formula: Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
+ */
 export function calculateRequiredCC(
   targetHP: number,
   fuelType: string,
-  cylinders: number = 4
+  cylinders: number = 4,
+  headroomPref: "conservative" | "balanced" | "aggressive" | null = "balanced"
 ): number {
   const bsfc = FUEL_BSFC[fuelType] || FUEL_BSFC.pump;
-  const requiredLBHR = (targetHP * bsfc) / (cylinders * MAX_DUTY_CYCLE);
+  
+  // Adjust duty cycle based on headroom preference
+  // Conservative (safe) = 70%, Balanced = 80%, Aggressive = 90%
+  let dutyCycle = MAX_DUTY_CYCLE;
+  if (headroomPref === "conservative") dutyCycle = 0.70;
+  if (headroomPref === "aggressive") dutyCycle = 0.90;
+
+  const requiredLBHR = (targetHP * bsfc) / (cylinders * dutyCycle);
   return Math.round(requiredLBHR * 10.5);
 }
 

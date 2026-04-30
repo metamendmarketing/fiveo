@@ -9,7 +9,7 @@
  */
 
 import type { BuildProfile } from "@/app/lib/constants";
-import { calculateRequiredCC } from "@/app/lib/constants";
+import { calculateRequiredCC, parseCylinders } from "@/app/lib/constants";
 import { Product, ScoredProduct } from "@/app/lib/types";
 import rules from "@/app/lib/scoring-rules.json";
 
@@ -63,11 +63,20 @@ export function scoreProducts(
   fitmentProductIds: number[],
   makeFitmentProductIds: number[]
 ): ScoredProduct[] {
+  // ── 0. Engine Accuracy Detection ────────────────────
+  const cylinders = profile.desiredSizeCC ? 1 : parseCylinders(profile.engineLabel || "", "");
+  
   const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
-    ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
+    ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump", cylinders, profile.headroomPref)
     : profile.desiredSizeCC || null;
 
-  const weights = typedRules.weights;
+  // Dynamic Weights: Boost spec-specific weights if user is in 'specs' mode
+  const isExpert = profile.entryMode === "specs";
+  const weights = { ...typedRules.weights };
+  if (isExpert) {
+    weights.connectorMatch *= 2;
+    weights.impedance = (weights.impedance || 10) * 2;
+  }
 
   const scored: ScoredProduct[] = products.map((product) => {
     let score = 0;
