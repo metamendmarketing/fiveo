@@ -66,21 +66,21 @@ export async function POST(req: NextRequest) {
     let allProducts: Product[] = [];
     const PAGE_SIZE = 1000;
     
-    // Filter by visibility at the SQL level to slash load by 75%
+    // Filter out "Not Visible Individually" (pigtails, o-rings, etc.) to slash load by 75%
     const { count, error: countErr } = await supabase
       .from("products")
       .select("id", { count: "exact", head: true })
-      .or('visibility.eq."Catalog, Search",visibility.eq.Search');
+      .neq("visibility", "Not Visible Individually");
     
     if (countErr) throw countErr;
     
-    const total = count || 1800; // Expected ~1,792
+    const total = count || 1800; 
     const pages = Math.ceil(total / PAGE_SIZE);
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
         .select("id, sku, name, manufacturer, brand, flow_rate_cc, size_cc, impedance, connector_type, price, fuel_types, url_key, raw_categories")
-        .or('visibility.eq."Catalog, Search",visibility.eq.Search')
+        .neq("visibility", "Not Visible Individually")
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
     

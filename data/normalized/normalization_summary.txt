@@ -2,7 +2,7 @@ Normalization summary
 =======================
 Source: export_catalog_product_20260403_112734.csv
 Products: 4053
-Generated: 2026-04-21T20:52:36Z
+Generated: 2026-04-30T05:24:11Z
 
 Fields extracted (non-null / useful)
 --------------------------------------
