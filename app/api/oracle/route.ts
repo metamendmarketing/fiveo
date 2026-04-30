@@ -177,7 +177,8 @@ export async function POST(req: NextRequest) {
         description: c.product.description?.slice(0, 200),
         heuristicScore: c.score,
         hasFitment: c.hasFitment,
-        matchType: c.matchType,
+        matchType: c.matchType === "fitment_confirmed" ? "Direct Factory Fit" : 
+                   c.matchType === "make_match" ? "Verified Brand Match" : "Heuristic Recommendation",
       }));
 
       const prompt = ACTIVE_PERSONA
