@@ -21,21 +21,28 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
     const startTime = performance.now();
     let isMounted = true;
     
-    // Slow initial creep
+    let currentMsgIndex = 0;
+    const msgInterval = setInterval(() => {
+      if (currentMsgIndex < PROCESSING_MESSAGES.length - 1) {
+        currentMsgIndex++;
+        setStatusText(PROCESSING_MESSAGES[currentMsgIndex]);
+      }
+    }, 4500); // Cycle messages every 4.5s for a ~45s total window
+
+    // Cinematic Progressive Illusion
     const timer = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 98) return prev;
-        return prev + 1;
+        if (prev >= 99) return prev;
+        // Natural deceleration: the closer to 99, the slower it moves
+        const increment = Math.max(0.1, (100 - prev) / 50);
+        return Math.min(prev + increment, 99);
       });
-    }, 200);
+    }, 150);
 
     async function runOracle() {
       try {
-        setStatusText("Requesting Engineering Matrix...");
-        
-        // Add a 60s timeout to the fetch
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000);
+        const timeoutId = setTimeout(() => controller.abort(), 75000); // 75s failsafe
 
         const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
@@ -51,33 +58,25 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
           throw new Error(errData.message || `Server Error (${res.status})`);
         }
 
-        setStatusText("Synthesizing Engineering Narratives...");
         const data = await res.json();
         
         if (!isMounted) return;
         
-        if (data.timing) {
-          console.log(`[Oracle Timing Breakdown]
-  Total: ${data.timing.total}ms
-  Acquisition: ${data.timing.acquisition}ms
-  Scoring: ${data.timing.scoring}ms
-  Enrichment: ${data.timing.enrichment}ms
-  AI: ${data.timing.ai}ms`);
-        }
-        
         clearInterval(timer);
+        clearInterval(msgInterval);
         setProgress(100);
-        setStatusText("Analysis Complete!");
+        setStatusText("Oracle Analysis Complete!");
         
         setTimeout(() => {
           if (isMounted) onComplete(data);
-        }, 500); 
+        }, 800); 
         
       } catch (err: any) {
         console.error("Oracle Execution Error:", err);
         clearInterval(timer);
+        clearInterval(msgInterval);
         if (isMounted) {
-          setStatusText(`Error: ${err.message || "Connection Interrupted"}`);
+          setStatusText(`Diagnostic Error: ${err.message || "Interrupted"}`);
           setProgress(0);
         }
       }
