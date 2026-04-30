@@ -196,20 +196,27 @@ export async function POST(req: NextRequest) {
       const model = getVertexModel("gemini-2.5-flash");
       if (!model) throw new Error("AI services unavailable");
 
-      const candidateData = candidatePool.map(c => ({
-        id: c.product.id,
-        name: c.product.name,
-        cc: Number(c.product.flow_rate_cc || c.product.size_cc) || null,
-        price: c.product.price,
-        impedance: c.product.impedance,
-        connector: c.product.connector_type,
-        brand: c.product.manufacturer || c.product.brand,
-        description: c.product.description?.slice(0, 200),
-        heuristicScore: c.score,
-        hasFitment: c.hasFitment,
-        matchType: c.matchType === "fitment_confirmed" ? "Direct Factory Fit" : 
-                   c.matchType === "make_match" ? "Verified Brand Match" : "Heuristic Recommendation",
-      }));
+      const candidateData = candidatePool.map(c => {
+        // Clean HTML tags to speed up AI processing
+        const cleanDescription = c.product.description
+          ? c.product.description.replace(/<[^>]*>?/gm, "").slice(0, 500)
+          : "";
+
+        return {
+          id: c.product.id,
+          name: c.product.name,
+          cc: Number(c.product.flow_rate_cc) || null,
+          price: c.product.price,
+          impedance: c.product.impedance,
+          connector: c.product.connector_type,
+          brand: c.product.manufacturer,
+          description: cleanDescription,
+          heuristicScore: c.score,
+          hasFitment: c.hasFitment,
+          matchType: c.matchType === "fitment_confirmed" ? "Direct Factory Fit" : 
+                     c.matchType === "make_match" ? "Verified Brand Match" : "Heuristic Recommendation",
+        };
+      });
 
       const prompt = ACTIVE_PERSONA
         .replace("{{vehicleLabel}}", vehicleLabel)
