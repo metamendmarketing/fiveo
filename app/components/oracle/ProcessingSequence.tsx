@@ -58,7 +58,7 @@ export function ProcessingSequence({ profile, onComplete }: Props) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 75000); // 75s failsafe
 
-        const res = await fetch("/api/oracle", {
+        const res = await fetch("/fiveo/demo/api/oracle", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ profile }),
