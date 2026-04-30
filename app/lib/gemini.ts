@@ -1,46 +1,29 @@
-import { VertexAI, GenerativeModel } from "@google-cloud/vertexai";
+/**
+ * Unified Google Generative AI Client (@google/genai)
+ * 
+ * This modern SDK replaces the legacy Vertex AI SDK to provide stable 
+ * access to the Gemini 3.1 flagship models.
+ */
+import { createClient } from "@google/genai";
 import fs from "fs";
 import path from "path";
 
-/**
- * Vertex AI / Gemini Utility
- * 
- * Handles authenticated access to Google Cloud Vertex AI.
- * Supports dual-path credential loading:
- * 1. VERTEX_CREDENTIALS_JSON (env var) for production/Vercel.
- * 2. vertex-key.json (local file) for local development.
- */
+let clientInstance: any = null;
 
 /**
- * Vertex AI / Gemini Integration Layer
- * 
- * Orchestrates secure, authenticated communication with Google Cloud Vertex AI.
- * Implements a singleton-like pattern with memoization to ensure high performance
- * and efficient resource utilization across concurrent Next.js API requests.
+ * Returns a configured GoogleGenAI client instance.
+ * Supports Service Account authentication for both Vercel and local dev.
  */
-
-// Model registry to cache instances by name
-const modelInstances = new Map<string, any>();
-
-/**
- * Initializes and returns a configured Gemini GenerativeModel instance.
- * 
- * Security:
- * - Supports encrypted environment variable loading (VERTEX_CREDENTIALS_JSON).
- * - Implements deterministic temperature controls for engineering accuracy.
- */
-export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
-  // Return cached instance if available for this specific model
-  if (modelInstances.has(modelName)) return modelInstances.get(modelName);
+export function getAIClient() {
+  if (clientInstance) return clientInstance;
 
   let credentials;
-
   try {
-    // 1. Production Path: Parse credentials from high-entropy environment variable
+    // 1. Production Path: Environment Variable
     if (process.env.VERTEX_CREDENTIALS_JSON) {
       credentials = JSON.parse(process.env.VERTEX_CREDENTIALS_JSON);
     } 
-    // 2. Development Path: Secure local file fallback
+    // 2. Development Path: Local JSON Fallback
     else {
       const filePath = path.join(process.cwd(), "vertex-key.json");
       if (fs.existsSync(filePath)) {
@@ -48,36 +31,40 @@ export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
       }
     }
   } catch (err) {
-    console.error("[VertexAI] 🚨 Credential Resolution Error:", err instanceof Error ? err.message : "Malformed JSON");
+    console.error("[AI Client] 🚨 Failed to resolve credentials:", err);
   }
 
   const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
-  
   if (!projectId) {
-    console.warn("[VertexAI] ⚠️ Project ID or credentials missing. Vertex AI services are currently offline.");
+    console.warn("[AI Client] ⚠️ Project ID missing. AI features disabled.");
     return null;
   }
 
-  try {
-    const vertex = new VertexAI({
-      project: projectId,
-      location: "us-central1",
-      googleAuthOptions: credentials ? { credentials } : undefined,
-    });
+  // Initialize the new unified client
+  clientInstance = createClient({
+    vertexai: true,
+    project: projectId,
+    location: "us-central1",
+    // Pass the service account credentials directly to the new SDK
+    auth: credentials ? {
+      credentials: {
+        type: "service_account",
+        project_id: credentials.project_id,
+        private_key: credentials.private_key,
+        client_email: credentials.client_email,
+        universe_domain: credentials.universe_domain || "googleapis.com"
+      }
+    } : undefined
+  });
 
-    const model = vertex.preview.getGenerativeModel({
-      model: modelName,
-      generationConfig: { 
-        responseMimeType: "application/json",
-        temperature: 0.2, // Consistent technical logic
-        topP: 0.95,
-      },
-    });
+  return clientInstance;
+}
 
-    modelInstances.set(modelName, model);
-    return model;
-  } catch (err) {
-    console.error("[VertexAI] 🚨 Initialization Failed:", err);
-    return null;
-  }
+/**
+ * Legacy compatibility wrapper for the Oracle's generation stage.
+ * Returns the client and the model name for use in route.ts.
+ */
+export function getVertexModel(modelName: string = "gemini-3.1-flash-lite") {
+  const client = getAIClient();
+  return { client, modelName };
 }

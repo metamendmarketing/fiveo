@@ -193,11 +193,10 @@ export async function POST(req: NextRequest) {
     let selectionStrategy = "";
     let aiError = null;
     try {
-      const model = getVertexModel("gemini-2.5-flash");
-      if (!model) throw new Error("AI services unavailable");
+      const { client, modelName } = getVertexModel("gemini-3.1-flash-lite");
+      if (!client) throw new Error("AI services unavailable");
 
       const candidateData = candidatePool.map(c => {
-        // Clean HTML tags to speed up AI processing
         const cleanDescription = c.product.description
           ? c.product.description.replace(/<[^>]*>?/gm, "").slice(0, 500)
           : "";
@@ -228,10 +227,18 @@ export async function POST(req: NextRequest) {
         .replace("{{candidateCount}}", candidatePool.length.toString())
         .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
 
-      console.log(`[Oracle] 🤖 Sending AI Request (${prompt.length} chars)...`);
-      const result = await model.generateContent(prompt);
-      const text = result.response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+      console.log(`[Oracle] 🤖 Sending AI Request (${prompt.length} chars) via @google/genai...`);
+      
+      const response = await client.models.generateContent({
+        model: modelName,
+        contents: prompt,
+        config: {
+          response_mime_type: "application/json",
+          temperature: 0.2
+        }
+      });
 
+      const text = response.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       const cleanJson = jsonMatch ? jsonMatch[0] : "{}";
       const refined = JSON.parse(cleanJson);
