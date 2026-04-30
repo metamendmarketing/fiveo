@@ -33,22 +33,23 @@ export function getAIClient() {
   }
 
   /**
-   * Hardened Initialization:
-   * Explicitly passing the Service Account into the vertexai configuration block.
+   * Correct Initialization Pattern for @google/genai:
+   * Following the exact structure identified by the user.
    */
   try {
     clientInstance = new GoogleGenAI({
-      vertexai: {
-        project: projectId,
-        location: "us-central1",
-        // The new SDK often expects 'auth' or 'credentials' inside the vertexai block
-        credentials: credentials ? {
+      vertexai: true,
+      project: projectId,
+      location: "us-central1",
+      // Service account credentials go in the top-level 'auth' field
+      auth: credentials ? {
+        credentials: {
           type: "service_account",
           project_id: credentials.project_id,
           private_key: credentials.private_key,
           client_email: credentials.client_email,
-        } : undefined
-      }
+        }
+      } : undefined
     });
     console.log(`[AI] ✅ Client initialized for project: ${projectId}`);
   } catch (initErr) {
