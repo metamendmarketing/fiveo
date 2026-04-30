@@ -67,29 +67,18 @@ export async function POST(req: NextRequest) {
     let offset = 0;
     const PAGE_SIZE = 1000;
     
-    try {
-      while (true) {
-        const { data: batch, error: prodErr } = await supabase
-          .from("products")
-          .select("id, name, sku, url_key, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand")
-          .range(offset, offset + PAGE_SIZE - 1);
-        
-        if (prodErr) {
-          console.error("[Oracle API] Stage 1 Fetch Error:", prodErr);
-          throw new Error(`Catalog Fetch Failed: ${prodErr.message} (Code: ${prodErr.code})`);
-        }
-        if (!batch || batch.length === 0) break;
-        
-        allProducts = [...allProducts, ...(batch as Product[])];
-        if (batch.length < PAGE_SIZE) break;
-        offset += PAGE_SIZE;
-      }
-    } catch (err: any) {
-      return NextResponse.json({ 
-        error: "Database acquisition failed.", 
-        details: err.message,
-        phase: "Stage 1 (Catalog Fetch)"
-      }, { status: 500 });
+    while (true) {
+      const { data: batch, error: prodErr } = await supabase
+        .from("products")
+        .select("*")
+        .range(offset, offset + PAGE_SIZE - 1);
+      
+      if (prodErr) throw prodErr;
+      if (!batch || batch.length === 0) break;
+      
+      allProducts = [...allProducts, ...(batch as Product[])];
+      if (batch.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
     }
     console.log(`[Oracle] 📦 Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
@@ -166,26 +155,6 @@ export async function POST(req: NextRequest) {
       }).slice(0, 4);
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
-
-    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
-    const enrichmentStart = performance.now();
-    const candidateIds = candidatePool.map(c => c.product.id);
-    const { data: enrichedProducts } = await supabase
-      .from("products")
-      .select("id, description, hero_image_url")
-      .in("id", candidateIds);
-    
-    if (enrichedProducts) {
-      const enrichedMap = new Map(enrichedProducts.map(p => [p.id, p]));
-      candidatePool = candidatePool.map(c => ({
-        ...c,
-        product: {
-          ...c.product,
-          ...enrichedMap.get(c.product.id)
-        }
-      }));
-    }
-    console.log(`[Oracle] 🧪 Enrichment Complete: ${candidatePool.length} products detailed in ${Math.round(performance.now() - enrichmentStart)}ms`);
 
     // ─── STAGE 3: AI REFINEMENT ───
     const stage3Start = performance.now();
@@ -264,7 +233,7 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
     
-    const REAL_THRESHOLD = 30; 
+    const REAL_THRESHOLD = 50; 
     const UI_FLOOR = 70;       
     
     let filteredResults = finalResults.filter(r => (r.score || 0) >= REAL_THRESHOLD);
@@ -279,7 +248,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    const response: any = {
+    const response: OracleApiResponse = {
       results: outputResults,
       selectionStrategy,
       vehicleLabel,
@@ -287,14 +256,6 @@ export async function POST(req: NextRequest) {
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
-      catalogSize: allProducts.length,
-      sample: allProducts.slice(0, 2), // NUCLEAR DIAGNOSTIC
-      debug: {
-        heuristicCount: heuristicResults.length,
-        dedupedCount: deduped.length,
-        finalCount: finalResults.length,
-        filteredCount: filteredResults.length
-      }
     };
 
     console.log(`[Oracle] ✅ Total Execution Time: ${Math.round(performance.now() - startTime)}ms`);
