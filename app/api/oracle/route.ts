@@ -296,8 +296,8 @@ export async function POST(req: NextRequest) {
       {
         results: [],
         error: "Fatal Engine Error",
-        message: err instanceof Error ? err.message : "The Oracle encountered an unexpected internal error.",
-        details: err instanceof Error ? err.stack : "Internal Server Error"
+        message: JSON.stringify(err, Object.getOwnPropertyNames(err || {})),
+        details: err instanceof Error ? err.stack : "Raw object thrown"
       },
       { status: 500 }
     );
