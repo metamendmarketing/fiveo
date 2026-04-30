@@ -18,46 +18,51 @@ import { ACTIVE_PERSONA } from "@/app/lib/ai-config";
  * and AI-driven refinement.
  */
 export async function POST(req: NextRequest) {
+  const startTime = performance.now();
   try {
     const body = await req.json();
     const profile: BuildProfile = body.profile;
 
     if (!profile) {
-      return NextResponse.json({ error: "Profile is required" }, { status: 400 });
+      return NextResponse.json({ 
+        error: "Invalid Request", 
+        message: "A valid build profile is required to generate recommendations." 
+      }, { status: 400 });
     }
 
     const vehicleLabel = [profile.year, profile.make, profile.model].filter(Boolean).join(" ") || "your vehicle";
-    console.log("[Oracle] Processing build for:", vehicleLabel);
+    console.log(`[Oracle] ⚡ Starting recommendation engine for: ${vehicleLabel}`);
 
     const supabase = getServerSupabase();
 
     // ─── STAGE 1: DATA ACQUISITION ───
+    const stage1Start = performance.now();
     
     // 1a. Fitment Lookup
     let fitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
+    const fitmentPromises = [];
     if (profile.modelId) {
-      const { data: fitment, error: fitErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("model_id", Number(profile.modelId));
-
-      if (fitErr) console.error("[Oracle] Model fitment query error:", fitErr.message);
-      fitmentProductIds = (fitment as FitmentRecord[] || []).map(f => f.product_id);
+      fitmentPromises.push(
+        supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId))
+      );
     }
-
     if (profile.makeId) {
-      const { data: makeFitment, error: makeErr } = await supabase
-        .from("product_fitment")
-        .select("product_id")
-        .eq("make_id", Number(profile.makeId));
-
-      if (makeErr) console.error("[Oracle] Make fitment query error:", makeErr.message);
-      makeFitmentProductIds = (makeFitment as FitmentRecord[] || []).map(f => f.product_id);
+      fitmentPromises.push(
+        supabase.from("product_fitment").select("product_id").eq("make_id", Number(profile.makeId))
+      );
     }
 
-    // 1b. Catalog Fetch (Paginated to get all ~4,000 products)
+    const fitmentResults = await Promise.all(fitmentPromises);
+    if (profile.modelId && fitmentResults[0]) {
+      fitmentProductIds = (fitmentResults[0].data as FitmentRecord[] || []).map(f => f.product_id);
+    }
+    if (profile.makeId && fitmentResults[fitmentResults.length - 1]) {
+      makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
+    }
+
+    // 1b. Catalog Fetch (Paginated to get all products)
     let allProducts: Product[] = [];
     let offset = 0;
     const PAGE_SIZE = 1000;
@@ -75,17 +80,21 @@ export async function POST(req: NextRequest) {
       if (batch.length < PAGE_SIZE) break;
       offset += PAGE_SIZE;
     }
-    
-    const products = allProducts;
+    console.log(`[Oracle] 📦 Data Acquisition Complete: ${allProducts.length} products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
+    const stage2Start = performance.now();
+    
+    // Accuracy Fix: Use parseCylinders here to ensure initial requiredCC is correct
+    const { parseCylinders } = require("@/app/lib/constants");
+    const cylinders = profile.desiredSizeCC ? 1 : parseCylinders(profile.engineLabel || "", "");
     
     const requiredCC = (profile.hpMode === "custom" && profile.targetHP)
-      ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump")
+      ? calculateRequiredCC(profile.targetHP, profile.fuelType || "pump", cylinders, profile.headroomPref)
       : profile.desiredSizeCC || null;
 
     const heuristicResults = scoreProducts(
-      products,
+      allProducts,
       profile,
       fitmentProductIds,
       makeFitmentProductIds
@@ -93,11 +102,8 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 2b: URL RESOLUTION & DEDUPLICATION ───
     
-    // Resolve variant url_keys to canonical parent product pages BEFORE deduplication.
-    // This ensures that physical products listed multiple times under different variant slugs
-    // are treated as the same canonical entity.
     const allUrlKeys = new Set<string>();
-    for (const p of products) {
+    for (const p of allProducts) {
       let key = (p.url_key || "").toLowerCase();
       if (key.endsWith("-each")) key = key.slice(0, -5);
       if (key.includes("-each-")) key = key.split("-each-")[0];
@@ -129,11 +135,11 @@ export async function POST(req: NextRequest) {
     });
 
     const deduped = deduplicateResults(resolvedHeuristicResults);
+    console.log(`[Oracle] ⚖️ Heuristic Scoring & Dedup Complete: ${deduped.length} candidates in ${Math.round(performance.now() - stage2Start)}ms`);
 
     // Initial pool selection (Stage 2 Expansion)
     let candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
 
-    // Inject fitment-confirmed products if they were missed by the top heuristic slice
     const fitmentMissing = deduped.filter(
       r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
     );
@@ -141,7 +147,6 @@ export async function POST(req: NextRequest) {
       candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
     }
 
-    // Goal-specific injections
     if (profile.goal === "max-power") {
       const highFlow = deduped.filter(r => {
         const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
@@ -152,6 +157,7 @@ export async function POST(req: NextRequest) {
     }
 
     // ─── STAGE 3: AI REFINEMENT ───
+    const stage3Start = performance.now();
     
     let finalResults = candidatePool.slice(0, rules.poolSize.aiMaxResults);
     let selectionStrategy = "";
@@ -218,6 +224,7 @@ export async function POST(req: NextRequest) {
           })
           .filter((res: ScoredProduct | null): res is ScoredProduct => res !== null);
       }
+      console.log(`[Oracle] 🤖 AI Refinement Complete in ${Math.round(performance.now() - stage3Start)}ms`);
     } catch (err: unknown) {
       console.error("[Oracle] AI refinement failed, falling back to heuristic:", err instanceof Error ? err.message : err);
       selectionStrategy = "I've analyzed your build specs against our precision engineering matrix. We've prioritized proven vehicle fitment and the flow rates you'll need to hit your performance goals safely.";
@@ -225,16 +232,12 @@ export async function POST(req: NextRequest) {
 
     // ─── STAGE 5: FILTERING, SORTING & CONFIDENCE MAPPING ───
     
-    const REAL_THRESHOLD = 50; // Drop anything below 50% real score
-    const UI_FLOOR = 70;       // Minimum displayed score is 70%
+    const REAL_THRESHOLD = 50; 
+    const UI_FLOOR = 70;       
     
-    // 1. Filter out low-quality matches
     let filteredResults = finalResults.filter(r => (r.score || 0) >= REAL_THRESHOLD);
-    
-    // 2. Sort descending
     filteredResults.sort((a, b) => (b.score || 0) - (a.score || 0));
 
-    // 3. Map Real Scores to UI Confidence Range
     const outputResults = filteredResults.slice(0, 7).map(r => {
       const real = r.score || 0;
       const mapped = UI_FLOOR + (real - REAL_THRESHOLD) * (100 - UI_FLOOR) / (100 - REAL_THRESHOLD);
@@ -254,14 +257,16 @@ export async function POST(req: NextRequest) {
       candidatePoolSize: candidatePool.length,
     };
 
+    console.log(`[Oracle] ✅ Total Execution Time: ${Math.round(performance.now() - startTime)}ms`);
     return NextResponse.json(response);
   } catch (err: unknown) {
     console.error("[Oracle] Fatal API Error:", err instanceof Error ? err.message : err);
     return NextResponse.json(
       {
         results: [],
-        error: err instanceof Error ? err.message : "Internal Server Error",
-        reason: "The Oracle encountered an unexpected error. Please try again or adjust your criteria.",
+        error: "Service Interruption",
+        message: "The Oracle encountered an unexpected error while processing your build profile. Please refine your inputs and try again.",
+        details: err instanceof Error ? err.message : "Internal Server Error"
       },
       { status: 500 }
     );

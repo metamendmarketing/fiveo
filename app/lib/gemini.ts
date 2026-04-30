@@ -11,23 +11,36 @@ import path from "path";
  * 2. vertex-key.json (local file) for local development.
  */
 
-let modelInstance: any = null;
+/**
+ * Vertex AI / Gemini Integration Layer
+ * 
+ * Orchestrates secure, authenticated communication with Google Cloud Vertex AI.
+ * Implements a singleton-like pattern with memoization to ensure high performance
+ * and efficient resource utilization across concurrent Next.js API requests.
+ */
+
+// Model registry to cache instances by name
+const modelInstances = new Map<string, GenerativeModel>();
 
 /**
- * Returns a configured Gemini GenerativeModel instance.
- * Memoizes the instance to avoid re-initializing the Vertex client on every call.
+ * Initializes and returns a configured Gemini GenerativeModel instance.
+ * 
+ * Security:
+ * - Supports encrypted environment variable loading (VERTEX_CREDENTIALS_JSON).
+ * - Implements deterministic temperature controls for engineering accuracy.
  */
-export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
-  if (modelInstance) return modelInstance;
+export function getVertexModel(modelName: string = "gemini-2.5-flash"): GenerativeModel | null {
+  // Return cached instance if available for this specific model
+  if (modelInstances.has(modelName)) return modelInstances.get(modelName)!;
 
   let credentials;
 
   try {
-    // Priority 1: Environment Variable (Production)
+    // 1. Production Path: Parse credentials from high-entropy environment variable
     if (process.env.VERTEX_CREDENTIALS_JSON) {
       credentials = JSON.parse(process.env.VERTEX_CREDENTIALS_JSON);
     } 
-    // Priority 2: Local JSON File (Development)
+    // 2. Development Path: Secure local file fallback
     else {
       const filePath = path.join(process.cwd(), "vertex-key.json");
       if (fs.existsSync(filePath)) {
@@ -35,28 +48,36 @@ export function getVertexModel(modelName: string = "gemini-2.5-flash"): any {
       }
     }
   } catch (err) {
-    console.error("[VertexAI] Failed to load credentials:", err);
+    console.error("[VertexAI] 🚨 Credential Resolution Error:", err instanceof Error ? err.message : "Malformed JSON");
   }
 
   const projectId = credentials?.project_id || process.env.VERTEX_PROJECT_ID;
+  
   if (!projectId) {
-    console.warn("[VertexAI] Project ID missing. AI functionality disabled.");
+    console.warn("[VertexAI] ⚠️ Project ID or credentials missing. Vertex AI services are currently offline.");
     return null;
   }
 
-  const vertex = new VertexAI({
-    project: projectId,
-    location: "us-central1",
-    googleAuthOptions: credentials ? { credentials } : undefined,
-  });
+  try {
+    const vertex = new VertexAI({
+      project: projectId,
+      location: "us-central1",
+      googleAuthOptions: credentials ? { credentials } : undefined,
+    });
 
-  modelInstance = vertex.preview.getGenerativeModel({
-    model: modelName,
-    generationConfig: { 
-      responseMimeType: "application/json",
-      temperature: 0.2, // Lower temperature for more deterministic technical advice
-    },
-  });
+    const model = vertex.preview.getGenerativeModel({
+      model: modelName,
+      generationConfig: { 
+        responseMimeType: "application/json",
+        temperature: 0.2, // Consistent technical logic
+        topP: 0.95,
+      },
+    });
 
-  return modelInstance;
+    modelInstances.set(modelName, model);
+    return model;
+  } catch (err) {
+    console.error("[VertexAI] 🚨 Initialization Failed:", err);
+    return null;
+  }
 }

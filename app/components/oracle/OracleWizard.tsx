@@ -80,6 +80,20 @@ const stepVariants = {
  * - Cinematic UI transitions and glassmorphic aesthetics.
  * - Memoized handlers to prevent unnecessary re-renders across steps.
  */
+/**
+ * OracleWizard — The entry point for the FiveO Fuel Injector Recommendation Engine.
+ * 
+ * This component manages the state machine for the multi-step diagnostic process.
+ * It coordinates vehicle selection, performance goals, and engineering preferences
+ * to build a profile that is ultimately scored by the heuristic engine and 
+ * refined by the AI Oracle.
+ * 
+ * Architecture:
+ * - State Management: React useReducer for robust BuildProfile consistency.
+ * - Navigation: Index-based step tracking with dynamic STEP_SEQUENCES.
+ * - Performance: Memoized callbacks and derived state to ensure 60fps transitions.
+ * - UI/UX: Cinematic framer-motion transitions with glassmorphic depth.
+ */
 export default function OracleWizard() {
   const [profile, dispatch] = useReducer(profileReducer, INITIAL_PROFILE);
   const [stepIndex, setStepIndex] = useState(0);
@@ -88,7 +102,8 @@ export default function OracleWizard() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   /** 
-   * Derive the current step sequence based on the selected entry mode 
+   * Memoized step sequence. 
+   * Dynamically switches based on entryMode (e.g., 'oem' skips performance questions).
    */
   const steps = useMemo(() => {
     if (!profile.entryMode) return ["entry"] as WizardStep[];
@@ -259,7 +274,7 @@ export default function OracleWizard() {
       <div
         ref={wizardRef}
         className={`relative w-full max-w-7xl mx-auto lg:rounded-[2.5rem] lg:border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center 
-          ${currentStep === 'results' ? '' : 'min-h-[500px] lg:min-h-[700px]'}`}
+          ${currentStep === 'results' ? '' : (currentStep === 'entry' ? 'min-h-[500px] lg:min-h-[600px]' : 'min-h-[500px] lg:min-h-[700px]')}`}
       >
         {/* Dynamic Background Layer */}
         <div 
@@ -274,7 +289,7 @@ export default function OracleWizard() {
         <div className={`absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 lg:rounded-[2.5rem] ${(currentStep === 'preferences' || currentStep === 'results') ? '' : 'backdrop-blur-[2px]'}`} />
         
         {/* Content Container — centered within the cinematic frame */}
-        <div className={`relative z-10 w-full p-4 sm:p-6 lg:pt-16 lg:px-16 lg:pb-4 ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
+        <div className={`relative z-10 w-full p-4 sm:p-6 lg:px-16 ${currentStep === 'entry' ? 'lg:py-16' : 'lg:pt-16 lg:pb-4'} ${currentStep === 'results' ? '' : `flex flex-col ${showSidebar ? 'lg:flex-row' : ''} items-center justify-center gap-4 ${showSidebar ? 'lg:gap-12' : ''}`}`}>
           {/* Active Step Content */}
           <div className={`flex-1 min-w-0 w-full ${currentStep === 'results' ? '' : 'flex flex-col'}`}>
             <AnimatePresence mode="wait">

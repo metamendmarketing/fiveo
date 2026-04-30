@@ -155,32 +155,50 @@ export const LBHR_TO_CC = (lbhr: number) => lbhr * 10.5;
 /**
  * Extracts numeric cylinder count from common engine configuration strings.
  * e.g. "V8" -> 8, "Inline-6" -> 6, "L4" -> 4, "Flat 4" -> 4, "998cc L2" -> 2
+ * 
+ * Includes specific patterns for performance builds, rotary engines, and marine configurations.
  */
 export function parseCylinders(label: string = "", config: string = ""): number {
   const combined = `${label} ${config}`.toUpperCase();
   
-  // 1. Direct patterns like V8, V10, V12, V6, L4, I6
-  const vMatch = combined.match(/[V|L|I](\d+)/);
-  if (vMatch) return parseInt(vMatch[1]);
+  // 1. Direct patterns like V8, V10, V12, V6, L4, I6, R2
+  const patternMatch = combined.match(/[V|L|I|R](\d+)/);
+  if (patternMatch) return parseInt(patternMatch[1]);
 
-  // 2. Word patterns
-  if (combined.includes("EIGHT") || combined.includes("V-8")) return 8;
-  if (combined.includes("SIX") || combined.includes("V-6")) return 6;
-  if (combined.includes("FOUR") || combined.includes("L-4")) return 4;
-  if (combined.includes("TEN")) return 10;
-  if (combined.includes("TWELVE")) return 12;
+  // 2. Rotary specific handling (treating 13B/20B as equivalent fuel-load profiles)
+  if (combined.includes("ROTARY") || combined.includes("13B")) return 2;
+  if (combined.includes("20B")) return 3;
 
-  // 3. Fallbacks based on common displacement/cylinders
-  if (combined.includes("5.0") || combined.includes("5.7") || combined.includes("6.2")) return 8;
-  if (combined.includes("3.5") || combined.includes("3.7") || combined.includes("3.0")) return 6;
+  // 3. Common word-based patterns
+  if (combined.includes("EIGHT") || combined.includes("V-8") || combined.includes("V 8")) return 8;
+  if (combined.includes("SIX") || combined.includes("V-6") || combined.includes("V 6") || combined.includes("INLINE 6")) return 6;
+  if (combined.includes("FOUR") || combined.includes("L-4") || combined.includes("L 4") || combined.includes("INLINE 4")) return 4;
+  if (combined.includes("TEN") || combined.includes("V10")) return 10;
+  if (combined.includes("TWELVE") || combined.includes("V12")) return 12;
 
-  // Global default for safety (standard automotive)
+  // 4. Displacement-based heuristic fallbacks (standard automotive range)
+  if (combined.includes("5.0") || combined.includes("5.7") || combined.includes("6.2") || combined.includes("7.0")) return 8;
+  if (combined.includes("3.5") || combined.includes("3.7") || combined.includes("3.0") || combined.includes("2.5")) return 6;
+
+  // 5. Flat/Boxer patterns
+  if (combined.includes("FLAT 4") || combined.includes("FLAT-4") || combined.includes("H4")) return 4;
+  if (combined.includes("FLAT 6") || combined.includes("FLAT-6") || combined.includes("H6")) return 6;
+
+  // Global default for safety (standard automotive benchmark)
   return 4;
 }
 
 /**
  * Calculate required injector size in cc/min
- * Formula: Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
+ * 
+ * Engineering Formula:
+ * Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
+ * 
+ * @param targetHP - The total desired crank horsepower
+ * @param fuelType - 'pump', 'e85', or 'race'
+ * @param cylinders - Number of injectors (usually equal to cylinder count)
+ * @param headroomPref - User safety margin preference
+ * @returns Predicted required flow rate in cc/min
  */
 export function calculateRequiredCC(
   targetHP: number,
@@ -190,8 +208,12 @@ export function calculateRequiredCC(
 ): number {
   const bsfc = FUEL_BSFC[fuelType] || FUEL_BSFC.pump;
   
-  // Adjust duty cycle based on headroom preference
-  // Conservative (safe) = 70%, Balanced = 80%, Aggressive = 90%
+  /**
+   * Duty Cycle mapping based on headroom preference.
+   * Conservative (70%) aims for maximum reliability and cooler injector temps.
+   * Balanced (80%) is the industry standard for safe daily/track use.
+   * Aggressive (90%) pushes the mechanical limit of the injector.
+   */
   let dutyCycle = MAX_DUTY_CYCLE;
   if (headroomPref === "conservative") dutyCycle = 0.70;
   if (headroomPref === "aggressive") dutyCycle = 0.90;
