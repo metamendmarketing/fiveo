@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     while (true) {
       const { data: batch, error: prodErr } = await supabase
         .from("products")
-        .select("*")
+        .select("id, name, sku, flow_rate_cc, size_cc, price, impedance, connector_type, manufacturer, brand, fuel_types, raw_categories")
         .range(offset, offset + PAGE_SIZE - 1);
       
       if (prodErr) throw prodErr;
@@ -155,6 +155,26 @@ export async function POST(req: NextRequest) {
       }).slice(0, 4);
       candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
     }
+
+    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
+    const enrichmentStart = performance.now();
+    const candidateIds = candidatePool.map(c => c.product.id);
+    const { data: enrichedProducts } = await supabase
+      .from("products")
+      .select("id, description, hero_image_url")
+      .in("id", candidateIds);
+    
+    if (enrichedProducts) {
+      const enrichedMap = new Map(enrichedProducts.map(p => [p.id, p]));
+      candidatePool = candidatePool.map(c => ({
+        ...c,
+        product: {
+          ...c.product,
+          ...enrichedMap.get(c.product.id)
+        }
+      }));
+    }
+    console.log(`[Oracle] 🧪 Enrichment Complete: ${candidatePool.length} products detailed in ${Math.round(performance.now() - enrichmentStart)}ms`);
 
     // ─── STAGE 3: AI REFINEMENT ───
     const stage3Start = performance.now();
