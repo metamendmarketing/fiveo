@@ -26,6 +26,7 @@ export interface Product {
   url_key?: string;
   visibility?: string;
   raw_categories?: string[];
+  notes?: string[];
 }
 
 /**
