@@ -6,6 +6,74 @@ import { OracleApiResponse, ScoredProduct } from "@/app/lib/types";
 import Image from "next/image";
 import AskOracle from "./AskOracle";
 
+/**
+ * ProductCard — Individual injector display component
+ */
+function ProductCard({ result, onClick }: { result: ScoredProduct; onClick: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      onClick={onClick}
+      className={`bg-white/5 backdrop-blur-md rounded-2xl border overflow-hidden flex flex-col group shadow-lg transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-white/40 cursor-pointer ${
+        result.tier === 1 ? "border-green-600/30" : (result.tier === 2 ? "border-[#00AEEF]/30" : "border-[#E10600]/30")
+      }`}
+    >
+      <div className="h-52 bg-white/5 flex items-center justify-center p-6 border-b border-white/10 group-hover:bg-white/10 transition-colors relative overflow-hidden">
+        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${
+          result.tier === 1 ? "bg-gradient-to-br from-green-600/5 to-transparent" : (result.tier === 2 ? "bg-gradient-to-br from-[#00AEEF]/5 to-transparent" : "bg-gradient-to-br from-[#E10600]/5 to-transparent")
+        }`} />
+        
+        {/* Tier Badge */}
+        <div className="absolute top-3 right-3 z-20">
+          <span className={`text-[8px] font-black uppercase italic tracking-widest px-2 py-1 rounded-sm shadow-md ${
+            result.tier === 1 ? "bg-green-600 text-white" : (result.tier === 2 ? "bg-[#00AEEF] text-white" : "bg-[#E10600] text-white")
+          }`}>
+            {result.fitmentBadge || (result.tier === 1 ? "Verified Direct Fit" : "Requires Verification")}
+          </span>
+        </div>
+
+        <Image 
+          src={result.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
+          alt={result.product.name}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-contain drop-shadow-md p-4"
+        />
+      </div>
+
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="text-[8px] font-black uppercase tracking-widest text-white/40 border border-white/10 px-2 py-0.5 rounded-sm">
+            {result.matchStrategy || "Expert Pick"}
+          </span>
+        </div>
+
+        <h4 className="text-sm font-black uppercase italic text-white leading-tight mb-3 min-h-[2rem] line-clamp-2 group-hover:text-[#00AEEF] transition-colors">
+           {result.product.name}
+        </h4>
+
+        <p className="text-[11px] text-white/50 mb-3">
+          {result.product.flow_rate_cc || result.product.size_cc || "—"} cc/min · {result.product.manufacturer || result.product.brand || "FiveO"}
+        </p>
+
+        <div className="mt-auto pt-4 border-t border-white/10">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Compatibility</span>
+            <span className={`text-lg font-black ${result.tier === 1 ? "text-green-500" : "text-[#00AEEF]"}`}>{result.score}%</span>
+          </div>
+          
+          <button 
+            className="w-full bg-black text-white text-[9px] font-black uppercase py-3 tracking-[0.15em] hover:bg-[#00AEEF] transition-colors rounded"
+          >
+            Explore Fitment
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 interface Props {
   profile: BuildProfile;
   results: ScoredProduct[];
@@ -75,8 +143,13 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
     );
   }
 
-  const topPick = results[0];
-  const others = results.slice(1);
+  const tiers = {
+    1: results.filter(r => r.tier === 1),
+    2: results.filter(r => r.tier === 2),
+    3: results.filter(r => r.tier === 3),
+  };
+
+  const hasAnyResults = results.length > 0;
 
   return (
     <div className="w-full flex flex-col">
@@ -134,150 +207,66 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
           </div>
         )}
 
-        {/* Results Grid/List */}
-        <div className="flex flex-col gap-6">
+        {/* Tiered Results Sections */}
+        <div className="flex flex-col gap-16 pb-20">
           
-          {/* 1. Primary Recommendation (Featured) */}
-          {topPick && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,174,239,0.15)] shadow-xl relative"
-            >
-              <div className="absolute top-0 right-0 p-6 z-20">
-                <div className={`text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic ${
-                  apiData?.noVerifiedMatches 
-                    ? "bg-yellow-500 text-black border border-black/20" 
-                    : "bg-[#00AEEF] text-white"
-                }`}>
-                  {apiData?.noVerifiedMatches ? "⚠️ Advanced Option" : "★ Primary Match"}
-                </div>
+          {/* TIER 1: DIRECT FIT */}
+          {tiers[1].length > 0 && (
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center gap-4">
+                <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-xs not-italic">1</span>
+                  Tier 1: Verified Direct Fit
+                </h3>
+                <div className="flex-1 h-px bg-green-600/30" />
               </div>
-
-              <div className="md:flex items-stretch min-h-[340px]">
-                <div className="h-64 md:h-auto md:w-2/5 bg-white/5 flex items-center justify-center p-6 md:p-14 border-b md:border-b-0 md:border-r border-white/10 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent" />
-                  <Image 
-                    src={topPick.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
-                    alt={topPick.product.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 40vw"
-                    className="object-contain drop-shadow-2xl p-6 md:p-8"
-                  />
-                </div>
-                
-                {/* Essential Details */}
-                <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
-                   <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="text-[9px] px-3 py-1 font-black bg-[#E10600] text-white uppercase italic tracking-widest rounded-sm">
-                        {topPick.matchStrategy || "Top Recommendation"}
-                      </span>
-                      {topPick.hasFitment && (
-                        <span className="text-[9px] px-3 py-1 font-black bg-green-600 text-white uppercase tracking-widest rounded-sm">✓ Fitment Confirmed</span>
-                      )}
-                   </div>
-                   <h3 className="text-xl md:text-2xl font-black uppercase italic text-white leading-tight mb-2 line-clamp-2">
-                     {topPick.product.name}
-                   </h3>
-                   <p className="text-[#00AEEF] text-xs font-bold uppercase tracking-[0.15em] mb-6">
-                     {topPick.product.manufacturer || topPick.product.brand || "FiveO"} | {topPick.product.flow_rate_cc || topPick.product.size_cc || "—"} cc/min
-                   </p>
-
-                   {topPick.preferenceSummary && (
-                     <p className="text-sm text-white/70 italic mb-6 leading-relaxed">&quot;{topPick.preferenceSummary}&quot;</p>
-                   )}
-
-                   {/* Compatibility Score */}
-                   <div className="flex items-center gap-4 mb-8">
-                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden border border-white/5">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: `${topPick.score || 0}%` }}
-                          transition={{ duration: 1, delay: 0.5 }}
-                          className="h-full bg-[#00AEEF]"
-                        />
-                      </div>
-                      <span className="text-xl font-black text-[#00AEEF] tracking-tighter whitespace-nowrap">{topPick.score || 0}%</span>
-                   </div>
-
-                   <div className="flex flex-wrap gap-6 items-center">
-                      <button 
-                        onClick={() => setSelectedResult(topPick)}
-                        className="bg-[#E10600] text-white font-black italic uppercase tracking-[0.2em] rounded-sm transition-all duration-200 shadow-[0_4px_16px_rgba(225,6,0,0.25)] hover:bg-[#c70500] hover:-translate-y-[1px] hover:shadow-[0_6px_24px_rgba(225,6,0,0.35)] px-10 py-4 text-xs font-black tracking-[0.2em]"
-                      >
-                        Explore Tech Deep-Dive
-                      </button>
-                      {topPick.product && (
-                        <a 
-                          href={getStoreUrl(topPick.product)} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-300 hover:text-white transition-colors border-b border-gray-600 hover:border-white pb-1"
-                        >
-                          View in Store →
-                        </a>
-                      )}
-                   </div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tiers[1].map((result, i) => (
+                  <ProductCard key={result.product.id || i} result={result} onClick={() => setSelectedResult(result)} />
+                ))}
               </div>
-            </motion.div>
+            </div>
           )}
 
-          {/* 2. Alternative Candidates Grid */}
-          {others.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-              {others.map((result, i) => (
-                <motion.div
-                  key={result.product.id || i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * (i + 1) }}
-                  onClick={() => setSelectedResult(result)}
-                  className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden flex flex-col group shadow-lg transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_20px_40px_rgba(0,174,239,0.15)] hover:border-white/40 cursor-pointer"
-                >
-                  <div className="h-52 bg-white/5 flex items-center justify-center p-6 border-b border-white/10 group-hover:bg-white/10 transition-colors relative overflow-hidden"><div className="absolute inset-0 bg-gradient-to-br from-[#00AEEF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <Image 
-                      src={result.product.hero_image_url || "/fiveo/demo/oracle/placeholder.png"} 
-                      alt={result.product.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-contain drop-shadow-md p-4"
-                    />
-                  </div>
+          {/* TIER 2: CLOSEST COMPATIBLE CANDIDATES */}
+          {tiers[2].length > 0 && (
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center gap-4">
+                <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#00AEEF] flex items-center justify-center text-xs not-italic">2</span>
+                  Tier 2: Closest Compatible Candidates
+                </h3>
+                <div className="flex-1 h-px bg-[#00AEEF]/30" />
+              </div>
+              <p className="text-white/60 text-sm italic -mt-4 border-l-2 border-[#00AEEF] pl-4">
+                These options are technically close but require manual verification of connectors, dimensions, or tuning before installation.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tiers[2].map((result, i) => (
+                  <ProductCard key={result.product.id || i} result={result} onClick={() => setSelectedResult(result)} />
+                ))}
+              </div>
+            </div>
+          )}
 
-                  <div className="p-5 flex-1 flex flex-col">
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      <span className="text-[8px] font-black uppercase tracking-widest text-[#00AEEF] border border-[#00AEEF]/30 px-2 py-0.5 rounded-sm">
-                        {result.matchStrategy || "Expert Alternative"}
-                      </span>
-                      {result.hasFitment && (
-                        <span className="text-[8px] font-black uppercase tracking-widest text-green-600 border border-green-200 px-2 py-0.5 rounded-sm">✓ Fitment</span>
-                      )}
-                    </div>
-
-                    <h4 className="text-sm font-black uppercase italic text-white leading-tight mb-3 min-h-[2rem] line-clamp-2">
-                       {result.product.name}
-                    </h4>
-
-                    <p className="text-[11px] text-white/50 mb-3">
-                      {result.product.flow_rate_cc || result.product.size_cc || "—"} cc/min · {result.product.manufacturer || result.product.brand || "FiveO"}
-                    </p>
-
-                    <div className="mt-auto pt-4 border-t border-white/10">
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Compatibility</span>
-                        <span className="text-lg font-black text-[#00AEEF]">{result.score}%</span>
-                      </div>
-                      
-                      <button 
-                        className="w-full bg-black text-white text-[9px] font-black uppercase py-3 tracking-[0.15em] hover:bg-[#00AEEF] transition-colors rounded"
-                      >
-                        Explore Fitment
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+          {/* TIER 3: ADVANCED CUSTOM BUILD OPTIONS */}
+          {tiers[3].length > 0 && (
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center gap-4">
+                <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-[#E10600] flex items-center justify-center text-xs not-italic">3</span>
+                  Tier 3: Advanced Custom Build Options
+                </h3>
+                <div className="flex-1 h-px bg-[#E10600]/30" />
+              </div>
+              <p className="text-white/60 text-sm italic -mt-4 border-l-2 border-[#E10600] pl-4">
+                Specialty injectors intended for high-output, non-factory fuel systems. Require professional custom tuning and potential physical modifications.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {tiers[3].map((result, i) => (
+                  <ProductCard key={result.product.id || i} result={result} onClick={() => setSelectedResult(result)} />
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -395,6 +384,34 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                     </div>
                   )}
                 </div>
+
+                {/* What to Verify Before Purchase (Tier 2/3 Only) */}
+                {(selectedResult.tier === 2 || selectedResult.tier === 3) && (
+                  <div className={`rounded-xl border p-6 md:p-8 ${
+                    selectedResult.tier === 3 ? "bg-[#E10600]/5 border-[#E10600]/30" : "bg-[#00AEEF]/5 border-[#00AEEF]/30"
+                  }`}>
+                    <h4 className={`text-[10px] font-black uppercase tracking-[0.4em] mb-4 ${
+                      selectedResult.tier === 3 ? "text-[#E10600]" : "text-[#00AEEF]"
+                    }`}>What to Verify Before Purchase</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {(selectedResult.whatToVerify && selectedResult.whatToVerify.length > 0) ? (
+                        selectedResult.whatToVerify.map((check, idx) => (
+                          <div key={idx} className="flex items-center gap-3 text-sm text-white/70">
+                            <div className={`w-1.5 h-1.5 rounded-full ${selectedResult.tier === 3 ? "bg-[#E10600]" : "bg-[#00AEEF]"}`} />
+                            {check}
+                          </div>
+                        ))
+                      ) : (
+                        ["injector type (DI vs Port)", "connector compatibility", "impedance", "physical dimensions", "tuning requirements"].map((check, idx) => (
+                          <div key={idx} className="flex items-center gap-3 text-sm text-white/70">
+                            <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                            {check}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Engineering Specifications */}
                 <div>

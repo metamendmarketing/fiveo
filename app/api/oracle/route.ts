@@ -194,18 +194,14 @@ export async function POST(req: NextRequest) {
     let noVerifiedMatches = false;
 
     if (isVehicleMode) {
-      // MANDATORY: Only send products to the AI that have explicit Year/Make/Model/Engine confirmation.
       const verifiedOnly = deduped.filter(r => r.confidenceLevel === "Verified Fit");
-      
-      if (verifiedOnly.length > 0) {
-        safeCandidateResults = verifiedOnly;
-        console.log(`[Oracle] 🛡️ Upstream Enforcement: Found ${verifiedOnly.length} verified products.`);
-      } else {
-        // SMART FALLBACK: No verified fits. Allow heuristic matches but flag for AI.
+      if (verifiedOnly.length === 0) {
         noVerifiedMatches = true;
-        safeCandidateResults = deduped;
-        console.log(`[Oracle] ⚠️ Smart Fallback: No verified matches found. Passing ${deduped.length} heuristic candidates to AI for custom guidance.`);
       }
+      // NEW POLICY: We send the full deduped pool to the AI, but with clear confidence tagging.
+      // This allows the AI to organize into Tier 1, 2, and 3.
+      safeCandidateResults = deduped;
+      console.log(`[Oracle] 🛡️ Tiered System: Passing ${deduped.length} candidates to AI for tiered classification.`);
     }
 
     // Initial pool selection from filtered results
@@ -319,6 +315,9 @@ export async function POST(req: NextRequest) {
           return {
             ...original,
             score: r.score || original.score,
+            tier: r.tier || (original.confidenceLevel === "Verified Fit" ? 1 : 2),
+            fitmentBadge: r.fitmentBadge || (original.confidenceLevel === "Verified Fit" ? "Verified Direct Fit" : "Requires Verification"),
+            whatToVerify: r.whatToVerify || [],
             matchStrategy: r.matchStrategy || original.matchType,
             aiHeadline: r.aiHeadline || "",
             preferenceSummary: r.preferenceSummary || "",

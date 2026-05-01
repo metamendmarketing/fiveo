@@ -39,6 +39,9 @@ export interface ScoredProduct {
   hasFitment: boolean;
   matchType: "fitment_confirmed" | "make_match" | "flow_match" | "heuristic";
   confidenceLevel: "Verified Fit" | "Potential Platform Match" | "Likely Fit" | "Custom / Verify Fitment" | "Unverified";
+  tier?: 1 | 2 | 3;
+  fitmentBadge?: string;
+  whatToVerify?: string[];
 
   
   // AI-enriched fields (optional, added during AI refinement stage)
