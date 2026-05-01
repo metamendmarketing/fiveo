@@ -122,7 +122,7 @@ export function scoreProducts(
     const combinedProductText = `${product.raw_categories?.join(" ") || ""} ${product.notes?.join(" ") || ""} ${product.name}`.toLowerCase();
 
     if (!isCustomBuild && hasVehicleSelected) {
-      const vehicleMake = profile.make.toLowerCase();
+      const vehicleMake = (profile.make || "").toLowerCase();
       // List of major OEMs to check for conflicts
       const competitorMakes = ["jeep", "ford", "chevy", "chevrolet", "subaru", "honda", "toyota", "nissan", "dodge", "chrysler", "bmw", "audi", "vw", "volkswagen", "porsche", "mazda", "mitsubishi"].filter(m => m !== vehicleMake);
       
