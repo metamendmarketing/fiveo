@@ -37,6 +37,7 @@ export interface ScoredProduct {
   reasons: string[];
   hasFitment: boolean;
   matchType: "fitment_confirmed" | "make_match" | "flow_match" | "heuristic";
+  confidenceLevel: "Verified Fit" | "Likely Fit" | "Custom / Verify Fitment" | "Unverified";
   
   // AI-enriched fields (optional, added during AI refinement stage)
   matchStrategy?: string;

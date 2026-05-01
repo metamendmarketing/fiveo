@@ -213,6 +213,7 @@ export async function POST(req: NextRequest) {
           name: c.product.name,
           cc: Number(c.product.flow_rate_cc) || null,
           brand: c.product.manufacturer,
+          confidenceLevel: c.confidenceLevel,
           description: cleanDescription,
         };
       });

@@ -108,6 +108,12 @@ export function scoreProducts(
         reasons.push("🚨 HARD FAIL: Injection type mismatch. Vehicle is Port Injection, but product is Direct Injection.");
         isHardReject = true;
       }
+    } else {
+      // Product DI status is unknown
+      if (isVehicleDI) {
+        score = Math.min(score, 50);
+        reasons.push("⚠️ SCORE CAP: Product injection type is unknown. Capped at 50 to prevent false positives for DI vehicle.");
+      }
     }
 
     // Gate C: Platform Conflict Penalty
@@ -127,6 +133,13 @@ export function scoreProducts(
         score -= 1000;
         reasons.push(`🚨 HARD FAIL: Product application appears to conflict with selected vehicle platform (${profile.make}).`);
         isHardReject = true;
+      } else if (!hasConflict && !mentionsOwnMake && !hasMakeFitment && !hasModelFitment) {
+        // Soft Platform Ambiguity: No fitment evidence, no specific platform mentioned, and not explicitly universal
+        const isUniversal = combinedProductText.includes("universal");
+        if (!isUniversal) {
+          score -= 15;
+          reasons.push("⚠️ SOFT PENALTY (-15): Unknown platform origin (ambiguous fitment).");
+        }
       }
     }
 
@@ -294,12 +307,23 @@ export function scoreProducts(
       }
     }
 
+    // Assign Confidence Tier
+    let confidenceLevel: ScoredProduct["confidenceLevel"] = "Unverified";
+    if (hasModelFitment) {
+      confidenceLevel = "Verified Fit";
+    } else if (hasMakeFitment) {
+      confidenceLevel = "Likely Fit";
+    } else if (isCustomBuild) {
+      confidenceLevel = "Custom / Verify Fitment";
+    }
+
     return {
       product,
       score,
       reasons,
       hasFitment: hasModelFitment || hasMakeFitment,
       matchType,
+      confidenceLevel,
     };
   });
 
