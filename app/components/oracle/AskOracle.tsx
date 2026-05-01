@@ -81,12 +81,15 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
 
   // ─── Dynamic Question Pool Logic ───
   // We pick a balanced mix of 3 questions from a pool of 30+ expert queries.
+  // We use the productId as a 'seed' to ensure diversity across products while maintaining stability.
   const quickQuestions = React.useMemo(() => {
     const isE85 = buildProfile.fuelType === "e85";
     const isPerformance = buildProfile.usage === "track" || buildProfile.hpMode !== "stock";
     const hasVehicle = !!(buildProfile.make && buildProfile.model);
     
-    // Pool of 30+ expert questions categorized for a balanced mix
+    // Seed-based randomness for diversity across the catalog
+    const seed = (productId % 10) / 10; 
+    
     const pool = [
       // 1. Commercial / Purchase Push
       { q: "Total price for a set?", cat: "comm", weight: 10 },
@@ -123,11 +126,10 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
       { q: "Optimized for 4-valve heads?", cat: "fit", weight: 8, cond: isPerformance },
     ];
 
-    // Pick one best question from each of the 3 categories for a balanced mix
     const getBestFromCat = (cat: string) => {
       const options = pool
         .filter(item => item.cat === cat && (item.cond === undefined || item.cond === true))
-        .sort((a, b) => b.weight - a.weight + (Math.random() * 4 - 2)); // Add randomness to weights
+        .sort((a, b) => b.weight - a.weight + (seed * 10 - 5)); 
       return options[0]?.q;
     };
 
@@ -136,7 +138,7 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
       getBestFromCat("tech"),
       getBestFromCat("fit")
     ].filter(Boolean);
-  }, [buildProfile]);
+  }, [buildProfile, productId]);
 
   return (
     <div className="mt-2">
