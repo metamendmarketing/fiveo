@@ -191,11 +191,21 @@ export async function POST(req: NextRequest) {
     // ─── STAGE 2c: UPSTREAM FITMENT ENFORCEMENT ───
     const isVehicleMode = profile.entryMode !== "specs" && !!profile.make;
     let safeCandidateResults = deduped;
+    let noVerifiedMatches = false;
 
     if (isVehicleMode) {
       // MANDATORY: Only send products to the AI that have explicit Year/Make/Model/Engine confirmation.
-      safeCandidateResults = deduped.filter(r => r.confidenceLevel === "Verified Fit");
-      console.log(`[Oracle] 🛡️ Upstream Enforcement: Filtered ${deduped.length} candidates down to ${safeCandidateResults.length} verified-only products for vehicle mode.`);
+      const verifiedOnly = deduped.filter(r => r.confidenceLevel === "Verified Fit");
+      
+      if (verifiedOnly.length > 0) {
+        safeCandidateResults = verifiedOnly;
+        console.log(`[Oracle] 🛡️ Upstream Enforcement: Found ${verifiedOnly.length} verified products.`);
+      } else {
+        // SMART FALLBACK: No verified fits. Allow heuristic matches but flag for AI.
+        noVerifiedMatches = true;
+        safeCandidateResults = deduped;
+        console.log(`[Oracle] ⚠️ Smart Fallback: No verified matches found. Passing ${deduped.length} heuristic candidates to AI for custom guidance.`);
+      }
     }
 
     // Initial pool selection from filtered results
@@ -280,6 +290,7 @@ export async function POST(req: NextRequest) {
         .replace("{{fitmentCount}}", fitmentProductIds.length.toString())
         .replace("{{makeFitmentCount}}", makeFitmentProductIds.length.toString())
         .replace("{{candidateCount}}", candidatePool.length.toString())
+        .replace("{{fallbackStatus}}", noVerifiedMatches ? "🚨 NO VERIFIED MATCHES FOUND. TRIGGER SMART FALLBACK UX." : "✅ VERIFIED MATCHES FOUND.")
         .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
 
       console.log(`[Oracle] 🤖 Sending AI Request (${prompt.length} chars) via @google/genai...`);
