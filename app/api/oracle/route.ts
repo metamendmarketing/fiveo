@@ -182,28 +182,40 @@ export async function POST(req: NextRequest) {
     });
 
     const deduped = deduplicateResults(resolvedHeuristicResults);
-    console.log(`[Oracle] ⚖️ Heuristic Scoring & Dedup Complete: ${deduped.length} candidates in ${Math.round(performance.now() - stage2Start)}ms`);
+    
+    // ─── STAGE 2c: UPSTREAM FITMENT ENFORCEMENT ───
+    const isVehicleMode = profile.entryMode !== "specs" && !!profile.make;
+    let safeCandidateResults = deduped;
 
-    // Initial pool selection (Stage 2 Expansion)
-    let candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
+    if (isVehicleMode) {
+      // MANDATORY: Only send products to the AI that have explicit Year/Make/Model/Engine confirmation.
+      safeCandidateResults = deduped.filter(r => r.confidenceLevel === "Verified Fit");
+      console.log(`[Oracle] 🛡️ Upstream Enforcement: Filtered ${deduped.length} candidates down to ${safeCandidateResults.length} verified-only products for vehicle mode.`);
+    }
 
-    const fitmentMissing = deduped.filter(
-      r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
-    );
-    if (fitmentMissing.length > 0) {
-      candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
+    // Initial pool selection from filtered results
+    let candidatePool = safeCandidateResults.slice(0, rules.poolSize.heuristicTop);
+
+    // If the pool is empty in vehicle mode, we do NOT attempt to find unverified "fitmentMissing" products.
+    if (!isVehicleMode) {
+      const fitmentMissing = safeCandidateResults.filter(
+        r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
+      );
+      if (fitmentMissing.length > 0) {
+        candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
+      }
     }
 
     if (profile.goal === "max-power") {
-      const highFlow = deduped.filter(r => {
+      const highFlow = safeCandidateResults.filter(r => {
         const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
         return cc >= (rules.goalBoosts["max-power"]?.minCC || 550) &&
                !candidatePool.find(s => s.product.id === r.product.id);
-      }).slice(0, 4);
-      candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
-    }
-
-    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
+      });
+      if (highFlow.length > 0) {
+        candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
+      }
+    } // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
     const enrichmentStart = performance.now();
     const candidateIds = candidatePool.map(c => c.product.id);
     const { data: enrichedProducts } = await supabase
