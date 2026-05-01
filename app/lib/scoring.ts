@@ -305,12 +305,22 @@ export function scoreProducts(
     if (isNew) score += 3;
     if (isReman) score -= 2;
 
-    // Gate D: Fitment Evidence Cap
-    if (!isCustomBuild && hasVehicleSelected && !hasModelFitment && !hasMakeFitment) {
-      const isUniversal = combinedProductText.includes("universal") || combinedText.includes("universal");
-      if (!isUniversal) {
-        score = Math.min(score, 45);
-        reasons.push("Requires manual verification: no confirmed vehicle fitment evidence.");
+    // Gate D: Fitment Evidence Cap (Refined for Smart Fallback UX)
+    if (!isCustomBuild && hasVehicleSelected) {
+      if (hasModelFitment) {
+        // No cap for perfect matches
+      } else if (hasPartialFitment) {
+        score = Math.min(score, 80);
+        reasons.push("Potential platform match, but requires manual verification for your year/engine.");
+      } else if (hasMakeFitment) {
+        score = Math.min(score, 85);
+        reasons.push("Confirmed make-level compatibility; dimensions must be verified.");
+      } else {
+        const isUniversal = combinedProductText.includes("universal") || combinedText.includes("universal");
+        if (!isUniversal) {
+          score = Math.min(score, 75);
+          reasons.push("Advanced / Custom build option: no explicit fitment confirmed for this vehicle.");
+        }
       }
     }
 

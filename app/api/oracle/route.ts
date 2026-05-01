@@ -359,6 +359,7 @@ export async function POST(req: NextRequest) {
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
+      noVerifiedMatches,
       timing: {
         total: Math.round(performance.now() - startTime),
         acquisition: Math.round(stage2Start - stage1Start),

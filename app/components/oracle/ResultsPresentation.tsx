@@ -42,7 +42,8 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 }: Props) {
   const [selectedResult, setSelectedResult] = useState<ScoredProduct | null>(null);
 
-  if (!results || results.length === 0) {
+  // Hard "No Match" state: Only show if we don't even have AI guidance or heuristic pool
+  if ((!results || results.length === 0) && (!apiData || !apiData.selectionStrategy)) {
     return (
       <div 
       className="relative min-h-[60dvh] px-6 py-20 flex items-center justify-center overflow-hidden"
@@ -82,10 +83,11 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
       
         
-        {/* Results Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-4xl font-black uppercase italic text-white drop-shadow-md mb-1">
-            Oracle <span className="text-[#00AEEF]">Selection</span>
+            Oracle <span className={apiData?.noVerifiedMatches ? "text-[#E10600]" : "text-[#00AEEF]"}>
+              {apiData?.noVerifiedMatches ? "Expert Guidance" : "Selection"}
+            </span>
           </h2>
           {apiData?.vehicleLabel && (
             <p className="text-sm font-black uppercase tracking-[0.2em] text-white/50 drop-shadow-sm mb-6">
@@ -95,11 +97,20 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
           <div className="flex flex-col items-center gap-1">
             <p className="text-[10px] text-white/60 uppercase tracking-[0.3em] font-black drop-shadow-sm">
-              {results.length} Precision-Matched Injector{results.length !== 1 ? "s" : ""}
+              {results.length > 0 ? (
+                `${results.length} Precision-Matched Candidate${results.length !== 1 ? "s" : ""}`
+              ) : (
+                "No Verified Direct-Fit Injectors Found"
+              )}
             </p>
-            {apiData && apiData.fitmentMatches > 0 && (
+            {apiData && !apiData.noVerifiedMatches && apiData.fitmentMatches > 0 && (
               <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
                 ✓ {apiData.fitmentMatches} Vehicle-Specific Fitment Match{apiData.fitmentMatches !== 1 ? "es" : ""} Found
+              </p>
+            )}
+            {apiData?.noVerifiedMatches && (
+              <p className="text-[10px] text-yellow-500 font-bold uppercase tracking-widest px-4 py-1 border border-yellow-500/30 bg-yellow-500/10 rounded-full mt-2">
+                ⚠️ Displaying Advanced / Custom Build Options Only
               </p>
             )}
           </div>
@@ -107,11 +118,17 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
 
         {/* AI Selection Strategy Overview */}
         {apiData?.selectionStrategy && (
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] border-t-[#00AEEF] p-8 md:p-12 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#00AEEF] mb-6">
-              Fuel Injector Selection Methodology
+          <div className={`bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 border-t-[3px] p-8 md:p-12 text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] ${
+            apiData.noVerifiedMatches ? "border-t-yellow-500" : "border-t-[#00AEEF]"
+          }`}>
+            <h3 className={`text-[10px] font-black uppercase tracking-[0.5em] mb-6 ${
+              apiData.noVerifiedMatches ? "text-yellow-500" : "text-[#00AEEF]"
+            }`}>
+              {apiData.noVerifiedMatches ? "Recommended Expert Performance Path" : "Fuel Injector Selection Methodology"}
             </h3>
-            <p className="text-base md:text-lg text-white/90 leading-relaxed italic font-medium border-l-4 border-[#00AEEF] pl-8">
+            <p className={`text-base md:text-lg text-white/90 leading-relaxed italic font-medium border-l-4 pl-8 ${
+              apiData.noVerifiedMatches ? "border-yellow-500" : "border-[#00AEEF]"
+            }`}>
               &quot;{apiData.selectionStrategy}&quot;
             </p>
           </div>
@@ -128,8 +145,12 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
               className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,174,239,0.15)] shadow-xl relative"
             >
               <div className="absolute top-0 right-0 p-6 z-20">
-                <div className="bg-gradient-to-br from-[#00AEEF] to-[#0088cc] text-white text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block bg-black text-white px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic">
-                  ★ Primary Match
+                <div className={`text-[10px] font-extrabold uppercase tracking-[0.15em] px-3 py-1 rounded-sm inline-block px-5 py-1.5 text-[9px] uppercase font-black tracking-widest italic ${
+                  apiData?.noVerifiedMatches 
+                    ? "bg-yellow-500 text-black border border-black/20" 
+                    : "bg-[#00AEEF] text-white"
+                }`}>
+                  {apiData?.noVerifiedMatches ? "⚠️ Advanced Option" : "★ Primary Match"}
                 </div>
               </div>
 

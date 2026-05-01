@@ -74,6 +74,7 @@ export interface OracleApiResponse {
   fitmentMatches: number;
   makeFitmentMatches: number;
   candidatePoolSize: number;
+  noVerifiedMatches: boolean;
   timing?: {
     total: number;
     acquisition: number;
