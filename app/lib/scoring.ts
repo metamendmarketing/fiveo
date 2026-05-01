@@ -151,6 +151,7 @@ export function scoreProducts(
         reasons,
         hasFitment: false,
         matchType: "heuristic" as const,
+        confidenceLevel: "Unverified",
       };
     }
 
