@@ -301,6 +301,87 @@ export const BRAND = {
 // 7. PROCESSING STATUS MESSAGES
 // ═══════════════════════════════════════
 
+export const STAGE_DESCRIPTIONS = [
+  { stage: 1, title: "Hardware Alignment", detail: "Cross-referencing chassis and wiring specifications" },
+  { stage: 2, title: "Flow Rate Validation", detail: "Calculating precise fuel mass requirements" },
+  { stage: 3, title: "Impedance Matching", detail: "Verifying electrical compatibility" },
+  { stage: 4, title: "Fuel Compatibility", detail: "Checking chemical resistance ratings" },
+  { stage: 5, title: "Oracle Synthesis", detail: "Compiling final expert recommendations" }
+];
+
+// ─── HARDWARE COMPATIBILITY HELPERS ───
+
+export const DI_KEYWORDS = [
+  "ecoboost", "gdi", "gasoline direct injection", "direct injection",
+  "fsi", "tfsi", "tsi", "skyactiv-g", "disi", "d-4s", "d-4", "dig", "dig-t",
+  "cgi", "bluedirect", "ecotec3", "ltg", "lnf", "lhu", "theta gdi", "nu gdi",
+  "gamma gdi", "smartstream gdi", "earth dreams", "vc-turbo", "puretech",
+  "thp", "prince engine"
+];
+
+/**
+ * Infer if a vehicle engine relies on Direct Injection (DI).
+ */
+export function isDirectInjectionVehicle(engineLabel: string): boolean {
+  const normalized = engineLabel.toLowerCase();
+  return DI_KEYWORDS.some(kw => normalized.includes(kw));
+}
+
+/**
+ * Infer if a product is a Direct Injection (DI) injector.
+ */
+export function isProductDI(product: { name?: string; description?: string; raw_categories?: string[] }): boolean | null {
+  const combined = [
+    product.name || "",
+    product.description || "",
+    ...(product.raw_categories || [])
+  ].join(" ").toLowerCase();
+
+  // If it explicitly says port injection, it's not DI
+  if (combined.includes("port injection") || combined.includes("tbi") || combined.includes("throttle body")) {
+    return false;
+  }
+
+  // If it matches known DI keywords
+  if (DI_KEYWORDS.some(kw => combined.includes(kw))) {
+    return true;
+  }
+
+  // Unknown
+  return null;
+}
+
+/**
+ * Attempt to confidently parse the quantity of injectors in the product.
+ * Returns the set size (e.g., 8), 1 (for 'each'), or null (unknown).
+ */
+export function parseProductSetSize(name: string, description: string = ""): number | null {
+  const combined = `${name} ${description}`.toLowerCase();
+  
+  // Explicit "each" or single unit
+  if (combined.includes("-each") || combined.includes("sold individually") || /\beach\b/.test(combined)) {
+    return 1;
+  }
+
+  // Matches "set of 8", "8 pcs", "8x", "8 injectors", "matched set of 8"
+  const setMatch = combined.match(/(?:set of|matched set of)\s*(\d+)/i);
+  if (setMatch) return parseInt(setMatch[1], 10);
+
+  const pcsMatch = combined.match(/(\d+)\s*(?:pcs|pieces)/i);
+  if (pcsMatch) return parseInt(pcsMatch[1], 10);
+
+  const xMatch = combined.match(/(\d+)x\s+injectors?/i);
+  if (xMatch) return parseInt(xMatch[1], 10);
+
+  const injectorsMatch = combined.match(/(\d+)\s+injectors?/i);
+  if (injectorsMatch) return parseInt(injectorsMatch[1], 10);
+
+  const vMatch = combined.match(/\bv(\d+)\s+set\b/i);
+  if (vMatch) return parseInt(vMatch[1], 10);
+
+  return null;
+}
+
 export const PROCESSING_MESSAGES = [
   { threshold: 0, text: "Scanning compatibility database..." },
   { threshold: 15, text: "Cross-referencing fitment matrix..." },

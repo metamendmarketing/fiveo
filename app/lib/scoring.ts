@@ -9,7 +9,7 @@
  */
 
 import type { BuildProfile } from "@/app/lib/constants";
-import { calculateRequiredCC, parseCylinders } from "@/app/lib/constants";
+import { calculateRequiredCC, parseCylinders, parseProductSetSize, isDirectInjectionVehicle, isProductDI } from "@/app/lib/constants";
 import { Product, ScoredProduct } from "@/app/lib/types";
 import rules from "@/app/lib/scoring-rules.json";
 
@@ -78,10 +78,48 @@ export function scoreProducts(
     weights.impedance = (weights.impedance || 10) * 2;
   }
 
+  const isVehicleDI = isDirectInjectionVehicle(profile.engineLabel || "");
+
   const scored: ScoredProduct[] = products.map((product) => {
     let score = 0;
     const reasons: string[] = [];
     const productCC = Number(product.flow_rate_cc || product.size_cc) || 0;
+
+    // ── 0. HARDWARE COMPATIBILITY GATES (Pass/Fail) ──────
+    let isHardReject = false;
+
+    // Gate A: Cylinder Count vs Set Size
+    const setSize = parseProductSetSize(product.name || "", product.description || "");
+    if (setSize !== null && setSize > 1 && setSize !== cylinders) {
+      score -= 1000;
+      reasons.push(`🚨 HARD FAIL: Cylinder count mismatch. Vehicle requires ${cylinders} injectors, but this is a set of ${setSize}.`);
+      isHardReject = true;
+    }
+
+    // Gate B: Direct Injection (DI) vs Port Injection (PI)
+    const productDIStatus = isProductDI(product);
+    if (productDIStatus !== null) {
+      if (isVehicleDI && !productDIStatus) {
+        score -= 1000;
+        reasons.push("🚨 HARD FAIL: Injection type mismatch. Vehicle is Direct Injection (DI), but product is Port Injection.");
+        isHardReject = true;
+      } else if (!isVehicleDI && productDIStatus) {
+        score -= 1000;
+        reasons.push("🚨 HARD FAIL: Injection type mismatch. Vehicle is Port Injection, but product is Direct Injection.");
+        isHardReject = true;
+      }
+    }
+
+    // If hard rejected, skip adding further positive heuristic points
+    if (isHardReject) {
+      return {
+        product,
+        score,
+        reasons,
+        hasFitment: false,
+        matchType: "heuristic" as const,
+      };
+    }
 
     // ── 1. Fitment Confidence (Max 30 pts) ──────────────
     const hasModelFitment = fitmentProductIds.includes(product.id);
