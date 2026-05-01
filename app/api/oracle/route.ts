@@ -71,15 +71,20 @@ export async function POST(req: NextRequest) {
       records.forEach(f => {
         let isPerfectMatch = true;
 
+        // ABSOLUTE VERIFICATION: Year and Engine data MUST be present in the database to qualify as "Verified Fit".
+        if (!f.year_start || !f.year_end || !f.engine_pattern) {
+          isPerfectMatch = false;
+        }
+
         // Year Validation
-        if (userYear && f.year_start && f.year_end) {
-          if (userYear < f.year_start || userYear > f.year_end) {
+        if (isPerfectMatch && userYear) {
+          if (userYear < (f.year_start || 0) || userYear > (f.year_end || 9999)) {
             isPerfectMatch = false;
           }
         }
 
         // Engine Validation
-        if (userEngine && f.engine_pattern && isPerfectMatch) {
+        if (isPerfectMatch && userEngine && f.engine_pattern) {
           const pattern = f.engine_pattern.toLowerCase();
           if (!userEngine.includes(pattern)) {
             isPerfectMatch = false;
