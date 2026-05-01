@@ -47,12 +47,13 @@ export async function POST(req: NextRequest) {
     
     // 1a. Fitment Lookup
     let fitmentProductIds: number[] = [];
+    let partialFitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
     const fitmentPromises = [];
     if (profile.modelId) {
       fitmentPromises.push(
-        supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId))
+        supabase.from("product_fitment").select("product_id, year_start, year_end, engine_pattern").eq("model_id", Number(profile.modelId))
       );
     }
     if (profile.makeId) {
@@ -63,8 +64,36 @@ export async function POST(req: NextRequest) {
 
     const fitmentResults = await Promise.all(fitmentPromises);
     if (profile.modelId && fitmentResults[0]) {
-      fitmentProductIds = (fitmentResults[0].data as FitmentRecord[] || []).map(f => f.product_id);
+      const records = fitmentResults[0].data as FitmentRecord[] || [];
+      const userYear = profile.year ? parseInt(profile.year.toString(), 10) : null;
+      const userEngine = (profile.engineLabel || "").toLowerCase();
+
+      records.forEach(f => {
+        let isPerfectMatch = true;
+
+        // Year Validation
+        if (userYear && f.year_start && f.year_end) {
+          if (userYear < f.year_start || userYear > f.year_end) {
+            isPerfectMatch = false;
+          }
+        }
+
+        // Engine Validation
+        if (userEngine && f.engine_pattern && isPerfectMatch) {
+          const pattern = f.engine_pattern.toLowerCase();
+          if (!userEngine.includes(pattern)) {
+            isPerfectMatch = false;
+          }
+        }
+
+        if (isPerfectMatch) {
+          fitmentProductIds.push(f.product_id);
+        } else {
+          partialFitmentProductIds.push(f.product_id);
+        }
+      });
     }
+
     if (profile.makeId && fitmentResults[fitmentResults.length - 1]) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
@@ -114,6 +143,7 @@ export async function POST(req: NextRequest) {
       allProducts,
       profile,
       fitmentProductIds,
+      partialFitmentProductIds,
       makeFitmentProductIds
     );
 

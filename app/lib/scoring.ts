@@ -61,6 +61,7 @@ export function scoreProducts(
   products: Product[],
   profile: BuildProfile,
   fitmentProductIds: number[],
+  partialFitmentProductIds: number[],
   makeFitmentProductIds: number[]
 ): ScoredProduct[] {
   // ── 0. Engine Accuracy Detection ────────────────────
@@ -86,6 +87,7 @@ export function scoreProducts(
     const productCC = Number(product.flow_rate_cc || product.size_cc) || 0;
 
     const hasModelFitment = fitmentProductIds.includes(product.id);
+    const hasPartialFitment = partialFitmentProductIds.includes(product.id);
     const hasMakeFitment = makeFitmentProductIds.includes(product.id);
 
     // ── 0. HARDWARE COMPATIBILITY GATES (Pass/Fail) ──────
@@ -136,7 +138,7 @@ export function scoreProducts(
         score -= 1000;
         reasons.push(`🚨 HARD FAIL: Product application appears to conflict with selected vehicle platform (${profile.make}).`);
         isHardReject = true;
-      } else if (!hasConflict && !mentionsOwnMake && !hasMakeFitment && !hasModelFitment) {
+      } else if (!hasConflict && !mentionsOwnMake && !hasMakeFitment && !hasModelFitment && !hasPartialFitment) {
         // Soft Platform Ambiguity: No fitment evidence, no specific platform mentioned, and not explicitly universal
         const isUniversal = combinedProductText.includes("universal");
         if (!isUniversal) {
@@ -163,8 +165,12 @@ export function scoreProducts(
 
     if (hasModelFitment) {
       score += weights.fitment;
-      reasons.push("Direct vehicle fitment confirmed — this injector is verified for your exact model.");
+      reasons.push("Direct vehicle fitment confirmed — this injector is verified for your exact year, make, model, and engine.");
       matchType = "fitment_confirmed";
+    } else if (hasPartialFitment) {
+      score += Math.round(weights.fitment * 0.7);
+      reasons.push("Potential platform match — fits this model, but year/engine generation must be verified.");
+      matchType = "make_match"; // We use make_match under the hood for partials to keep types simple
     } else if (hasMakeFitment) {
       score += Math.round(weights.fitment * 0.5);
       reasons.push("Compatible with your vehicle make — fitment confirmed at brand level.");
@@ -312,6 +318,8 @@ export function scoreProducts(
     let confidenceLevel: ScoredProduct["confidenceLevel"] = "Unverified";
     if (hasModelFitment) {
       confidenceLevel = "Verified Fit";
+    } else if (hasPartialFitment) {
+      confidenceLevel = "Potential Platform Match";
     } else if (hasMakeFitment) {
       confidenceLevel = "Likely Fit";
     } else if (isCustomBuild) {
@@ -322,7 +330,7 @@ export function scoreProducts(
       product,
       score,
       reasons,
-      hasFitment: hasModelFitment || hasMakeFitment,
+      hasFitment: hasModelFitment || hasPartialFitment || hasMakeFitment,
       matchType,
       confidenceLevel,
     };

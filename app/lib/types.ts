@@ -38,7 +38,8 @@ export interface ScoredProduct {
   reasons: string[];
   hasFitment: boolean;
   matchType: "fitment_confirmed" | "make_match" | "flow_match" | "heuristic";
-  confidenceLevel: "Verified Fit" | "Likely Fit" | "Custom / Verify Fitment" | "Unverified";
+  confidenceLevel: "Verified Fit" | "Potential Platform Match" | "Likely Fit" | "Custom / Verify Fitment" | "Unverified";
+
   
   // AI-enriched fields (optional, added during AI refinement stage)
   matchStrategy?: string;
@@ -57,6 +58,9 @@ export interface FitmentRecord {
   model_id?: number;
   year_id?: number;
   engine_id?: number;
+  year_start?: number;
+  year_end?: number;
+  engine_pattern?: string;
 }
 
 /**
