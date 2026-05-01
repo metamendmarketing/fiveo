@@ -110,6 +110,26 @@ export function scoreProducts(
       }
     }
 
+    // Gate C: Platform Conflict Penalty
+    const isCustomBuild = profile.entryMode === "specs";
+    const hasVehicleSelected = !!profile.make;
+    const combinedProductText = `${product.raw_categories?.join(" ") || ""} ${product.notes?.join(" ") || ""} ${product.name}`.toLowerCase();
+
+    if (!isCustomBuild && hasVehicleSelected) {
+      const vehicleMake = profile.make.toLowerCase();
+      // List of major OEMs to check for conflicts
+      const competitorMakes = ["jeep", "ford", "chevy", "chevrolet", "subaru", "honda", "toyota", "nissan", "dodge", "chrysler", "bmw", "audi", "vw", "volkswagen", "porsche", "mazda", "mitsubishi"].filter(m => m !== vehicleMake);
+      
+      const hasConflict = competitorMakes.some(m => combinedProductText.includes(m));
+      const mentionsOwnMake = combinedProductText.includes(vehicleMake);
+      
+      if (hasConflict && !mentionsOwnMake) {
+        score -= 1000;
+        reasons.push(`🚨 HARD FAIL: Product application appears to conflict with selected vehicle platform (${profile.make}).`);
+        isHardReject = true;
+      }
+    }
+
     // If hard rejected, skip adding further positive heuristic points
     if (isHardReject) {
       return {
@@ -264,6 +284,15 @@ export function scoreProducts(
     // Tie-breaker: Prefer "NEW" over "Reman" if everything else is equal
     if (isNew) score += 3;
     if (isReman) score -= 2;
+
+    // Gate D: Fitment Evidence Cap
+    if (!isCustomBuild && hasVehicleSelected && !hasModelFitment && !hasMakeFitment) {
+      const isUniversal = combinedProductText.includes("universal") || combinedText.includes("universal");
+      if (!isUniversal) {
+        score = Math.min(score, 45);
+        reasons.push("Requires manual verification: no confirmed vehicle fitment evidence.");
+      }
+    }
 
     return {
       product,
