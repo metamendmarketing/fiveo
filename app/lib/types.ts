@@ -25,9 +25,7 @@ export interface Product {
   product_url?: string;
   url_key?: string;
   visibility?: string;
-  magento_make?: string;
   raw_categories?: string[];
-  notes?: string[];
 }
 
 /**
@@ -39,14 +37,6 @@ export interface ScoredProduct {
   reasons: string[];
   hasFitment: boolean;
   matchType: "fitment_confirmed" | "make_match" | "flow_match" | "heuristic";
-  confidenceLevel: "Verified Fit" | "Potential Platform Match" | "Likely Fit" | "Custom / Verify Fitment" | "Unverified";
-  tier?: 1 | 2 | 3;
-  fitmentBadge?: string;
-  whatToVerify?: string[];
-  fitmentConfidence?: string;
-  performanceMatch?: string;
-  installComplexity?: string;
-
   
   // AI-enriched fields (optional, added during AI refinement stage)
   matchStrategy?: string;
@@ -65,9 +55,6 @@ export interface FitmentRecord {
   model_id?: number;
   year_id?: number;
   engine_id?: number;
-  year_start?: number;
-  year_end?: number;
-  engine_pattern?: string;
 }
 
 /**
@@ -81,7 +68,6 @@ export interface OracleApiResponse {
   fitmentMatches: number;
   makeFitmentMatches: number;
   candidatePoolSize: number;
-  noVerifiedMatches: boolean;
   timing?: {
     total: number;
     acquisition: number;

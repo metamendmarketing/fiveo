@@ -47,13 +47,12 @@ export async function POST(req: NextRequest) {
     
     // 1a. Fitment Lookup
     let fitmentProductIds: number[] = [];
-    let partialFitmentProductIds: number[] = [];
     let makeFitmentProductIds: number[] = [];
 
     const fitmentPromises = [];
     if (profile.modelId) {
       fitmentPromises.push(
-        supabase.from("product_fitment").select("product_id, year_start, year_end, engine_pattern").eq("model_id", Number(profile.modelId))
+        supabase.from("product_fitment").select("product_id").eq("model_id", Number(profile.modelId))
       );
     }
     if (profile.makeId) {
@@ -64,41 +63,8 @@ export async function POST(req: NextRequest) {
 
     const fitmentResults = await Promise.all(fitmentPromises);
     if (profile.modelId && fitmentResults[0]) {
-      const records = fitmentResults[0].data as FitmentRecord[] || [];
-      const userYear = profile.year ? parseInt(profile.year.toString(), 10) : null;
-      const userEngine = (profile.engineLabel || "").toLowerCase();
-
-      records.forEach(f => {
-        let isPerfectMatch = true;
-
-        // ABSOLUTE VERIFICATION: Year and Engine data MUST be present in the database to qualify as "Verified Fit".
-        if (!f.year_start || !f.year_end || !f.engine_pattern) {
-          isPerfectMatch = false;
-        }
-
-        // Year Validation
-        if (isPerfectMatch && userYear) {
-          if (userYear < (f.year_start || 0) || userYear > (f.year_end || 9999)) {
-            isPerfectMatch = false;
-          }
-        }
-
-        // Engine Validation
-        if (isPerfectMatch && userEngine && f.engine_pattern) {
-          const pattern = f.engine_pattern.toLowerCase();
-          if (!userEngine.includes(pattern)) {
-            isPerfectMatch = false;
-          }
-        }
-
-        if (isPerfectMatch) {
-          fitmentProductIds.push(f.product_id);
-        } else {
-          partialFitmentProductIds.push(f.product_id);
-        }
-      });
+      fitmentProductIds = (fitmentResults[0].data as FitmentRecord[] || []).map(f => f.product_id);
     }
-
     if (profile.makeId && fitmentResults[fitmentResults.length - 1]) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
@@ -120,7 +86,7 @@ export async function POST(req: NextRequest) {
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
-        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config, magento_make")
+        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config")
         .or('visibility.is.null,visibility.neq."Not Visible Individually"')
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
@@ -148,7 +114,6 @@ export async function POST(req: NextRequest) {
       allProducts,
       profile,
       fitmentProductIds,
-      partialFitmentProductIds,
       makeFitmentProductIds
     );
 
@@ -187,56 +152,28 @@ export async function POST(req: NextRequest) {
     });
 
     const deduped = deduplicateResults(resolvedHeuristicResults);
-    
-    // ─── STAGE 2c: UPSTREAM FITMENT ENFORCEMENT ───
-    const isVehicleMode = profile.entryMode !== "specs" && !!profile.make;
-    let safeCandidateResults = deduped;
-    let noVerifiedMatches = false;
+    console.log(`[Oracle] ⚖️ Heuristic Scoring & Dedup Complete: ${deduped.length} candidates in ${Math.round(performance.now() - stage2Start)}ms`);
 
-    if (isVehicleMode) {
-      const verifiedOnly = deduped.filter(r => r.confidenceLevel === "Verified Fit");
-      if (verifiedOnly.length === 0) {
-        noVerifiedMatches = true;
-      }
-      
-      // NEW POLICY: Platform Conflict Filter.
-      // Exclude products that are explicitly for a different platform (e.g., Jeep parts for a Ford).
-      const userMake = (profile.make || "").toUpperCase();
-      safeCandidateResults = deduped.filter(r => {
-        const prodMake = (r.product.magento_make || "").toUpperCase();
-        // If product has a specific make that isn't the user's make, it's a conflict.
-        if (prodMake && prodMake !== userMake && prodMake !== "UNIVERSAL" && prodMake !== "ALL") {
-          return false;
-        }
-        return true;
-      });
+    // Initial pool selection (Stage 2 Expansion)
+    let candidatePool = deduped.slice(0, rules.poolSize.heuristicTop);
 
-      console.log(`[Oracle] 🛡️ Platform Filter: Removed ${deduped.length - safeCandidateResults.length} conflicting products. Passing ${safeCandidateResults.length} candidates to AI.`);
-    }
-
-    // Initial pool selection from filtered results
-    let candidatePool = safeCandidateResults.slice(0, rules.poolSize.heuristicTop);
-
-    // If the pool is empty in vehicle mode, we do NOT attempt to find unverified "fitmentMissing" products.
-    if (!isVehicleMode) {
-      const fitmentMissing = safeCandidateResults.filter(
-        r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
-      );
-      if (fitmentMissing.length > 0) {
-        candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
-      }
+    const fitmentMissing = deduped.filter(
+      r => r.hasFitment && !candidatePool.find(s => s.product.id === r.product.id)
+    );
+    if (fitmentMissing.length > 0) {
+      candidatePool = [...candidatePool, ...fitmentMissing].slice(0, rules.poolSize.maxCandidates);
     }
 
     if (profile.goal === "max-power") {
-      const highFlow = safeCandidateResults.filter(r => {
+      const highFlow = deduped.filter(r => {
         const cc = Number(r.product.flow_rate_cc || r.product.size_cc) || 0;
         return cc >= (rules.goalBoosts["max-power"]?.minCC || 550) &&
                !candidatePool.find(s => s.product.id === r.product.id);
-      });
-      if (highFlow.length > 0) {
-        candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
-      }
-    } // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
+      }).slice(0, 4);
+      candidatePool = [...candidatePool, ...highFlow].slice(0, rules.poolSize.maxCandidates);
+    }
+
+    // ─── STAGE 2.5: ENRICHMENT (Fetch missing details for top candidates) ───
     const enrichmentStart = performance.now();
     const candidateIds = candidatePool.map(c => c.product.id);
     const { data: enrichedProducts } = await supabase
@@ -276,7 +213,6 @@ export async function POST(req: NextRequest) {
           name: c.product.name,
           cc: Number(c.product.flow_rate_cc) || null,
           brand: c.product.manufacturer,
-          confidenceLevel: c.confidenceLevel,
           description: cleanDescription,
         };
       });
@@ -296,7 +232,6 @@ export async function POST(req: NextRequest) {
         .replace("{{fitmentCount}}", fitmentProductIds.length.toString())
         .replace("{{makeFitmentCount}}", makeFitmentProductIds.length.toString())
         .replace("{{candidateCount}}", candidatePool.length.toString())
-        .replace("{{fallbackStatus}}", noVerifiedMatches ? "🚨 NO VERIFIED MATCHES FOUND. TRIGGER SMART FALLBACK UX." : "✅ VERIFIED MATCHES FOUND.")
         .replace("{{candidateData}}", JSON.stringify(candidateData, null, 2));
 
       console.log(`[Oracle] 🤖 Sending AI Request (${prompt.length} chars) via @google/genai...`);
@@ -325,12 +260,6 @@ export async function POST(req: NextRequest) {
           return {
             ...original,
             score: r.score || original.score,
-            tier: r.tier || (original.confidenceLevel === "Verified Fit" ? 1 : 2),
-            fitmentBadge: r.fitmentBadge || (original.confidenceLevel === "Verified Fit" ? "Verified Direct Fit" : "Requires Verification"),
-            whatToVerify: r.whatToVerify || [],
-            fitmentConfidence: r.fitmentConfidence || "",
-            performanceMatch: r.performanceMatch || "",
-            installComplexity: r.installComplexity || "",
             matchStrategy: r.matchStrategy || original.matchType,
             aiHeadline: r.aiHeadline || "",
             preferenceSummary: r.preferenceSummary || "",
@@ -371,7 +300,6 @@ export async function POST(req: NextRequest) {
       fitmentMatches: fitmentProductIds.length,
       makeFitmentMatches: makeFitmentProductIds.length,
       candidatePoolSize: candidatePool.length,
-      noVerifiedMatches,
       timing: {
         total: Math.round(performance.now() - startTime),
         acquisition: Math.round(stage2Start - stage1Start),
