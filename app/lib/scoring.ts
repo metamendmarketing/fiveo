@@ -85,6 +85,9 @@ export function scoreProducts(
     const reasons: string[] = [];
     const productCC = Number(product.flow_rate_cc || product.size_cc) || 0;
 
+    const hasModelFitment = fitmentProductIds.includes(product.id);
+    const hasMakeFitment = makeFitmentProductIds.includes(product.id);
+
     // ── 0. HARDWARE COMPATIBILITY GATES (Pass/Fail) ──────
     let isHardReject = false;
 
@@ -156,9 +159,6 @@ export function scoreProducts(
     }
 
     // ── 1. Fitment Confidence (Max 30 pts) ──────────────
-    const hasModelFitment = fitmentProductIds.includes(product.id);
-    const hasMakeFitment = makeFitmentProductIds.includes(product.id);
-
     let matchType: ScoredProduct["matchType"] = "heuristic";
 
     if (hasModelFitment) {
