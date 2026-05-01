@@ -183,7 +183,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             )}
             {apiData?.noVerifiedMatches && (
               <p className="text-[10px] text-yellow-500 font-bold uppercase tracking-widest px-4 py-1 border border-yellow-500/30 bg-yellow-500/10 rounded-full mt-2">
-                ⚠️ Displaying Advanced / Custom Build Options Only
+                Displaying Advanced / Custom Build Options Only
               </p>
             )}
           </div>
@@ -215,8 +215,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             <div className="flex flex-col gap-8">
               <div className="flex items-center gap-4">
                 <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-xs not-italic">1</span>
-                  Tier 1: Verified Direct Fit
+                  Verified Direct Fit
                 </h3>
                 <div className="flex-1 h-px bg-green-600/30" />
               </div>
@@ -233,8 +232,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             <div className="flex flex-col gap-8">
               <div className="flex items-center gap-4">
                 <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#00AEEF] flex items-center justify-center text-xs not-italic">2</span>
-                  Tier 2: Closest Compatible Candidates
+                  Closest Compatible Candidates
                 </h3>
                 <div className="flex-1 h-px bg-[#00AEEF]/30" />
               </div>
@@ -254,8 +252,7 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
             <div className="flex flex-col gap-8">
               <div className="flex items-center gap-4">
                 <h3 className="text-xl font-black uppercase italic text-white flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#E10600] flex items-center justify-center text-xs not-italic">3</span>
-                  Tier 3: Advanced Custom Build Options
+                  Advanced Custom Build Options
                 </h3>
                 <div className="flex-1 h-px bg-[#E10600]/30" />
               </div>
