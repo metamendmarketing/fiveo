@@ -1,0 +1,55 @@
+{
+  "weights": {
+    "fitment": 30,
+    "flowRate": 25,
+    "impedance": 10,
+    "fuelCompat": 10,
+    "budget": 10,
+    "brand": 5,
+    "connectorMatch": 5,
+    "useCaseAlignment": 5
+  },
+  "flowRate": {
+    "perfectRange": 0.10,
+    "acceptableRange": 0.30,
+    "maxRange": 0.50
+  },
+  "budgets": {
+    "budget": [0, 250],
+    "mid": [150, 450],
+    "premium": [350, 1200]
+  },
+  "brandPrestige": {
+    "bosch": 5,
+    "denso": 4,
+    "siemens": 3,
+    "delphi": 2,
+    "fiveo": 3
+  },
+  "useCaseTags": {
+    "daily": ["oem", "stock", "replacement", "upgrade"],
+    "street": ["performance", "upgrade", "street"],
+    "track": ["high-flow", "racing", "turbo", "forced-induction", "competition"],
+    "mixed": ["versatile", "universal", "multi-purpose"]
+  },
+  "goalBoosts": {
+    "max-power": { "minCC": 550, "boost": 10 },
+    "replace": { "fitmentBonus": 10 },
+    "improve": { "performanceTagBoost": 5 },
+    "fix-issues": { "oemBoost": 8 }
+  },
+  "fuelBoosts": {
+    "e85": { "keywords": ["e85", "flex", "ethanol"], "boost": 10 },
+    "race": { "keywords": ["race", "racing", "methanol"], "boost": 8 }
+  },
+  "seriesWeights": {
+    "EV14": 3,
+    "Gen III": 2,
+    "CDH": 2
+  },
+  "poolSize": {
+    "heuristicTop": 12,
+    "maxCandidates": 20,
+    "aiMaxResults": 7
+  }
+}

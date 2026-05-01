@@ -1,0 +1,440 @@
+/**
+ * Fuel Injector Oracle — Constants, Types & Formulas
+ *
+ * Central source of truth for the wizard state machine, scoring engine,
+ * and brand design tokens. Every component and API route imports from here.
+ */
+
+// ═══════════════════════════════════════
+// 1. WIZARD STEP DEFINITIONS
+// ═══════════════════════════════════════
+
+export type WizardStep =
+  | "entry"
+  | "vehicle-type"
+  | "vehicle-details"
+  | "engine-status"
+  | "goal"
+  | "usage"
+  | "priorities"
+  | "performance"
+  | "preferences"
+  | "expert-specs"
+  | "processing"
+  | "results";
+
+/** Step sequences per entry mode */
+export const STEP_SEQUENCES: Record<string, WizardStep[]> = {
+  guide: [
+    "entry",
+    "vehicle-details", // Consolidated vehicle type + details + engine status
+    "goal",
+    "usage",
+    "priorities",
+    "performance",
+    "preferences",
+    "processing",
+    "results",
+  ],
+  setup: [
+    "entry",
+    "vehicle-details",
+    "goal",
+    "performance",
+    "preferences",
+    "processing",
+    "results",
+  ],
+  specs: [
+    "entry",
+    "expert-specs",
+    "vehicle-details",
+    "processing",
+    "results",
+  ],
+  oem: [
+    "entry",
+    "vehicle-details",
+    "processing",
+    "results",
+  ],
+};
+
+// ═══════════════════════════════════════
+// 2. BUILD PROFILE (user answers)
+// ═══════════════════════════════════════
+
+export interface BuildProfile {
+  // Entry
+  entryMode: "guide" | "setup" | "specs" | "oem" | null;
+
+  // Vehicle (Phase 1)
+  vehicleType: "car" | "motorcycle" | "marine" | null;
+  year: number | null;
+  make: string | null;
+  makeId: number | null;
+  model: string | null;
+  modelId: number | null;
+  engineCode: string | null;
+  engineLabel: string | null;
+
+  // Intent (Phase 2)
+  engineStatus: "stock" | "light-mods" | "heavily-modified" | null;
+  goal: "replace" | "improve" | "max-power" | "fix-issues" | null;
+  usage: "daily" | "street" | "track" | "mixed" | null;
+  priorities: string[];
+
+  // Performance (Phase 3)
+  targetHP: number | null;
+  hpMode: "stock" | "+50" | "+100" | "+150" | "custom" | "unsure";
+  fuelType: "pump" | "e85" | "race" | "unsure" | null;
+  mods: string[];
+
+  // Preferences (Phase 4)
+  injectorPref: "oem" | "performance" | "best-of-both" | null;
+  budget: "budget" | "mid" | "premium" | null;
+  brandPref: "fiveo" | "bosch" | "no-preference" | null;
+
+  // Expert overrides
+  desiredSizeCC: number | null;
+  fuelPressurePSI: number | null;
+  headroomPref: "conservative" | "balanced" | "aggressive" | null;
+  connectorType: string | null;
+}
+
+export const INITIAL_PROFILE: BuildProfile = {
+  entryMode: null,
+  vehicleType: "car",
+  year: null,
+  make: null,
+  makeId: null,
+  model: null,
+  modelId: null,
+  engineCode: null,
+  engineLabel: null,
+  engineStatus: null,
+  goal: null,
+  usage: null,
+  priorities: [],
+  targetHP: null,
+  hpMode: "unsure",
+  fuelType: null,
+  mods: [],
+  injectorPref: null,
+  budget: null,
+  brandPref: null,
+  desiredSizeCC: null,
+  fuelPressurePSI: null,
+  headroomPref: null,
+  connectorType: null,
+};
+
+// ═══════════════════════════════════════
+// 3. INJECTOR SIZING FORMULAS
+// ═══════════════════════════════════════
+
+/** Brake-Specific Fuel Consumption by fuel type (lb/hp/hr) */
+export const FUEL_BSFC: Record<string, number> = {
+  pump: 0.55,
+  e85: 0.72,
+  race: 0.60,
+  unsure: 0.55,
+};
+
+/** Max duty cycle (industry standard = 80%) */
+export const MAX_DUTY_CYCLE = 0.80;
+
+/** Convert cc/min to lb/hr and vice versa */
+export const CC_TO_LBHR = (cc: number) => cc / 10.5;
+export const LBHR_TO_CC = (lbhr: number) => lbhr * 10.5;
+
+/**
+ * Calculate required injector size in cc/min
+ * Formula: Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
+ */
+/**
+ * Extracts numeric cylinder count from common engine configuration strings.
+ * e.g. "V8" -> 8, "Inline-6" -> 6, "L4" -> 4, "Flat 4" -> 4, "998cc L2" -> 2
+ * 
+ * Includes specific patterns for performance builds, rotary engines, and marine configurations.
+ */
+export function parseCylinders(label: string = "", config: string = ""): number {
+  const combined = `${label} ${config}`.toUpperCase();
+  
+  // 1. Direct patterns like V8, V10, V12, V6, L4, I6, R2
+  const patternMatch = combined.match(/[V|L|I|R](\d+)/);
+  if (patternMatch) return parseInt(patternMatch[1]);
+
+  // 2. Rotary specific handling (treating 13B/20B as equivalent fuel-load profiles)
+  if (combined.includes("ROTARY") || combined.includes("13B")) return 2;
+  if (combined.includes("20B")) return 3;
+
+  // 3. Common word-based patterns
+  if (combined.includes("EIGHT") || combined.includes("V-8") || combined.includes("V 8")) return 8;
+  if (combined.includes("SIX") || combined.includes("V-6") || combined.includes("V 6") || combined.includes("INLINE 6")) return 6;
+  if (combined.includes("FOUR") || combined.includes("L-4") || combined.includes("L 4") || combined.includes("INLINE 4")) return 4;
+  if (combined.includes("TEN") || combined.includes("V10")) return 10;
+  if (combined.includes("TWELVE") || combined.includes("V12")) return 12;
+
+  // 4. Displacement-based heuristic fallbacks (standard automotive range)
+  if (combined.includes("5.0") || combined.includes("5.7") || combined.includes("6.2") || combined.includes("7.0")) return 8;
+  if (combined.includes("3.5") || combined.includes("3.7") || combined.includes("3.0") || combined.includes("2.5")) return 6;
+
+  // 5. Flat/Boxer patterns
+  if (combined.includes("FLAT 4") || combined.includes("FLAT-4") || combined.includes("H4")) return 4;
+  if (combined.includes("FLAT 6") || combined.includes("FLAT-6") || combined.includes("H6")) return 6;
+
+  // Global default for safety (standard automotive benchmark)
+  return 4;
+}
+
+/**
+ * Calculate required injector size in cc/min
+ * 
+ * Engineering Formula:
+ * Required CC = (Target HP × BSFC) / (Cylinders × Max Duty Cycle) × 10.5
+ * 
+ * @param targetHP - The total desired crank horsepower
+ * @param fuelType - 'pump', 'e85', or 'race'
+ * @param cylinders - Number of injectors (usually equal to cylinder count)
+ * @param headroomPref - User safety margin preference
+ * @returns Predicted required flow rate in cc/min
+ */
+export function calculateRequiredCC(
+  targetHP: number,
+  fuelType: string,
+  cylinders: number = 4,
+  headroomPref: "conservative" | "balanced" | "aggressive" | null = "balanced"
+): number {
+  const bsfc = FUEL_BSFC[fuelType] || FUEL_BSFC.pump;
+  
+  /**
+   * Duty Cycle mapping based on headroom preference.
+   * Conservative (70%) aims for maximum reliability and cooler injector temps.
+   * Balanced (80%) is the industry standard for safe daily/track use.
+   * Aggressive (90%) pushes the mechanical limit of the injector.
+   */
+  let dutyCycle = MAX_DUTY_CYCLE;
+  if (headroomPref === "conservative") dutyCycle = 0.70;
+  if (headroomPref === "aggressive") dutyCycle = 0.90;
+
+  const requiredLBHR = (targetHP * bsfc) / (cylinders * dutyCycle);
+  return Math.round(requiredLBHR * 10.5);
+}
+
+/**
+ * Standardizes product store URLs to the current FiveO Motorsport structure.
+ * 1. Prioritizes the clean SEO 'url_key' slug.
+ * 2. Removes legacy '.html' extensions.
+ * 3. Ensures a trailing slash for root-collapsed products.
+ */
+export function getStoreUrl(product: { url_key?: string; product_url?: string }): string {
+  const BASE_STORE = "https://www.fiveomotorsport.com";
+  
+  // Strategy A: Use the clean SEO slug (url_key) if available
+  if (product.url_key) {
+    let slug = product.url_key;
+    
+    // 1. Strip legacy Magento child suffixes that 404 on the live site
+    const badSuffixes = ["-each", "-single", "-set", "-6set", "-8set"];
+    badSuffixes.forEach(s => {
+      if (slug.endsWith(s)) slug = slug.slice(0, -s.length);
+      if (slug.includes(`${s}-`)) slug = slug.replace(`${s}-`, "-");
+    });
+
+    // 2. Clean up slashes and build final URL
+    if (slug.startsWith("http")) return slug; // Already full URL
+    if (slug.startsWith("/")) slug = slug.slice(1);
+    if (slug.endsWith("/")) slug = slug.slice(0, -1);
+    
+    return `${BASE_STORE}/${slug}/`;
+  }
+
+  // Strategy B: Clean up legacy product_url
+  if (product.product_url) {
+    let clean = product.product_url.replace(/\.html/g, "");
+    if (!clean.endsWith("/")) clean += "/";
+    return clean;
+  }
+
+  return "#";
+}
+
+// ═══════════════════════════════════════
+// 4. SCORING WEIGHTS (Layer 1)
+// ═══════════════════════════════════════
+
+export const SCORING_WEIGHTS = {
+  fitmentConfidence: 0.25,
+  flowRateMatch: 0.25,
+  impedanceCompat: 0.15,
+  connectorMatch: 0.10,
+  priceAlignment: 0.10,
+  brandPreference: 0.05,
+  injectorTypeMatch: 0.10,
+} as const;
+
+// ═══════════════════════════════════════
+// 5. LAYER 2 OVERRIDE TRIGGERS
+// ═══════════════════════════════════════
+
+export const OVERRIDE_TRIGGERS = {
+  forceHighFlow: ["max-power"],
+  forceTurboProducts: ["turbo", "supercharger"],
+  boostPerformanceType: ["heavily-modified"],
+  forceE85Compatible: ["e85"],
+  boostTrackProducts: ["track"],
+} as const;
+
+// ═══════════════════════════════════════
+// 6. BRAND DESIGN TOKENS
+// ═══════════════════════════════════════
+
+export const BRAND = {
+  blue: "#00AEEF",
+  red: "#E10600",
+  dark: "#09090b",
+  lightGray: "#f0f2f5",
+} as const;
+
+// ═══════════════════════════════════════
+// 7. PROCESSING STATUS MESSAGES
+// ═══════════════════════════════════════
+
+export const STAGE_DESCRIPTIONS = [
+  { stage: 1, title: "Hardware Alignment", detail: "Cross-referencing chassis and wiring specifications" },
+  { stage: 2, title: "Flow Rate Validation", detail: "Calculating precise fuel mass requirements" },
+  { stage: 3, title: "Impedance Matching", detail: "Verifying electrical compatibility" },
+  { stage: 4, title: "Fuel Compatibility", detail: "Checking chemical resistance ratings" },
+  { stage: 5, title: "Oracle Synthesis", detail: "Compiling final expert recommendations" }
+];
+
+// ─── HARDWARE COMPATIBILITY HELPERS ───
+
+export const DI_KEYWORDS = [
+  "ecoboost", "gdi", "gasoline direct injection", "direct injection",
+  "fsi", "tfsi", "tsi", "skyactiv-g", "disi", "d-4s", "d-4", "dig", "dig-t",
+  "cgi", "bluedirect", "ecotec3", "ltg", "lnf", "lhu", "theta gdi", "nu gdi",
+  "gamma gdi", "smartstream gdi", "earth dreams", "vc-turbo", "puretech",
+  "thp", "prince engine"
+];
+
+/**
+ * Infer if a vehicle engine relies on Direct Injection (DI).
+ */
+export function isDirectInjectionVehicle(engineLabel: string): boolean {
+  const normalized = engineLabel.toLowerCase();
+  return DI_KEYWORDS.some(kw => normalized.includes(kw));
+}
+
+/**
+ * Infer if a product is a Direct Injection (DI) injector.
+ */
+export function isProductDI(product: { name?: string; description?: string; raw_categories?: string[] }): boolean | null {
+  const combined = [
+    product.name || "",
+    product.description || "",
+    ...(product.raw_categories || [])
+  ].join(" ").toLowerCase();
+
+  // If it explicitly says port injection, it's not DI
+  if (combined.includes("port injection") || combined.includes("tbi") || combined.includes("throttle body")) {
+    return false;
+  }
+
+  // If it matches known DI keywords
+  if (DI_KEYWORDS.some(kw => combined.includes(kw))) {
+    return true;
+  }
+
+  // Unknown
+  return null;
+}
+
+/**
+ * Attempt to confidently parse the quantity of injectors in the product.
+ * Returns the set size (e.g., 8), 1 (for 'each'), or null (unknown).
+ */
+export function parseProductSetSize(name: string, description: string = ""): number | null {
+  const combined = `${name} ${description}`.toLowerCase();
+  
+  // Explicit "each" or single unit
+  if (combined.includes("-each") || combined.includes("sold individually") || /\beach\b/.test(combined)) {
+    return 1;
+  }
+
+  // Matches "set of 8", "8 pcs", "8x", "8 injectors", "matched set of 8"
+  const setMatch = combined.match(/(?:set of|matched set of)\s*(\d+)/i);
+  if (setMatch) return parseInt(setMatch[1], 10);
+
+  const pcsMatch = combined.match(/(\d+)\s*(?:pcs|pieces)/i);
+  if (pcsMatch) return parseInt(pcsMatch[1], 10);
+
+  const xMatch = combined.match(/(\d+)x\s+injectors?/i);
+  if (xMatch) return parseInt(xMatch[1], 10);
+
+  const injectorsMatch = combined.match(/(\d+)\s+injectors?/i);
+  if (injectorsMatch) return parseInt(injectorsMatch[1], 10);
+
+  const vMatch = combined.match(/\bv(\d+)\s+set\b/i);
+  if (vMatch) return parseInt(vMatch[1], 10);
+
+  return null;
+}
+
+export const PROCESSING_MESSAGES = [
+  { threshold: 0, text: "Scanning compatibility database..." },
+  { threshold: 15, text: "Cross-referencing fitment matrix..." },
+  { threshold: 35, text: "Calculating flow requirements..." },
+  { threshold: 55, text: "Applying performance overrides..." },
+  { threshold: 75, text: "Generating expert analysis..." },
+  { threshold: 90, text: "Finalizing matches..." },
+  { threshold: 100, text: "Analysis Complete!" },
+] as const;
+
+// ═══════════════════════════════════════
+// 8. IMAGE ASSET PATHS
+// ═══════════════════════════════════════
+
+const BASE = "/fiveo/demo/oracle";
+
+export const IMAGES = {
+  engineBayHero: `${BASE}/engine-bay-hero.png`,
+  sunsetHighway: `${BASE}/daily-driver-v4.png`,
+  trackDrift: `${BASE}/track-racing-v4.png`,
+  nightStreet: `${BASE}/street-performance-v4.png`,
+  dynoFlames: `${BASE}/dyno-flames.png`,
+  carbonFiber: `${BASE}/carbon-v6.png`,
+  darkWeave: `${BASE}/carbon-v6.png`,
+  fuelE85: `${BASE}/fuel-e85.png`,
+  raceFuel: `${BASE}/race-fuel.png`,
+  pumpGas: `${BASE}/pump-gas.png`,
+  diagnosticBay: `${BASE}/diagnostic-bay.png`,
+  mixedUse: `${BASE}/mixed-use-v4.png`,
+  improveStreet: `${BASE}/improve-street.png`,
+} as const;
+
+// ═══════════════════════════════════════
+// 9. PRIORITY OPTIONS
+// ═══════════════════════════════════════
+
+export const PRIORITY_OPTIONS = [
+  "Reliability",
+  "Horsepower",
+  "Smooth Drivability",
+  "Fuel Efficiency",
+  "Plug-and-Play Install",
+] as const;
+
+// ═══════════════════════════════════════
+// 10. MOD OPTIONS
+// ═══════════════════════════════════════
+
+export const MOD_OPTIONS = [
+  { value: "intake", label: "Intake", icon: "wind" },
+  { value: "exhaust", label: "Exhaust", icon: "flame" },
+  { value: "turbo", label: "Turbo / Supercharger", icon: "turbo" },
+  { value: "ecu", label: "ECU Tune", icon: "chip" },
+  { value: "none", label: "None", icon: "minus" },
+] as const;
+// EOF
