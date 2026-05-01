@@ -25,6 +25,7 @@ export interface Product {
   product_url?: string;
   url_key?: string;
   visibility?: string;
+  magento_make?: string;
   raw_categories?: string[];
   notes?: string[];
 }
@@ -42,6 +43,9 @@ export interface ScoredProduct {
   tier?: 1 | 2 | 3;
   fitmentBadge?: string;
   whatToVerify?: string[];
+  fitmentConfidence?: string;
+  performanceMatch?: string;
+  installComplexity?: string;
 
   
   // AI-enriched fields (optional, added during AI refinement stage)

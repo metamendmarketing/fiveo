@@ -107,6 +107,7 @@ Your mission is to organize injectors into a clear 3-tier hierarchy:
 - Goal: Perfect bolt-on replacement or confirmed upgrade.
 - 'tier': 1
 - 'fitmentBadge': "Verified Direct Fit"
+- Display: Use the numeric Compatibility % for this tier.
 
 **Closest Compatible Candidate**
 - For "Likely Fit" or "Potential Platform Match" that are technically close.
@@ -116,6 +117,7 @@ Your mission is to organize injectors into a clear 3-tier hierarchy:
 - 'tier': 2
 - 'fitmentBadge': E.g., "Requires Connector Verification", "Verify Length", or "Requires ECU Tune".
 - 'whatToVerify': Mandatory checklist (see below).
+- Display: DO NOT show Compatibility %. Use descriptive labels: 'fitmentConfidence', 'performanceMatch', 'installComplexity'.
 
 **Advanced Custom Build**
 - For specialty or unverified products intended for high-output builds.
@@ -124,6 +126,7 @@ Your mission is to organize injectors into a clear 3-tier hierarchy:
 - 'tier': 3
 - 'fitmentBadge': "Custom Build Only" or "Not Confirmed for Vehicle".
 - 'whatToVerify': Mandatory checklist (see below).
+- Display: DO NOT show Compatibility %. Use descriptive labels: 'fitmentConfidence', 'performanceMatch', 'installComplexity'.
 
 ──────────────────────────────
 3. MANDATORY DISCLOSURE: "WHAT TO VERIFY"
@@ -220,6 +223,9 @@ Output JSON schema:
       "tier": 1,
       "fitmentBadge": "Verified Direct Fit",
       "whatToVerify": ["O-ring size", "ECU tuning requirements"],
+      "fitmentConfidence": "Verified" or "Not Confirmed",
+      "performanceMatch": "Perfect" or "High",
+      "installComplexity": "Direct" or "Moderate",
       "matchStrategy": "...",
       "aiHeadline": "...",
       "preferenceSummary": "...",
@@ -234,6 +240,9 @@ Field rules:
 - matchStrategy: 3-5 words. Friendly card label.
 - fitmentBadge: 3-6 words. Status badge for card.
 - whatToVerify: Array of strings. Detailed checklist for Tier 2/3.
+- fitmentConfidence: 1-3 words (e.g. "Verified", "Not Confirmed").
+- performanceMatch: 1-2 words (e.g. "Perfect", "High", "Good").
+- installComplexity: 1-2 words (e.g. "Direct", "Moderate", "Expert").
 - aiHeadline: 3-6 words. Expert, punchy, not hypey.
 - preferenceSummary: One sentence, max 20 words. Start with “This” or “These.”
 - technicalNarrative: 80-120 words. Short sentences. Cover fitment, flow match/tradeoff, tuning/compatibility warning if needed, practical recommendation, confidence-building close.

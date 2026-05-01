@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
     
     const fetchPromises = Array.from({ length: pages }).map((_, i) => {
       return supabase.from("products")
-        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config")
+        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config, magento_make")
         .or('visibility.is.null,visibility.neq."Not Visible Individually"')
         .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
     });
@@ -198,10 +198,20 @@ export async function POST(req: NextRequest) {
       if (verifiedOnly.length === 0) {
         noVerifiedMatches = true;
       }
-      // NEW POLICY: We send the full deduped pool to the AI, but with clear confidence tagging.
-      // This allows the AI to organize into Tier 1, 2, and 3.
-      safeCandidateResults = deduped;
-      console.log(`[Oracle] 🛡️ Tiered System: Passing ${deduped.length} candidates to AI for tiered classification.`);
+      
+      // NEW POLICY: Platform Conflict Filter.
+      // Exclude products that are explicitly for a different platform (e.g., Jeep parts for a Ford).
+      const userMake = (profile.make || "").toUpperCase();
+      safeCandidateResults = deduped.filter(r => {
+        const prodMake = (r.product.magento_make || "").toUpperCase();
+        // If product has a specific make that isn't the user's make, it's a conflict.
+        if (prodMake && prodMake !== userMake && prodMake !== "UNIVERSAL" && prodMake !== "ALL") {
+          return false;
+        }
+        return true;
+      });
+
+      console.log(`[Oracle] 🛡️ Platform Filter: Removed ${deduped.length - safeCandidateResults.length} conflicting products. Passing ${safeCandidateResults.length} candidates to AI.`);
     }
 
     // Initial pool selection from filtered results
@@ -318,6 +328,9 @@ export async function POST(req: NextRequest) {
             tier: r.tier || (original.confidenceLevel === "Verified Fit" ? 1 : 2),
             fitmentBadge: r.fitmentBadge || (original.confidenceLevel === "Verified Fit" ? "Verified Direct Fit" : "Requires Verification"),
             whatToVerify: r.whatToVerify || [],
+            fitmentConfidence: r.fitmentConfidence || "",
+            performanceMatch: r.performanceMatch || "",
+            installComplexity: r.installComplexity || "",
             matchStrategy: r.matchStrategy || original.matchType,
             aiHeadline: r.aiHeadline || "",
             preferenceSummary: r.preferenceSummary || "",

@@ -58,10 +58,27 @@ function ProductCard({ result, onClick }: { result: ScoredProduct; onClick: () =
         </p>
 
         <div className="mt-auto pt-4 border-t border-white/10">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Compatibility</span>
-            <span className={`text-lg font-black ${result.tier === 1 ? "text-green-500" : "text-[#00AEEF]"}`}>{result.score}%</span>
-          </div>
+          {result.tier === 1 ? (
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">Compatibility</span>
+              <span className="text-lg font-black text-green-500">{result.score}%</span>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 mb-3">
+              <div className="flex justify-between items-center">
+                <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">Fitment Confidence</span>
+                <span className="text-[9px] font-black text-[#00AEEF] uppercase">{result.fitmentConfidence || "Not Confirmed"}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">Performance Match</span>
+                <span className="text-[9px] font-black text-[#00AEEF] uppercase">{result.performanceMatch || "Good"}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">Install Complexity</span>
+                <span className="text-[9px] font-black text-[#00AEEF] uppercase">{result.installComplexity || "Moderate"}</span>
+              </div>
+            </div>
+          )}
           
           <button 
             className="w-full bg-black text-white text-[9px] font-black uppercase py-3 tracking-[0.15em] hover:bg-[#00AEEF] transition-colors rounded"
@@ -381,6 +398,24 @@ export const ResultsPresentation = React.memo(function ResultsPresentation({
                     </div>
                   )}
                 </div>
+
+                {/* Expert Fitment Assessment (Tier 2/3 Only) */}
+                {(selectedResult.tier === 2 || selectedResult.tier === 3) && (
+                  <div className="grid grid-cols-3 gap-4 mb-2">
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center">
+                      <p className="text-[8px] font-black uppercase text-white/40 mb-1 tracking-widest">Confidence</p>
+                      <p className="text-[10px] font-black text-[#00AEEF] uppercase">{selectedResult.fitmentConfidence || "Not Confirmed"}</p>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center">
+                      <p className="text-[8px] font-black uppercase text-white/40 mb-1 tracking-widest">Performance</p>
+                      <p className="text-[10px] font-black text-[#00AEEF] uppercase">{selectedResult.performanceMatch || "Good"}</p>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center">
+                      <p className="text-[8px] font-black uppercase text-white/40 mb-1 tracking-widest">Complexity</p>
+                      <p className="text-[10px] font-black text-[#00AEEF] uppercase">{selectedResult.installComplexity || "Moderate"}</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* What to Verify Before Purchase (Tier 2/3 Only) */}
                 {(selectedResult.tier === 2 || selectedResult.tier === 3) && (
