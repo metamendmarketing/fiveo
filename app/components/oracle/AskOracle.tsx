@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Send, Loader2, ChevronDown, Sparkles, CheckCircle2 } from "lucide-react";
-import type { BuildProfile } from "@/app/lib/constants";
+import { type BuildProfile, getStoreUrl } from "@/app/lib/constants";
 
 interface AskOracleProps {
   productId: number;
@@ -245,8 +245,26 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
                   </div>
 
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                    <p className="text-sm text-white/90 leading-relaxed font-medium">
-                      {response.answer}
+                    <p className="text-sm text-white/90 leading-relaxed font-medium whitespace-pre-wrap">
+                      {response.answer.split(/(SKU:\s*[a-zA-Z0-9-]+)/gi).map((part, i) => {
+                        const match = part.match(/SKU:\s*([a-zA-Z0-9-]+)/i);
+                        if (match) {
+                          const sku = match[1];
+                          const url = getStoreUrl({ url_key: sku });
+                          return (
+                            <a
+                              key={i}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#00AEEF] hover:underline font-bold"
+                            >
+                              {part}
+                            </a>
+                          );
+                        }
+                        return <span key={i}>{part}</span>;
+                      })}
                     </p>
                   </div>
 
