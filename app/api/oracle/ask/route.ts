@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     while (true) {
       const { data: batch } = await supabase
         .from("products")
-        .select("id, name, flow_rate_cc, impedance, connector_type, manufacturer, fuel_types, price")
+        .select("id, name, flow_rate_cc, impedance, connector_type, manufacturer, fuel_types, price, url_key")
         .range(catOffset, catOffset + CAT_PAGE_SIZE - 1);
       
       if (!batch || batch.length === 0) break;
@@ -198,7 +198,7 @@ RULES:
 4. CONCISE: 2-4 sentences for simple questions, up to 8 for complex technical explanations.
 5. STAY ON TOPIC: Fuel injectors, tuning, flow rates, HP, vehicle compatibility, fuel systems, and related automotive performance. For anything unrelated, redirect: "That's outside my area — I specialize in fuel injection and engine performance."
 6. Flow rate math reference: 1 lb/hr ≈ 10.5 cc/min. NA engines: HP × 5-6 cc/min per cylinder. Forced induction: HP × 7-8 cc/min per cylinder. E85: multiply by 1.4x vs gasoline.
-7. When you know a compatible product from the fitment list, mention it by name so the customer knows their options.
+7. When you mention a compatible product from the catalog, you MUST format it as a markdown link using its 'url_key'. Example: [Product Name](https://www.fiveomotorsport.com/{url_key}/). NEVER use the SKU to build the URL.
 
 Output strictly valid JSON:
 {

@@ -246,20 +246,20 @@ export default function AskOracle({ productId, productName, buildProfile }: AskO
 
                   <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                     <p className="text-sm text-white/90 leading-relaxed font-medium whitespace-pre-wrap">
-                      {response.answer.split(/(SKU:\s*[a-zA-Z0-9-]+)/gi).map((part, i) => {
-                        const match = part.match(/SKU:\s*([a-zA-Z0-9-]+)/i);
+                      {response.answer.split(/(\[.*?\]\(.*?\))/g).map((part, i) => {
+                        const match = part.match(/\[(.*?)\]\((.*?)\)/);
                         if (match) {
-                          const sku = match[1];
-                          const url = getStoreUrl({ url_key: sku });
+                          const linkText = match[1];
+                          const linkUrl = match[2];
                           return (
                             <a
                               key={i}
-                              href={url}
+                              href={linkUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-[#00AEEF] hover:underline font-bold"
                             >
-                              {part}
+                              {linkText}
                             </a>
                           );
                         }
