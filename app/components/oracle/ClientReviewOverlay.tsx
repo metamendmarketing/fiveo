@@ -37,8 +37,8 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
     // Save profile to session storage so it can be restored after navigation
     sessionStorage.setItem("oracleReviewProfile", JSON.stringify(profile));
     
-    // Toggle URL
-    const targetUrl = isV2 ? "/?client_review=true" : "/v2?client_review=true";
+    // Toggle URL with the correct base path
+    const targetUrl = isV2 ? "/fiveo/demo/?client_review=true" : "/fiveo/demo/v2?client_review=true";
     window.location.href = targetUrl;
   };
 
@@ -47,7 +47,7 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
     
     setIsSubmitting(true);
     try {
-      const res = await fetch("/api/feedback", {
+      const res = await fetch("/fiveo/demo/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
