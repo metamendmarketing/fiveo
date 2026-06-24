@@ -31,6 +31,7 @@ import { StepExpertSpecs } from "@/app/components/oracle/StepExpertSpecs";
 import { ProcessingSequence } from "@/app/components/oracle/ProcessingSequence";
 import { ResultsPresentation } from "@/app/components/oracle/ResultsPresentation";
 import { EditBuildModal } from "@/app/components/oracle/EditBuildModal";
+import { ClientReviewOverlay } from "@/app/components/oracle/ClientReviewOverlay";
 
 /**
  * Reducer for managing the BuildProfile state.
@@ -100,6 +101,20 @@ export default function OracleWizard() {
   const [results, setResults] = useState<ScoredProduct[] | null>(null);
   const [apiData, setApiData] = useState<OracleApiResponse | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // Restore profile from session storage if we navigated here via the Review Overlay
+  useEffect(() => {
+    const saved = sessionStorage.getItem("oracleReviewProfile");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        dispatch({ type: "UPDATE", payload: parsed });
+        sessionStorage.removeItem("oracleReviewProfile");
+      } catch (e) {
+        console.error("Failed to parse saved profile", e);
+      }
+    }
+  }, []);
 
   /** 
    * Memoized step sequence. 
@@ -358,6 +373,8 @@ export default function OracleWizard() {
           />
         )}
       </AnimatePresence>
+
+      <ClientReviewOverlay profile={profile} activeResults={results} currentStep={currentStep} />
     </div>
   );
 }
