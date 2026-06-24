@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS public.client_feedback (
   current_step text NOT NULL,
   vehicle_profile jsonb,
   active_results jsonb,
-  notes text NOT NULL
+  notes text NOT NULL,
+  reviewer_name text
 );
 
 -- Enable Row Level Security (optional, but good practice)

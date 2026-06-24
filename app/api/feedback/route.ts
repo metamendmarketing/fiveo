@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
           vehicle_profile: body.vehicle_profile || {},
           active_results: body.active_results || [],
           notes: body.notes,
+          reviewer_name: body.reviewer_name || "Anonymous",
         }
       ])
       .select();

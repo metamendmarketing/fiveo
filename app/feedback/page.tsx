@@ -13,6 +13,7 @@ interface FeedbackEntry {
   vehicle_profile: BuildProfile;
   active_results: ScoredProduct[];
   notes: string;
+  reviewer_name?: string;
 }
 
 export default async function FeedbackDashboard() {
@@ -57,7 +58,8 @@ export default async function FeedbackDashboard() {
                     <span className={`inline-block px-3 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3 ${fb.version_active === 'V1' ? 'bg-[#00AEEF]/20 text-[#00AEEF]' : 'bg-[#E10600]/20 text-[#E10600]'}`}>
                       {fb.version_active} Logic
                     </span>
-                    <p className="text-lg whitespace-pre-wrap">{fb.notes}</p>
+                    <h3 className="text-xl font-bold mb-1 text-white">{fb.reviewer_name || "Anonymous Reviewer"}</h3>
+                    <p className="text-lg whitespace-pre-wrap text-gray-300">{fb.notes}</p>
                   </div>
                   <div className="text-right text-xs text-gray-500 whitespace-nowrap">
                     {new Date(fb.created_at).toLocaleString()}

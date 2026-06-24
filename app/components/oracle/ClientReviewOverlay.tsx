@@ -18,6 +18,7 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [reviewerName, setReviewerName] = useState("");
 
   useEffect(() => {
     // Only activate if ?client_review=true is in the URL
@@ -43,7 +44,7 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
   };
 
   const handleSubmitFeedback = async () => {
-    if (!feedback.trim()) return;
+    if (!feedback.trim() || !reviewerName.trim()) return;
     
     setIsSubmitting(true);
     try {
@@ -56,6 +57,7 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
           vehicle_profile: profile,
           active_results: activeResults,
           notes: feedback,
+          reviewer_name: reviewerName.trim(),
         }),
       });
 
@@ -126,6 +128,14 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
                 Your feedback will automatically include your current vehicle profile, wizard step, and active recommendations.
               </p>
               
+              <input
+                type="text"
+                value={reviewerName}
+                onChange={(e) => setReviewerName(e.target.value)}
+                placeholder="Your Name (e.g. John Doe)"
+                className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-sm focus:outline-none focus:border-[#00AEEF] mb-3"
+              />
+
               <textarea
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
@@ -143,7 +153,7 @@ export function ClientReviewOverlay({ profile, activeResults, currentStep }: Pro
                 </button>
                 <button
                   onClick={handleSubmitFeedback}
-                  disabled={isSubmitting || !feedback.trim()}
+                  disabled={isSubmitting || !feedback.trim() || !reviewerName.trim()}
                   className="px-6 py-2 rounded-lg text-sm font-bold bg-[#00AEEF] hover:bg-[#0090c7] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
                 >
                   {submitSuccess ? "Sent!" : isSubmitting ? "Sending..." : "Submit Feedback"}
