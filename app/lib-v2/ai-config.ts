@@ -236,7 +236,7 @@ Output JSON schema:
 }
 
 Field rules:
-- selectionStrategy: 60-80 words. Specific to vehicle, goal, and required flow. No filler.
+- selectionStrategy: 30-40 words. Specific to vehicle, goal, and flow. No filler.
 - matchStrategy: 3-5 words. Friendly card label.
 - fitmentBadge: 3-6 words. Status badge for card.
 - whatToVerify: Array of strings. Detailed checklist for Tier 2/3.
@@ -244,9 +244,9 @@ Field rules:
 - performanceMatch: 1-2 words (e.g. "Perfect", "High", "Good").
 - installComplexity: 1-2 words (e.g. "Direct", "Moderate", "Expert").
 - aiHeadline: 3-6 words. Expert, punchy, not hypey.
-- preferenceSummary: One sentence, max 20 words. Start with “This” or “These.”
-- technicalNarrative: 80-120 words. Short sentences. Cover fitment, flow match/tradeoff, tuning/compatibility warning if needed, practical recommendation, confidence-building close.
-- proTip: One specific practical sentence, 15-25 words. NEVER use generic placeholders like "confirm connector type" or "check dimensions." Give a real shop-tip about O-rings, spray angle, heat-soak, or tuning tricks specific to this part or build. Example: "Lube your O-rings with clean engine oil—never spit or grease—to prevent tearing during rail installation." or "These larger injectors will require a specific dead-time offset in your ECU to maintain a perfect factory idle."
+- preferenceSummary: One sentence, max 15 words.
+- technicalNarrative: 40-60 words. Concise sentences. Cover fitment, flow match, and specific tuning/compatibility notes.
+- proTip: One specific practical sentence, 15-20 words. NEVER use generic placeholders. Give a real shop-tip specific to this part or build.
 
 Return only valid JSON. No markdown, comments, or extra text.`
   }

@@ -70,15 +70,15 @@ export async function POST(req: NextRequest) {
 
       records.forEach(f => {
         let isPerfectMatch = true;
-
-        // ABSOLUTE VERIFICATION: Year and Engine data MUST be present in the database to qualify as "Verified Fit".
+        
+        // STRICT VERIFICATION: Year and Engine data MUST be present and match to qualify for Tier 1.
         if (!f.year_start || !f.year_end || !f.engine_pattern) {
           isPerfectMatch = false;
         }
-
+        
         // Year Validation
         if (isPerfectMatch && userYear) {
-          if (userYear < (f.year_start || 0) || userYear > (f.year_end || 9999)) {
+          if (userYear < f.year_start! || userYear > f.year_end!) {
             isPerfectMatch = false;
           }
         }
@@ -94,6 +94,8 @@ export async function POST(req: NextRequest) {
         if (isPerfectMatch) {
           fitmentProductIds.push(f.product_id);
         } else {
+          // Model-level matches (where specific year/engine data is missing or mismatched) 
+          // are downgraded to Tier 2 (Closest Compatible).
           partialFitmentProductIds.push(f.product_id);
         }
       });
@@ -103,35 +105,49 @@ export async function POST(req: NextRequest) {
       makeFitmentProductIds = (fitmentResults[fitmentResults.length - 1].data as FitmentRecord[] || []).map(f => f.product_id);
     }
 
-    // 1b. Parallel Selective Catalog Fetch (High-Velocity Visibility Filter)
-    let allProducts: Product[] = [];
-    const PAGE_SIZE = 1000;
+    // 1b. Targeted Catalog Fetch (Performance Optimization)
+    // We prioritize products explicitly mapped to this fitment, plus platform candidates.
+    const userMake = (profile.make || "").toUpperCase();
+    const relevantProductIds = Array.from(new Set([...fitmentProductIds, ...partialFitmentProductIds, ...makeFitmentProductIds]));
     
-    // Filter out "Not Visible Individually" but KEEP NULLS (important for current data state)
-    const { count, error: countErr } = await supabase
-      .from("products")
-      .select("id", { count: "exact", head: true })
-      .or('visibility.is.null,visibility.neq."Not Visible Individually"');
+    let query = supabase.from("products")
+      .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config, magento_make");
+
+    if (isVehicleMode) {
+      const filters = [
+        `magento_make.ilike.${userMake}`,
+        `magento_make.eq.UNIVERSAL`,
+        `magento_make.eq.ALL`,
+        `manufacturer.ilike.${userMake}`
+      ];
+      
+      // If we have specific fitment IDs, we MUST include them even if they don't match the make filter
+      if (relevantProductIds.length > 0) {
+        // Chunk ID list if it's massive to avoid URL length issues, though usually it's < 100
+        filters.push(`id.in.(${relevantProductIds.slice(0, 500).join(",")})`);
+      }
+      
+      query = query.or(filters.join(","));
+    }
     
-    if (countErr) throw countErr;
+    const { data: allProducts, error: pError } = await query;
+    if (pError) throw pError;
     
-    const total = count || 1800; 
-    const pages = Math.ceil(total / PAGE_SIZE);
-    
-    const fetchPromises = Array.from({ length: pages }).map((_, i) => {
-      return supabase.from("products")
-        .select("id, sku, name, price, url_key, flow_rate_cc, impedance, connector_type, fuel_types, manufacturer, raw_categories, year_start, year_end, parsed_displacement, parsed_engine_code, parsed_config, magento_make")
-        .or('visibility.is.null,visibility.neq."Not Visible Individually"')
-        .range(i * PAGE_SIZE, (i + 1) * PAGE_SIZE - 1);
-    });
-    
-    const batchResults = await Promise.all(fetchPromises);
-    allProducts = batchResults.flatMap(r => {
-      if (r.error) throw r.error;
-      return (r.data as Product[]) || [];
-    });
-    
-    console.log(`[Oracle] ⚡ High-Velocity Acquisition: ${allProducts.length} visible products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
+    // 1c. TEXT-BASED FALLBACK (Tier 2 Intelligence)
+    // If we have low structured coverage, scan product metadata for the Model name.
+    // These are classified as Tier 2 (partialFitmentProductIds), NEVER Tier 1.
+    const modelName = (profile.model || "").toUpperCase();
+    if (isVehicleMode && modelName) {
+      allProducts?.forEach(p => {
+        const combinedText = `${p.name} ${p.raw_categories?.join(" ")}`.toUpperCase();
+        if (combinedText.includes(modelName) && !fitmentProductIds.includes(p.id)) {
+          partialFitmentProductIds.push(p.id);
+        }
+      });
+      console.log(`[Oracle] 🔍 Inferred Coverage: Added ${partialFitmentProductIds.length} candidates to Tier 2 for ${modelName}.`);
+    }
+
+    console.log(`[Oracle] ⚡ Targeted Acquisition: ${allProducts?.length || 0} relevant products loaded in ${Math.round(performance.now() - stage1Start)}ms`);
 
     // ─── STAGE 2: HEURISTIC SCORING & POOLING ───
     const stage2Start = performance.now();

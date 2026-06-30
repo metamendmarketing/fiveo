@@ -243,17 +243,22 @@ export function getStoreUrl(product: { url_key?: string; product_url?: string })
     });
 
     // 2. Clean up slashes and build final URL
-    if (slug.startsWith("http")) return slug; // Already full URL
+    if (slug.startsWith("http")) {
+      let cleanUrl = slug.replace(/\.html/g, "");
+      if (cleanUrl.endsWith("/")) cleanUrl = cleanUrl.slice(0, -1);
+      return cleanUrl;
+    }
+    
     if (slug.startsWith("/")) slug = slug.slice(1);
     if (slug.endsWith("/")) slug = slug.slice(0, -1);
     
-    return `${BASE_STORE}/${slug}/`;
+    return `${BASE_STORE}/${slug}`;
   }
 
   // Strategy B: Clean up legacy product_url
   if (product.product_url) {
     let clean = product.product_url.replace(/\.html/g, "");
-    if (!clean.endsWith("/")) clean += "/";
+    if (clean.endsWith("/")) clean = clean.slice(0, -1);
     return clean;
   }
 
