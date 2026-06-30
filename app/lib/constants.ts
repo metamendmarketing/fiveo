@@ -231,33 +231,33 @@ export function calculateRequiredCC(
 export function getStoreUrl(product: { url_key?: string; product_url?: string }): string {
   const BASE_STORE = "https://www.fiveomotorsport.com";
   
-  // Strategy A: The database 'product_url' is the most authoritative and should be used exactly as-is.
-  // Their current store requires the .html extension and the specific suffixes.
-  if (product.product_url) {
-    // Some legacy data might just be relative paths
-    if (product.product_url.startsWith("http")) {
-      return product.product_url;
-    }
-    const cleanPath = product.product_url.startsWith("/") ? product.product_url.slice(1) : product.product_url;
-    return `${BASE_STORE}/${cleanPath}`;
-  }
-
-  // Strategy B: Fallback to url_key if product_url is missing
+  // Strategy A: Use the clean SEO slug (url_key) if available
   if (product.url_key) {
     let slug = product.url_key;
     
-    if (slug.startsWith("http")) return slug;
+    // 1. Strip legacy Magento child suffixes that 404 on the live site
+    const badSuffixes = ["-each", "-single", "-set", "-6set", "-8set"];
+    badSuffixes.forEach(s => {
+      if (slug.endsWith(s)) slug = slug.slice(0, -s.length);
+      if (slug.includes(`${s}-`)) slug = slug.replace(`${s}-`, "-");
+    });
+
+    // 2. Clean up slashes and build final URL
+    if (slug.startsWith("http")) return slug; // Already full URL
     if (slug.startsWith("/")) slug = slug.slice(1);
+    if (slug.endsWith("/")) slug = slug.slice(0, -1);
     
-    // Ensure .html extension is present
-    if (!slug.endsWith(".html")) {
-      slug = `${slug}.html`;
-    }
-    
-    return `${BASE_STORE}/${slug}`;
+    return `${BASE_STORE}/${slug}/`;
   }
 
-  return BASE_STORE;
+  // Strategy B: Clean up legacy product_url
+  if (product.product_url) {
+    let clean = product.product_url.replace(/\.html/g, "");
+    if (!clean.endsWith("/")) clean += "/";
+    return clean;
+  }
+
+  return "#";
 }
 
 // ═══════════════════════════════════════
